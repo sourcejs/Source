@@ -1,0 +1,14 @@
+﻿/*
+* Source engine http://sourcejs.ru
+* @copyright 2013 Source, http://sourcejs.ru
+* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
+* */
+
+/* Default core styles */
+@import url('/core/css/defaults.css');
+
+/* Users override */
+@import url('/user/css/user.css');
+
+
+/* TODO: add themes */
