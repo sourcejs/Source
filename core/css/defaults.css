@@ -396,6 +396,7 @@ a:hover {color: #333; text-decoration: underline;}
 	border-bottom: 1px solid #f0f0f0;
 	}
 
+.source_main > ul,
 .source_main > p {
 	width: 66%;
 	}
@@ -704,6 +705,7 @@ a:hover {color: #333; text-decoration: underline;}
 	content: counter(h2)"."counter(h3)"."counter(h4)". ";
 	}
 
+.source_section > ul,
 .source_section > p {
 	width: 66%;
 	margin: 15px 0;

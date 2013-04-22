@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <title>Стартовый шаблон для внутренних</title>
+
+    <meta name="author" content="Автор страницы">
+
+    <!-- Тут можете подключить свои портальные стили -->
+        <!--<link href="/data/project.css" rel="stylesheet">-->
+    <!-- /Тут можете подключить свои портальные стили -->
+
+    <!-- Source default resources -->
+        <link href="/core/css/core.css" rel="stylesheet">
+
+        <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
+        <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
+    <!-- /Source default resources -->
+
+</head>
+<body>
+
+    <div class="source_container"><div class="source_main source_col-main" role="main">
+
+        <h1>Комментирование спецификаций, плагин bubble.js</h1>
+
+        <section class="source_section">
+            <h2>Требования</h2>
+
+            <p>
+                <ul>
+                    <li>JavaScript</li>
+                    <li>PHP</li>
+                    <li>Разрешение создавать и писать файлы по всему дереву Source (<b>TODO: в одну конкретную папку</b>)</li>
+                </ul>
+            </p>
+
+        </section>
+
+        <section class="source_section">
+            <h2>Установка</h2>
+
+            <p>
+                <ol>
+                    <li>Скачать bubble.js</li>
+                    <li>Разместить плагин в директории <span class="source_class">/plugins</span> таким образом, чтобы путь к файлу bubble.js получился следующий: <span class="source_class">/plugins/bubble/js/bubble.js</span></li>
+                    <li>Добавить в файл пользовательской конфигурации, расположенный в директории <span class="source_class">/user/js/options.js</span>
+                            <pre>
+                                pluginsEnabled : {
+                                    // other plugins
+
+                                    bubble: true
+
+                                    // ...
+                                }
+                            </pre>
+
+                    </li>
+                </ol>
+
+            </p>
+        </section>
+        <section class="source_section">
+            <h2>Использование</h2>
+
+            <p>Меню внутренней навигации пополниться слайдером, включающим режим комментирования спеки.</p>
+
+            <section class="source_example">
+                <img src="i/slider.png"/>
+            </section>
+
+            <p><br/></p>
+            <p>В режиме комментирования кликом добавляется новый баблик. Баблики сохраняются в файл и становятся доступны остальным пользователям. При закрытии баблика информация о нем стирается.</p>
+
+            <section class="source_example">
+                <h1>Заголовок</h1>
+                <h2>Подзаголовок</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum, nibh sed varius vestibulum, eros justo vestibulum sem, at adipiscing mi neque non justo. Praesent varius, erat at luctus posuere, risus diam mattis nibh, id placerat nulla tellus at justo. Vestibulum luctus vestibulum gravida. Proin congue dapibus risus, a gravida massa pretium eu. Suspendisse vitae magna at lectus blandit vulputate. Nullam mattis diam et mi congue tempor. Etiam eget nibh quis libero mattis pretium. Etiam id nisl vel mauris pulvinar fringilla. Nulla risus lacus, varius et porttitor vel, iaculis nec leo. Nulla facilisi. Donec vehicula diam in metus placerat eu feugiat urna imperdiet. Morbi orci ligula, rhoncus ac commodo pellentesque, euismod faucibus massa.</p>
+                <h2>Подзаголовок</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum, nibh sed varius vestibulum, eros justo vestibulum sem, at adipiscing mi neque non justo. Praesent varius, erat at luctus posuere, risus diam mattis nibh, id placerat nulla tellus at justo. Vestibulum luctus vestibulum gravida. Proin congue dapibus risus, a gravida massa pretium eu. Suspendisse vitae magna at lectus blandit vulputate. Nullam mattis diam et mi congue tempor. Etiam eget nibh quis libero mattis pretium. Etiam id nisl vel mauris pulvinar fringilla. Nulla risus lacus, varius et porttitor vel, iaculis nec leo. Nulla facilisi. Donec vehicula diam in metus placerat eu feugiat urna imperdiet. Morbi orci ligula, rhoncus ac commodo pellentesque, euismod faucibus massa.</p>
+                <h1>Заголовок</h1>
+                <h2>Подзаголовок</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum, nibh sed varius vestibulum, eros justo vestibulum sem, at adipiscing mi neque non justo. Praesent varius, erat at luctus posuere, risus diam mattis nibh, id placerat nulla tellus at justo. Vestibulum luctus vestibulum gravida. Proin congue dapibus risus, a gravida massa pretium eu. Suspendisse vitae magna at lectus blandit vulputate. Nullam mattis diam et mi congue tempor. Etiam eget nibh quis libero mattis pretium. Etiam id nisl vel mauris pulvinar fringilla. Nulla risus lacus, varius et porttitor vel, iaculis nec leo. Nulla facilisi. Donec vehicula diam in metus placerat eu feugiat urna imperdiet. Morbi orci ligula, rhoncus ac commodo pellentesque, euismod faucibus massa.</p>
+            </section>
+
+        </section>
+
+    </div></div>
+
+</body>
+</html>
