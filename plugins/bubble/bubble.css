@@ -1,0 +1,172 @@
+.js-bbl {
+    opacity: 0;
+    -webkit-transform: translateX(40px);
+            transform: translateX(40px);
+    padding: 20px;
+    z-index: 29;
+
+    position: absolute;
+    max-width: 310px;
+    min-width: 210px;
+
+    color: #333;
+    margin-top: -30px;
+    margin-left: 8px;
+
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-filter: drop-shadow(0 0 4px rgba(0, 0, 0, .3));
+    box-shadow: 0 0 40px rgba(0, 0, 0, .3);
+
+    border-radius: 10px;
+
+    background: #fdf9e9; /* Old browsers */
+    background: -moz-linear-gradient(top, #fdf9e9 0%, #f9f1c8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdf9e9), color-stop(100%,#f9f1c8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fdf9e9 0%,#f9f1c8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fdf9e9 0%,#f9f1c8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fdf9e9 0%,#f9f1c8 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fdf9e9 0%,#f9f1c8 100%); /* W3C */
+
+    -webkit-transition: .3s opacity, .3s -webkit-transform;
+       -moz-transition: .3s opacity, .3s transform;
+         -o-transition: .3s opacity;
+            transition: .3s opacity, .3s transform;
+
+    -webkit-backface-visibility: hidden;
+}
+
+.js-bbl:hover {
+    z-index: 30;
+}
+.js-bbl__on {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    max-height: 500px;
+}
+.js-bbl_form {
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: .3s max-height;
+       -moz-transition: .3s max-height;
+         -o-transition: .3s max-height;
+            transition: .3s max-height;
+}
+.js-bbl__on .js-bbl_form{
+    max-height: 200px;
+}
+.js-bbl:after {
+    right: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.js-bbl:after {
+    border-color: rgba(252, 247, 226, 0);
+    border-right-color: #fcf7e2;
+    border-width: 10px;
+    top: 30px;
+    margin-top: -10px;
+}
+
+.js-bbl_close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: url("i/ic_close.png") 0 0 no-repeat;
+    opacity: .6;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+.js-bbl_close:hover {
+    opacity: 1;
+}
+
+.js-bbl_sep {
+    border-bottom: 1px solid #fce78d;
+}
+.js-bbl_it,
+.js-bbl_name_it {
+    border: none;
+    color: #B84819;
+    background-color: transparent;
+    opacity: 1;
+    width: 260px;
+}
+
+.js-bbl_it:focus,
+.js-bbl_name_it:focus {
+    outline: none;
+}
+
+.js-bbl_it { font-size: 15px; }
+.js-bbl ::-webkit-input-placeholder {
+    color: #B84819;
+    opacity: .5;
+}
+.js-bbl :-moz-placeholder {
+    color: #B84819;
+    opacity: .5;
+}
+.js-bbl ::-moz-placeholder {
+    color: #B84819;
+    opacity: .5;
+}
+
+.js-bbl_submit {
+    background: #ecebe7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ecebe7 0%, #dbd9d5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ecebe7), color-stop(100%,#dbd9d5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ecebe7 0%,#dbd9d5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ecebe7 0%,#dbd9d5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ecebe7 0%,#dbd9d5 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ecebe7 0%,#dbd9d5 100%); /* W3C */
+
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    height: 30px;
+    font-size: 12px;
+    padding: 0 15px;
+    cursor: pointer;
+    color: #333;
+}
+.js-bbl_cancel {
+    font-size: 12px;
+    margin-left: 10px;
+}
+.js-bbl_actions { margin-top: 20px; margin-bottom: 5px;}
+.js-bbl_name {
+    font-size: 12px;
+    font-style: italic;
+    color: #B84819;
+    border-top: 1px dotted rgba(0, 0, 0, .3);
+    margin-top: 4px;
+    padding-top: 4px;
+    text-align: right;
+}
+
+.source_example {
+    position: relative;
+}
+
+.js-bbl_info { display: none; }
+.js-bbl__show { display: block; }
+
+.source_info_ok {
+	height: 100%;
+	background-image: url(i/ok.png);
+	}
+
+.source_info_attention {
+	color: #999;
+	font-size: 12px;
+	text-align: center;
+	height: 100%;
+	background-image: url(i/bubble_l.png);
+	}

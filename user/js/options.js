@@ -16,8 +16,8 @@ define({
         pluginsEnabled : {
             //Plugins enabling
             //bubble: true,
+            //debugmode: true
             //globalNav: true,
-            //debuggmode: true,
             //search: true
         },
 

@@ -1,0 +1,291 @@
+
+/* Debugg styles
+---------------------------------------------------------------------------------- */
+.dm_error,
+.dm_dom-level_error,
+.dm_class_count_error,
+.dm_dom_level_error{
+     outline:5px solid red;
+}
+
+.dm_dtoolbar{
+    position: absolute;
+    min-width: auto;
+    top:-32px;
+    padding: 5px 0px;
+    background-color:rgba(255, 255, 255, .9);
+    border: 3px solid #E6E6E6;
+    white-space: nowrap;
+    }
+.ie8 .dm_dtoolbar,
+*+HTML {
+    background-color: #FFF;
+    }
+    body > .dm_dtoolbar {
+        display: none;
+        }
+    .dm_dtoolbar:hover{
+        background-color:rgba(255, 255, 255, 1);
+        }
+        .dm_dtoolbar a{
+            display: inline-block;
+            margin:0 10px;
+            cursor: pointer;
+            outline:none !important;
+            *display: inline;
+            *zoom: 1;
+            }
+
+.debugbar_bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    min-height:15px;
+    max-height: 90%;
+    background-color:rgba(255, 255, 255, .9);
+    border-top:1px solid #eee;
+    z-index: 3000;
+    opacity: 1;
+    visibility: visible;
+    
+    -webkit-transition: .4s opacity,visibility .5s;
+       -moz-transition: .4s opacity,visibility .5s;
+         -o-transition: .4s opacity,visibility .5s;
+            transition: .4s opacity,visibility .5s;
+    }
+    .debugbar_bottom.__transparent {
+        opacity: 0;
+        visibility: hidden;
+        }
+.debugbar_bottom:hover{
+    background-color:rgba(255, 255, 255, 1);
+    }
+    .debugbar_bottom_inner{
+        position: relative;
+        overflow:auto;
+        }
+        .debugbar_bottom_inner.__closed {
+            overflow: hidden;
+            }
+/*        .debugbar_bottom_cnt {
+            height:300px;
+        }*/
+            .dm_cols {
+                padding-top:20px;
+                }
+                .dm_col {
+                    padding-left:10px;
+                    width:230px;
+                    display: inline-block;
+                    vertical-align: top;
+                    }
+                    .dm_col_cnt {
+                        }
+                        .dm_col_cnt_h {
+                            margin: 0 0 10px;
+                            font-size: 20px;
+                            }
+                        .dm_col_form {
+                            }
+                            .dm_form_row {
+                                margin-bottom:5px;
+                                }
+                                .dm_form_row_count {
+                                    color:red;
+                                    margin:0;
+                                    float:right;
+                                    padding-top:2px;
+                                    }
+                                .dm_form_row_check {
+                                    float:left;
+                                    }
+                                .dm_form_row_tip {
+                                    display: block;
+                                    margin:0 30px 0 21px;
+                                    padding-top:2px;
+                                    }
+                            .dm_form_row_controls {
+                                margin-top:10px;
+                                }
+                                .dm_form_hide {
+                                    vertical-align: middle;
+                                    }
+
+
+        .dm_control{
+            position: relative;
+            display: inline-block;
+            padding:10px;
+            cursor: pointer;
+            border-width:1px;
+            border-style:solid;
+            border-color:transparent #eee;
+            }
+        .dm_control:hover{
+            background-color: #EEE;
+            }
+        .dm_control:hover .dm_control_menu{
+            opacity:1;
+            visibility: visible;
+            }
+            .dm_control_menu{
+                position: absolute;
+                left: -10px;
+                bottom: 35px;
+                min-width:400px;
+                padding:10px 0;
+                opacity:0;
+                background-color: #FFF;
+                visibility: hidden;
+                border:1px solid #eee;
+                }
+                .dm_control_menu_item{
+                    padding:10px 20px;
+                    border-bottom:1px solid #eee;
+                    white-space:nowrap;
+                    }
+                .dm_control_menu_item__last{
+                    border-width:0px;
+                    }
+                .dm_control_action{
+                    padding-left:10px;
+                    font-size:10px;
+                    vertical-align: middle;
+                    }
+
+
+
+
+
+        .dm_resizer {
+            position: absolute;
+            width:14px;
+            height:6px;
+            top:-3px;
+            left:50%;
+            margin-left: -7px;
+            background-color: #eee;
+            border:1px solid #bbb;
+            cursor: pointer;
+            }
+            .dm_resizer:hover{
+                width:30px;
+                height:15px;
+                top:-7px;
+                left:50%;
+                margin-left: -15px;
+            }
+        .dm_hider {
+            position: absolute;
+            top:3px;
+            right:20px;
+            border-bottom:1px dashed;
+            }
+            .dm_hider:hover {
+                text-decoration: none;
+                border-bottom: none;
+                }
+.dm_tooltip_w {
+    position: fixed;
+    top:20px;
+    left:40px;
+
+    padding:5px 10px;
+
+    color: #b94a48;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 4px #ccc;
+    
+    background-color: #f2dede;
+    border:1px solid #eed3d7;
+    border-radius:4px;
+    visibility: visible;
+    
+    z-index:3000;
+    }
+    .dm_tooltip_w.__hidden {
+        visibility: hidden;    
+        }
+    .dm_tooltip_row {
+        margin: 0 0 5px;
+        }
+
+.no-troubles{
+    color:green;
+}
+.dt_l_no-title .source_example a:not([title]),
+.dt_l_target .source_example a[target]{
+    outline:5px solid red;
+}
+
+.dt_l_href .source_example a[href="#"],
+.dt_l_href .source_example a:not([href]){
+    outline:5px solid red;
+}
+
+.dt_img_alt .source_example img:not([alt]),
+.dt_img_alt .source_example img[alt=""]{
+    outline:5px solid red;
+}
+
+.dt_img_title .source_example img:not([title]),
+.dt_img_title .source_example img[title=""]{
+    outline:5px solid red;
+}
+
+
+
+
+
+
+
+
+
+.dm_trouble_forms .source_example ul,
+.dm_trouble_forms .source_example ol{
+    > *:not(li){
+        outline:5px solid red;
+    }
+}
+
+.dm_trouble_forms .source_example form{
+    outline:5px solid red;
+}
+.dm_trouble_forms .source_example form[action]{
+    outline:none;
+}
+
+.dm_trouble_forms .source_example textarea,
+.dm_trouble_forms .source_example input{
+    outline:5px solid red;
+}
+.dm_trouble_forms .source_example input[type]{
+    outline:none;
+}
+.dm_trouble_forms .source_example textarea[rows][cols]{
+    outline:none;
+}
+.dm_trouble_forms .source_example input[type=submit]{
+    outline:5px solid red;
+}
+.dm_trouble_forms .source_example input[type=submit][value]{
+    outline:none;
+}
+
+.dm_trouble_forms .source_example [style]{
+    outline:5px solid yellow;
+}
+
+.dm_trouble_forms .source_example [id]{
+    outline:5px solid yellow;
+}
+
+.debugbar_bottom,
+.debugbar_bottom *{
+    outline: none !important;
+}
+
+/* /Debugg styles
+---------------------------------------------------------------------------------- */
