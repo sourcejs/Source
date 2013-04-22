@@ -396,9 +396,17 @@ a:hover {color: #333; text-decoration: underline;}
 	border-bottom: 1px solid #f0f0f0;
 	}
 
+.source_main_descr > ul,
+.source_main_descr > p,
+
 .source_main > ul,
 .source_main > p {
 	width: 66%;
+	}
+
+.source_main_descr {
+	margin-bottom: 20px;
+	font-size: 14px;
 	}
 
 .source_path {
