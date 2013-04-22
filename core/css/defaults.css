@@ -881,6 +881,10 @@ code.brush {
 	display: none !important; /* Hide all code source by default */
 	}
 
+code.brush.source_visible {
+	display: block !important;
+	}
+
 .source_source-code .source_source-code_toggle .source_show {display: none;} /* Default maximazed */
 .source_source-code__min .source_source-code_toggle .source_hide {display: none;} /* minimized */
 .source_source-code__min .source_source-code_toggle .source_show {display: inline;}

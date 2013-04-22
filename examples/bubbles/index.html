@@ -6,9 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Стартовый шаблон для внутренних</title>
+    <title>Комментирование спецификаций, плагин bubble.js</title>
 
-    <meta name="author" content="Автор страницы">
+    <meta name="author" content="Островский Алексей">
 
     <!-- Тут можете подключить свои портальные стили -->
         <!--<link href="/data/project.css" rel="stylesheet">-->
@@ -44,25 +44,17 @@
         <section class="source_section">
             <h2>Установка</h2>
 
-            <p>
-                <ol>
-                    <li>Скачать bubble.js</li>
-                    <li>Разместить плагин в директории <span class="source_class">/plugins</span> таким образом, чтобы путь к файлу bubble.js получился следующий: <span class="source_class">/plugins/bubble/js/bubble.js</span></li>
-                    <li>Добавить в файл пользовательской конфигурации, расположенный в директории <span class="source_class">/user/js/options.js</span>
-                            <pre>
-                                pluginsEnabled : {
-                                    // other plugins
+	        <p>По умолчанию плагин находится в ядре проекта, в папке <span class="source_class">/plugins</span>, остаётся его только включить в <span class="source_class">/user/js/options.js</span>:</p>
 
-                                    bubble: true
+	        <code class="brush : js source_visible">
+		        pluginsEnabled : {
+			        // other plugins
 
-                                    // ...
-                                }
-                            </pre>
+			        bubble: true
 
-                    </li>
-                </ol>
-
-            </p>
+			        // ...
+			        }
+	        </code>
         </section>
         <section class="source_section">
             <h2>Использование</h2>

@@ -71,7 +71,7 @@ define([
                 new css('SyntaxHighlighter/shCoreDefault.css','/core/js/lib/');
                 new css('SyntaxHighlighter/shCoreCustom.css','/core/js/lib/');
 
-                $('.source_section > code.brush').each(function () {
+                $('.source_section > code.brush:not(.source_visible)').each(function () {
                     var t = $(this),
                             langClass;
 
@@ -153,6 +153,21 @@ define([
                 createAndFillBrushHTML();
             }
 
+            //temp for spec documentation, TODO: make possible to leave visible code blocks
+            $('.source_section > code.brush.source_visible').each(function () {
+                //If triming is off, then prepare code fill brushes only on activation
+                if (!options.modulesEnabled.trimSpaces) {
+                    createAndFillBrushHTML();
+                }
+
+                prepareCodeBlocks();
+                initCodePartToggler();
+
+                prepared = true;
+
+                activateHighlighter();
+            });
+
             //Show/hide source
             var showAllCode = function () {
                 var hash = window.location.hash;
@@ -178,7 +193,7 @@ define([
                     afterActivation(hash);
                 }
 
-                //TODO: finish url update on code show toggle functionality
+            //TODO: finish url update on code show toggle functionality
 //                var updateHref = hash === '' ? '!sc' : hash + urlConfig;
 //                window.location.hash = updateHref;
             };
