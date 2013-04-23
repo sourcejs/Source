@@ -118,7 +118,9 @@ define([
                         SyntaxHighlighter.highlight();
                         highlighted = true;
 
-                        handler();
+                        if(handler != undefined) {
+                            handler();
+                        }
                     })
 
                 })

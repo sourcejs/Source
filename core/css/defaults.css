@@ -44,6 +44,12 @@ a:hover {color: #333; text-decoration: underline;}
 	opacity: 1;
 	}
 
+@media only screen and (max-device-width : 1024px){
+	.source__scrolled-down .source_header {
+		opacity: 1;
+		}
+	}
+
 /* /States
 ---------------------------------------------------------------------------------- */
 
@@ -244,6 +250,7 @@ a:hover {color: #333; text-decoration: underline;}
 
 .source_header {
 	height: 50px;
+	min-width: 1050px;
 	padding-top: 11px;
 	padding-bottom: 10px;
 	position: fixed;
@@ -261,6 +268,13 @@ a:hover {color: #333; text-decoration: underline;}
 	-moz-transition: opacity .2s;
 	-o-transition: opacity .2s;
 	transition: opacity .2s;
+	}
+
+@media only screen and (max-device-width : 800px){
+	.source_header {
+		position: relative;
+		margin: -50px -25px 0;
+		}
 	}
 
 .source__scrolled-down .source_header__focus,
@@ -352,7 +366,7 @@ a:hover {color: #333; text-decoration: underline;}
 	bottom: 0; left: 0; right: 0;
 
 	border-top: 1px solid #eee;
-	padding: 30px 0;
+	padding: 30px 25px;
 	min-height: 250px;
 	background: #f1f2f3;
 
@@ -535,6 +549,15 @@ a:hover {color: #333; text-decoration: underline;}
 	width: 240px;
 	padding-bottom: 0;
 	}
+
+	@media only screen and (max-device-width : 1024px){
+		.source_main_nav {
+			position: relative;
+			top: auto;
+			right: auto;
+			margin-top: 20px;
+			}
+		}
 
 .source_main_nav h2 {
 	font-weight: normal;
