@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <title>Basic engine documentation</title>
+
+    <meta name="author" content="Robert Haritonov">
+
+    <!-- Your project styles -->
+        <!--<link href="/data/project.css" rel="stylesheet">-->
+    <!-- /Your project styles -->
+
+    <!-- Source default resources -->
+        <link href="/core/css/core.css" rel="stylesheet">
+
+        <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
+        <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
+    <!-- /Source default resources -->
+</head>
+<body>
+
+    <div class="source_container"><div class="source_main source_col-main" role="main">
+
+        <h1>Basic engine documentation</h1>
+
+	    <div class="source_info">
+		    <p>Most of Source engine documentation is still in russian language, the aim of this document is to show basic engine possibilities to wider public.</p>
+
+		    <p>After writing all main documentation in russian, we will start translating it to english, for now, you can use <a href="translate.google.com">google translator</a> as temporarily solution. If you can help with translation, please leave pull requests, or contact us <a href="mailto:r@rhr.me">by mail</a>.</p>
+
+		    <p>Mini presentation about Source engine in english - <a href="http://rhr.me/pres/source-min">rhr.me/pres/source-min</a>.</p>
+
+		    <p><b><a href="http://github.com/sourcejs/Source">Fork me on GitHub!</a></b></p>
+
+	    </div>
+
+        <section class="source_section">
+            <h2>Fast start</h2>
+
+	        <p><b>This page (and whole site) is powered by Source engine, feel free to inspect source code.</b></p>
+
+	        <p>To start, all you need is to <a href="http://github.com/sourcejs/Source">checkout project</a> from GitHub and put it to basic HTTP server.</p>
+
+	        <p>For some plugins (search, globalNav, bubble) you wil need PHP 5.3 on your server, and set proper chmod right on <span class="source_class">/data</span> folder.</p>
+
+	        <h3>Starting template</h3>
+
+	        <p>Starting template for project page is located <a href="/examples/starting">here</a>.</p>
+        </section>
+
+        <section class="source_section">
+            <h2>Engine structure</h2>
+
+	        <p>Main engine architecture is base on modules and plugins, we have core modules in <span class="source_class">/core/js/modules</span> and plugins (that are turned off by default) in <span class="source_class">/plugins</span> folder.</p>
+
+	        <p>Working with engine in basic way, without writing new core functionality you won't be needed to modify <span class="source_class">/core</span> folder. To override header/footer templates and change options use <span class="source_class">/user</span> folder </p>
+
+	        <p>Folder <span class="source_class">/data</span> is for user content like your images or your project styles etc.</p>
+        </section>
+
+        <section class="source_section">
+            <h2>Plugins</h2>
+
+	        <p>Some plugins for Source engine are included in core repository right now, but turned off by default, to turn them on, and chenge settings use <span class="source_class">/user/js/options.js</span> file.</p>
+
+	        <code class="brush : js source_visible">
+		        pluginsEnabled : {
+			        //Plugins enabling
+			        //bubble: true,
+			        //debugmode: true
+			        //globalNav: true,
+			        //search: true
+		        }
+	        </code>
+
+	        <p>To activate plugins or modules all you need is to change object (named as a plugin/module name) parameter to "true".</p>
+
+        </section>
+
+	    <section class="source_section">
+		    <h2>Search and navigation plugin</h2>
+
+		    <p><span class="source_class">search</span>, <span class="source_class">globalNav</span></p>
+
+		    <p>These plugins are based on data from JSON file, that is generated with PHP script/plugin <span class="source_class">/file_tree_generator/core/file_tree_generator.php</span>. To run this script, you must set proper chmod rights to <span class="source_class">/data</span> folder.</p>
+
+		    <p>To run this script automatically, configure cron task for it or run in by direct url from browser.</p>
+	    </section>
+
+        <section class="source_section">
+            <h2>Organasing documentation pages</h2>
+
+	        <p>Source documentation is based on engine functionality itself. You can just copy <span class="source_class">/examples</span> folder structure and start developing your own frontend documentations</p>
+
+	        <p>Real life example of documentation folder at Odnoklassniki project:</p>
+
+	        <img src="i/files.png">
+
+        </section>
+
+        <section class="source_section">
+            <h2>Contact us</h2>
+
+	        <p>Leave your questions and feedback at <a href="https://github.com/sourcejs/Source/issues">Issues</a> sections on Github.</p>
+
+        </section>
+
+    </div></div>
+
+</body>
+</html>
