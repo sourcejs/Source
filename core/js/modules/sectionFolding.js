@@ -70,7 +70,10 @@ define([
 
                 sectionsOnPage = L_SECTION_CLASS,
                 specName = getSpecName(), //Определяем название спеки
-                clientConfig = {};
+                clientConfig = {},
+
+                resHideSections = 'Спрятать все секции',
+                resHideSectionsEn = 'Hide all sections';
 
         if (storage) {
             //Check if localstorage has required data
@@ -259,7 +262,12 @@ define([
             }
         });
 
-        innerNavigation.addMenuItem('Спрятать все секции', function(){
+        var menuActionText = resHideSections;
+        if (options.language === 'en') {
+            menuActionText = resHideSectionsEn;
+        }
+
+        innerNavigation.addMenuItem(menuActionText, function(){
             for (var i = 0; i < sectionsOnPage.length; i++) {
                 t = $(sectionsOnPage[i]);
                 closeSpoiler(t, true);

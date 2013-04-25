@@ -39,6 +39,9 @@ define([
                 SourceCodeToggleAll = 'source_source-code_toggle-all',
                 SourceCodeToggleAllHide = SourceCodeToggleAll + '__hide',
 
+                resShowCode = 'Исходный код',
+                resShowCodeEn = 'Show source',
+
                 urlConfig = 'sc',
 
                 prepared = false,
@@ -220,8 +223,13 @@ define([
                 showAllCode();
             }
 
+            var menuActionText = resShowCode;
+            if (options.language === 'en') {
+                menuActionText = resShowCodeEn;
+            }
+
             //Toggle show all code action
-            innerNavigation.addMenuItem('Исходный код', showAllCode, hideAllCode);
+            innerNavigation.addMenuItem(menuActionText, showAllCode, hideAllCode);
 
         });
     }

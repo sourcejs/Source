@@ -15,15 +15,24 @@ define(["core/options"], function(options) {
 
         var insertHeader = function(data) { $('.source_header').replaceWith(data.responseText);}
 
+        //TODO: make smart localization
+        var headerFile = 'header.inc.html'
+        var footerFile = 'footer.inc.html'
+
+        if (options.language === 'en') {
+            headerFile = 'header-en.inc.html';
+            footerFile = 'footer-en.inc.html';
+        }
+
         $.ajax({
-            url:"/user/templates/header.inc.html",
+            url:"/user/templates/"+headerFile,
             async:false,
             complete:function (data, status) {
                 if (status === 'success') {
                     insertHeader(data);
                 } else {
                     $.ajax({
-                        url:"/core/templates/header.inc.html",
+                        url:"/core/templates/"+headerFile,
                         async:false,
                         complete:function (data) {
                             insertHeader(data);
@@ -36,14 +45,14 @@ define(["core/options"], function(options) {
         var insertFooter = function(data) { $('.source_footer').replaceWith(data.responseText); }
 
         $.ajax({
-            url:"/user/templates/footer.inc.html",
+            url:"/user/templates/"+footerFile,
             async:false,
             complete:function (data, status) {
                 if (status === 'success') {
                     insertFooter(data);
                 } else {
                     $.ajax({
-                        url:"/core/templates/footer.inc.html",
+                        url:"/core/templates/"+footerFile,
                         async:false,
                         complete:function (data) {
                             insertFooter(data);

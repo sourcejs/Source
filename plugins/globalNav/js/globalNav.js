@@ -37,6 +37,7 @@ define([
         PAGES_DATA = "/data/pages_tree.json",
 
         RES_LINK_TO_ALL = 'Все ',
+        RES_LINK_TO_ALL_EN = 'All ',
 
         RES_JSON_ERROR = 'Error loading JSON',
         RES_NO_DATA = 'Data-nav attr not set',
@@ -46,6 +47,12 @@ define([
         catTree = {},
 
         pageLimit = 999;
+
+    //TODO: make normal localization
+    var seeAll = RES_LINK_TO_ALL;
+    if (options.language === 'en') {
+        seeAll = RES_LINK_TO_ALL_EN;
+    }
 
     if (options.pluginsOptions.globalNav) {
         if (options.pluginsOptions.globalNav.pageLimit != undefined) {
@@ -204,7 +211,7 @@ define([
                     if (targetCatArray.length > navListItems) {
                         L_CATALOG_LIST.append(
                             '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ RES_LINK_TO_ALL +' ' + targetCatArray.length + '</a>' +
+                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ seeAll +' ' + targetCatArray.length + '</a>' +
                             '</li>');
                     }
 

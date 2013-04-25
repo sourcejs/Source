@@ -33,6 +33,7 @@ define([
         },
 
         // Page classes
+        language: "ru",
         containerClass : 'source_container',
         headerClass : 'source_header',
         sectionClass : 'source_section',

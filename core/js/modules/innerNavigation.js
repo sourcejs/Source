@@ -6,7 +6,8 @@ define([
     "modules/sections",
     "modules/headerFooter",
     "text!templates/nav.inc.html",
-    "text!templates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, html, menuItemTemplate) {
+    "text!templates/nav-en.inc.html", //TODO make smart localization
+    "text!templates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate, navTemplateEn,menuItemTemplate) {
 
     function InnerNavigation() {
         var _this = this;
@@ -23,7 +24,10 @@ define([
         };
 
         this.menuItemTemplate = $(menuItemTemplate);
-        this.container = $(html);
+        this.container = $(navTemplate);
+        if (module.options.language === 'en') {
+            this.container = $(navTemplateEn);
+        }
         $("." + _this.options.headerClass).after(this.container);
 
         $(function () {
