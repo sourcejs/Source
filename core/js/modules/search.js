@@ -6,20 +6,16 @@
 
 define([
     'jquery',
-    "modules/css",
     'core/options',
-    'plugins/lib/jquery.autocomplete',
-    'text!/data/pages_tree.json',
-    "text!plugins/search/css/search.css"
-    ], function ($, css, options, autocomplete, json) {
+    'lib/jquery.autocomplete',
+    'modules/parseFileTree'
+    ], function ($, options, autocomplete, parseFileTree) {
 
     //TODO: make localstorage caching
     //TODO: combine plugin with globalNav
 
     //If search enabled
     $(function(){
-        new css('search/css/search.css');
-
         var
             L_source_HEADER = $('.source_header'),
             source_HEADER_FOCUS = 'source_header__focus',
@@ -29,55 +25,30 @@ define([
             activated = false;
 
         var prepareAutoCompleteData = function() {
-            var data = $.parseJSON(json.toString());
-
             var
                 autocomleteDataItem = function (value, data) {
                     this.value = value;
                     this.data = data;
                 };
 
-            //for filling autocompleteData
-            var addAuctocompleteData = function(subCat, targetSubCat) {
-                var targetPage = targetSubCat['index.html'];
+            var pagesData = parseFileTree.getAllPages();
 
-                //check if category has child pages
-                if (typeof targetSubCat['source_page_navigation'] != 'object') {
+            for (var page in pagesData) {
+                var targetPage = pagesData[page]['index.html'];
 
-                    //Check if we are looking for right page object
-                    if (typeof targetPage === 'object') {
-                        var keywords = targetPage.keywords,
-                                keywordsPageName = subCat, //get cat name
-                                prepareKeywords = '',
+                var keywords = targetPage.keywords,
+                    keywordsPageName = page, //get cat name
+                    prepareKeywords = '',
 
-                                autocompleteValue = targetPage.title;
+                    autocompleteValue = targetPage.title;
 
-                        if (keywords != '' && typeof keywords != 'undefined') {
-                            prepareKeywords = ', ' + keywords;
-                        }
-
-                        autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
-
-                        autocompleteData[autocompleteData.length] = new autocomleteDataItem(autocompleteValue, targetPage.url);
-                    }
-
-                } else {
-                    searchCat(targetSubCat);
+                if (keywords != '' && typeof keywords != 'undefined') {
+                    prepareKeywords = ', ' + keywords;
                 }
-            };
 
-            var searchCat = function(targetCat) {
-                for (var subCat in targetCat) {
-                    var targetSubCat = targetCat[subCat];
+                autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
 
-                    addAuctocompleteData(subCat, targetSubCat);
-                }
-            };
-
-            for (var cat in data) {
-                var targetCat = data[cat];
-
-                searchCat(targetCat);
+                autocompleteData[autocompleteData.length] = new autocomleteDataItem(autocompleteValue, targetPage.url);
             }
         };
 
@@ -95,7 +66,7 @@ define([
         };
 
         require([
-            "text!plugins/search/templates/search.inc.html",
+            "text!templates/search.inc.html",
             "modules/headerFooter"
         ], function (html) {
 

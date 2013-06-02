@@ -145,15 +145,11 @@ $time = $time[1] + $time[0];
 $finish = $time;
 $total_time = round(($finish - $start), 4);
 
-echo "NAVIGATION generated in ".$total_time." seconds";
+echo '<a href="/data/pages_tree.json">JSON File tree</a> generated in '.$total_time.' seconds';
 
 ?>
-<br><br>
-Пройти к файлу НАВИГАЦИИ можно по
-<a href="/data/pages_tree.json">ссылке</a>
-<br><br>
-<div>
-	<b>Желательно настроить крона таск на модуль</b>
+<div style="margin-top: 20px">
+	<b>Setting cron task on this script is highly recommended.</b>
 </div>
 </body>
 </html>

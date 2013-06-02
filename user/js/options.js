@@ -19,8 +19,7 @@ define({
 
             //PHP and proper chmod for file writing required for these plugins
             //bubble: true,
-            //globalNav: true,
-            //search: true
+            //globalNav: true
         },
 
         pluginsOptions : {

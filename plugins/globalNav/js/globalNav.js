@@ -5,8 +5,9 @@
 * */
 
 define([
-    "core/options"
-    ], function(options) {
+    "core/options",
+    'modules/parseFileTree'
+    ], function(options, parseFileTree) {
 
     //TODO: make localstorage caching
     //TODO: combine plugin with globalNav
@@ -30,21 +31,18 @@ define([
             CATALOG_LIST_ALL_A = 'source_a_o',
 
         CATALOG_LIST_A = 'source_catalog_a source_a_g',
-        CATALOG_LIST_A_TX = 'source_catalog_a_tx',
-        CATALOG_LIST_DATE = 'source_catalog_date',
+        CATALOG_LIST_A_TX = 'source_catalog_title',
+        CATALOG_LIST_DATE = 'source_catalog_footer',
         CATALOG_LIST_BUBBLES = 'source_bubble',
-
-        PAGES_DATA = "/data/pages_tree.json",
 
         RES_LINK_TO_ALL = 'Все ',
         RES_LINK_TO_ALL_EN = 'All ',
 
-        RES_JSON_ERROR = 'Error loading JSON',
         RES_NO_DATA = 'Data-nav attr not set',
 
-        L_CATALOG = $('.' + CATALOG),
+        ROLE_NAVIGATION = options.roleNavigation,
 
-        catTree = {},
+        L_CATALOG = $('.' + CATALOG),
 
         pageLimit = 999;
 
@@ -90,149 +88,95 @@ define([
         }
     }
 
-    var makeSome = function(data) {
-        /*
-        *
-        * Preparing data from JSON for parsing
-        *
-        * */
-        var buildCatTree = function(rootCat, subCat, subCatObj) {
+    /*
+    *
+    * Drawing navigation and page info in each catalog defined on page
+    *
+    * */
+    L_CATALOG.each(function () {
+        var t = $(this),
+            navListCat = t.attr('data-nav'),
 
-            //check if category has child pages for navigation
-            if (typeof subCatObj['source_page_navigation'] === 'object') {
+            L_CATALOG_LIST = t.find('.' + CATALOG_LIST);
 
-                //Go deeper for nested cats
-                searchCat(subCat, subCatObj);
+        if (navListCat != '') { //Catalog has data about category
 
-            } else {
+            var targetCat = parseFileTree.getCatAll(navListCat);
 
-                //First define
-                if (typeof catTree[rootCat] != 'object') {
-                    catTree[rootCat] = {};
-                }
+            // cast Object to Array of objects
+            if(typeof targetCat === 'object'){
+                var targetCatArray = $.map(targetCat, function(k, v) {
+                    if(typeof k['index.html'] === 'object') {
+                        return [k];
+                    }
+                });
 
-                //Fill cat Tree
-                catTree[rootCat][subCat] = subCatObj;
+                // sort
+                targetCatArray.sort(function(a, b){
+                    return sortByBubbles(a, b)
+                            || sortByDate(a, b)
+                            || sortByAlpha(a, b);
+                });
             }
 
-        };
-
-        var searchCat = function(rootCat, rootCatObj) {
-             //check if category has child pages for navigation
-             if (typeof rootCatObj['source_page_navigation'] === 'object') {
-                for (var subCat in rootCatObj) {
-                    var subCatObj = rootCatObj[subCat];
-
-                    buildCatTree(rootCat, subCat, subCatObj);
-                }
-             }
-        };
-
-        for (var rootCat in data) {
-            var rootCatObj = data[rootCat];
-
-            searchCat(rootCat, rootCatObj);
-        }
-
-        /*
-        *
-        * Drawing navigation and page info in each catalog defined on page
-        *
-        * */
-        L_CATALOG.each(function () {
-            var t = $(this),
-                navListCat = t.attr('data-nav'),
-
-                L_CATALOG_LIST = t.find('.' + CATALOG_LIST);
-
-            if (navListCat != '') { //Catalog has data about category
-                var targetCat = catTree[navListCat];
-
-
-                // cast Object to Array of objects
-                if(typeof targetCat === 'object'){
-                    var targetCatArray = $.map(targetCat, function(k, v) {
-                        if(typeof k['index.html'] === 'object') {
-                            return [k];
-                        }
-                    });
-
-                    // sort
-                    targetCatArray.sort(function(a, b){
-                        return sortByBubbles(a, b)
-                                || sortByDate(a, b)
-                                || sortByAlpha(a, b);
-                    });
-                }
-
-                //Collecting nav tree
-                if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
-                    var navTreeHTML = '',
+            //Collecting nav tree
+            if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
+                var navTreeHTML = '',
                     authorName = '';
 
-                    //sortByDate = L_CATALOG_LIST.attr('data-sort') === 'date';
+                //sortByDate = L_CATALOG_LIST.attr('data-sort') === 'date';
 
-                    //Building navigation HTML
-                    var addNavPosition = function (target) {
+                //Building navigation HTML
+                var addNavPosition = function (target) {
 
-                        if (target.author != '') {
-                            authorName = ' | Автор: ' + target.author + '';
-                        }
+                    if (target.author != '') {
+                        authorName = ' | Автор: ' + target.author + '';
+                    } else {
+                        authorName = '';
+                    }
 
-                        navTreeHTML += '' +
-                                '<li class="' + CATALOG_LIST_I + '">' +
-                                '<a class="' + CATALOG_LIST_A + '" href="' + target.url + '">' +
-                                '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
+                    navTreeHTML += '' +
+                            '<li class="' + CATALOG_LIST_I + '">' +
+                            '<a class="' + CATALOG_LIST_A + '" href="' + target.url + '">' +
+                            '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
+                            '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
 
-                        if(parseInt(target.bubbles)) {
-                            navTreeHTML +=
-                            '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
-                        }
-
+                    if(parseInt(target.bubbles)) {
                         navTreeHTML +=
-                                '</a>' +
-                                '</li>';
-                    };
-
-                    var navListItems = (pageLimit > targetCatArray.length)
-                            ? targetCatArray.length
-                            : pageLimit;
-
-                    for (var j = 0; j < navListItems; j++) {
-                        var targetPage = targetCatArray[j]['index.html'];
-                        addNavPosition(targetPage);
+                        '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
                     }
 
-                    //Injecting nav tree
-                    L_CATALOG_LIST.html(navTreeHTML);
+                    navTreeHTML +=
+                            '</a>' +
+                            '</li>';
+                };
 
-                    //Go to cat page link
-                    if (targetCatArray.length > navListItems) {
-                        L_CATALOG_LIST.append(
-                            '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ seeAll +' ' + targetCatArray.length + '</a>' +
-                            '</li>');
-                    }
+                var navListItems = (pageLimit > targetCatArray.length)
+                        ? targetCatArray.length
+                        : pageLimit;
 
+                for (var j = 0; j < navListItems; j++) {
+                    var targetPage = targetCatArray[j]['index.html'];
+                    addNavPosition(targetPage);
                 }
 
-            } else {
-                //Display error
-                L_CATALOG_LIST.html(RES_NO_DATA);
-            }
-        })
-    };
+                //Injecting nav tree
+                L_CATALOG_LIST.html(navTreeHTML);
 
-    $.ajax({
-        url:PAGES_DATA,
-        dataType:"json",
-        error:function () {
-            L_CATALOG.html(RES_JSON_ERROR);
-        },
-        success:function (data) {
-            makeSome(data);
+                //Go to cat page link
+                if (targetCatArray.length > navListItems) {
+                    L_CATALOG_LIST.append(
+                        '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
+                            '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat[ROLE_NAVIGATION]['url'] + '">'+ seeAll +' ' + targetCatArray.length + '</a>' +
+                        '</li>');
+                }
+
+            }
+
+        } else {
+            //Display error
+            L_CATALOG_LIST.html(RES_NO_DATA);
         }
-    });
+    })
 
 });
