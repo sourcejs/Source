@@ -35,14 +35,9 @@ define([
         CATALOG_LIST_DATE = 'source_catalog_footer',
         CATALOG_LIST_BUBBLES = 'source_bubble',
 
-        PAGES_DATA = "/data/pages_tree.json",
-
         RES_LINK_TO_ALL = 'All',
         RES_AUTHOR = 'Author',
-        RES_JSON_ERROR = 'Error loading JSON',
         RES_NO_DATA = 'Data-nav attr not set',
-
-        ROLE_NAVIGATION = options.roleNavigation,
 
         L_CATALOG = $('.' + CATALOG),
 
@@ -156,22 +151,14 @@ define([
                     addNavPosition(targetPage);
                 }
 
-                    //Injecting nav tree
-                    L_CATALOG_LIST.html(navTreeHTML);
-
-                    //Go to cat page link
-                    if (targetCatArray.length > navListItems) {
-                        L_CATALOG_LIST.append(
-                            '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
-                            '</li>');
-                    }
+                //Injecting nav tree
+                L_CATALOG_LIST.html(navTreeHTML);
 
                 //Go to cat page link
                 if (targetCatArray.length > navListItems) {
                     L_CATALOG_LIST.append(
                         '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                            '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat[ROLE_NAVIGATION]['url'] + '">'+ seeAll +' ' + targetCatArray.length + '</a>' +
+                            '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
                         '</li>');
                 }
 

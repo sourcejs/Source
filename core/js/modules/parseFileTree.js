@@ -6,10 +6,17 @@
 *
 * */
 
+var MIN = 0,
+    MAX = 1000;
+var rand = Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
+
+//Getting always new version of navigation JSON
+var fileTreeJson = 'text!/data/pages_tree.json?' + rand;
+
 define([
     'jquery',
     'modules/module',
-    'text!/data/pages_tree.json'], function ($, module, data) {
+    fileTreeJson], function ($, module, data) {
 
     function ParseFileTree() {
         var _this = this;
