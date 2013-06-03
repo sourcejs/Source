@@ -15,14 +15,8 @@ define(["core/options"], function(options) {
 
         var insertHeader = function(data) { $('.source_header').replaceWith(data.responseText);}
 
-        //TODO: make smart localization
-        var headerFile = 'header.inc.html'
-        var footerFile = 'footer.inc.html'
-
-        if (options.language === 'en') {
-            headerFile = 'header-en.inc.html';
-            footerFile = 'footer-en.inc.html';
-        }
+        var headerFile = 'header.inc.html',
+            footerFile = 'footer.inc.html';
 
         $.ajax({
             url:"/user/templates/"+headerFile,

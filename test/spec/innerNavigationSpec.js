@@ -6,7 +6,7 @@
 
 define(['modules/innerNavigation'], function (innerNavigation) {
 
-    return describe('Модуль внутренней навигации - innerNavigation.js', function () {
+    return describe('Inner Navigation module - innerNavigation.js', function () {
 
         var iNav;
         var TEST_SECTION =
@@ -29,7 +29,7 @@ define(['modules/innerNavigation'], function (innerNavigation) {
             $('#sandbox').html('');
         });
 
-        it('инжектит только меню в DOM после элемента .source_header', function () {
+        it('injects only navigation menu in DOM after .source_header element', function () {
             expect($('.source_main_nav').length).toEqual(1);
         });
 

@@ -1,4 +1,4 @@
-Эта папка используется для любых пользовательских данных, например:
+This folder is used for user data, like:
 
-* Генерированные JSON файлы для навигации (плагин навигации и поиска, дня них потребуется установить CHMOD 777 на папку)
-* Стили и ресурсы основного портала
+* Generated file tree JSON for Global Navigation and Search plugin
+* Styles and other project resources

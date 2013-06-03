@@ -20,16 +20,6 @@
         <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
         <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
     <!-- /Source default resources -->
-
-	<script>
-		define('modules/inlineOptions', {
-			language: "en",
-
-			pluginsEnabled : {
-				bubble: true
-			}
-		})
-	</script>
 </head>
 <body>
 
@@ -37,33 +27,24 @@
 
         <h1>Basic engine documentation</h1>
 
-	    <div class="source_info">
-		    <p>Most of Source engine documentation is still in russian language, the aim of this document is to show basic engine possibilities to wider public.</p>
-
-		    <p>After writing all main documentation in russian, we will start translating it to english, for now, you can use <a href="translate.google.com">google translator</a> as temporarily solution. If you can help with translation, please leave pull requests, or contact us <a href="mailto:r@rhr.me">by mail</a>.</p>
-
-		    <p>Mini presentation about Source engine in english - <a href="http://rhr.me/pres/source-min">rhr.me/pres/source-min</a>.</p>
-
-		    <p><b><a href="http://github.com/sourcejs/Source">Fork me on GitHub!</a></b></p>
-
-	    </div>
-
         <section class="source_section">
             <h2>Fast start</h2>
 
 	        <p><b>This page (and whole site) is powered by Source engine, feel free to inspect source code.</b></p>
 
-	        <p>To start, all you need is to <a href="http://github.com/sourcejs/Source">checkout project</a> from GitHub and put it to basic HTTP server.</p>
+	        <p>To start, all you need is to <a href="http://github.com/sourcejs/Source">checkout project</a> from GitHub and put it on basic HTTP server.</p>
 
-	        <p>For some plugins (search, globalNav, bubble) you wil need PHP 5.3 on your server, and set proper chmod right on <span class="source_class">/data</span> folder.</p>
+	        <p>For some modules and plugins (search, globalNav, bubble) you wil need PHP 5.3 on your server, and set proper chmod rights on <span class="source_class">/data</span> folder. With nearest updates PHP will be replaced with Node.js and all generated will be stored in database.</p>
+
+            <p>For fast web server setup use <a href="http://www.mamp.info/en/index.html">MAMP</a>.</p>
 
 	        <h3>Starting template</h3>
 
-	        <p>Starting template for project page is located <a href="/examples/starting">here</a>.</p>
+	        <p>Starting template for spec page is located <a href="/docs/starting">here</a>, just copy it to new folder and page is ready.</p>
         </section>
 
         <section class="source_section">
-            <h2>Engine structure</h2>
+            <h2>File structure</h2>
 
 	        <p>Main engine architecture is base on modules and plugins, we have core modules in <span class="source_class">/core/js/modules</span> and plugins (that are turned off by default) in <span class="source_class">/plugins</span> folder.</p>
 
@@ -75,15 +56,13 @@
         <section class="source_section">
             <h2>Plugins</h2>
 
-	        <p>Some plugins for Source engine are included in core repository right now, but turned off by default, to turn them on, and chenge settings use <span class="source_class">/user/js/options.js</span> file.</p>
+	        <p>Some plugins for Source engine are included in core repository right now, but turned off by default, to turn them on change settings in <span class="source_class">/user/js/options.js</span> file:</p>
 
 	        <code class="brush : js source_visible">
 		        pluginsEnabled : {
 			        //Plugins enabling
 			        //bubble: true,
 			        //debugmode: true
-			        //globalNav: true,
-			        //search: true
 		        }
 	        </code>
 
@@ -92,11 +71,11 @@
         </section>
 
 	    <section class="source_section">
-		    <h2>Search and navigation plugin</h2>
+		    <h2>Search and navigation modules</h2>
 
 		    <p><span class="source_class">search</span>, <span class="source_class">globalNav</span></p>
 
-		    <p>These plugins are based on data from JSON file, that is generated with PHP script/plugin <span class="source_class">/file_tree_generator/core/file_tree_generator.php</span>. To run this script, you must set proper chmod rights to <span class="source_class">/data</span> folder.</p>
+		    <p>These plugins are based on data from JSON file, that is generated with PHP script/plugin <span class="source_class"><a href="/plugins/file_tree_generator/core/file_tree_generator.php">/plugins/file_tree_generator/core/file_tree_generator.php</a></span>. To run this script, you must set proper chmod rights to <span class="source_class">/data</span> folder.</p>
 
 		    <p>To run this script automatically, configure cron task for it or run in by direct url from browser.</p>
 	    </section>
@@ -104,7 +83,7 @@
         <section class="source_section">
             <h2>Organasing documentation pages</h2>
 
-	        <p>Source documentation is based on engine functionality itself. You can just copy <span class="source_class">/examples</span> folder structure and start developing your own frontend documentations</p>
+	        <p>Source documentation is based on engine functionality itself. You can just copy <span class="source_class">/docs</span> folder structure and start developing your own frontend documentations.</p>
 
 	        <p>Real life example of documentation folder at Odnoklassniki project:</p>
 
@@ -118,6 +97,9 @@
 	        <p>Leave your questions and feedback at <a href="https://github.com/sourcejs/Source/issues">Issues</a> sections on Github.</p>
 
         </section>
+
+        <!--TODO: Documentation about require and writing own modules-->
+        <!--TODO: Documentation about options file-->
 
     </div></div>
 

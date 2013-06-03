@@ -1,27 +1,30 @@
-# Source — движок для документирования вёрстки
+# Source - Front-end documentation engine
 
-Source предназначен для создания комфортабельной среды разработки и документирования интерфейсов.
+**v.0.1.1**
 
-Процесс работы с движком легко интегрируется в рабочие обязанности фронтенд разработчика и служит лучшим помощником для всей команды веб разработки от дизайнеров до менеджеров и тестировщиков.
+Main project aim is to give front-end development team a **best tool** for documenting web interfaces and **for productive team work**.
 
-Движок был разработан в команде вёрстки **Одноклассники.ру**, где успешно используется каждый день в процессе разработки интерфейсов. С помощью Source нам удалось пересмотреть процессы взаимодействия между разработчиками и дизайнерами в работе над созданием интерфейсов.
-
-[Страница проекта](http://sourcejs.ru) === демонстрация движка.
-
-## Под капотом
-
-Мы любим фронтенд, поэтому в основе движка лежит JavaScript + немного PHP для дополнительных плагинов (легко заменяем другими технологиями).
-
-Что бы свободно работать с инструментом, достаточно базовых знаний HTML, мы старались сделать всё максимально просто при умеренной степени расширяемости.
-
-Подробней о проекте вы услышите в секции клиентской разработки на [РИТ++ 2013](http://ritconf.ru/2013/abstracts/554.html) ([слайды](http://rhr.me/pres/source)) 23 апреля и в ближайших анонсах движка с детальным описанием функционала.
-
-[Основная документация](http://sourcejs.ru/examples/base), стартовые шаблоны и документации по плагинам, на [странице проекта](http://sourcejs.ru), основанной на движке Source.
-
-[Basic english documentation](http://sourcejs.ru/examples/base-en), based on Source engine.
+Documentation engine originally was developed at [Odnoklassniki.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end developers team and **is recommended for big and middle sized projects**, expecially for fast growing web portals.
 
 ___
 
-Copyright © 2013 [Source](http://sourcejs.ru)
 
-Лицензирован под [MIT License](https://ru.wikipedia.org/wiki/%D0%9B%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F_MIT), подробности на странице описания лицензии [license page](http://github.com/sourcejs/source/wiki/MIT-License).
+[**Source engine project page**](http://sourcejs.com)
+
+___
+
+Project is in active development state, but until we will update base technology stack integration (Node.js, mongoDB, grunt, bower) it will stay in Beta.
+
+## Upcoming updates
+
+* Full english documentation stack
+* Node.JS integration as main engine server
+* Grunt and Bower for fast setup and management
+* Rework CSS preprocessor
+* Markdown support in documentation pages
+
+___
+
+Copyright © 2013 [Source](http://sourcejs.com)
+
+Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/source/wiki/MIT-License).

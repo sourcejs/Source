@@ -1,12 +1,12 @@
 <?php
 
-// !!! Настройки генератора для дерева !!! //
+// !!! JSON file tree generator settings !!! //
 
-// Указиваем маку кортинок для поиска
+// Setting search mask
 $FILE_MASK_FOR_SEARCH = "index\.html";
 
-// Директория где искать файли (default ".*" все папки)
+// Search directory folder (default ".*" - all folders)
 $DIR_FOR_FILE_SEARCH  = ".*";
 
-// Исключить директории (default "NO_EXCLUDES")
+// Excluded paths (default "NO_EXCLUDES")
 $EXCLUDE_FOLDERS      = "res|tools|inc|style";
