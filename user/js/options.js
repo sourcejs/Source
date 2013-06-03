@@ -12,14 +12,20 @@ define({
             //trimSpaces: true
         },
 
+        modulesOptions : {
+            //Modules options example
+            //innerNavigation : {
+            //  hashSymb: '!'
+            //  }
+        },
+
         // Plugins
         pluginsEnabled : {
             //Plugins enabling
             //debugmode: true,
 
-            //PHP and proper chmod for file writing required for these plugins
-            //bubble: true,
-            //globalNav: true
+            //PHP and proper chmod for file writing required for bubble (comments) plugin
+            //bubble: true
         },
 
         pluginsOptions : {

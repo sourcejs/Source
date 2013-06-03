@@ -6,7 +6,7 @@
 
 define(['modules/module', 'core/options'], function (module, options) {
 
-    return describe('Базовый модуль - module.js', function () {
+    return describe('Base module- module.js', function () {
         var m;
 
         beforeEach(function () {
@@ -15,33 +15,33 @@ define(['modules/module', 'core/options'], function (module, options) {
         });
 
 
-        it('возвращает объект', function () {
+        it('returns object', function () {
             expect(Object.prototype.toString.call(m)).toEqual('[object Object]');
         });
 
-        it('метод loadOptions возвращает опции из options', function () {
+        it('loadOptions method returns opctions from options.js', function () {
             expect(m.loadOptions()).toEqual(options);
         });
 
-        it('метод getOptions возвращает значение поля options', function () {
+        it('getOptions method returns options filed value', function () {
             var opts = {test:'get'};
             m.options = opts;
 
             expect(m.getOptions()).toEqual(opts);
         });
 
-        it('метод setOptions сетит значение в options', function () {
+        it('setOptions method sets argument in options', function () {
             var opts = {test:'set'};
             m.setOptions(opts);
 
             expect(m.options).toEqual(opts);
         });
 
-        it('метод getClass правильно возвращает класс объекта', function () {
+        it('getClass method returns right object class', function () {
             expect(m.getClass()).toEqual('Module');
         });
 
-        it('метод getClass правильно возвращает класс унаследованного объекта', function () {
+        it('getClass method returns right class from inherited object', function () {
             var obj = m.createInstance();
 
             function NewObject(){
@@ -55,13 +55,13 @@ define(['modules/module', 'core/options'], function (module, options) {
         });
 
 
-        it('метод createInstance создает инстанс того же класса, что и сам объект', function () {
+        it('createInstance method creates the same class instance as object', function () {
             var obj = m.createInstance();
 
             expect(obj.getClass()).toEqual(m.getClass());
         });
 
-        it('метод createInstance создает инстанс того же класса, что и сам объект, унаследованный от другого объекта', function () {
+        it('createInstance method creates the same class instance as object inherited from other object ', function () {
             var obj = m.createInstance();
 
             function NewObject(){}

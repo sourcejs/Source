@@ -24,17 +24,17 @@ define([
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
             scrollToHash: true,
             sections: true,
+            globalNav: true,
             search: true
         },
 
         modulesOptions : {
-            innerNavgation : {
+            innerNavigationTmp : {
                 hashSymb: '!'
             }
         },
 
         // Page classes
-        language: "ru",
         containerClass : 'source_container',
         headerClass : 'source_header',
         sectionClass : 'source_section',

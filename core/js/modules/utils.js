@@ -10,7 +10,7 @@ define(["jquery","core/options"], function($, options) {
         parseNavHash: function (hash) {
             var
                 urlHash = hash,
-                urlHashSplit = urlHash.split(options.modulesOptions.innerNavgation.hashSymb);
+                urlHashSplit = urlHash.split(options.modulesOptions.innerNavigationTmp.hashSymb);
 
             return urlHashSplit[0];
         },

@@ -21,9 +21,6 @@ define([
         $(function(){
 
             var
-                ResHideCode = 'Спрятать',
-                ResShowCode = 'Показать',
-                ResCode = 'код',
 
                 SourceCode = 'source_source-code',
                 SourceCodeShow = SourceCode + '__show',
@@ -39,8 +36,10 @@ define([
                 SourceCodeToggleAll = 'source_source-code_toggle-all',
                 SourceCodeToggleAllHide = SourceCodeToggleAll + '__hide',
 
-                resShowCode = 'Исходный код',
-                resShowCodeEn = 'Show source',
+                RES_HIDE_CODE = 'Show',
+                RES_SHOW_CODE = 'Hide',
+                RES_CODE = 'code',
+                RES_TOGGLER_SHOW_CODE = 'Show source',
 
                 urlConfig = 'sc',
 
@@ -89,7 +88,7 @@ define([
                     t.wrap('<div class="source_source-code"><div class="' + SourceCodeCnt + '"></div></div>');
 
                     t.closest('.' + SourceCode).prepend('' +
-                            '<a href="" onclick="return false" class="' + SourceCodeToggle + ' ' + langClass + '"><span class="source_hide">' + ResHideCode + '</span><span class="source_show">' + ResShowCode + '</span> ' + ResCode + '</a>' +
+                            '<a href="" onclick="return false" class="' + SourceCodeToggle + ' ' + langClass + '"><span class="source_hide">' + RES_HIDE_CODE + '</span><span class="source_show">' + RES_SHOW_CODE + '</span> ' + RES_CODE + '</a>' +
                             '');
 
                 });
@@ -215,7 +214,7 @@ define([
             };
 
             //If url has '!sc', show source code by default
-            var getUrlParam = document.location.href.split(options.modulesOptions.innerNavgation.hashSymb);
+            var getUrlParam = document.location.href.split(options.modulesOptions.innerNavigationTmp.hashSymb);
 
             getUrlParam = getUrlParam[getUrlParam.length - 1];
 
@@ -223,13 +222,8 @@ define([
                 showAllCode();
             }
 
-            var menuActionText = resShowCode;
-            if (options.language === 'en') {
-                menuActionText = resShowCodeEn;
-            }
-
             //Toggle show all code action
-            innerNavigation.addMenuItem(menuActionText, showAllCode, hideAllCode);
+            innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
 
         });
     }

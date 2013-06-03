@@ -6,7 +6,7 @@
 
 define(['modules/sections'], function (sections) {
 
-    return describe('Модуль подсчета секций - sections.js', function () {
+    return describe('Sections count module - sections.js', function () {
 
         var TEST_SECTION =
                 '<section class="source_section">' +
@@ -37,18 +37,18 @@ define(['modules/sections'], function (sections) {
             s = sections.createInstance();
         });
 
-        it('возвращает массив', function () {
+        it('returns array', function () {
             expect(Object.prototype.toString.call(s.getSections())).toEqual('[object Array]');
         });
 
-        it('метод getSections возвращает поле sections', function () {
+        it('getSections method returns sections field', function () {
             var arr = [1, 2, 3];
             s.sections = arr;
 
             expect(s.getSections()).toEqual(arr);
         });
 
-        it('метод addSections добавляет элемент в поле sections', function () {
+        it('addSections method adds element to sections field', function () {
             arr = [1, 2, 3];
             s.sections = arr;
             s.addSection(4);
@@ -56,11 +56,11 @@ define(['modules/sections'], function (sections) {
             expect(s.getSections()).toEqual([1, 2, 3, 4]);
         });
 
-        it('метод getQuantity возвращает размер поля sections', function () {
+        it('getQuantity method returns sections field size', function () {
             expect(s.getQuantity()).toEqual(s.sections.length);
         });
 
-        it('метод scanDOM заполняет поле sections секциями из DOM-дерева', function () {
+        it('scanDOM method fills sections array field with seactions from DOM tree', function () {
             expect(s.getQuantity()).toEqual(rand);
         });
 

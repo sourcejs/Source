@@ -35,9 +35,11 @@ define([
         CATALOG_LIST_DATE = 'source_catalog_footer',
         CATALOG_LIST_BUBBLES = 'source_bubble',
 
-        RES_LINK_TO_ALL = 'Все ',
-        RES_LINK_TO_ALL_EN = 'All ',
+        PAGES_DATA = "/data/pages_tree.json",
 
+        RES_LINK_TO_ALL = 'All',
+        RES_AUTHOR = 'Author',
+        RES_JSON_ERROR = 'Error loading JSON',
         RES_NO_DATA = 'Data-nav attr not set',
 
         ROLE_NAVIGATION = options.roleNavigation,
@@ -45,12 +47,6 @@ define([
         L_CATALOG = $('.' + CATALOG),
 
         pageLimit = 999;
-
-    //TODO: make normal localization
-    var seeAll = RES_LINK_TO_ALL;
-    if (options.language === 'en') {
-        seeAll = RES_LINK_TO_ALL_EN;
-    }
 
     if (options.pluginsOptions.globalNav) {
         if (options.pluginsOptions.globalNav.pageLimit != undefined) {
@@ -129,11 +125,11 @@ define([
                 //Building navigation HTML
                 var addNavPosition = function (target) {
 
-                    if (target.author != '') {
-                        authorName = ' | Автор: ' + target.author + '';
-                    } else {
-                        authorName = '';
-                    }
+                        if (target.author != '') {
+                            authorName = ' | Автор: ' + target.author + '';
+                        } else {
+                            authorName = '';
+                        }
 
                     navTreeHTML += '' +
                             '<li class="' + CATALOG_LIST_I + '">' +
@@ -160,8 +156,13 @@ define([
                     addNavPosition(targetPage);
                 }
 
-                //Injecting nav tree
-                L_CATALOG_LIST.html(navTreeHTML);
+                    //Go to cat page link
+                    if (targetCatArray.length > navListItems) {
+                        L_CATALOG_LIST.append(
+                            '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
+                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + targetCat['source_page_navigation']['url'] + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
+                            '</li>');
+                    }
 
                 //Go to cat page link
                 if (targetCatArray.length > navListItems) {

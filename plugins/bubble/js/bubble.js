@@ -25,11 +25,7 @@ define([
             this.demoSectionsClass = ".source_example";
             this.switchButtonClass = ".source_main_nav_ac-toggle-comments";
             this.page = $(".source_main");
-            this.resMenuLink = 'Комментирование';
-
-            if (options.language === 'en') {
-                this.resMenuLink = 'Comments';
-            }
+            this.resMenuLink = 'Comments';
 
             /* вкл/выкл комментирования */
             innerNavigation.addMenuItem(this.resMenuLink, function() {
