@@ -169,7 +169,7 @@ define([
                     var addNavPosition = function (target) {
 
                         if (target.author != '') {
-                            authorName = ' | Автор: ' + target.author + '';
+                            authorName = ' | ' + RES_AUTHOR + ': ' + target.author + '';
                         } else {
                             authorName = '';
                         }
