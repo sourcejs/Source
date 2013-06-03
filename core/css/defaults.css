@@ -492,15 +492,15 @@ a:hover {color: #333; text-decoration: underline;}
 	text-decoration: none;
 	background-color: #f1f2f3;
 	}
-.source_catalog_a:hover .source_catalog_date {
-	opacity: 1;
-	}
+	.source_catalog_a:hover .source_catalog_footer {
+		opacity: 1;
+		}
 
-.source_catalog_a:hover .source_catalog_a_tx {
-	text-decoration: underline;
-	}
+	.source_catalog_a:hover .source_catalog_title {
+		text-decoration: underline;
+		}
 
-.source_catalog_date {
+.source_catalog_footer {
 	margin-top: 3px;
 
 	color: #999;
@@ -755,7 +755,11 @@ a:hover {color: #333; text-decoration: underline;}
 		list-style: outside disc;
 		}
 
-.source_class {
+.source_hl,
+
+.source_section > code,
+.source_section > p > code,
+.source_section > div > code {
 	background: #FFEBB7;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1em;

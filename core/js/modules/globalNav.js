@@ -156,6 +156,9 @@ define([
                     addNavPosition(targetPage);
                 }
 
+                    //Injecting nav tree
+                    L_CATALOG_LIST.html(navTreeHTML);
+
                     //Go to cat page link
                     if (targetCatArray.length > navListItems) {
                         L_CATALOG_LIST.append(
