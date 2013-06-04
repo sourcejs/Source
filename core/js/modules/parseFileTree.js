@@ -149,6 +149,7 @@ define([
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
         var _this = this;
 
+        //Get cat with info
         return _this.parsePages(getSpecificCat, true);
     };
 
