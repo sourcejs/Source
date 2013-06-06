@@ -216,7 +216,7 @@ define([
             };
 
             //If url has '!sc', show source code by default
-            var getUrlParam = document.location.href.split(options.modulesOptions.innerNavigationTmp.hashSymb);
+            var getUrlParam = document.location.href.split(options.modulesOptions.innerNavigation.hashSymb);
 
             getUrlParam = getUrlParam[getUrlParam.length - 1];
 

@@ -11,7 +11,7 @@ define([
     function InnerNavigation() {
         var _this = this;
 
-        this.options.modulesOptions.innerNavigation = {
+        this.options.modulesOptions.innerNavigation = $.extend({}, {
             NAV_UL_CLASS: 'source_main_nav_ul',
             NAV_LI_CLASS: 'source_main_nav_li',
             NAV_LINK_CLASS: 'source_main_nav_a',
@@ -19,8 +19,8 @@ define([
             MENU_SCROLL_MOD_CLASS: '__menuScroll',
             MAIN_NAV_AC: 'source_main_nav_ac',
             MAIN_NAV_AC_TX: 'source_main_nav_ac_tx',
-            RESERVED_HEIGHT: 250 // (185 + 15 + 50) px
-        };
+            hashSymb: '!'
+        }, this.options.modulesOptions.innerNavigation);
 
         this.menuItemTemplate = $(menuItemTemplate);
         this.container = $(navTemplate);
@@ -107,7 +107,7 @@ define([
         for (var i = 0; i < sections.getQuantity(); i++) {
             appendString +=
                     '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_CLASS + '">' +
-                            '<a href="#' + (sections.getSections()[i].id) + this.options.modulesOptions.innerNavigationTmp.hashSymb + '"  class="' + this.options.modulesOptions.innerNavigation.NAV_LINK_CLASS + '">' +
+                            '<a href="#' + (sections.getSections()[i].id) + this.options.modulesOptions.innerNavigation.hashSymb + '"  class="' + this.options.modulesOptions.innerNavigation.NAV_LINK_CLASS + '">' +
                             sections.getSections()[i].num + '. ' + sections.getSections()[i].caption + '</a></li>';
         }
 

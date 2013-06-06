@@ -29,7 +29,7 @@ define([
         },
 
         modulesOptions : {
-            innerNavigationTmp : {
+            innerNavigation : {
                 hashSymb: '!'
             }
         },
