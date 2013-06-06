@@ -12,81 +12,92 @@ module.exports = function(grunt) {
     // Tasks
     grunt.initConfig({
         // load options from file
-        options: grunt.file.readJSON('user/grunt/options.json'),
+        options: grunt.file.readJSON('./gruntOptions.json'),
         pathToAppDir: '<%= options.pathToAppDir %>',
-        pathToProductionVersion: '<%= options.pathToProductionVersion %>',
-        pathToProductionVersionOnServer: '<%= options.server.pathToProduction %>',
+        pathToSpecs: '<%= options.pathToSpecs %>',
+        pathToSpecsOnServer: '<%= options.server.pathToDir %>',
         deployHost: '<%= options.server.host %>',
         deployPort: '<%= options.server.port %>',
         deployKey: '<%= options.server.key %>',
 
-        filesToCopy: ['<%= pathToAppDir %>/core/**', 
-                      '<%= pathToAppDir %>/test/**', 
-                      '<%= pathToAppDir %>/docs/**', 
-                      '<%= pathToAppDir %>/plugins/bubble/**',
-                      '<%= pathToAppDir %>/plugins/debugmode/**',
-                      '<%= pathToAppDir %>/plugins/file_tree_generator/**',
-                      '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'
-                      ],
+        filesToCopy:                        ['<%= pathToAppDir %>/core/**', 
+                                            '<%= pathToAppDir %>/test/**', 
+                                            '<%= pathToAppDir %>/docs/**', 
+                                            '<%= pathToAppDir %>/plugins/bubble/**',
+                                            '<%= pathToAppDir %>/plugins/debugmode/**',
+                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**',
+                                            '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
 
-        filesToUploadToServer: ['<%= pathToAppDir %>'],
-        excludedFilesForUpload: [
-                                '<%= pathToAppDir %>/user',
-                                '<%= pathToAppDir %>/data',
-                                '<%= pathToAppDir %>/node_modules',
-                                '<%= pathToAppDir %>/build',
-                                '<%= pathToAppDir %>/**/.DS_Store',
-                                '<%= pathToAppDir %>/.ftppass',
-                                '<%= pathToAppDir %>/Gruntfile.js',
-                                '<%= pathToAppDir %>/index.html',
-                                '<%= pathToAppDir %>/License.md',
-                                '<%= pathToAppDir %>/package.json',
-                                '<%= pathToAppDir %>/README.md',
-                                '<%= pathToAppDir %>/.git'
-                                ],
+        filesToUploadToServer:             ['<%= pathToAppDir %>'],
 
-        excludedFilesForProductionsUpload: [
-                                '<%= pathToAppDir %>/user',
-                                '<%= pathToAppDir %>/data',
-                                '<%= pathToAppDir %>/node_modules',
-                                '<%= pathToAppDir %>/**/.DS_Store',
-                                '<%= pathToAppDir %>/.ftppass',
-                                '<%= pathToAppDir %>/Gruntfile.js',
-                                '<%= pathToAppDir %>/index.html',
-                                '<%= pathToAppDir %>/License.md',
-                                '<%= pathToAppDir %>/package.json',
-                                '<%= pathToAppDir %>/README.md',
-                                '<%= pathToAppDir %>/.git'
-                                ],
+        excludedFilesForUpload:            ['<%= pathToAppDir %>/user',
+                                            '<%= pathToAppDir %>/data',
+                                            '<%= pathToAppDir %>/node_modules',
+                                            '<%= pathToAppDir %>/build',
+                                            '<%= pathToAppDir %>/**/.DS_Store',
+                                            '<%= pathToAppDir %>/.ftppass',
+                                            '<%= pathToAppDir %>/Gruntfile.js',
+                                            '<%= pathToAppDir %>/index.html',
+                                            '<%= pathToAppDir %>/License.md',
+                                            '<%= pathToAppDir %>/package.json',
+                                            '<%= pathToAppDir %>/README.md',
+                                            '<%= pathToAppDir %>/.git'],
 
-        filesToUglify: ['<%= pathToAppDir %>/core/**/*.js', 
-                        '<%= pathToAppDir %>/test/**/*.js', 
-                        '<%= pathToAppDir %>/docs/**/*.js', 
-                        '<%= pathToAppDir %>/plugins/bubble/**/*.js',
-                        '<%= pathToAppDir %>/plugins/debugmode/**/*.js',
-                        '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.js',
-                        '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'
-                        ],
+        excludedFilesForProductionsUpload: ['<%= pathToAppDir %>/user',
+                                            '<%= pathToAppDir %>/data',
+                                            '<%= pathToAppDir %>/node_modules',
+                                            '<%= pathToAppDir %>/**/.DS_Store',
+                                            '<%= pathToAppDir %>/.ftppass',
+                                            '<%= pathToAppDir %>/Gruntfile.js',
+                                            '<%= pathToAppDir %>/index.html',
+                                            '<%= pathToAppDir %>/License.md',
+                                            '<%= pathToAppDir %>/package.json',
+                                            '<%= pathToAppDir %>/README.md',
+                                            '<%= pathToAppDir %>/.git'],
 
-        filesToCssMinify: ['<%= pathToAppDir %>/core/**/*.css',
-                           '<%= pathToAppDir %>/test/**/*.css',
-                           '<%= pathToAppDir %>/docs/**/*.css', 
-                           '<%= pathToAppDir %>/plugins/bubble/**/*.css',
-                           '<%= pathToAppDir %>/plugins/debugmode/**/*.css',
-                           '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.css',
-                           '!<%= pathToAppDir %>/build/**/*.css'
-                           ],
+        filesToUglify:                      ['<%= pathToAppDir %>/core/**/*.js', 
+                                            '<%= pathToAppDir %>/test/**/*.js', 
+                                            '<%= pathToAppDir %>/docs/**/*.js', 
+                                            '<%= pathToAppDir %>/plugins/bubble/**/*.js',
+                                            '<%= pathToAppDir %>/plugins/debugmode/**/*.js',
+                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.js',
+                                            '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
+
+        filesToCssMinify:                   ['<%= pathToAppDir %>/core/**/*.css',
+                                            '<%= pathToAppDir %>/test/**/*.css',
+                                            '<%= pathToAppDir %>/docs/**/*.css', 
+                                            '<%= pathToAppDir %>/plugins/bubble/**/*.css',
+                                            '<%= pathToAppDir %>/plugins/debugmode/**/*.css',
+                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.css',
+                                            '!<%= pathToAppDir %>/build/**/*.css'],
 
         // copy all files without ignored to project folder
         copy: {
-            main: {
+            init: {
                 files: [
+                    {   
+                        src: ['<%= pathToAppDir %>/user/**',
+                                '<%= pathToAppDir %>/data/**',
+                                '<%= pathToAppDir %>/index.html',
+                                '<%= pathToAppDir %>/License.md'],
+                        dest: '<%= pathToSpecs %>/' 
+                    },
                     {
-                        src: '<%= filesToCopy %>', 
-                        dest: '<%= pathToProductionVersion %>/'
+                        src: ['<%= pathToAppDir %>/init/.gitignore'],
+                        dest: '<%= pathToSpecs %>/.gitignore'
                     }
                 ]
             },
+
+            main: {
+                files: [
+                    {
+                        src: '<%= filesToCopy %>',
+                        dest: '<%= pathToSpecs %>/'
+                    }
+                ]
+            },
+
             server: {
                 files: [
                     {
@@ -102,9 +113,10 @@ module.exports = function(grunt) {
             main: {
                 expand: true,
                 src: '<%= filesToCssMinify %>',
-                dest: '<%= pathToProductionVersion %>/',
+                dest: '<%= pathToSpecs %>/',
                 ext: '.css'
             },
+
             server: {
                 expand: true,
                 src: '<%= cssmin.main.src %>',
@@ -119,16 +131,17 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     src: '<%= filesToUglify %>',
-                    dest: '<%= pathToProductionVersion %>',
-                    cwd: '.'
+                    dest: '<%= pathToSpecs %>',
+                    cwd: '<%= pathToAppDir %>'
                 }]
             },
+
             server: {
                 files: [{
                     expand: true,
                     src: '<%= filesToUglify %>',
                     dest: '<%= pathToAppDir %>/build/',
-                    cwd: '.'
+                    cwd: '<%= pathToAppDir %>'
                 }]
             }
         },
@@ -142,7 +155,7 @@ module.exports = function(grunt) {
                     authKey: '<%= deployKey %>'
                 },
                 src: '<%= filesToUploadToServer %>',
-                dest: '<%= pathToProductionVersionOnServer %>',
+                dest: '<%= pathToSpecsOnServer %>',
                 exclusions: '<%= excludedFilesForUpload %>'
             },
             deployMinified: {
@@ -152,7 +165,7 @@ module.exports = function(grunt) {
                     authKey: '<%= deployKey %>'
                 },
                 src: '<%= pathToAppDir %>/build',
-                dest: '<%= pathToProductionVersionOnServer %>',
+                dest: '<%= pathToSpecsOnServer %>',
                 exclusions: '<%= excludedFilesForProductionsUpload %>'
             }
         },
@@ -180,7 +193,7 @@ module.exports = function(grunt) {
                 options: {
                     appDir: '.',
                     baseUrl: '.',
-                    dir: '<%= pathToProductionVersion %>',
+                    dir: '<%= pathToSpecs %>',
                     fileExclusionRegExp: 'build.js|Gruntfile.js|^node_modules$',
                     paths: {
                             core: 'core/js',
@@ -198,11 +211,11 @@ module.exports = function(grunt) {
                     preserveLicenseComments: false,
                     modules: [
                         {
-                            name: '<%= pathToProductionVersion %>/core/js/source.js',
+                            name: '<%= pathToSpecs %>/core/js/source.js',
                             include: ['core/js/source.js']
                         },
                         {
-                            name: '<%= pathToProductionVersion %>/core/js/source-nav.js',
+                            name: '<%= pathToSpecs %>/core/js/source-nav.js',
                             include: ['core/js/source-nav.js']
                         }
                     ]
@@ -221,25 +234,18 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ftp-deploy');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    // Default task - copy/
-    grunt.registerTask('default', ['copy:main']);
+    // Task for init project
+    // Copying all needed files next to Source
+    grunt.registerTask('init', ['copy:main', 'copy:init', 'uglify:main', 'cssmin:main']);
 
-    // Deploy task
-    grunt.registerTask('deploy', ['copy:main', 'uglify:main', 'cssmin:main']);
-
-    // Upload file to server via sftp
-    grunt.registerTask('deployServer', ['sftp-deploy:deploy']);
+    // Local deploy task
+    grunt.registerTask('update', ['copy:main', 'uglify:main', 'cssmin:main']);
 
     // Minified and upload files to server via sftp
-    grunt.registerTask('deployProductionServer', [
-                        'copy:server', 
-                        'cssmin:server',
-                        'uglify:server',
-                        'sftp-deploy:deployMinified']
-                        );
+    grunt.registerTask('deployServer', ['copy:server', 'cssmin:server','uglify:server','sftp-deploy:deployMinified']);
 
-    // Task for only require optimization DONT USE IT NOW!!
-    grunt.registerTask('r', ['requirejs']);
+    // Upload file to server via sftp
+    grunt.registerTask('deployServerDebug', ['sftp-deploy:deploy']);
 
     // Task for start watching
     grunt.registerTask('runWatch', ['watch']);
