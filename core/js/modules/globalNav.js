@@ -126,9 +126,14 @@ define([
                             authorName = '';
                         }
 
+                    //fixing relative path due to server settings
+                    var targetUrl = target.url;
+                    if(targetUrl.charAt(0) !== '/')
+                        targetUrl = '/' + targetUrl;
+
                     navTreeHTML += '' +
                             '<li class="' + CATALOG_LIST_I + '">' +
-                            '<a class="' + CATALOG_LIST_A + '" href="' + target.url + '">' +
+                            '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
                             '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
                             '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
 
