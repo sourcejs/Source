@@ -144,7 +144,7 @@ a:hover {color: #333; text-decoration: underline;}
 	background: #f1f2f3;
 	white-space: nowrap;
 
-	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 	border-radius: 5px;
 
 	-webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, .3);
@@ -323,7 +323,7 @@ a:hover {color: #333; text-decoration: underline;}
 	padding: 2px 15px;
 
 	border: 1px solid #999;
-	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
 	border-radius: 10px;
 	color: #999;
 	text-decoration: none;
@@ -675,7 +675,7 @@ a:hover {color: #333; text-decoration: underline;}
 		color: #333;
 
 		border-bottom: 1px solid #c5c5c5;
-		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
 		border-radius: 5px;
 		background-color: transparent;
 		background-image: -webkit-linear-gradient(top, #f6f6f6, #e4e4e4);
@@ -694,10 +694,14 @@ a:hover {color: #333; text-decoration: underline;}
 
 	/* Error detection */
 	.source_section > h2:not(:first-child) {
-		background-color: red;
+		background-color: rgba(250, 0, 0, .2);
+		outline: 3px solid red;
+		outline-offset: 3px;
 		}
 		.source_section > h2:not(:first-child):after {
 			content: " error - duplicate h2 or not first tag in section";
+			font-weight: normal;
+			color: #333;
 			}
 
 	.source_section > h3 {
@@ -757,14 +761,14 @@ a:hover {color: #333; text-decoration: underline;}
 
 .source_hl,
 
-.source_section > code,
-.source_section > p > code,
-.source_section > div > code {
+.source_section > code:not(:empty),
+.source_section > p > code:not(:empty),
+.source_section > div > code:not(:empty) {
 	background: #FFEBB7;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1em;
 	padding: 1px 2px;
-	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
 	border-radius: 3px;
 	}
 
@@ -837,11 +841,16 @@ a:hover {color: #333; text-decoration: underline;}
 .source_control + script + .source_example,
 .source_control + script + .source_source-code + .source_example,
 .source_control + script + .source_source-code + .source_source-code + .source_example,
-.source_control + script + .source_source-code + .source_source-code + .source_example,
+
+.source_control + script + code + .source_example,
+.source_control + script + code + code + .source_example,
 
 .source_control +          .source_example,
 .source_control +          .source_source-code + .source_example,
-.source_control +          .source_source-code + .source_source-code + .source_example {
+.source_control +          .source_source-code + .source_source-code + .source_example,
+
+.source_control +          code + .source_example,
+.source_control +          code + code + .source_example{
 	outline: 2px solid #eb722e;
 	outline-offset: 0;
 	}
@@ -1081,7 +1090,7 @@ code.brush.source_visible {
 	width: 100%;
 
 	border: 1px solid #444;
-	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
 	border-radius: 5px;
 	vertical-align: top;
 	}
