@@ -1,3 +1,7 @@
 .*
 *.dat
 /data/pages_tree.json
+/node_modules
+user/grunt
+user/.ftppass
+/build
