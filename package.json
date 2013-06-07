@@ -1,7 +1,7 @@
 {
-  "author": "OK",
+  "author": "Odnoklassniki front-end team",
   "name": "Source.js",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-uglify": "~0.2.1",
