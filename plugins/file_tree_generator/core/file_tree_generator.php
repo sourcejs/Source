@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Парсер категорий навигации в JSON</title>
+	<title>JSON File tree parser script</title>
 </head>
 <body>
 <?php

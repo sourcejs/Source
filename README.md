@@ -1,6 +1,6 @@
 # Source - Front-end documentation engine
 
-**v.0.1.1**
+**v.0.2.0**
 
 Main project aim is to give front-end development team a **best tool** for documenting web interfaces and **for productive team work**.
 
@@ -9,22 +9,20 @@ Documentation engine originally was developed at [Odnoklassniki.ru](http://corp.
 ___
 
 
-[**Source engine project page**](http://sourcejs.com)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base/index.html#1!)
 
 ___
 
-Project is in active development state, but until we will update base technology stack integration (Node.js, mongoDB, grunt, bower) it will stay in Beta.
+Project is in active development state, but until we will update base technology stack integration (Node.js, mongoDB, bower) it will stay in Beta.
 
 ## Upcoming updates
 
 * Full english documentation stack
 * Node.JS integration as main engine server
-* Grunt and Bower for fast setup and management
-* Rework CSS preprocessor
 * Markdown support in documentation pages
 
 ___
 
-Copyright © 2013 [Source](http://sourcejs.com)
+Copyright © 2013 [Sourcejs.com](http://sourcejs.com)
 
 Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/source/wiki/MIT-License).

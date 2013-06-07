@@ -70,6 +70,7 @@ define([
 
             //Code show toggle on each code blcock
             var prepareCodeBlocks = function() {
+
                 new css('SyntaxHighlighter/shCoreDefault.css','/core/js/lib/');
                 new css('SyntaxHighlighter/shCoreCustom.css','/core/js/lib/');
 
@@ -158,7 +159,7 @@ define([
             }
 
             //temp for spec documentation, TODO: make possible to leave visible code blocks
-            $('.source_section > code.brush.source_visible').each(function () {
+            if ( $('.source_section > code.brush.source_visible').length != 0 ) {
                 //If triming is off, then prepare code fill brushes only on activation
                 if (!options.modulesEnabled.trimSpaces) {
                     createAndFillBrushHTML();
@@ -170,7 +171,8 @@ define([
                 prepared = true;
 
                 activateHighlighter();
-            });
+            }
+
 
             //Show/hide source
             var showAllCode = function () {

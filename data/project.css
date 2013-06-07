@@ -6,14 +6,23 @@
 *
 */
 
-/* Repeat your project body styles */
+
+/* Example project file, just for demo for Spec page documentation */
+@import 'bootstrap.min.css';
+
+/*
+*
+* Repeat your project body styles to .source_example
+*
+*/
 .source_example {
-	font-family: arial, helvetica sans-serif;
-	font-size: 12px;
-	line-height: normal;
-	color: #333;
+	/* Bootstrap body styles */
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:14px;
+	line-height:20px;
+	color:#333;
+	background-color:#fff
 	}
 
-/* Example: */
 /* You can make symlinks for project CSS files to your Source server, or just write absolute path to other directory */
-/*@import url('/res/css/all-web.css');*/
+/* like @import url('/res/css/all-web.css'); */

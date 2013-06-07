@@ -1,0 +1,11 @@
+{
+	"pathToAppDir": ".",
+	"pathToSpecs": "../Specs",
+	"server": {
+		"pathToDir": "/path/to/project/dir/on/server",
+		"host": "your.host.here",
+		"port": "yourPortHere",
+		"key": "keyInFile.ftppass"
+	}
+
+}

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Documentation page</title>
+    <title>Inner Spec page</title>
 
     <meta name="author" content="Robert Haritonov">
     <meta name="keywords" content="create spec, spec markup">
@@ -30,14 +30,11 @@
 
     <div class="source_container"><div class="source_main source_col-main" role="main">
 
-        <h1>Documentation page</h1>
+        <h1>Inner Spec page</h1>
 
         <div class="source_info">
-            Developer: Name <br>
-            Designer: Name
 
-            <p>Here you can leave useful information for team members.</p>
-
+            <p>Specs ares generated directly from <a href="/docs/base/index.html#2!">file system</a>, to create new Spec page like this one, just copy <a href="/docs/starting">starting template</a> and put it at any new folder in Source.</p>
 
         </div>
 
@@ -47,29 +44,33 @@
             <p>Highly recommended to read this document in HTML source.</p>
         </div>
 
-        <a class="source_spec" href="/docs/starting">Starting spec page template</a>
-        <a class="source_spec" href="#777">Another usefull link (demo)</a>
+        <a class="source_a_hl" href="/docs/starting">Starting spec page template</a>
+        <a class="source_a_hl" href="#777">To highlight link like this one, use class .source_a_hl</a>
 
         <section class="source_section">
             <h2>Spec section heading</h2>
 
-            <p>Here you can leave some useful notes for code examples listed in this section.</p>
+            <p>Here you can leave some useful notes for interface examples listed in this section in <code>.source_example</code> blocks.</p>
 
-            <p>We have some special decorations for <code class="source_class">highlighting</code> some special text, like <span class="source_class">.class</span> names.</p>
+            <p>We have some special decorations for <code>highlighting</code> some special text, like <span class="source_hl">.class</span> names.</p>
 
-            <code class="brush : html">
-                Place for HTML code examples.
+            <h3>Examples</h3>
 
-                If &lt;code class="brush : html"&lt; is not set, it will be created
-                and filled automatically from "source_example".
-            </code>
             <section class="source_example">
-                <p>Rendered code examples - main documentation blocks.</p>
+                <div class="example_code">
+                    <div style="display: none;">Hello world;</div>
 
-                <p>Engine decorative styles aren't affecting this block to show as real rendering result (project like).</p>
+                    <p>Rendered code examples - main documentation blocks.</p>
+
+                    <p>Engine decorative styles aren't affecting this block. Link your <a href="#2!">Project files</a> and start prototyping.</p>
+
+                    <p>This page has Twitter Botstrap styles linked through project.css</p>
+
+                    <a class="btn btn-large btn-primary" href="#777">Hey!</a>
+                </div>
             </section>
 
-            <h3>Subheading</h3>
+            <h3>Show source code</h3>
 
             <!-- Inline JS -->
             <!--
@@ -86,12 +87,20 @@
                     maket-it: awesome;
                     }
             </code>
+
+            <code class="brush : html">
+                Place for HTML code examples.
+
+                If &lt;code class="brush : html"&gt; is not set, it will be created
+                and filled automatically from "source_example".
+            </code>
+
             <section class="source_example">
-                <div style="display: none;">Hello world;</div>
+                <div class="example_code">
+                    <p>Click "Show source" in inner navigation menu to show examples source code.</p>
 
-                <p>Rendered code examples</p>
-
-                <p>Click "Show source" in inner navigation menu "Actions" section to show this block source code.</p>
+                    <a class="btn btn-large" href="#777">Hou!</a>
+                </div>
             </section>
 
         </section>
@@ -104,10 +113,10 @@
 	        <code class="brush : html source_visible">
                  <!-- Your project styles -->
                     <!--Link all project (site) styles at once-->
-                    <link href="/data/project.css" rel="stylesheet">
+                    &lt;link href="/data/project.css" rel="stylesheet"&gt;
 
                     <!--Or add separate, spec individual CSS files-->
-                    <link href="css/spec.css" rel="stylesheet">
+                    &lt;link href="css/spec.css" rel="stylesheet"&gt;
                 <!-- /Your project styles --></code>
 
         </section>
@@ -117,7 +126,7 @@
 
             <h3>Documentation text</h3>
 
-            <p>Documentation text in sections is marked up by simple HTML, using tags: p, ul, li, h1, h2, h3, h4. Only those tags are decorated and have style reset from project CSS.</p>
+            <p>Documentation text in sections is marked up by simple HTML, using tags: <code>p, ul, li, h1, h2, h3, h4</code>. Only those tags are decorated and have style reset from project CSS.</p>
 
             <p>In nearest updates we will add Markdown support for easy text formatting inside documentation sections.</p>
 
@@ -144,6 +153,34 @@
         </section>
 
     </div></div>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter21071395 = new Ya.Metrika({id:21071395,
+                        webvisor:true,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true});
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="//mc.yandex.ru/watch/21071395" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 
 </body>
 </html>

@@ -216,6 +216,10 @@ define([
                     closeSpoiler(t);
                 }
             }
+
+            if (navHash != '') {
+                utils.scrollToSection($(navHash));
+            }
         }
 
         //If supports history API

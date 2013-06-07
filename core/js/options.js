@@ -24,7 +24,8 @@ define([
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
             scrollToHash: true,
             sections: true,
-            globalNav: true
+            globalNav: true,
+            search: true
         },
 
         modulesOptions : {
@@ -42,6 +43,9 @@ define([
         mainNav : 'source_main_nav',
 
         colMain : 'source_col-main',
+
+        //Page roles
+        roleNavigation : 'source_page_navigation',
 
         // Plugins
         pluginsDir: '/plugins/'

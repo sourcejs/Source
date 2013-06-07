@@ -1,6 +1,6 @@
 /*
-* Source engine http://sourcejs.com
-* @copyright 2013 Source, http://sourcejs.com
+* Source - Front-end documentation engine
+* @copyright 2013 Sourcejs.com
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 

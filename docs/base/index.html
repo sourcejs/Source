@@ -27,36 +27,54 @@
 
         <h1>Basic engine documentation</h1>
 
+        <div class="source_info">
+	        <p>This page (and whole site) is powered by Source engine, feel free to inspect source code.</p>
+
+            <p>Project is in active development state and until we will update base technology stack integration (Node.js, mongoDB, grunt, bower) it will stay in Beta.</p>
+        </div>
+
         <section class="source_section">
             <h2>Fast start</h2>
 
-	        <p><b>This page (and whole site) is powered by Source engine, feel free to inspect source code.</b></p>
+	        <p>To start, all you need is to follow these simple steps:</p>
 
-	        <p>To start, all you need is to <a href="http://github.com/sourcejs/Source">checkout project</a> from GitHub and put it on basic HTTP server.</p>
+	        <code class="brush : html source_visible">
+                git clone https://github.com/sourcejs/Source.git
+                cd Source
 
-	        <p>For some modules and plugins (search, globalNav, bubble) you wil need PHP 5.3 on your server, and set proper chmod rights on <span class="source_class">/data</span> folder. With nearest updates PHP will be replaced with Node.js and all generated will be stored in database.</p>
+                npm install
+                grunt init
+            </code>
 
-            <p>For fast web server setup use <a href="http://www.mamp.info/en/index.html">MAMP</a>.</p>
+            <p>Be sure that you have <a href="http://help.github.com/articles/set-up-git">Git</a> and <a href="http://nodejs.org/">Node.js</a> installed, before Source setup. Read more about Grunt tasks workflow with Source <a href="/docs/grunt">here</a>.</p>
+
+            <p>Near the Source engine folder Grunt will create a <span class="source_hl">Specs</span> directory, that must be placed to http server to start creating own Spec (documentation) pages.</p>
+
+	        <p>For some modules and plugins (search, globalNav, bubble) you wil need PHP 5.3 on your server, and set proper chmod rights on <span class="source_hl">/data</span> folder. With nearest updates PHP will be replaced with Node.js and all generated will be stored in database.</p>
+
+            <p>For fast web server setup use <a href="http://www.mamp.info/en/index.html">MAMP</a> (OSx), and set created <span class="source_hl">Specs</span> folder as server root directory. </p>
 
 	        <h3>Starting template</h3>
 
-	        <p>Starting template for spec page is located <a href="/docs/starting">here</a>, just copy it to new folder and page is ready.</p>
+	        <p>Starting template for <span class="source_hl">Spec</span> page is located <a href="/docs/starting">here</a>, just copy it to new folder and page is ready.</p>
+
+            <a href="/docs/spec" class="source_hl_a">Read more about Spec pages here.</a>
         </section>
 
         <section class="source_section">
             <h2>File structure</h2>
 
-	        <p>Main engine architecture is base on modules and plugins, we have core modules in <span class="source_class">/core/js/modules</span> and plugins (that are turned off by default) in <span class="source_class">/plugins</span> folder.</p>
+	        <p>Main engine architecture is based on modules and plugins, we have core modules in <span class="source_hl">/core/js/modules</span> and plugins (that are turned off by default) in <span class="source_hl">/plugins</span> folder.</p>
 
-	        <p>Working with engine in basic way, without writing new core functionality you won't be needed to modify <span class="source_class">/core</span> folder. To override header/footer templates and change options use <span class="source_class">/user</span> folder </p>
+	        <p>Working with engine in basic way, without writing new core functionality you won't be needed to modify <span class="source_hl">/core</span> folder. To override header/footer templates and change options use <span class="source_hl">/user</span> folder </p>
 
-	        <p>Folder <span class="source_class">/data</span> is for user content like your images or your project styles etc.</p>
+	        <p>Folder <span class="source_hl">/data</span> is for user content like your images or your project styles etc.</p>
         </section>
 
         <section class="source_section">
             <h2>Plugins</h2>
 
-	        <p>Some plugins for Source engine are included in core repository right now, but turned off by default, to turn them on change settings in <span class="source_class">/user/js/options.js</span> file:</p>
+	        <p>Some plugins for Source engine are included in core repository right now, but turned off by default, to turn them on change settings in <span class="source_hl">/user/js/options.js</span> file:</p>
 
 	        <code class="brush : js source_visible">
 		        pluginsEnabled : {
@@ -73,17 +91,17 @@
 	    <section class="source_section">
 		    <h2>Search and navigation modules</h2>
 
-		    <p><span class="source_class">search</span>, <span class="source_class">globalNav</span></p>
-
-		    <p>These plugins are based on data from JSON file, that is generated with PHP script/plugin <span class="source_class"><a href="/plugins/file_tree_generator/core/file_tree_generator.php">/plugins/file_tree_generator/core/file_tree_generator.php</a></span>. To run this script, you must set proper chmod rights to <span class="source_class">/data</span> folder.</p>
+		    <p><b>Search</b>, and <b>GlobalNav</b> modules are based on data from JSON file, that is generated with PHP script/plugin <span class="source_hl"><a href="/plugins/file_tree_generator/core/file_tree_generator.php">/plugins/file_tree_generator/core/file_tree_generator.php</a></span>. To run this script, you must set proper chmod rights to <span class="source_hl">/data</span> folder (isn't set on sourcejs.com for security reasons).</p>
 
 		    <p>To run this script automatically, configure cron task for it or run in by direct url from browser.</p>
+
+            <p>With nearest updates PHP will be replaced with Node.js and all generated will be stored in database.</p>
 	    </section>
 
         <section class="source_section">
             <h2>Organasing documentation pages</h2>
 
-	        <p>Source documentation is based on engine functionality itself. You can just copy <span class="source_class">/docs</span> folder structure and start developing your own frontend documentations.</p>
+	        <p>Source documentation is based on engine functionality itself. You can just copy <span class="source_hl">/docs</span> folder structure and start developing your own frontend documentations.</p>
 
 	        <p>Real life example of documentation folder at Odnoklassniki project:</p>
 
