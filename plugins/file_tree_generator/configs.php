@@ -9,4 +9,4 @@ $FILE_MASK_FOR_SEARCH = "index\.html";
 $DIR_FOR_FILE_SEARCH  = ".*";
 
 // Excluded paths (default "NO_EXCLUDES")
-$EXCLUDE_FOLDERS      = "res|inc";
+$EXCLUDE_FOLDERS      = "res|inc|build";

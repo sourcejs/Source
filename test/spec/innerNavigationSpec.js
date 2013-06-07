@@ -20,7 +20,7 @@ define(['modules/innerNavigation'], function (innerNavigation) {
 
         beforeEach(function () {
 
-            $('#sandbox').html('<div class="source_header"></div>');
+            $('#sandbox').html('<div class="source_main"><h1>Test heading</h1></div>');
 
             iNav = innerNavigation.createInstance();
         });

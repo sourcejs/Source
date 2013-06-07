@@ -26,9 +26,9 @@ module.exports = function(grunt) {
                 '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
                 '* */\n',
 
-        filesToCopy:                        ['<%= pathToAppDir %>/core/**', 
-                                            '<%= pathToAppDir %>/test/**', 
-                                            '<%= pathToAppDir %>/docs/**', 
+        filesToCopy:                        ['<%= pathToAppDir %>/core/**',
+                                            '<%= pathToAppDir %>/test/**',
+                                            '<%= pathToAppDir %>/docs/**',
                                             '<%= pathToAppDir %>/plugins/bubble/**',
                                             '<%= pathToAppDir %>/plugins/debugmode/**',
                                             '<%= pathToAppDir %>/plugins/file_tree_generator/**',
@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                                             '<%= pathToAppDir %>/**/.DS_Store',
                                             '<%= pathToAppDir %>/.ftppass',
                                             '<%= pathToAppDir %>/Gruntfile.js',
+                                            '<%= pathToAppDir %>/gruntOptions.js',
                                             '<%= pathToAppDir %>/index.html',
                                             '<%= pathToAppDir %>/License.md',
                                             '<%= pathToAppDir %>/package.json',
@@ -55,21 +56,22 @@ module.exports = function(grunt) {
                                             '<%= pathToAppDir %>/**/.DS_Store',
                                             '<%= pathToAppDir %>/.ftppass',
                                             '<%= pathToAppDir %>/Gruntfile.js',
+                                            '<%= pathToAppDir %>/gruntOptions.js',
                                             '<%= pathToAppDir %>/index.html',
                                             '<%= pathToAppDir %>/License.md',
                                             '<%= pathToAppDir %>/package.json',
                                             '<%= pathToAppDir %>/README.md',
                                             '<%= pathToAppDir %>/.git'],
 
-        filesToUglify:                      ['<%= pathToAppDir %>/test/**/*.js', 
-                                            '<%= pathToAppDir %>/docs/**/*.js', 
+        filesToUglify:                      ['<%= pathToAppDir %>/test/**/*.js',
+                                            '<%= pathToAppDir %>/docs/**/*.js',
                                             '<%= pathToAppDir %>/plugins/bubble/**/*.js',
                                             '<%= pathToAppDir %>/plugins/debugmode/**/*.js',
                                             '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.js',
                                             '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
 
         filesToCssMinify:                   ['<%= pathToAppDir %>/test/**/*.css',
-                                            '<%= pathToAppDir %>/docs/**/*.css', 
+                                            '<%= pathToAppDir %>/docs/**/*.css',
                                             '<%= pathToAppDir %>/plugins/bubble/**/*.css',
                                             '<%= pathToAppDir %>/plugins/debugmode/**/*.css',
                                             '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.css',
@@ -79,16 +81,20 @@ module.exports = function(grunt) {
         copy: {
             init: {
                 files: [
-                    {   
+                    {
                         src: ['<%= pathToAppDir %>/user/**',
                                 '<%= pathToAppDir %>/data/**',
                                 '<%= pathToAppDir %>/index.html',
                                 '<%= pathToAppDir %>/License.md'],
-                        dest: '<%= pathToSpecs %>/' 
+                        dest: '<%= pathToSpecs %>/'
                     },
                     {
                         src: ['<%= pathToAppDir %>/init/.gitignore'],
                         dest: '<%= pathToSpecs %>/.gitignore'
+                    },
+                    {
+                        src: ['<%= pathToAppDir %>/init/README.md'],
+                        dest: '<%= pathToSpecs %>/README.md'
                     }
                 ]
             },
@@ -105,7 +111,7 @@ module.exports = function(grunt) {
             server: {
                 files: [
                     {
-                        src: '<%= filesToCopy %>', 
+                        src: '<%= filesToCopy %>',
                         dest: '<%= pathToAppDir %>/build/'
                     }
                 ]
@@ -126,7 +132,10 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['<%= pathToAppDir %>/core/**/*.css'],
+                src: [
+                        '<%= pathToAppDir %>/core/**/*.css',
+                        '!<%= pathToAppDir %>/core/css/core.css'
+                    ],
                 dest: '<%= pathToSpecs %>/',
                 ext: '.css'
             },
@@ -143,10 +152,13 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['<%= pathToAppDir %>/core/**/*.css'],
+                src: [
+                        '<%= pathToAppDir %>/core/**/*.css',
+                        '!<%= pathToAppDir %>/core/css/core.css'
+                    ],
                 dest: '<%= pathToAppDir %>/build/',
                 ext: '.css'
-            },
+            }
         },
 
         // minify all js files via uglify
@@ -192,7 +204,7 @@ module.exports = function(grunt) {
                     dest: '<%= pathToAppDir %>/build',
                     cwd: '<%= pathToAppDir %>'
                 }]
-            },
+            }
         },
 
         // deploy to server all needed file
