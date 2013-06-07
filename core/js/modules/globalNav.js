@@ -28,7 +28,7 @@ define([
         CATALOG_LIST_I = 'source_catalog_list_i',
 
         CATALOG_LIST_ALL = 'source_catalog_all',
-            CATALOG_LIST_ALL_A = 'source_a_o',
+            CATALOG_LIST_ALL_A = 'source_a_bl',
 
         CATALOG_LIST_A = 'source_catalog_a source_a_g',
         CATALOG_LIST_A_TX = 'source_catalog_title',

@@ -12,7 +12,6 @@ define([
     ], function ($, options, autocomplete, parseFileTree) {
 
     //TODO: make localstorage caching
-    //TODO: combine plugin with globalNav
 
     //If search enabled
     $(function(){
@@ -66,11 +65,8 @@ define([
         };
 
         require([
-            "text!templates/search.inc.html",
             "modules/headerFooter"
-        ], function (html) {
-
-            $("." + options.headerClass).find("." + options.colMain).append(html);
+        ], function () {
 
             var L_TARGET_FIELD = $('#livesearch');
 

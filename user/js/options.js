@@ -22,8 +22,7 @@ define({
         // Plugins
         pluginsEnabled : {
             //Plugins enabling
-            //debugmode: true,
-            search: true
+            //debugmode: true
 
             //PHP and proper chmod for file writing required for bubble (comments) plugin
             //bubble: true

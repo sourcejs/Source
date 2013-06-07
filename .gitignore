@@ -1,6 +1,9 @@
 .*
 *.dat
+tmp
+
 /data/pages_tree.json
+
 /node_modules
 /build
 gruntOptions.json

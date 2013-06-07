@@ -19,8 +19,6 @@ define([
     fileTreeJson], function ($, module, data) {
 
     function ParseFileTree() {
-        var _this = this;
-
         this.roleNavigation = module.options.roleNavigation,
 
         this.json = $.parseJSON(data.toString());
@@ -56,8 +54,19 @@ define([
 
                         //Going deeper
                         if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
-                            //Turn off cat checking in this process
-                            searchCat(targetSubCatObj, currentSubCat, true);
+                            //Turn off cat checking in this process, to get all inner folders
+
+                            //Except other cats in specific cat search mode
+                            if (typeof getCatInfo !== 'undefined') {
+
+                                if (typeof targetSubCatObj['source_page_navigation'] !== 'object' ) {
+                                    searchCat(targetSubCatObj, currentSubCat, true);
+                                }
+
+                            } else {
+                                searchCat(targetSubCatObj, currentSubCat, true);
+                            }
+
                         } else {
                             searchCat(targetSubCatObj, currentSubCat);
                         }
@@ -79,10 +88,9 @@ define([
 
     };
 
-    ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, isOn) {
-        var _this = this;
-
-        if (isOn) {
+    ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
+        //If cat info needed
+        if (getCatInfo) {
             return typeof targetSubCatObj['index.html'] === 'object' || currentSubCat === 'source_page_navigation';
         } else {
             return typeof targetSubCatObj['index.html'] === 'object';
@@ -90,17 +98,19 @@ define([
     };
 
     ParseFileTree.prototype.checkCat = function (currentCat, getSpecificCat, toCheckCat) {
-        var _this = this,
-            getSpecificCat = getSpecificCat,
+        var getSpecificCat = getSpecificCat,
             currentCat = currentCat,
             toCheckCat = toCheckCat;
 
+
         var checkCat = function() {
+
+            //Multiple check cat support
             if (typeof getSpecificCat === 'string') {
 
                 return getSpecificCat === currentCat;
 
-            } else if (typeof getSpecificCat === 'object') {
+            } else if (typeof getSpecificCat === 'object') { //If array
 
                 var something = false;
 
@@ -134,23 +144,18 @@ define([
     };
 
     ParseFileTree.prototype.getAllPages = function () {
-        var _this = this;
-
         //Get pages from all categories
-        return _this.parsePages();
+        return this.parsePages();
     };
 
     ParseFileTree.prototype.getCatPages = function (getSpecificCat) {
-        var _this = this;
-
-        return _this.parsePages(getSpecificCat);
+        //Get cat pages
+        return this.parsePages(getSpecificCat);
     };
 
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
-        var _this = this;
-
-        //Get cat with info
-        return _this.parsePages(getSpecificCat, true);
+        //Get cat pages with cat info
+        return this.parsePages(getSpecificCat, true);
     };
 
     return new ParseFileTree();
