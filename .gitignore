@@ -1,5 +1,6 @@
 .*
 *.dat
+*.iml
 tmp
 
 /data/pages_tree.json

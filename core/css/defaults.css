@@ -992,10 +992,6 @@ code.brush {
 	display: none !important; /* Hide all code source by default */
 	}
 
-code.brush.source_visible {
-	display: block !important;
-	}
-
 .source_source-code {
 	font-size: 13px;
 	}

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Grunt tasks (RU)</title>
+    <title>Grunt tasks</title>
 
     <meta name="author" content="Anton Korochinsky">
 
@@ -21,12 +21,12 @@
 
 <div class="source_container"><div class="source_main source_col-main" role="main">
 
-    <h1>Инициализация проекта с помощью Grunt.js</h1>
+    <h1>Installation project via Grunt.js</h1>
 
     <section class="source_section">
-        <h2>Инициализация проекта</h2>
+        <h2>Installation</h2>
 
-        <p>Ининциализация проекта происходит с помощью Grunt.js. Вам необходимо выполнить следующие команды:</p>
+        <p>To install project you need to install grunt. For this you need to run commands below:</p>
 
         <code class="brush : js source_visible">
             $ cd Source
@@ -36,30 +36,30 @@
             $ grunt init
         </code>
 
-        <p>При этом все нобходимые файлы будут скопированы в соседнюю с Source папку Specs. Если вы хотите поменять папку, в которую проект будет инициализироваться, необходимо изменить значение поля <code class="source_hl">pathToSpecs</code> в файле настроек <code class="source_hl">gruntOptions.js</code> на необходимый вам путь к папке.</p>
+        <p>After that all necessary files will be copied in a folder named Spec, next to Source folder. If you want to change target location, you need to change value of <code class="source_hl">pathToSpecs</code> property in a options file <code class="source_hl">gruntOptions.js</code>. You can use both relative and absolute pathes. Relative path should depend on <code class="source_class">Gruntfile.js</code>.</p>
     </section>
 
     <section class="source_section">
-        <h2>Обновление проекта</h2>
+        <h2>Update project</h2>
 
-        <p>Для обновления ядра Source, например, после обновления до последней версии, необходимо использовать команду:</p>
+        <p>After updating to the new version, you may need to deploy new Source.js to your project. For this you should run :</p>
         <code class="brush : js source_visible">
             $ grunt update
         </code>
-        <p>Все файлы ядра будут минимизированы и копированы в папку проекта.</p>
+        <p>All necessary Source.js files will be minimized, uglified and copied to your project folder.</p>
 
-        <p>Можно запустить задачу <code class="source_class">grunt runWatch</code>, и тогда при сохранении каждом сохранении файлов ядра они будут автоматически выкладываться локально без минификации. Предполагается использование этой заадчи для разработки ядра. </p>
+        <p>Also you can run <code class="source_class">grunt runWatch</code>,and if some file has changed, Source.js will be deployed locally. This mode is needed only for developing Source.js. Usually, you don't need to run watch task.</p>
     </section>
 
     <section class="source_section">
-        <h2>Деплой ядра на сервер через sftp</h2>
+        <h2>Deploy to the server via sftp</h2>
 
-        <p>Для того, чтобы произвести деплой файлов на сервер, необходимо прописать соответствующие настройки доступа к серверу в файле <code class="source_hl">gruntOptions.js</code>, а так же пары имя/пароль в файле <code class="source_hl">.ftppass</code>. После заполнения этих настроек деплой запускается командой:</p>
+        <p>For deploying to the server, you need to fill server access options in file <code class="source_hl">gruntOptions.js</code> according to your options. Also you need to change name/password in <code class="source_hl">.ftppass</code>. After these changes run:</p>
 
         <code class="brush : js source_visible">
             $ grunt deployServer
         </code>
-        <p>Все необходимые файлы будут минимизированы и залиты на сервер.</p>
+        <p>All necessary Source.js files will be minimized, uglified and uploaded to your server.</p>
 
 
 </div></div>
