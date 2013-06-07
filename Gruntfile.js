@@ -20,6 +20,12 @@ module.exports = function(grunt) {
         deployPort: '<%= options.server.port %>',
         deployKey: '<%= options.server.key %>',
 
+        banner:'/*\n' +
+                '* Source - Front-end documentation engine\n' +
+                '* @copyright 2013 Sourcejs.com\n' +
+                '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
+                '* */\n',
+
         filesToCopy:                        ['<%= pathToAppDir %>/core/**', 
                                             '<%= pathToAppDir %>/test/**', 
                                             '<%= pathToAppDir %>/docs/**', 
@@ -55,16 +61,14 @@ module.exports = function(grunt) {
                                             '<%= pathToAppDir %>/README.md',
                                             '<%= pathToAppDir %>/.git'],
 
-        filesToUglify:                      ['<%= pathToAppDir %>/core/**/*.js', 
-                                            '<%= pathToAppDir %>/test/**/*.js', 
+        filesToUglify:                      ['<%= pathToAppDir %>/test/**/*.js', 
                                             '<%= pathToAppDir %>/docs/**/*.js', 
                                             '<%= pathToAppDir %>/plugins/bubble/**/*.js',
                                             '<%= pathToAppDir %>/plugins/debugmode/**/*.js',
                                             '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.js',
                                             '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
 
-        filesToCssMinify:                   ['<%= pathToAppDir %>/core/**/*.css',
-                                            '<%= pathToAppDir %>/test/**/*.css',
+        filesToCssMinify:                   ['<%= pathToAppDir %>/test/**/*.css',
                                             '<%= pathToAppDir %>/docs/**/*.css', 
                                             '<%= pathToAppDir %>/plugins/bubble/**/*.css',
                                             '<%= pathToAppDir %>/plugins/debugmode/**/*.css',
@@ -117,20 +121,53 @@ module.exports = function(grunt) {
                 ext: '.css'
             },
 
+            addBanner: {
+                expand: true,
+                options: {
+                    banner: '<%= banner %>'
+                },
+                src: ['<%= pathToAppDir %>/core/**/*.css'],
+                dest: '<%= pathToSpecs %>/',
+                ext: '.css'
+            },
+
             server: {
                 expand: true,
                 src: '<%= cssmin.main.src %>',
                 dest: '<%= pathToAppDir %>/build/',
                 ext: '.css'
-            }
+            },
+
+            addServerBanner: {
+                expand: true,
+                options: {
+                    banner: '<%= banner %>'
+                },
+                src: ['<%= pathToAppDir %>/core/**/*.css'],
+                dest: '<%= pathToAppDir %>/build/',
+                ext: '.css'
+            },
         },
 
         // minify all js files via uglify
         uglify: {
+
             main: {
                 files: [{
                     expand: true,
                     src: '<%= filesToUglify %>',
+                    dest: '<%= pathToSpecs %>',
+                    cwd: '<%= pathToAppDir %>'
+                }]
+            },
+
+            addBanner: {
+                options: {
+                        banner: '<%= banner %>\n'
+                    },
+                files: [{
+                    expand: true,
+                    src: '<%= pathToAppDir %>/core/**/*.js',
                     dest: '<%= pathToSpecs %>',
                     cwd: '<%= pathToAppDir %>'
                 }]
@@ -143,7 +180,19 @@ module.exports = function(grunt) {
                     dest: '<%= pathToAppDir %>/build/',
                     cwd: '<%= pathToAppDir %>'
                 }]
-            }
+            },
+
+            addServerBanner: {
+                options: {
+                        banner: '<%= banner %>\n'
+                    },
+                files: [{
+                    expand: true,
+                    src: '<%= pathToAppDir %>/core/**/*.js',
+                    dest: '<%= pathToAppDir %>/build',
+                    cwd: '<%= pathToAppDir %>'
+                }]
+            },
         },
 
         // deploy to server all needed file
@@ -239,10 +288,10 @@ module.exports = function(grunt) {
     grunt.registerTask('init', ['copy:main', 'copy:init', 'uglify:main', 'cssmin:main']);
 
     // Local deploy task
-    grunt.registerTask('update', ['copy:main', 'uglify:main', 'cssmin:main']);
+    grunt.registerTask('update', ['copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner']);
 
     // Minified and upload files to server via sftp
-    grunt.registerTask('deployServer', ['copy:server', 'cssmin:server','uglify:server','sftp-deploy:deployMinified']);
+    grunt.registerTask('deployServer', ['copy:server', 'cssmin:server', 'cssmin:addServerBanner', 'uglify:server', 'uglify:addServerBanner', 'sftp-deploy:deployMinified']);
 
     // Upload file to server via sftp
     grunt.registerTask('deployServerDebug', ['sftp-deploy:deploy']);
