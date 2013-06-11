@@ -106,7 +106,12 @@ function getFilesTree($dir, $includeFilesMask = "/.*/", $scanDirMask = "/.*/", $
 					$DIR_NAME = dirname($URL);
 
 					$BUBBLE_DATA_PATH = $DOCUMENT_ROOT.$DIR_NAME.'/temp/bubbles.dat';
+					$PROJECT_DATA_PATH = $DOCUMENT_ROOT.$DIR_NAME.'/data.json';
 
+					if (file_exists($PROJECT_DATA_PATH)) {
+						$json = file_get_contents($PROJECT_DATA_PATH);
+						$data = json_decode($json, true);
+					}
 					$arr[$ff] = array (
 						"url" => $URL,
 						"title" => isset($title[1]) ? $title[1] : "",
@@ -115,6 +120,7 @@ function getFilesTree($dir, $includeFilesMask = "/.*/", $scanDirMask = "/.*/", $
 						"lastmodSec" => $lastmodSec,
 						"keywords" => isset($keyword[1]) ? $keyword[1] : "",
 						"bubbles" => GET_BUBBLES_COUNT($BUBBLE_DATA_PATH),
+						"projectData" => isset($data) ? $data : "",
 					);
 				}
 			}
