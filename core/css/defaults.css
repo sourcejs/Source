@@ -253,12 +253,12 @@ body {
 		}
 
 .source_a_l { /* Inverted link */
-	color: #999;
-	text-decoration: none;
+	color: #999 !important; /* Highest priority needed to cosmetic classes */
+	text-decoration: none !important;
 	}
 	.source_a_l:hover {
-		color: #666;
-		text-decoration: underline;
+		color: #666 !important;
+		text-decoration: underline !important;
 		}
 
 .source_a_g { /* Object link */
@@ -333,7 +333,6 @@ body {
 	*zoom: 1;
 	vertical-align: baseline;
 
-	height: 50px;
 	line-height: 30px;
 
 	color: #67a9d4;
@@ -389,7 +388,7 @@ body {
 
 .source_footer {
 	position: absolute;
-	z-index: 5;
+	z-index: 11; /* Higher than nav */
 	bottom: 0; left: 0; right: 0;
 
 	border-top: 1px solid #eee;
@@ -440,8 +439,11 @@ body {
 -------------------------------------------------- */
 
 .source_main {
+	position: relative;
 	padding: 35px 0;
 	min-height: 230px;
+
+	counter-reset: h2;
 	}
 
 	.source_main_h1, /* for custom cases */
@@ -572,45 +574,39 @@ body {
 /* Spec page
 -------------------------------------------------- */
 
-.source_main {
-	position: relative;
-	z-index: 5;
-	counter-reset: h2;
+/* complex cascade for targeting only spec decorations, excluding .source_example blocks */
+.source_catalog_tx a,
+
+.source_main_nav a,
+
+.source_info a,
+
+.source_main > a,
+
+.source_section > a,
+.source_section > *:not(.source_example) > a,
+.source_section > *:not(.source_example) > *:not(.source_example) > a,
+.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a {
+	color:#4792D2;
+	text-decoration:none
 	}
 
-	/* complex cascade for targeting only spec decorations, excluding .source_example blocks */
-	.source_catalog_tx a,
 
-	.source_main_nav a,
+	.source_catalog_tx a:hover,
 
-	.source_info a,
+	.source_main_nav a:hover,
 
-	.source_main > a,
+	.source_info a:hover,
 
-	.source_section > a,
-	.source_section > *:not(.source_example) > a,
-	.source_section > *:not(.source_example) > *:not(.source_example) > a,
-	.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a {
-		color:#4792D2;
-		text-decoration:none
+	.source_main > a:hover,
+
+	.source_section > a:hover,
+	.source_section > *:not(.source_example) > a:hover,
+	.source_section > *:not(.source_example) > *:not(.source_example) > a:hover,
+	.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a:hover {
+		color: #1c76c2;
+		text-decoration: underline;
 		}
-
-
-		.source_catalog_tx a:hover,
-
-		.source_main_nav a:hover,
-
-		.source_info a:hover,
-
-		.source_main > a:hover,
-
-		.source_section > a:hover,
-		.source_section > *:not(.source_example) > a:hover,
-		.source_section > *:not(.source_example) > *:not(.source_example) > a:hover,
-		.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a:hover {
-			color: #1c76c2;
-			text-decoration: underline;
-			}
 
 /* Navigation */
 .source_main_nav {
@@ -621,6 +617,10 @@ body {
 	width: 280px;
 	margin-left: 297px;
 	}
+
+	.source_main_nav:hover {
+		z-index: 20; /* Higher than any other elements */
+		}
 
 	@media only screen and (max-width: 1200px){
 		.source_main_nav {
@@ -925,7 +925,10 @@ body {
 		display: block;
 		}
 
-	.source_section__open > .source_a_hl,
+	.source_section__open > .source_a_hl {
+		display: inline !important;
+		}
+
 	.source_section__open .source_example {
 		display: inline-block !important;
 		*display: inline !important;
