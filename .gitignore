@@ -2,9 +2,17 @@
 *.dat
 *.iml
 tmp
+node_modules
 
-/data/pages_tree.json
-
-/node_modules
+# Build folder fo ftp deploy
 /build
-gruntOptions.json
+
+# Custom client-side plugins folder, managed with volo packet manager
+/client/plugins
+
+# Custom user folder for Source server side
+/user
+
+# Web server root, and your specs home
+# You can store other repository in this path
+/public

@@ -1,24 +1,32 @@
 module.exports = function(grunt) {
 
-     grunt.registerTask('rebase', 'Execute git pull and rebase.', function () {
-        var done = this.async();
+    var removePathInDest = function(path, destBase, destPath) {
+        // remove some path from destination file path in public dir
 
-        grunt.util.spawn({
-            cmd: "git",
-            args: ["pull", "--rebase"]
-        }, done)
-     })
+        // TODO: refactor regex, to get rid off '//' in paths
+        var newPath,
+            regex = '^'+path+'/|\\W'+path+'/';
+
+        newPath =  destBase + destPath.replace(new RegExp(regex), '/');
+
+        return newPath;
+    };
+
+    var getSourceOptions = function() {
+        var options = require('./core/options');
+
+        return options;
+    };
 
     // Tasks
     grunt.initConfig({
         // load options from file
-        options: grunt.file.readJSON('./gruntOptions.json'),
-        pathToAppDir: '<%= options.pathToAppDir %>',
-        pathToSpecs: '<%= options.pathToSpecs %>',
-        pathToSpecsOnServer: '<%= options.server.pathToDir %>',
-        deployHost: '<%= options.server.host %>',
-        deployPort: '<%= options.server.port %>',
-        deployKey: '<%= options.server.key %>',
+        options: getSourceOptions(),
+        pathToSpecs: '<%= options.common.pathToSpecs %>',
+        pathToSpecsOnServer: '<%= options.grunt.server.pathToDir %>',
+        deployHost: '<%= options.grunt.server.host %>',
+        deployPort: '<%= options.grunt.server.port %>',
+        deployKey: '<%= options.grunt.server.key %>',
 
         banner:'/*\n' +
                 '* Source - Front-end documentation engine\n' +
@@ -26,75 +34,58 @@ module.exports = function(grunt) {
                 '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
                 '* */\n',
 
-        filesToCopy:                        ['<%= pathToAppDir %>/core/**',
-                                            '<%= pathToAppDir %>/test/**',
-                                            '<%= pathToAppDir %>/docs/**',
-                                            '<%= pathToAppDir %>/plugins/bubble/**',
-                                            '<%= pathToAppDir %>/plugins/debugmode/**',
-                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**',
-                                            '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
+        filesToWatch:                       [
+                                                'client/src/**',
+                                                'client/src/**/*'
+                                            ],
 
-        filesToUploadToServer:             ['<%= pathToAppDir %>'],
+        excludedFilesForUpload:             ['**/.DS_Store'],
 
-        excludedFilesForUpload:            ['<%= pathToAppDir %>/user',
-                                            '<%= pathToAppDir %>/data',
-                                            '<%= pathToAppDir %>/node_modules',
-                                            '<%= pathToAppDir %>/build',
-                                            '<%= pathToAppDir %>/**/.DS_Store',
-                                            '<%= pathToAppDir %>/.ftppass',
-                                            '<%= pathToAppDir %>/Gruntfile.js',
-                                            '<%= pathToAppDir %>/gruntOptions.js',
-                                            '<%= pathToAppDir %>/index.html',
-                                            '<%= pathToAppDir %>/License.md',
-                                            '<%= pathToAppDir %>/package.json',
-                                            '<%= pathToAppDir %>/README.md',
-                                            '<%= pathToAppDir %>/.git'],
-
-        excludedFilesForProductionsUpload: ['<%= pathToAppDir %>/user',
-                                            '<%= pathToAppDir %>/data',
-                                            '<%= pathToAppDir %>/node_modules',
-                                            '<%= pathToAppDir %>/**/.DS_Store',
-                                            '<%= pathToAppDir %>/.ftppass',
-                                            '<%= pathToAppDir %>/Gruntfile.js',
-                                            '<%= pathToAppDir %>/gruntOptions.js',
-                                            '<%= pathToAppDir %>/index.html',
-                                            '<%= pathToAppDir %>/License.md',
-                                            '<%= pathToAppDir %>/package.json',
-                                            '<%= pathToAppDir %>/README.md',
-                                            '<%= pathToAppDir %>/.git'],
-
-        filesToUglify:                      ['<%= pathToAppDir %>/test/**/*.js',
-                                            '<%= pathToAppDir %>/docs/**/*.js',
-                                            '<%= pathToAppDir %>/plugins/bubble/**/*.js',
-                                            '<%= pathToAppDir %>/plugins/debugmode/**/*.js',
-                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.js',
-                                            '<%= pathToAppDir %>/plugins/lib/jquery.cookie.js'],
-
-        filesToCssMinify:                   ['<%= pathToAppDir %>/test/**/*.css',
-                                            '<%= pathToAppDir %>/docs/**/*.css',
-                                            '<%= pathToAppDir %>/plugins/bubble/**/*.css',
-                                            '<%= pathToAppDir %>/plugins/debugmode/**/*.css',
-                                            '<%= pathToAppDir %>/plugins/file_tree_generator/**/*.css',
-                                            '!<%= pathToAppDir %>/build/**/*.css'],
-
-        // copy all files without ignored to project folder
+        // copy all files excluding ignored to project folder
         copy: {
             init: {
                 files: [
                     {
-                        src: ['<%= pathToAppDir %>/user/**',
-                                '<%= pathToAppDir %>/data/**',
-                                '<%= pathToAppDir %>/index.html',
-                                '<%= pathToAppDir %>/License.md'],
+                        src: [
+                            'client/init/**',
+                            'client/init/.gitignore'
+                        ],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/init',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/src/data/**'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['License.md'],
                         dest: '<%= pathToSpecs %>/'
                     },
                     {
-                        src: ['<%= pathToAppDir %>/init/.gitignore'],
-                        dest: '<%= pathToSpecs %>/.gitignore'
-                    },
+                        src: ['_.ftppass'],
+                        dest: '.ftppass'
+                    }
+                ]
+            },
+
+            initServer: {
+                files: [
                     {
-                        src: ['<%= pathToAppDir %>/init/README.md'],
-                        dest: '<%= pathToSpecs %>/README.md'
+                        src: [
+                            'init/**'
+                        ],
+                        dest: 'user/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('init',destBase, destPath);
+                        }
                     }
                 ]
             },
@@ -102,8 +93,20 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: '<%= filesToCopy %>',
-                        dest: '<%= pathToSpecs %>/'
+                        src: ['client/src/**'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**','!client/plugins/package.json'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
                     }
                 ]
             },
@@ -111,8 +114,20 @@ module.exports = function(grunt) {
             server: {
                 files: [
                     {
-                        src: '<%= filesToCopy %>',
-                        dest: '<%= pathToAppDir %>/build/'
+                        src: ['client/src/**'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**','!client/plugins/package.json'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
                     }
                 ]
             }
@@ -121,10 +136,45 @@ module.exports = function(grunt) {
         // minify all css needed files
         cssmin: {
             main: {
-                expand: true,
-                src: '<%= filesToCssMinify %>',
-                dest: '<%= pathToSpecs %>/',
-                ext: '.css'
+                files: [
+                    {
+                        src: ['client/src/**/*.css'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**/*.css'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
+                    }
+                ]
+            },
+
+            server: {
+                files: [
+                    {
+                        src: ['client/src/**/*.css'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**/*.css'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
+                    }
+                ]
             },
 
             addBanner: {
@@ -132,19 +182,12 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: [
-                        '<%= pathToAppDir %>/core/**/*.css',
-                        '!<%= pathToAppDir %>/core/css/core.css'
-                    ],
+                src: ['client/src/core/**/*.css'],
                 dest: '<%= pathToSpecs %>/',
-                ext: '.css'
-            },
-
-            server: {
-                expand: true,
-                src: '<%= cssmin.main.src %>',
-                dest: '<%= pathToAppDir %>/build/',
-                ext: '.css'
+                ext: '.css',
+                rename: function(destBase, destPath) {
+                    return removePathInDest('client/src',destBase, destPath);
+                }
             },
 
             addServerBanner: {
@@ -152,25 +195,59 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: [
-                        '<%= pathToAppDir %>/core/**/*.css',
-                        '!<%= pathToAppDir %>/core/css/core.css'
-                    ],
-                dest: '<%= pathToAppDir %>/build/',
-                ext: '.css'
+                src: ['client/src/core/**/*.css'],
+                dest: 'build/',
+                ext: '.css',
+                rename: function(destBase, destPath) {
+                    return removePathInDest('client/src',destBase, destPath);
+                }
             }
         },
 
         // minify all js files via uglify
         uglify: {
 
+            // TODO: kill this copypaste
             main: {
-                files: [{
-                    expand: true,
-                    src: '<%= filesToUglify %>',
-                    dest: '<%= pathToSpecs %>',
-                    cwd: '<%= pathToAppDir %>'
-                }]
+                files: [
+                    {
+                        src: ['client/src/**/*.js'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**/*.js'],
+                        dest: '<%= pathToSpecs %>/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
+                    }
+                ]
+            },
+
+            server: {
+                files: [
+                    {
+                        src: ['client/src/**/*.js'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client/src',destBase, destPath);
+                        }
+                    },
+                    {
+                        src: ['client/plugins/**/*.js'],
+                        dest: 'build/',
+                        expand: true,
+                        rename: function(destBase, destPath) {
+                            return removePathInDest('client',destBase, destPath);
+                        }
+                    }
+                ]
             },
 
             addBanner: {
@@ -179,18 +256,11 @@ module.exports = function(grunt) {
                     },
                 files: [{
                     expand: true,
-                    src: '<%= pathToAppDir %>/core/**/*.js',
-                    dest: '<%= pathToSpecs %>',
-                    cwd: '<%= pathToAppDir %>'
-                }]
-            },
-
-            server: {
-                files: [{
-                    expand: true,
-                    src: '<%= filesToUglify %>',
-                    dest: '<%= pathToAppDir %>/build/',
-                    cwd: '<%= pathToAppDir %>'
+                    src: 'client/src/core/js/*.js',
+                    dest: '<%= pathToSpecs %>/',
+                    rename: function(destBase, destPath) {
+                        return removePathInDest('client/src',destBase, destPath);
+                    }
                 }]
             },
 
@@ -200,9 +270,11 @@ module.exports = function(grunt) {
                     },
                 files: [{
                     expand: true,
-                    src: '<%= pathToAppDir %>/core/**/*.js',
-                    dest: '<%= pathToAppDir %>/build',
-                    cwd: '<%= pathToAppDir %>'
+                    src: 'client/src/core/js/*.js',
+                    dest: 'build/',
+                    rename: function(destBase, destPath) {
+                        return removePathInDest('client/src',destBase, destPath);
+                    }
                 }]
             }
         },
@@ -215,71 +287,48 @@ module.exports = function(grunt) {
                     port: '<%= deployPort %>',
                     authKey: '<%= deployKey %>'
                 },
-                src: '<%= filesToUploadToServer %>',
+                src: 'build',
                 dest: '<%= pathToSpecsOnServer %>',
                 exclusions: '<%= excludedFilesForUpload %>'
-            },
-            deployMinified: {
-                auth: {
-                    host: '<%= deployHost %>',
-                    port: '<%= deployPort %>',
-                    authKey: '<%= deployKey %>'
-                },
-                src: '<%= pathToAppDir %>/build',
-                dest: '<%= pathToSpecsOnServer %>',
-                exclusions: '<%= excludedFilesForProductionsUpload %>'
             }
         },
 
         // clean files after build
         clean: {
-            main: {
-                src: ['<%= pathToAppDir %>/build/']
+            build: {
+                src: ['build/']
+            },
+            all: {
+                src: [
+                    '<%= pathToSpecs %>/client'
+                    ]
+            },
+            server: {
+                src: [
+                    'build/client'
+                    ]
+            },
+            initServer: {
+                src: [
+                    'user/init'
+                    ]
             }
         },
 
         watch: {
             main: {
-                files: '<%= filesToCopy %>',
-                tasks: ['copy:main'],
+                files: '<%= filesToWatch %>',
+                tasks: ['less:main','copy:main'],
                 options: {
                     nospawn: true
                 }
             }
         },
 
-        // optimize all scripts via r.js
-        requirejs: {
-            compile: {
-                options: {
-                    appDir: '.',
-                    baseUrl: '.',
-                    dir: '<%= pathToSpecs %>',
-                    fileExclusionRegExp: 'build.js|Gruntfile.js|^node_modules$',
-                    paths: {
-                            core: 'core/js',
-                            modules: 'core/js/modules',
-                            lib: 'core/js/lib',
-                            templates: 'core/templates',
-                            plugins: 'plugins',
-                            user: 'user',
-                            jquery: 'core/js/lib/jquery-1.9.1.min',
-                            text: 'core/js/text',
-                            data: 'data',
-                            searchPlugin: 'empty:'
-                        },
-                    optimize: 'none',
-                    preserveLicenseComments: false,
-                    modules: [
-                        {
-                            name: '<%= pathToSpecs %>/core/js/source.js',
-                            include: ['core/js/source.js']
-                        },
-                        {
-                            name: '<%= pathToSpecs %>/core/js/source-nav.js',
-                            include: ['core/js/source-nav.js']
-                        }
-                    ]
+        less: {
+            main: {
+                files: {
+                    "client/src/core/css/defaults.css": "client/src/core/css/less/defaults.less"
                 }
             }
         }
@@ -292,22 +341,32 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-sftp-deploy');
-    grunt.loadNpmTasks('grunt-ftp-deploy');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
-    // Task for init project
-    // Copying all needed files next to Source
-    grunt.registerTask('init', ['copy:main', 'copy:init', 'uglify:main', 'cssmin:main']);
+    // TODO: make cleaning task for existing plugins update
 
-    // Local deploy task
-    grunt.registerTask('update', ['copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner']);
+    // Init server
+    grunt.registerTask('initServer', ['copy:initServer', 'clean:initServer']);
 
-    // Minified and upload files to server via sftp
-    grunt.registerTask('deployServer', ['copy:server', 'cssmin:server', 'cssmin:addServerBanner', 'uglify:server', 'uglify:addServerBanner', 'sftp-deploy:deployMinified']);
+    // Init client
+    grunt.registerTask('initClient', ['copy:main', 'copy:init', 'uglify:main', 'cssmin:main', 'clean:all']);
 
-    // Upload file to server via sftp
-    grunt.registerTask('deployServerDebug', ['sftp-deploy:deploy']);
+    // Init new project in Source
+    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:init', 'uglify:main', 'cssmin:main', 'clean:all']);
 
-    // Task for start watching
+    // Local deploy task to public folder without minimize
+    grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
+
+    // Local deploy task to public folder
+    grunt.registerTask('update', ['less:main','copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
+
+    // Upload files to server via sftp
+    grunt.registerTask('deployServerDebug', ['clean:build', 'less:main', 'copy:server', 'clean:server']);
+
+    // Minify and upload files to server via sftp
+    grunt.registerTask('deployServer', ['clean:build', 'less:main', 'copy:server',  'cssmin:server', 'cssmin:addServerBanner', 'uglify:server', 'uglify:addServerBanner', 'clean:server', 'sftp-deploy:deploy']);
+
+    // Watching client side changes and running minify, less, copy to public
     grunt.registerTask('runWatch', ['watch']);
 };

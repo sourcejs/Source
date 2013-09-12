@@ -1,0 +1,7 @@
+{
+    "author": "Sorcerers",
+    "version": "0.1.0",
+    "description": "Here you can add your specific Source dependencies for extendint app.js or ading custom server plugins",
+    "dependencies": {
+    }
+}

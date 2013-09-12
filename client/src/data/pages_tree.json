@@ -1,0 +1,110 @@
+{
+	"docs": {
+		"source_page_navigation": {
+			"url": "/docs/index.html",
+			"title": "Documentation and examples"
+		},
+		"grunt": {
+			"index.html": {
+				"url": "/docs/grunt/index.html",
+				"title": "Grunt tasks",
+				"author": "Anton Korochinsky",
+				"lastmod": "21.06.13",
+				"lastmodSec": "1371796923",
+				"keywords": "",
+				"bubbles": "0",
+				"info": ""
+			}
+		},
+		"spec": {
+			"index.html": {
+				"url": "/docs/spec/index.html",
+				"title": "Inner Spec page",
+				"author": "Robert Haritonov",
+				"lastmod": "07.06.13",
+				"lastmodSec": "1370612189",
+				"keywords": "create spec, spec markup",
+				"bubbles": "0",
+				"info": ""
+			}
+		},
+		"grunt-ru": {
+			"index.html": {
+				"url": "/docs/grunt-ru/index.html",
+				"title": "Grunt tasks (RU)",
+				"author": "Anton Korochinsky",
+				"lastmod": "21.06.13",
+				"lastmodSec": "1371796923",
+				"keywords": "",
+				"bubbles": "0",
+				"info": ""
+			}
+		},
+		"plugins": {
+			"source_page_navigation": {
+				"url": "/docs/plugins/index.html",
+				"title": "Plugins"
+			},
+			"debugmode-en": {
+				"index.html": {
+					"url": "/docs/plugins/debugmode-en/index.html",
+					"title": "Plugin — Debugmode (EN)",
+					"author": "Anton Korochinsky",
+					"lastmod": "21.06.13",
+					"lastmodSec": "1371796923",
+					"keywords": "",
+					"bubbles": "0",
+					"info": ""
+				}
+			},
+			"debugmode": {
+				"index.html": {
+					"url": "/docs/plugins/debugmode/index.html",
+					"title": "Plugin — Debug mode (RU)",
+					"author": "Anton Korochinsky",
+					"lastmod": "07.06.13",
+					"lastmodSec": "1370605716",
+					"keywords": "source, clarify, pplugin",
+					"bubbles": "0",
+					"info": "Checking layout parts in custom context."
+				}
+			},
+			"clarify": {
+				"index.html": {
+					"url": "/docs/plugins/clarify/index.html",
+					"title": "Plugin - Clarify (RU)",
+					"author": "Dmitry Lapynov",
+					"lastmod": "30.08.13",
+					"lastmodSec": "1370605716",
+					"keywords": "",
+					"bubbles": "0",
+					"info": ""
+				}
+			}
+		},
+		"base": {
+			"index.html": {
+				"url": "/docs/base/index.html",
+				"title": "Basic engine documentation",
+				"author": "Robert Haritonov",
+				"lastmod": "07.06.13",
+				"lastmodSec": "1370612189",
+				"keywords": "",
+				"bubbles": "0",
+				"info": ""
+			}
+		},
+		"starting": {
+			"index.html": {
+				"url": "/docs/starting/index.html",
+				"title": "Starting Spec page template",
+				"author": "Spec author",
+				"lastmod": "07.06.13",
+				"lastmodSec": "1370605716",
+				"keywords": "",
+				"bubbles": "0",
+				"info": ""
+			}
+		}
+	}
+}

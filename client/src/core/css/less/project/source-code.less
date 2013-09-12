@@ -1,0 +1,54 @@
+/* Code highlighting
+---------------------------------------------------------------------------------- */
+
+.source_source-code,
+code.brush {
+	display: none !important; /* Hide all code source by default */
+	}
+
+.source_source-code {
+	font-size: 13px;
+	}
+
+.source_source-code .source_source-code_toggle .source_show {display: none;} /* Default maximazed */
+.source_source-code__min .source_source-code_toggle .source_hide {display: none;} /* minimized */
+.source_source-code__min .source_source-code_toggle .source_show {display: inline;}
+
+.source_source-code__min .source_source-code_cnt {
+	display: none !important;
+	}
+
+.source_source-code_toggle {
+	display: inline-block;
+	height: 14px;
+	margin-bottom: 10px;
+	border-bottom: #25588D dashed 1px;
+	font-size: 10px;
+	text-decoration: none !important;
+	}
+	.source_source-code_toggle:hover {
+		border-bottom: none;
+		padding-bottom: 1px;
+		}
+
+	.source_source-code_toggle__css .source_show:after,
+	.source_source-code_toggle__css .source_hide:after {
+		content: " CSS";
+		}
+
+	.source_source-code_toggle__html .source_show:after,
+	.source_source-code_toggle__html .source_hide:after {
+		content: " HTML";
+		}
+
+	.source_source-code_toggle__js .source_show:after,
+	.source_source-code_toggle__js .source_hide:after {
+		content: " JavaScript";
+		}
+
+.source_source-code_toggle-all .source_hide {display: none;} /* Default hidden */
+.source_source-code_toggle-all__hide .source_show {display: none;}
+.source_source-code_toggle-all__hide .source_hide {display: inline;}
+
+/* /Code highlighting
+---------------------------------------------------------------------------------- */

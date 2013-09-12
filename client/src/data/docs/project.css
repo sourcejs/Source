@@ -1,0 +1,28 @@
+/*
+*
+* Here you can add your site (project) CSS files @import for use with spec pages examples
+*
+* ! Don't forget to duplicate project body styles on .source_example !
+*
+*/
+
+
+/* Example project file, just for demo for Spec page documentation */
+@import 'bootstrap.min.css';
+
+/*
+*
+* Repeat your project body styles to .source_example
+*
+*/
+.source_example {
+	/* Bootstrap body styles */
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size:14px;
+	line-height:20px;
+	color:#333;
+	background-color:#fff
+	}
+
+/* You can make symlinks for project CSS files to your Source server, or just write absolute path to other directory */
+/* like @import url('/res/css/all-web.css'); */

@@ -1,6 +1,6 @@
 # Source - Front-end documentation engine
 
-**v.0.2.1**
+**v.0.3.0**
 
 Main project aim is to give front-end development team a **best tool** for documenting web interfaces and **for productive team work**.
 
@@ -13,12 +13,9 @@ ___
 
 ___
 
-Project is in active development state, but until we will update base technology stack integration (Node.js, mongoDB, bower) it will stay in Beta.
-
 ## Upcoming updates
 
 * Full english documentation stack
-* Node.JS integration as main engine server
 * Markdown support in documentation pages
 
 ___

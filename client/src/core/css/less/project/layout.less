@@ -1,0 +1,54 @@
+/* Layout
+---------------------------------------------------------------------------------- */
+
+.source_container {
+	position: relative;
+	padding: 50px 25px 350px; /* Footer height + margin */
+
+	min-height: 100%;
+	overflow: hidden;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+    @media @media_min-step-m {
+	    min-width: 990px;
+        }
+	}
+
+.source_main {
+	position: relative;
+	padding: 35px 0;
+	min-height: 230px;
+
+	counter-reset: h2;
+	}
+
+    //TDOO: move those kind of classes to seperate auto-generated module
+	.source_main_h1, /* for custom cases */
+	.source_main > h1 {
+		position: relative;
+		padding: 30px 0;
+		margin: -30px -100% 20px;
+		padding-left: 100%;
+		padding-right: 100%;
+		font-size: 36px;
+		font-weight: normal;
+		color: #67a9d4;
+		border-bottom: 1px solid #f0f0f0;
+        font-family: 'Museo', Arial;
+
+		/* reset */
+		line-height: 1.5;
+		}
+
+.source_main_descr > ul,
+.source_main_descr > p,
+.source_main_descr {
+	margin-bottom: 20px;
+	font-size: 14px;
+	}
+
+/* /Layout
+---------------------------------------------------------------------------------- */

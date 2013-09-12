@@ -1,0 +1,45 @@
+/* Plugin styles
+---------------------------------------------------------------------------------- */
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+	}
+
+.clarify-head {
+	display: block;
+	padding: .25em .5em;
+
+	background-color: #73AF73;
+	color: white;
+	font-family: sans-serif;
+	}
+
+	.clarify-logo {
+		vertical-align: -.095em;
+		margin-right: .25em;
+		-webkit-transition: -webkit-transform .2s ease-in;
+		-moz-transition: transform .2s ease-in;
+		transition: transform .2s ease-in;
+		}
+		.clarify-head:hover .clarify-logo {
+			-webkit-transform: rotate(-45deg);
+			-moz-transform: rotate(-45deg);
+			transform: rotate(-45deg);
+			}
+
+	.clarify-head > a {
+		display: none;
+		}
+	.clarify-head:hover > a {
+		display: inline;
+		color: white;
+		text-decoration: none;
+		}
+	.clarify-head:hover > span {
+		display: none;
+		}
+
+/* /Plugin styles
+---------------------------------------------------------------------------------- */
