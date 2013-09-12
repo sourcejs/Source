@@ -7,6 +7,9 @@ node_modules
 # Build folder fo ftp deploy
 /build
 
+# Git ignore fo initing
+!/client/init/.gitignore
+
 # Custom client-side plugins folder, managed with volo packet manager
 /client/plugins
 
