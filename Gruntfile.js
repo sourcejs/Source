@@ -318,7 +318,7 @@ module.exports = function(grunt) {
         watch: {
             main: {
                 files: '<%= filesToWatch %>',
-                tasks: ['less:main','copy:main'],
+                tasks: ['less:main','copy:main','clean:all'],
                 options: {
                     nospawn: true
                 }

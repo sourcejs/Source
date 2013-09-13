@@ -4,13 +4,13 @@
 			"url": "/docs/index.html",
 			"title": "Documentation and examples"
 		},
-		"grunt": {
+		"base": {
 			"index.html": {
-				"url": "/docs/grunt/index.html",
-				"title": "Grunt tasks",
-				"author": "Anton Korochinsky",
-				"lastmod": "21.06.13",
-				"lastmodSec": "1371796923",
+				"url": "/docs/base/index.html",
+				"title": "Basic engine documentation",
+				"author": "Robert Haritonov",
+				"lastmod": "07.06.13",
+				"lastmodSec": "1370612189",
 				"keywords": "",
 				"bubbles": "0",
 				"info": ""
@@ -28,10 +28,10 @@
 				"info": ""
 			}
 		},
-		"grunt-ru": {
+		"grunt": {
 			"index.html": {
-				"url": "/docs/grunt-ru/index.html",
-				"title": "Grunt tasks (RU)",
+				"url": "/docs/grunt/index.html",
+				"title": "Grunt tasks",
 				"author": "Anton Korochinsky",
 				"lastmod": "21.06.13",
 				"lastmodSec": "1371796923",
@@ -45,28 +45,16 @@
 				"url": "/docs/plugins/index.html",
 				"title": "Plugins"
 			},
-			"debugmode-en": {
+			"debugmode": {
 				"index.html": {
-					"url": "/docs/plugins/debugmode-en/index.html",
-					"title": "Plugin — Debugmode (EN)",
+					"url": "/docs/plugins/debugmode/index.html",
+					"title": "Plugin — Debugmode",
 					"author": "Anton Korochinsky",
 					"lastmod": "21.06.13",
 					"lastmodSec": "1371796923",
 					"keywords": "",
 					"bubbles": "0",
 					"info": ""
-				}
-			},
-			"debugmode": {
-				"index.html": {
-					"url": "/docs/plugins/debugmode/index.html",
-					"title": "Plugin — Debug mode (RU)",
-					"author": "Anton Korochinsky",
-					"lastmod": "07.06.13",
-					"lastmodSec": "1370605716",
-					"keywords": "source, clarify, pplugin",
-					"bubbles": "0",
-					"info": "Checking layout parts in custom context."
 				}
 			},
 			"clarify": {
@@ -82,24 +70,12 @@
 				}
 			}
 		},
-		"base": {
-			"index.html": {
-				"url": "/docs/base/index.html",
-				"title": "Basic engine documentation",
-				"author": "Robert Haritonov",
-				"lastmod": "07.06.13",
-				"lastmodSec": "1370612189",
-				"keywords": "",
-				"bubbles": "0",
-				"info": ""
-			}
-		},
 		"starting": {
 			"index.html": {
 				"url": "/docs/starting/index.html",
 				"title": "Starting Spec page template",
 				"author": "Spec author",
-				"lastmod": "07.06.13",
+				"lastmod": "13.09.13",
 				"lastmodSec": "1370605716",
 				"keywords": "",
 				"bubbles": "0",
