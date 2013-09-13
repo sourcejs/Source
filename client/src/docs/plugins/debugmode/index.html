@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Plugin — Debug mode (RU)</title>
+    <title>Plugin — Debugmode (EN)</title>
 
     <meta name="author" content="Anton Korochinsky">
 
@@ -25,94 +25,98 @@
 
     <div class="source_container"><div class="source_main source_col-main" role="main">
 
-        <h1>Плагин — Дебаг-режим</h1>
+        <h1>Plugin — Debugmode</h1>
 
         <section class="source_section">
-            <h2>Установка плагина Дебаг-режим</h2>
+            <h2>How to install Debugmode</h2>
 
-            <p>Скачайте <a href="https://github.com/sourcejs/Sourcejs_debug-mode/">Дебаг-режим</a> в папку плагинов в установленном Source.js и выполните следующие команды:</p>
+            <p>Clone <a href="https://github.com/sourcejs/Sourcejs_debug-mode/">Debugmode</a> to your plugins dir (Source/client/plugins) in installed Source.js and run:</p>
 
             <code class="brush : js source_visible">
-                $ cd Debugmode
+                $ cd Source/client/plugins
 
-                $ npm install
+                $ volo add sourcejs/Sourcejs_debug-mode
 
-                $ volo add
+                $ cd Source
+
+                $ grunt update
             </code>
 
-            <p>Если вы хотите разрабатывать Дебаг-режим, процесс разработки описан в <a href="https://github.com/sourcejs/Sourcejs_debug-mode/">документации</a>.</p>
+            <p>If you want to develop this plugin, read <a href="https://github.com/sourcejs/Sourcejs_debug-mode/">documentation</a>.</p>
 
         </section>
 
 	    <section class="source_section">
-		    <h2>Кратко о дебаг-режиме</h2>
+		    <h2>Introducing to debugmode</h2>
 
-		    <p>Дебаг режим позволяет упростить тестирование верстки. Это плагин для Source, и он неразрывно связан с этим движком. Дебаг режим доступен на всех страницах спецификаций, включается кликом по контролу, находящемуся в левой части страницы на всей ее высоте.</p>
+		    <p>Debugmode makes layout testing easier. It's a plugin for Source.js, and Debugmode can be used only with this tool. Debugmode is available on every specs page. It can be switched on/of by click on control on the left part of page over all its height. </p>
 		    <img src="i/switcher.png">
 
-		    <p>Состоит из двух основных частей.</p>
+		    <p>Debugmode consists of two main parts.</p>
 	    </section>
 
 	    <section class="source_section">
-		    <h2>Тулбар в каждой секции</h2>
+		    <h2>The toolbar located within each section</h2>
 		    <img src="i/section_toolbar.png">
-		    <p>Тулбар, появляющийся в каждой секции при наведении на нее.  Он позволяет проверить верстку на контентоустойчивость без инсепкторов и файрбагов. Для этого необходимо войти в режим редактирования контента, кроме того можно откатить контент каждой секции до начального состояния, и так же в этом тулбаре есть ссылка на выход из дебаг-режима.</p>
+		    <p>The toolbar appears in each section when you hover over it. It allows you to check the layout on content stable without Web inspector and Firebug. To do this, enter the edit mode content, in addition you can revert the content of each section to the initial state. Also in the toolbar there is a link for switching-off debugmode.</p>
 	    </section>
 
 	    <section class="source_section">
-		    <h2>Тулбар внизу страницы</h2>
+		    <h2>The toolbar at the bottom of the page</h2>
 
 		    <img src="i/main_toolbar.png">
-		    <p>Основной тулбар, появляющийся внизу страницы. Для удобства, его можно скрыть, не выходя из дебаг-режима, а так же менять его высоту, просто потянув его за контрол ресайза, посередине тулбара. В этом тулбаре находится несколько форм, которые помгают протестировать  верстку с точки зрения проблем по отдельным элементам.</p>
+		    <p>This is the main toolbar that appears at the bottom of the page. For convenience, you can hide it without switching-off debugmode, as well as to change the height by simply pulling his resize control located on the middle of the toolbar. This toolbar contains several forms that help testing layout via the checklist.</p>
 
-		    <p>Для удобства основной тулбар разделен на несколько форм.</p>
+		    <p>For convenience, the main toolbar is divided into several forms.</p>
 		    <img src="i/single_form.png">
 
 		    <p>
-			    С помощью него в дебаг-режиме вы можете протестировать верстку, посмотрев проблемные элементы. Каждый элемент будет выделен красным цветом.
+		    	Using debugmode, you can test the layout by looking problematic elements. Each element will be highlighted in red.
 		    </p>
 
 			<img src="i/problematic_class.png">
 
-			<p>А при наведении на него в левом верхнем углу отобразится тултип с информацией, почему элемент считается проблемным.</p>
+			<p>
+				And when you hover over it, in the upper left corner of the page tooltip appears with information on why the element is considered to be problematic.
+			</p>
 
 			<img src="i/tooltip.png" >
 
-            <p>Проблемные элементы можно выбирать с помощью форм внутри тулбара:</p>
+            <p>Problematic items can be selected using the form inside the toolbar:</p>
 
 		    <ul>
 			    <li>
-				    Элементы с количеством классов больше выбранного. При наведении на элемент в тултипе ошибки будет указано число классов элемента.
+			    	Elements have lots of classes. When you point to an element in the error tooltip the number of classes of the element will be indicated.
 			    </li>
 			    <li>
-				    Ссылки с неправильными атрибутами.
+				    Links with the wrong attributes.
 			    </li>
 			    <li>
-				    Изображения с неправильными атрибутами.
+				    Images with the wrong attributes.
 			    </li>
 			    <li>
-				    Элементы с количеством вложенности DOM больше выбранного. При наведении на элемент с тултипе ошибки будет указано уровень вложенности элемента относительно секции или же, если страница не разбита на секции, относительно всего документа.
+			    	Elements have lots of the number of nesting in DOM.  When you point to an element in the error tooltip the level of nesting element relative section will be indicate.
 			    </li>
 		    </ul>
 	    </section>
 
         <section class="source_section">
-            <h2>Будущее дебаг-режима</h2>
+            <h2>The future of debugmode</h2>
 
-            <p>В ближайшее время планируется добавить к дебаг-режиму еще несколько функций, таких как:</p>
+            <p>In the near future we plan to add to debugmode a few more features:</p>
 
             <ul>
                 <li>
-                    сетка поверх макета для более точной проверки отступов и расположения блоков.
+                	grid over the layout for a more accurate test of indentation and layouts.
                 </li>
                 <li>
-                    проверка на доступность.
+                    check for accessibility.
                 </li>
                 <li>
-                    проверка на количество перебитых стилей у элементов.
+                    check the number of overdetermined styles for elements.
                 </li>
                 <li>
-                    дополнительные проверки по чеклисту, например - правильные отрибуты полей формы.
+                    additional checks on the checklist, for example - the correct attributes of form fields.
                 </li>
             </ul>
 
