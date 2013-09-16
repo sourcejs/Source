@@ -93,7 +93,10 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: ['client/src/**'],
+                        src: [
+                            'client/src/**',
+                            '!client/src/data/pages_tree.json'
+                            ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {

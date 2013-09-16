@@ -1,6 +1,6 @@
 # Source - Front-end documentation engine
 
-**v.0.3.0**
+**v.0.3.1**
 
 Main project aim is to give front-end development team a **best tool** for documenting web interfaces and **for productive team work**.
 
