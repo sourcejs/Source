@@ -21,6 +21,16 @@ app.use(clarify);
 app.use(express.static(__dirname + '/core/clarify')); // static for module css
 /*  /Clarify module */
 
+/*  File tree module */
+fileTree = require('./core/file-tree');
+global.app.use(function(req, res, next){
+    if(req.url === "/") {
+        fileTree.scan();
+    }
+    next();
+});
+/*  /File tree module */
+
 /* Error handling */
 global.app.use(logErrors);
 global.app.use(clientErrorHandler);
@@ -39,6 +49,7 @@ try {
     /* User additional functionality */
     global.extApp = require("./user/app.js");
 } catch(e) {
+    console.log(e);
     process.exit(e.code);
 }
 

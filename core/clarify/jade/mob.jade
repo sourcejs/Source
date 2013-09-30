@@ -10,7 +10,7 @@ html.no-js
         // meta(name='apple-mobile-web-app-capable', content='yes')
         // meta(name='apple-mobile-web-app-status-bar-style', content='red')
 
-        script
+        script.
             document.documentElement.className = 'js'
 
         title=head.title
@@ -37,10 +37,10 @@ html.no-js
         // /Inherited styles
 
     body.clarify
-        span.clarify-head
+        span.clarify_h
             img.clarify-logo(src='/img/cross.png', width='15', height='15', alt='Clarified specification')
-            span Clarified specification
-            a(href=body.homeLink) Back to specification
+            span.clarify-h_tx Clarified specification
+            a.clarify-h_a(href=body.homeLink) Back to specification
         content
             !=body.spec
         br

@@ -111,12 +111,12 @@
 
 /* Everything closed by default */
 .source_section {
-    & > * {
+    body & > * { //body for weihgt
         display: none;
         }
 
-    & > h2:first-child {
-		display: block !important;
+    body & > h2:first-child { //body for weihgt
+		display: block;
 		}
 	}
 
@@ -127,12 +127,12 @@
 		}
 
     & > .source_a_hl {
-		display: inline !important;
+		display: inline;
 		}
 
     .source_example {
-		display: inline-block !important;
-		*display: inline !important;
+		display: inline-block;
+		*display: inline;
 		*zoom: 1;
 		}
 

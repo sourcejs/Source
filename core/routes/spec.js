@@ -10,8 +10,8 @@ function serveContent(filePath, pathToSpec, res) {
                 } else {
 
                     var info = {
-                        title: "Новая спека",
-                        author: "Аноним"
+                        title: "New spec",
+                        author: "Anonymous"
                     };
 
                     if(fs.existsSync(pathToSpec + 'info.json')) {

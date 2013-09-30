@@ -24,8 +24,9 @@ module.exports = function reply(req, res, next) {
 
 			// executes ph.js via phantomjs
 			var id = parsedUrl.query.id,
-				params = "sudo core/clarify/phantomjs core/clarify/phantom/ph.js " +
-						 "http://" + urlAdress + " " + id;
+				params = "sudo core/clarify/phantomjs " +
+						"core/clarify/phantom/ph.js " +
+						"http://" + urlAdress + " " + id;
 
 			var child = exec(params, function (err, stdout, stderr) {
 				if (err) console.log('Exec error: ' + err);

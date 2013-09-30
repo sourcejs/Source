@@ -1,0 +1,6 @@
+{
+    "author": "Robert Haritonov",
+    "keywords": "create spec, spec markup",
+    "title": "Inner Spec page",
+    "info": "\n\n            <p>Specs ares generated directly from <a href=\"/docs/base/index.html#2!\">file system</a>, to create new Spec page like this one, just copy <a href=\"/docs/starting\">starting template</a> and put it at any new folder in Source.</p>\n\n        "
+}

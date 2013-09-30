@@ -1,13 +1,12 @@
 /* Plugin styles
 ---------------------------------------------------------------------------------- */
 
-html,
-body {
+html, body {
 	padding: 0;
 	margin: 0;
 	}
 
-.clarify-head {
+.clarify_h {
 	display: block;
 	padding: .25em .5em;
 
@@ -23,21 +22,21 @@ body {
 		-moz-transition: transform .2s ease-in;
 		transition: transform .2s ease-in;
 		}
-		.clarify-head:hover .clarify-logo {
+		.clarify_h:hover .clarify-logo {
 			-webkit-transform: rotate(-45deg);
 			-moz-transform: rotate(-45deg);
 			transform: rotate(-45deg);
 			}
 
-	.clarify-head > a {
+	.clarify-h_a {
 		display: none;
 		}
-	.clarify-head:hover > a {
+	.clarify_h:hover > .clarify-h_a {
 		display: inline;
 		color: white;
 		text-decoration: none;
 		}
-	.clarify-head:hover > span {
+	.clarify_h:hover > .clarify-h_tx {
 		display: none;
 		}
 

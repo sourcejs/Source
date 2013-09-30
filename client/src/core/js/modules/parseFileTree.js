@@ -57,7 +57,8 @@ define([
                             //Except other cats in specific cat search mode
                             if (typeof getCatInfo !== 'undefined') {
 
-                                if (typeof targetSubCatObj['source_page_navigation'] !== 'object' ) {
+                                // Checking navigation page info
+                                if (typeof targetSubCatObj['index.html'] !== 'object' ) {
                                     searchCat(targetSubCatObj, currentSubCat, true);
                                 }
 
@@ -82,14 +83,16 @@ define([
             searchCat(currentCatObj, currentCat);
         }
 
-        return fileTree;
+        if (Object.getOwnPropertyNames(fileTree).length > 0) {
+            return fileTree;
+        }
 
     };
 
     ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
         //If cat info needed
         if (getCatInfo) {
-            return typeof targetSubCatObj['index.html'] === 'object' || currentSubCat === 'source_page_navigation';
+            return typeof targetSubCatObj['index.html'] === 'object' || currentSubCat === 'index.html';
         } else {
             return typeof targetSubCatObj['index.html'] === 'object';
         }

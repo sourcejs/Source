@@ -703,21 +703,21 @@ body p.source_warn,
 /* Dynamics
 -------------------------------------------------- */
 /* Everything closed by default */
-.source_section > * {
+body .source_section > * {
   display: none;
 }
-.source_section > h2:first-child {
-  display: block !important;
+body .source_section > h2:first-child {
+  display: block;
 }
 .source_section__open > *:not(script):not(style):not(style):not(.source_example) {
   display: block;
 }
 .source_section__open > .source_a_hl {
-  display: inline !important;
+  display: inline;
 }
 .source_section__open .source_example {
-  display: inline-block !important;
-  *display: inline !important;
+  display: inline-block;
+  *display: inline;
   *zoom: 1;
 }
 .source_section__open .spoiler-cont_css_w,
@@ -975,25 +975,7 @@ input.source_search_it:focus {
 }
 /* /Auto complete plugin */
 /* /Search
----------------------------------------------------------------------------------- *//* Bubbles plugin
--------------------------------------------------- */
-/* TODO: remove plugin css from core */
-.source_bubble {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 26px;
-  height: 20px;
-  margin-left: 5px;
-  line-height: 14px;
-  text-align: center;
-  background: url(../i/bubble.png);
-  color: #333;
-  font-size: 11px;
-  text-decoration: none !important;
-}
-/* /Bubbles plugin */
-/* Highlights
+---------------------------------------------------------------------------------- *//* Highlights
 ---------------------------------------------------------------------------------- */
 /* TODO: optimize those kind of selectors range with preprocessor */
 .source_hl,

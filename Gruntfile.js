@@ -94,8 +94,7 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: [
-                            'client/src/**',
-                            '!client/src/data/pages_tree.json'
+                            'client/src/**'
                             ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
@@ -141,7 +140,11 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: ['client/src/**/*.css'],
+                        src: [
+                            'client/src/**/*.css',
+                            '!client/src/core/css/core.css',
+                            '!client/src/data/docs/project.css'
+                        ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
@@ -162,7 +165,10 @@ module.exports = function(grunt) {
             server: {
                 files: [
                     {
-                        src: ['client/src/**/*.css'],
+                        src: [
+                            'client/src/**/*.css',
+                            '!client/src/core/css/core.css'
+                        ],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
@@ -185,7 +191,7 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['client/src/core/**/*.css'],
+                src: ['client/src/core/css/defaults.css'],
                 dest: '<%= pathToSpecs %>/',
                 ext: '.css',
                 rename: function(destBase, destPath) {
@@ -198,7 +204,7 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['client/src/core/**/*.css'],
+                src: ['client/src/core/css/defaults.css'],
                 dest: 'build/',
                 ext: '.css',
                 rename: function(destBase, destPath) {
@@ -214,7 +220,11 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: ['client/src/**/*.js'],
+                        src: [
+                            'client/src/**/*.js',
+                            '!client/src/test/js/**/*.js',
+                            '!client/src/test/spec/**/*.js'
+                        ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
@@ -235,7 +245,11 @@ module.exports = function(grunt) {
             server: {
                 files: [
                     {
-                        src: ['client/src/**/*.js'],
+                        src: [
+                            'client/src/**/*.js',
+                            '!client/src/test/js/**/*.js',
+                            '!client/src/test/spec/**/*.js'
+                        ],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
@@ -342,7 +356,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-sftp-deploy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');

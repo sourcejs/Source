@@ -8,11 +8,11 @@ var url = system.args[1],
 page.open(url);
 
 page.onLoadFinished = function (msg) {
-	if (msg != 'success') console.log('Сервер не отвечает.');
+	if (msg != 'success') console.log('Server is not responding.');
 	else {
 
         //TODO: create and check callback from templater
-        setTimeout(function(){
+//        setTimeout(function(){
             var code = page.evaluate(function (id) {
             var html = {};
 
@@ -41,7 +41,7 @@ page.onLoadFinished = function (msg) {
 				while(i < scripts.length) {
 					var el = scripts[i];
 
-					if(!el.getAttribute('data-requiremodule') && !el.getAttribute('data-main')) scriptsArr.push(el.outerHTML);
+					if(!el.dataset['requiremodule'] && !el.dataset['main']) scriptsArr.push(el.outerHTML);
 					++i;
 				}
 
@@ -94,14 +94,16 @@ page.onLoadFinished = function (msg) {
                 html.scripts = getHeadData()[1];
                 html.source = getSource(id);
             } catch (e) {
-                if(e) html.err = e.name + '\nWrong request. May be block you looking for dont\'t exist or has an you confuse .';
+                if(e) html.err = e.name + '\nWrong request. ' +
+						'May be block you looking for dont\'t ' +
+						'exist or has an you confuse .';
             }
 
             return html;
         }, id);
 
         console.log(JSON.stringify(code, null, 1));
-        }, 250)
+//        }, 250);
 	}
 
     setTimeout(function(){

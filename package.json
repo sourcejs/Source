@@ -1,26 +1,27 @@
 {
-    "author": "Odnoklassniki front-end team",
-    "name": "Sourcejs.com",
-    "version": "0.3.1",
-    "repository": {
-        "type" : "git",
-        "url" : "https://github.com/sourcejs/Source.git"
-    },
-    "dependencies": {
-        "express": "3.x",
-        "colors": "0.6.x",
-        "deep-extend": "*",
-        "jade": "*"
-    },
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-contrib-uglify": "~0.2.1",
-        "grunt-contrib-watch": "~0.4.4",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-contrib-requirejs": "~0.4.1",
-        "grunt-contrib-clean": "~0.4.1",
-        "grunt-contrib-cssmin": "~0.6.1",
-        "grunt-sftp-deploy": "0.0.7",
-        "grunt-contrib-less": "~0.7.0"
-    }
+  "author": "Odnoklassniki front-end team",
+  "name": "Sourcejs.com",
+  "version": "0.3.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sourcejs/Source.git"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "colors": "0.6.x",
+    "extend": "~1.2.1",
+    "jade": "~0.35.0",
+    "deep-extend": "~0.2.6"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.6.2",
+    "grunt-sftp-deploy": "0.0.9",
+    "grunt-contrib-less": "~0.7.0",
+    "jsdom": "~0.8.5"
+  }
 }

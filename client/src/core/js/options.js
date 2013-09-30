@@ -44,9 +44,6 @@ define([
 
         colMain : 'source_col-main',
 
-        //Page roles
-        roleNavigation : 'source_page_navigation',
-
         // Plugins
         pluginsDir: '/plugins/'
     };

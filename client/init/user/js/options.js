@@ -30,8 +30,8 @@ define({
 
         pluginsOptions : {
             //Plugins options example
-            //globalNav : {
-            //    pageLimit: 999
+            //bubble : {
+            //    someOption: true
             //}
         }
     },
