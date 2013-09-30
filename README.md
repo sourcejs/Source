@@ -15,11 +15,11 @@ ___
 
 ## Upcoming updates
 
-At v.0.3.0 temporary we have an issue with navigation tree generation, but it will be fixed in nearest 0.3.1 update.
-
-* Full english documentation stack
-* Heade/footer includes to spec pages on backend
-* Markdown support in documentation pages
+* Project blog with updates and changelogs
+* Markdown support in spec pages
+* .src files for easier spec pages creation
+* Full english documentation stack for core API
+* Spec pages builder
 
 ___
 
