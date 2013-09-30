@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <title>Plugin - Clarify (RU)</title>
+
+    <meta name="author" content="Dmitry Lapynov">
+    <meta name="keywords" content="source, clarify, pplugin">
+
+    <!-- Project styles -->
+        <link href="/data/res/css/portal.css" rel="stylesheet">
+
+    <!-- Source default resources -->
+        <link href="/core/css/core.css" rel="stylesheet">
+
+        <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
+        <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
+
+    <!-- Custom -->
+        <style>
+            .emph {
+                color: #67A9D4;
+                }
+
+        </style>
+</head>
+<body>
+
+    <div class="source_container"><div class="source_main source_col-main" role="main">
+
+        <h1>Clarify - вёрстка без примесей</h1>
+
+        <!--<a class="source_spec" href="#777">Ссылка на сферическую документацию</a>-->
+        <!--<div class="source_warn">Опасно! Текст для привлечения внимания.</div>-->
+
+        <section class="source_section">
+            <h2>Что?</h2>
+
+           <p>Плагин для движка документации "Source". который показывает выбранный блок(-и) спецификации на отдельной странице в запрошенном контексте (шаблоне), который можено настроить самостоятельно, используя Jade.</p>
+
+            <h3>..сделать что бы заработало</h3>
+            <p>Плагин доступен из коробки. В репозитории используется сборка PhantomJS под Linux,
+               для MacOS / Windows, необходимо <a href="http://phantomjs.org/download.html">скачать</a>
+               платформенную сборку или <a href="http://phantomjs.org/build.html">собрать</a> самостоятельно
+               по инструкции. После этого просто замените файл phantomjs в корне плагина на собственный.</p>
+
+            <h3>..мы используем под капотом</h3>
+            <ul>
+                <li><a href="http://nodejs.org">Nodejs</a> - серверная часть;
+                <li><a href="http://jade-lang.com/">Jade</a> - шаблонизатор;
+                <li><a href="http://phantomjs.org/">PhantomJS</a> - парсер страницы;
+            </ul>
+        </section>
+
+        <section class="source_section">
+            <h2>Как?</h2>
+
+            <h3>..заставить это работать</h3>
+
+            <p>Что бы получить очищенный блок кода на странице со спекой делается запрос, вида: <br>
+            <b>http://<span class="emph">source.org</span>/.../<span class="emph">index.html</span>?get=<span class="emph">mob</span>&id=<span
+                    class="emph">1,2</span></b> <br>
+               , в котором: <br>
+            </p>
+            <ul>
+                <li><span class="emph">source.org</span> - hostname удаленного сервера с Source или localhost;
+                <li><span class="emph">index.html</span> - определяет спекой, а не навигация;
+                <li><span class="emph">mob</span> - контекст отображения или предустановленный шаблон для
+                                                  форматирования новой страницы;
+                <li><span class="emph">1,2</span> - номера блоков source_example, по порядку, начиная с 1;
+            </ul>
+
+
+            <h3>..решить возможные проблемы</h3>
+
+            <p>
+                <b>Проблема:</b> скрипт запускается только от index.html, со слеша он не поймет вас. <br>
+                <b>Решение:</b> Очевидно: делая запрос, убедиться, что в URL указан index.html;
+            </p>
+            <p>
+                <b>П:</b> результатом работы стала пустая валидная HTML-страница. <br>
+                <b>Р:</b> возможно на обрабатываемой старнице используется клиентский шаблонизатор который не успевает отрендерить страницу до того как это сделает Clarify. Можно вручную увеличить таймаут в clarify/phantom/ph.js.
+            </p>
+        </section>
+
+       <section class="source_section">
+           <h2>Зачем?</h2>
+
+           <h3>..можно хотеть это использовать</h3>
+            <p> а) тестирование на мобильных устройствах; <br>
+                б) тестирование под старые браузеры;
+            </p>
+
+
+            <h3>..еще может быть полезно</h3>
+            <p>а) тестить полноэкранные спеки;<br>
+               б) тестировать ненавязчивый javascript (а вернее его отсуствие :);<br>
+               в) задавать разные контексты отображения на одну и ту же верстку (другой дизайны, доктайп,
+               платформы);<br>
+               г) тестирование и просмотр responsive design;
+            </p>
+
+            <hr><br>
+               Feedback: <br>
+               <a href="mailto:lapynow.d@gmail.com?Subject=I%20got%20an%20idea!">Mail Me</a>
+
+
+       </section>
+
+    </div></div>
+
+</body>
+</html>

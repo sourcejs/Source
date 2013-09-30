@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Plugin - Clarify (RU)</title>
+    <title>Plugin - Clarify</title>
 
     <meta name="author" content="Dmitry Lapynov">
     <meta name="keywords" content="source, clarify, pplugin">
@@ -16,102 +16,94 @@
     <!-- Source default resources -->
         <link href="/core/css/core.css" rel="stylesheet">
 
-        <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
-        <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
+    <!--[if lt IE 9]><script src="/core/js/lib/html5shiv.js"></script><![endif]-->
+    <script data-main="/core/js/source" src="/core/js/lib/require-jquery.js"></script>
 
     <!-- Custom -->
         <style>
             .emph {
                 color: #67A9D4;
                 }
-
         </style>
 </head>
 <body>
 
     <div class="source_container"><div class="source_main source_col-main" role="main">
 
-        <h1>Clarify - вёрстка без примесей</h1>
-
-        <!--<a class="source_spec" href="#777">Ссылка на сферическую документацию</a>-->
-        <!--<div class="source_warn">Опасно! Текст для привлечения внимания.</div>-->
+        <h1>Clarify </h1>
+        <p>Translations: <br><a href="ru/index.html">русская версия</a></p>
 
         <section class="source_section">
-            <h2>Что?</h2>
+            <h2>What?</h2>
 
-            <p>Плагин для движка документации Source, который отображдает выбранный блок(-и) спецификации на отдельной
-            странице в запрошенном контексте (шаблоне).</p>
+            <p>Plugin for "Source" (documentation engine), that show chosen code blocks in separate page with defined context. (as example: environment for mobile devices). Context you may create by yourself using Jade.</p>
 
-            <h3>..сделать что бы заработало</h3>
-            <p>Плагин доступен из коробки. В репозитории используется сборка PhantomJS под Linux,
-               для MacOS / Windows, необходимо <a href="http://phantomjs.org/download.html">скачать</a>
-               платформенную сборку или <a href="http://phantomjs.org/build.html">собрать</a> самостоятельно
-               по инструкции. После этого просто замените файл phantomjs в корне плагина на собственный.</p>
+            <h3>..should I do to make it work?</h3>
+            <p>Clarify works "from box", but keep in mind that it uses PhantomJS and by default in repo it's prepared for Linux. <a href="http://phantomjs.org/download.html">Download</a> or <a href="http://phantomjs.org/build.html">build</a> suitable one for Mac or PC.</p>
 
-            <h3>..мы используем под капотом</h3>
+            <h3>..we're using behind?</h3>
             <ul>
-                <li><a href="http://nodejs.org">Nodejs</a> - серверная часть;
-                <li><a href="http://jade-lang.com/">Jade</a> - шаблонизатор;
-                <li><a href="http://phantomjs.org/">PhantomJS</a> - парсер страницы;
+                <li><a href="http://nodejs.org">Nodejs</a> - for back-end;
+                <li><a href="http://jade-lang.com/">Jade</a> - template engine;
+                <li><a href="http://phantomjs.org/">PhantomJS</a> - for Webkit and all his magick to parse page;
             </ul>
 
-            <!--<p>Описание содержимого секции, с выделением CSS <code class="source_class">.class</code>'ов, а так же любая другая полезная информация.</p>-->
-            <!--<section class="source_example"></section>-->
-            <!--<h3>Подзаголовок секции</h3>-->
         </section>
 
         <section class="source_section">
-            <h2>Как?</h2>
+            <h2>How?</h2>
 
-            <h3>..заставить это работать</h3>
+            <h3>..it can be uses</h3>
 
-            <p>Что бы получить очищенный блок кода на странице со спекой делается запрос, вида: <br>
-            <b>http://<span class="emph">source.org</span>/.../<span class="emph">index.html</span>?get=<span class="emph">mob</span>&id=<span
+            <p>To clarify code block you interested in from noise of bunch information you should do request with following pattern: <br>
+            <b>http://
+                <span class="emph">source.org</span>
+               /.../
+                <span class="emph">index.html
+                </span>?get=<span class="emph">mob</span>&id=<span
                     class="emph">1,2</span></b> <br>
-               , в котором: <br>
+               , where: <br>
             </p>
             <ul>
-                <li><span class="emph">source.org</span> - url удаленного сервера с Source или localhost;
-                <li><span class="emph">index.html</span> - дает знать, что идет работа со спекой, а не навигация;
-                <li><span class="emph">mob</span> - контекст отображения или предустановленный шаблон для
-                                                  форматирования новой страницы;
-                <li><span class="emph">1,2</span> - номера блоков source_example, по порядку, начиная с 1;
+                <li><span class="emph">source.org</span> - hostname/localhost;
+                <li><span class="emph">index.html</span> - used to match specs nor navigation;
+                <li><span class="emph">mob</span> - predefined context for mobile devices;
+                <li><span class="emph">1,2</span> - this is .source_example bocks, counting by order from 1;
             </ul>
 
 
-            <h3>..решить возможные проблемы</h3>
+            <h3>..it solve problems</h3>
 
             <p>
-                <b>Проблема:</b> скрипт запускается только от index.html, со слеша он не поймет вас. <br>
-                <b>Решение:</b> делать запрос от индекс-файла.
+                <b>Problem:</b> script works when catch index.html in URL bar and this helps him to understnd that it is start to work;<br>
+                <b>Answer:</b> Check your URL for index.html before request parameters.
             </p>
             <p>
-                <b>П:</b> результатом работы стала пустая валидная HTML-страница. <br>
-                <b>Р:</b> скрипт не успел отбработать мусташ (другой клиентский шаблонизатор). Как быстрый фикс можно вручную увеличить таймаут в 2 местах в ph.js, но лучше сделать это централизованно.
-            </p>
+                <b>P: </b>As result you get empty HTML page<br>
+                <b>A1: </b>Page which you try to render by Clarify is used template engine and it hasn't enough time to parse page, before Clarify make work done. Fix it by changing timeout in clarify/phantom/ph.js file</p><br>
+                <b>A2: </b>You miss change proper PhantomJS version for your platform.
         </section>
 
        <section class="source_section">
-           <h2>Зачем?</h2>
+           <h2>Why?</h2>
+           <h3>..it may be useful for you</h3>
 
-           <h3>..использовать в первую очередь</h3>
-            <p> а) тестирование на мобильных устройствах; <br>
-                б) тестирование под старые браузеры;
+            <p>
+                а) testing specs on mobile devices; <br>
+                б) testing on old browsers;
             </p>
 
 
-            <h3>..еще может быть полезно</h3>
-            <p>а) тестить полноэкранные спеки;<br>
-               б) тестировать ненавязчивый javascript (а вернее его отсуствие :);<br>
-               в) задавать разные контексты отображения на одну и ту же верстку (другой дизайны, доктайп,
-               платформы);<br>
-               г) тестирование и просмотр responsive design;
+            <h3>..also it may be good fro you</h3>
+            <p>а) make fullscreen specs in Source and easy test in single page;<br>
+               б) check how work you page in unobtrusive javascript mode;<br>
+               в) verify the same layout in as many context as you wish;<br>
+               г) responsive layout testing;
             </p>
 
-           <div class="source_info">
+            <hr><br>
                Feedback: <br>
                <a href="mailto:lapynow.d@gmail.com?Subject=I%20got%20an%20idea!">Mail Me</a>
-           </div>
 
 
        </section>
