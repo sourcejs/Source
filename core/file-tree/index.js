@@ -25,8 +25,8 @@ var NOT_EXEC = true;
 
 // configuration for function timeout
 // !!! on localhost recommend false on server true
-var cron = global.opts.cron;
-var cronRepeatTime = global.opts.cronRepeatTime;
+var cron = global.opts.filteTree.cron;
+var cronRepeatTime = global.opts.filteTree.cronRepeatTime;
 
 // formatting RegExp for parser
 var dirsForRegExp = '';
