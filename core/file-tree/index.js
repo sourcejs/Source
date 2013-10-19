@@ -7,7 +7,7 @@ var fs = require('fs'),
         rootLength = global.opts.common.pathToSpecs.length;
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-var excludedDirs = global.opts.filteTree.excludedDirs;
+var excludedDirs = global.opts.fileTree.excludedDirs;
 
 // files from parser get info
 // TODO: move info.json to options globally
@@ -18,15 +18,15 @@ var infoFile = "info.json";
 var outputFile = 'data/pages_tree.json';
 
 // File mask for search
-var fileMask = global.opts.filteTree.fileMask;
+var fileMask = global.opts.fileTree.fileMask;
 
 // for waiting when function finished
 var NOT_EXEC = true;
 
 // configuration for function timeout
 // !!! on localhost recommend false on server true
-var cron = global.opts.filteTree.cron;
-var cronRepeatTime = global.opts.filteTree.cronRepeatTime;
+var cron = global.opts.fileTree.cron;
+var cronRepeatTime = global.opts.fileTree.cronRepeatTime;
 
 // formatting RegExp for parser
 var dirsForRegExp = '';

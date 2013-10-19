@@ -2,14 +2,14 @@
     "common": {
         "pathToSpecs": "public"
     },
-    "filteTree": {
+    "fileTree": {
         "help": {
             "cron":"For locally project use false",
             "excludedDirs":"write path from public root. Example: ['core','docs/base']"
         },
         "excludedDirs": ["core","data","test","plugins","node_modules",".git"],
         "fileMask": "index.html",
-        "cron": false,
+        "cron": true,
         "cronRepeatTime": 60000
     }
 }
