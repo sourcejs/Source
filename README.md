@@ -13,13 +13,19 @@ ___
 
 ___
 
+## Updates
+* 23.09.13. Published [video recording](http://www.youtube.com/watch?v=3HNW5Bru0Ws) of Source engine presentation from [RIT++](http://ritconf.ru/) 2013 (RU)
+* 09.10.13. Engine [presentation](http://rhr.me/pres/source-min/) on [Fronteers Jam](http://fronteers.nl/congres/2013/jam-session) (video will be available soon)
+
 ## Upcoming updates
 
-* Project blog with updates and changelogs
+* Video recording of engine presentation with live demo in english 
+* Open project blog with news, updates and best practises
 * Markdown support in spec pages
-* .src files for easier spec pages creation
+* .src files for easier spec pages creation (v.0.3.2)
+* Screencasts and engine usage demos
 * Full english documentation stack for core API
-* Spec pages builder
+* Auto spec pages builder
 
 ___
 
