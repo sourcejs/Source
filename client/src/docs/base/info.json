@@ -1,5 +1,5 @@
 {
     "author": "Robert Haritonov",
-    "title": "Basic engine documentation",
-    "info": "\n\t        <p>This page (and whole site) is powered by Source engine, and all the documentation comes built in in every Source instance.</p>\n\n            <p><a href=\"http://sourcejs.com\">Sourcejs.com</a> client side source code is stored at <a href=\"https://github.com/sourcejs/Sourcejs.com\">github</a>.</p>\n        "
+    "title": "Basic Engine Documentation",
+    "info": "\n\t        <p>This page (and the rest of the site) is powered by the Source engine. All documentation comes built in in every Source instance.</p>\n\n            <p>The <a href=\"http://sourcejs.com\">Sourcejs.com</a> client-side source code is stored in our <a href=\"https://github.com/sourcejs/Sourcejs.com\">github repo</a>.</p>\n        "
 }
