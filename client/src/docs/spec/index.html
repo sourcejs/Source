@@ -6,18 +6,18 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10">
-    <title>Inner Spec page</title>
+    <title>Spec Page Documentation</title>
 
     <meta name="author" content="Robert Haritonov">
     <meta name="keywords" content="create spec, spec markup">
 
-	<!-- Your project styles -->
+    <!-- Your project styles -->
         <!--Link all project (site) styles at once-->
-		<link href="/data/docs/project.css" rel="stylesheet">
+        <link href="/data/docs/project.css" rel="stylesheet">
 
         <!--Or add separate, spec individual CSS files-->
-		<link href="css/spec.css" rel="stylesheet">
-	<!-- /Your project styles -->
+        <link href="css/spec.css" rel="stylesheet">
+    <!-- /Your project styles -->
 
     <!-- Source default resources -->
         <link href="/core/css/core.css" rel="stylesheet">
@@ -30,29 +30,32 @@
 
     <div class="source_container"><div class="source_main source_col-main" role="main">
 
-        <h1>Inner Spec page</h1>
+        <h1>Spec Page Documentation</h1>
 
         <div class="source_info">
 
-            <p>Specs ares generated directly from <a href="/docs/base/index.html#2!">file system</a>, to create new Spec page like this one, just copy <a href="/docs/starting">starting template</a> and put it at any new folder in Source.</p>
+            <p>You can add info blocks on spec pages by using <code>.source_info</code> on a div:</p>
+
+            <p>Specs are generated directly from the <span class="source_hl">/public</span> folder in Source's <a href="/docs/base/index.html#2!">file structure</a>. To create a new spec page like this one, make a copy of the <a href="/docs/starting">starting template</a> folder in <span class="source_hl">/public/docs</span>.</p>
 
         </div>
 
         <div class="source_warn">
-            <p>Warning text, for important messages, like:</p>
+            <p>Warning blocks can be added using <code>.source_warn</code>:</p>
 
-            <p>Highly recommended to read this document in HTML source.</p>
+            <p>It is highly recommended that you read the HTML source of this document.</p>
         </div>
 
-        <a class="source_a_hl" href="/docs/starting">Starting spec page template</a>
-        <a class="source_a_hl" href="#777">To highlight link like this one, use class .source_a_hl</a>
+        <a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
+
+        <p><code>Highlighting</code> can be achieved by either wrapping text in &lt;code&gt; tags, or by using the <code>.source_hl</code> class.</p>
 
         <section class="source_section">
-            <h2>Spec section heading</h2>
+            <h2>Spec Section Heading</h2>
 
-            <p>Here you can leave some useful notes for interface examples listed in this section in <code>.source_example</code> blocks.</p>
+            <p>Notes specific to particular interface elements can be documented here. Heading numbering is generated dynamically, and is supported up to 3 levels deep.</p>
 
-            <p>We have some special decorations for <code>highlighting</code> some special text, like <span class="source_hl">.class</span> names.</p>
+            <p>To render examples of interface elements, place them in a div with a class of <code>.source_example</code>:</p>
 
             <h3>Examples</h3>
 
@@ -62,9 +65,9 @@
 
                     <p>Rendered code examples - main documentation blocks.</p>
 
-                    <p>Engine decorative styles aren't affecting this block. Link your <a href="#2!">Project files</a> and start prototyping.</p>
+                    <p>Engine decorative styles do not affect this block. Link your <a href="#2!">project files</a> and start prototyping.</p>
 
-                    <p>This page has Twitter Botstrap styles linked through project.css</p>
+                    <p>This page has Twitter Bootstrap styles linked through project.css</p>
 
                     <a class="btn btn-primary" href="#777">Hey!</a>
                 </div>
@@ -84,8 +87,8 @@
 
             <code class="brush : css">
                 .css_source {
-                    maket-it: awesome;
-                    }
+                    make-it: awesome;
+                }
             </code>
 
             <code class="brush : html">
@@ -95,64 +98,80 @@
                 and filled automatically from "source_example".
             </code>
 
-            <section class="source_example">
+            <div class="source_example">
                 <div class="example_code">
-                    <p>Click "Show source" in inner navigation menu to show examples source code.</p>
+                    <p>Click "Show source" in the inner navigation menu on the right to reveal the source for all examples.</p>
 
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default">Left</button>
-                      <button type="button" class="btn btn-default">Middle</button>
-                      <button type="button" class="btn btn-default">Right</button>
+                        <button type="button" class="btn btn-default">Left</button>
+                        <button type="button" class="btn btn-default">Middle</button>
+                        <button type="button" class="btn btn-default">Right</button>
                     </div>
                 </div>
-            </section>
+            </div>
 
         </section>
 
         <section class="source_section">
-            <h2>Project CSS linking</h2>
+            <h2>Linking Your Project's CSS</h2>
 
-            <p>The most useful thing for spec (source documentation item) pages is ability to add your site styles directly to documentation page.</p>
+            <p>Your project's CSS should be linked to each spec page to render your examples, and you can also add styles specific to a spec page:</p>
 
-	        <code class="brush : html source_visible">
+            <code class="brush : html source_visible">
                  <!-- Your project styles -->
-                    <!--Link all project (site) styles at once-->
-                    &lt;link href="/data/docs/project.css" rel="stylesheet"&gt;
+                      <!--Link all project styles at once-->
+                      &lt;link href="/data/docs/project.css" rel="stylesheet"&gt;
 
-                    <!--Or add separate, spec individual CSS files-->
-                    &lt;link href="css/spec.css" rel="stylesheet"&gt;
-                <!-- /Your project styles --></code>
+                      <!--or add separate, spec specific CSS files-->
+                      &lt;link href="css/spec.css" rel="stylesheet"&gt;
+                <!-- /Your project styles -->
+            </code>
 
         </section>
 
         <section class="source_section">
-            <h2>Spec page markup</h2>
+            <h2>Spec Page Markup</h2>
 
-            <h3>Documentation text</h3>
+            <h3>Documentation Text</h3>
 
             <p>Documentation text in sections is marked up by simple HTML, using tags: <code>p, ul, li, h1, h2, h3, h4</code>. Only those tags are decorated and have style reset from project CSS.</p>
+            <p>Only the following tags in documentation sections are given styling:</p>
 
-            <p>In nearest updates we will add Markdown support for easy text formatting inside documentation sections.</p>
+            <ul>
+              <li><code>p</code></li>
+              <li><code>h1</code></li>
+              <li><code>h2</code></li>
+              <li><code>h3</code></li>
+              <li><code>h4</code></li>
+              <li><code>ul</code></li>
+              <li><code>li</code></li>
+            </ul>
 
-            <h3>Head</h3>
+            <p>This styling <strong>is not applied inside example blocks</strong>.</p>
 
-            <p>After implementing Node.js, all common HTML markup parts will be included on the server.</p>
+            <p>Markdown support for editing documentation sections will be available within the next few updates.</p>
 
-            <p><a href="/docs/starting">Starting template</a> will always be available for fast new spec page creation, just <a href="/docs/starting">copy it</a> to another folder.</p>
+            <h3>HTML Head</h3>
+
+            <p>After starting the Node.js server, common markup, such as the header, footer, and inner navigation, are dynamically included by the server.</p>
 
             <h4>Metas</h4>
 
-            <p>To add some machine readable information for plugins like Global Navigation and Search we use metas:</p>
+            <p>Machine readable information - used by plugins such as Global Navigation and Search - can be added via the following meta tags:</p>
 
-            <!-- Meta in exmaple starts with &lt; to not get rendered by browser -->
-	        <code class="brush : html source_visible">
+            <!-- code examples start with &lt; so as not to get rendered by browser -->
+            <code class="brush : html source_visible">
                 &lt;meta name="keywords" content="create spec, spec markup"&gt
-                &lt;meta name="author" content="Robert Haritonov"&gt</code>
+                &lt;meta name="author" content="Robert Haritonov"&gt
+            </code>
 
-            <p>Also, using meta information we're separating page roles like navigation:</p>
+            <p>Meta information can also be used to separate page roles:</p>
 
-	        <code class="brush : html source_visible">
-                &lt;meta name="source-page-role" content="navigation"&gt;</code>
+            <code class="brush : html source_visible">
+                &lt;meta name="source-page-role" content="navigation"&gt;
+            </code>
+
+            <p>The example above will indicate to Source that the page's role is for navigation, and not for use as a spec. Inner navigation, which generates a table of contents on spec pages, will not be output on pages with this meta tag. You will find this meta tag on the <a href="/">Source.js home page</a>.</p>
 
         </section>
 

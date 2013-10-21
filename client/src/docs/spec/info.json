@@ -1,6 +1,6 @@
 {
     "author": "Robert Haritonov",
     "keywords": "create spec, spec markup",
-    "title": "Inner Spec page",
-    "info": "\n\n            <p>Specs ares generated directly from <a href=\"/docs/base/index.html#2!\">file system</a>, to create new Spec page like this one, just copy <a href=\"/docs/starting\">starting template</a> and put it at any new folder in Source.</p>\n\n        "
+    "title": "Spec Page Documentation",
+    "info": "\n\n          <p>Specs are generated directly from the <span class=\"source_hl\">/public</span> folder in Source's <a href=\"/docs/base/index.html#2!\">file structure</a>. To create a new spec page like this one, make a copy of the <a href=\"/docs/starting\">starting template</a> folder in <span class=\"source_hl\">/public/docs</span>.</p>\n\n        "
 }
