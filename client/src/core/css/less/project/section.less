@@ -155,34 +155,33 @@
 /* Header actions */
 
 .source_section_h {
-
-    .source_section_h_expand {
-		position: absolute;
-		top: 0; left: -20px;
-
-		width: 20px;
-		height: 38px;
-		margin: 0 10px 0 0;
-
-		font-size: 12px;
-		text-decoration: none;
-		color: #999 !important;
-
-        &:hover .source_section_h_expand {
-			color:#4792D2 !important;
-			}
-
-        &:after {
-            content: "►";
-
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-
-            text-align: left;
-            line-height: 38px;
-            }
+    &:hover .source_section_h_expand {
+		color:#4792D2 !important; //important to override link style
 		}
+	}
+
+.source_section_h_expand {
+	position: absolute;
+	top: 0; left: -20px;
+
+	width: 20px;
+	height: 38px;
+	margin: 0 10px 0 0;
+
+	font-size: 12px;
+	text-decoration: none;
+	color: #999 !important; //important to override link style
+
+    &:after {
+        content: "►";
+
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+
+        text-align: left;
+        line-height: 38px;
+        }
 	}
 
 /* /Header actions */
