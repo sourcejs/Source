@@ -726,7 +726,7 @@ body .source_section > h2:first-child {
   display: none !important;
 }
 .source_section__open .source_section_h_expand:after {
-  content: "▼";
+  content: "▼" !important;
 }
 .source_section__open .source_source-code__show {
   display: block !important;
