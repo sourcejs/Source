@@ -732,7 +732,10 @@ body .source_section > h2:first-child {
   display: block !important;
 }
 /* Header actions */
-.source_section_h .source_section_h_expand {
+.source_section_h:hover .source_section_h_expand {
+  color: #4792D2 !important;
+}
+.source_section_h_expand {
   position: absolute;
   top: 0;
   left: -20px;
@@ -743,10 +746,7 @@ body .source_section > h2:first-child {
   text-decoration: none;
   color: #999 !important;
 }
-.source_section_h .source_section_h_expand:hover .source_section_h_expand {
-  color: #4792D2 !important;
-}
-.source_section_h .source_section_h_expand:after {
+.source_section_h_expand:after {
   content: "►";
   position: absolute;
   top: 0;
