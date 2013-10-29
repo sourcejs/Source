@@ -16,12 +16,12 @@
 *
 */
 .source_example {
-	/* Bootstrap body styles */
-	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-size:14px;
-	line-height:20px;
-	color:#333;
-	background-color:#fff
+	/* Duplicated Bootstrap body styles */
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #333333;
+	background-color: #ffffff;
 	}
 
 /* You can make symlinks for project CSS files to your Source server, or just write absolute path to other directory */
