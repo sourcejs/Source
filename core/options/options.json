@@ -9,7 +9,7 @@
         },
         "excludedDirs": ["core","data","test","plugins","node_modules",".git"],
         "fileMask": "index.html",
-        "cron": true,
+        "cron": false,
         "cronRepeatTime": 60000
     }
 }

@@ -44,7 +44,7 @@ try {
     global.routes = require('./core/routes');
 
     /* User plugins */
-    global.plugins = require("./user/plugins/");
+    global.plugins = require("./user/plugins");
 
     /* User additional functionality */
     global.extApp = require("./user/app.js");
