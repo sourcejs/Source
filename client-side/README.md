@@ -1,0 +1,1 @@
+Client-side part of Source engine, read more about file structure in [docs](http://sourcejs.com/docs/base/#2!).

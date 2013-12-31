@@ -23,10 +23,10 @@ module.exports = function(grunt) {
         // load options from file
         options: getSourceOptions(),
         pathToSpecs: '<%= options.common.pathToSpecs %>',
-        pathToSpecsOnServer: '<%= options.grunt.server.pathToDir %>',
-        deployHost: '<%= options.grunt.server.host %>',
-        deployPort: '<%= options.grunt.server.port %>',
-        deployKey: '<%= options.grunt.server.key %>',
+        pathToSpecsOnRemote: '<%= options.grunt.remote.pathToDir %>',
+        deployHost: '<%= options.grunt.remote.host %>',
+        deployPort: '<%= options.grunt.remote.port %>',
+        deployKey: '<%= options.grunt.remote.key %>',
 
         banner:'/*\n' +
                 '* Source - Front-end documentation engine\n' +
@@ -35,33 +35,33 @@ module.exports = function(grunt) {
                 '* */\n',
 
         filesToWatch:                       [
-                                                'client/src/**',
-                                                'client/src/**/*'
+                                                'client-side/src/**',
+                                                'client-side/src/**/*'
                                             ],
 
         excludedFilesForUpload:             ['**/.DS_Store'],
 
         // copy all files excluding ignored to project folder
         copy: {
-            init: {
+            initClient: {
                 files: [
                     {
                         src: [
-                            'client/init/**',
-                            'client/init/.gitignore'
+                            'client-side/init/**',
+                            'client-side/init/.gitignore'
                         ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/init',destBase, destPath);
+                            return removePathInDest('client-side/init',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/src/data/**'],
+                        src: ['client-side/src/data/**'],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
@@ -94,41 +94,41 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: [
-                            'client/src/**'
+                            'client-side/src/**'
                             ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**','!client/plugins/package.json'],
+                        src: ['client-side/plugins/**','!client-side/plugins/package.json'],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
             },
 
-            server: {
+            remote: {
                 files: [
                     {
-                        src: ['client/src/**'],
+                        src: ['client-side/src/**'],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**','!client/plugins/package.json'],
+                        src: ['client-side/plugins/**','!client-side/plugins/package.json'],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
@@ -141,46 +141,46 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: [
-                            'client/src/**/*.css',
-                            '!client/src/core/css/core.css',
-                            '!client/src/data/docs/project.css'
+                            'client-side/src/**/*.css',
+                            '!client-side/src/core/css/core.css',
+                            '!client-side/src/data/docs/project.css'
                         ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**/*.css'],
+                        src: ['client-side/plugins/**/*.css'],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
             },
 
-            server: {
+            remote: {
                 files: [
                     {
                         src: [
-                            'client/src/**/*.css',
-                            '!client/src/core/css/core.css'
+                            'client-side/src/**/*.css',
+                            '!client-side/src/core/css/core.css'
                         ],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**/*.css'],
+                        src: ['client-side/plugins/**/*.css'],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
@@ -191,24 +191,24 @@ module.exports = function(grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['client/src/core/css/defaults.css'],
+                src: ['client-side/src/core/css/defaults.css'],
                 dest: '<%= pathToSpecs %>/',
                 ext: '.css',
                 rename: function(destBase, destPath) {
-                    return removePathInDest('client/src',destBase, destPath);
+                    return removePathInDest('client-side/src',destBase, destPath);
                 }
             },
 
-            addServerBanner: {
+            addRemoteBanner: {
                 expand: true,
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: ['client/src/core/css/defaults.css'],
+                src: ['client-side/src/core/css/defaults.css'],
                 dest: 'build/',
                 ext: '.css',
                 rename: function(destBase, destPath) {
-                    return removePathInDest('client/src',destBase, destPath);
+                    return removePathInDest('client-side/src',destBase, destPath);
                 }
             }
         },
@@ -221,47 +221,47 @@ module.exports = function(grunt) {
                 files: [
                     {
                         src: [
-                            'client/src/**/*.js',
-                            '!client/src/test/js/**/*.js',
-                            '!client/src/test/spec/**/*.js'
+                            'client-side/src/**/*.js',
+                            '!client-side/src/test/js/**/*.js',
+                            '!client-side/src/test/spec/**/*.js'
                         ],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**/*.js'],
+                        src: ['client-side/plugins/**/*.js'],
                         dest: '<%= pathToSpecs %>/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
             },
 
-            server: {
+            remote: {
                 files: [
                     {
                         src: [
-                            'client/src/**/*.js',
-                            '!client/src/test/js/**/*.js',
-                            '!client/src/test/spec/**/*.js'
+                            'client-side/src/**/*.js',
+                            '!client-side/src/test/js/**/*.js',
+                            '!client-side/src/test/spec/**/*.js'
                         ],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client/src',destBase, destPath);
+                            return removePathInDest('client-side/src',destBase, destPath);
                         }
                     },
                     {
-                        src: ['client/plugins/**/*.js'],
+                        src: ['client-side/plugins/**/*.js'],
                         dest: 'build/',
                         expand: true,
                         rename: function(destBase, destPath) {
-                            return removePathInDest('client',destBase, destPath);
+                            return removePathInDest('client-side',destBase, destPath);
                         }
                     }
                 ]
@@ -273,30 +273,30 @@ module.exports = function(grunt) {
                     },
                 files: [{
                     expand: true,
-                    src: 'client/src/core/js/*.js',
+                    src: 'client-side/src/core/js/*.js',
                     dest: '<%= pathToSpecs %>/',
                     rename: function(destBase, destPath) {
-                        return removePathInDest('client/src',destBase, destPath);
+                        return removePathInDest('client-side/src',destBase, destPath);
                     }
                 }]
             },
 
-            addServerBanner: {
+            addRemoteBanner: {
                 options: {
                         banner: '<%= banner %>\n'
                     },
                 files: [{
                     expand: true,
-                    src: 'client/src/core/js/*.js',
+                    src: 'client-side/src/core/js/*.js',
                     dest: 'build/',
                     rename: function(destBase, destPath) {
-                        return removePathInDest('client/src',destBase, destPath);
+                        return removePathInDest('client-side/src',destBase, destPath);
                     }
                 }]
             }
         },
 
-        // deploy to server all needed file
+        // deploy to remote all needed file
         'sftp-deploy': {
             deploy: {
                 auth: {
@@ -305,7 +305,7 @@ module.exports = function(grunt) {
                     authKey: '<%= deployKey %>'
                 },
                 src: 'build',
-                dest: '<%= pathToSpecsOnServer %>',
+                dest: '<%= pathToSpecsOnRemote %>',
                 exclusions: '<%= excludedFilesForUpload %>'
             }
         },
@@ -317,12 +317,12 @@ module.exports = function(grunt) {
             },
             all: {
                 src: [
-                    '<%= pathToSpecs %>/client'
+                    '<%= pathToSpecs %>/client-side'
                     ]
             },
-            server: {
+            remote: {
                 src: [
-                    'build/client'
+                    'build/client-side'
                     ]
             },
             initServer: {
@@ -345,7 +345,7 @@ module.exports = function(grunt) {
         less: {
             main: {
                 files: {
-                    "client/src/core/css/defaults.css": "client/src/core/css/less/defaults.less"
+                    "client-side/src/core/css/defaults.css": "client-side/src/core/css/less/defaults.less"
                 }
             }
         }
@@ -362,14 +362,14 @@ module.exports = function(grunt) {
 
     // TODO: make cleaning task for existing plugins update
 
-    // Init server
+    // Init server-side
     grunt.registerTask('initServer', ['copy:initServer', 'clean:initServer']);
 
-    // Init client
-    grunt.registerTask('initClient', ['copy:main', 'copy:init', 'uglify:main', 'cssmin:main', 'clean:all']);
+    // Init client-side
+    grunt.registerTask('initClient', ['copy:main', 'copy:initClient', 'uglify:main', 'cssmin:main', 'clean:all']);
 
     // Init new project in Source
-    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:init', 'uglify:main', 'cssmin:main', 'clean:all']);
+    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:initClient', 'uglify:main', 'cssmin:main', 'clean:all']);
 
     // Local deploy task to public folder without minimize
     grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
@@ -377,12 +377,12 @@ module.exports = function(grunt) {
     // Local deploy task to public folder
     grunt.registerTask('update', ['less:main','copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
 
-    // Upload files to server via sftp
-    grunt.registerTask('deployServerDebug', ['clean:build', 'less:main', 'copy:server', 'clean:server']);
+    // Upload files to remote via sftp
+    grunt.registerTask('deployRemoteDebug', ['clean:build', 'less:main', 'copy:remote', 'clean:remote']);
 
-    // Minify and upload files to server via sftp
-    grunt.registerTask('deployServer', ['clean:build', 'less:main', 'copy:server',  'cssmin:server', 'cssmin:addServerBanner', 'uglify:server', 'uglify:addServerBanner', 'clean:server', 'sftp-deploy:deploy']);
+    // Minify and upload files to remote via sftp
+    grunt.registerTask('deployRemote', ['clean:build', 'less:main', 'copy:remote',  'cssmin:remote', 'cssmin:addRemoteBanner', 'uglify:remote', 'uglify:addRemoteBanner', 'clean:remote', 'sftp-deploy:deploy']);
 
-    // Watching client side changes and running minify, less, copy to public
+    // Watching client-side changes and running minify, less, copy to public
     grunt.registerTask('runWatch', ['watch']);
 };

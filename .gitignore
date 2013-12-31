@@ -8,10 +8,10 @@ node_modules
 /build
 
 # Git ignore fo initing
-!/client/init/.gitignore
+!/client-side/init/.gitignore
 
 # Custom client-side plugins folder, managed with volo packet manager
-/client/plugins
+/client-side/plugins
 
 # Custom user folder for Source server side
 /user

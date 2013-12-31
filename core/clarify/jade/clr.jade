@@ -1,0 +1,39 @@
+!!! html
+html.no-js
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=10')
+        meta(name='author', content=head.mAuthor)
+        meta(name='keywords', content=head.mKeywords)
+        meta(name='description', content=head.mDescription)
+
+        script.
+            document.documentElement.className = 'js'
+
+        title=head.title
+
+        // Source scripts
+        //if lt IE 9
+            script(src='/core/js/lib/html5shiv.js')
+            //script(data-main='/core/js/source', src='/core/js/lib/require-jquery.js')
+
+        // Inherited scripts
+        !=head.scripts
+        // /Inherited scripts
+
+        // Clarify styles
+        link(rel='stylesheet', href='/css/clarify.css')
+        // /Clarify styles
+
+        // Context styles
+        // link(rel='stylesheet', href='/css/mobile.css')
+        // /Context styles
+
+        // Inherited styles
+        !=head.stylesheets
+        // /Inherited styles
+
+    body.clarify
+            !=body.spec
+
+
