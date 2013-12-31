@@ -2,7 +2,7 @@
 
 **v.0.3.2**
 
-The most powerful tool for documenting web interfaces and building productive team work.
+**The most powerful tool for documenting web interfaces and building productive team work.**
 
 Source powered workflow allows developers to write directly **in the documentation**, it combines front-end interfaces building with documentation process and gives us powerful features for productive development and team work.
 
