@@ -49,11 +49,10 @@ define([
                     } else {
                         //Going deeper
 
-                        // complex/paths/handles/here
-                        if ( getSpecificCat !== undefined ) {
-                            getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile');
+                        if (getSpecificCat) { getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile'); }
 
-                            if (getSpecificCat.indexOf('/') !== -1) {
+                        // complex/paths/handles/here
+                        if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
                                 var getSpecificCatArr = getSpecificCat.split('/'),
                                     success = true;
 
@@ -113,7 +112,6 @@ define([
                                         if (returnObject(returnedTreeObj)) return;
                                     }
                                 }
-                            }
 
                         } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
