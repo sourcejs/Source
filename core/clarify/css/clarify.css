@@ -7,13 +7,24 @@ html, body {
 	}
 
 .clarify_h {
-	display: block;
 	padding: .25em .5em;
+	position: relative;
 
 	background-color: #73AF73;
 	color: white;
 	font-family: sans-serif;
+
+	-webkit-transition: top .25s ease-in-out .5s;
+	-moz-transition: top .25s ease-in-out .5s;
+	transition: top .25s ease-in-out .5s;
 	}
+	.clarify_h.__closed {
+		top: -1.6em
+		}
+	.clarify_h:hover {
+		top: 0;
+		transition-delay: 0;
+		}
 
 	.clarify-logo {
 		vertical-align: -.095em;

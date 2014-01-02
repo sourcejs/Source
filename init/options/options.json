@@ -1,12 +1,12 @@
 {
     "description": "This options.json overrides and extends core options.json file",
 
-	"grunt" : {
-        "server": {
-            "pathToDir": "/path/to/project/dir/on/server",
+    "grunt" : {
+        "remote": {
+            "pathToDir": "/home/user/source/public",
             "host": "your.host.here",
-            "port": "yourPortHere",
-            "key": "keyInFile.ftppass"
+            "port": "22",
+            "key": "key1.from.ftppass"
         }
     }
 }

@@ -1,0 +1,121 @@
+/* Navigation
+---------------------------------------------------------------------------------- */
+
+@source_main_nav--width: 280px;
+@source_main_nav--top: 185px;
+.source_main_nav {
+    margin-top: 40px;
+
+	@media @media_min-step-m {
+        position: fixed;
+        z-index: 10;
+
+        top: 170px; //@source_main_nav--top;
+        right: @layout_col-main--padding;
+        bottom: 40px;
+
+        width: @source_main_nav--width;
+
+        margin-top: 0; //reset
+        margin-right: 0; //reset
+
+        transition: top 0.3s;
+
+        .source__scrolled-down & {
+        	top: 70px;
+        	}
+		}
+
+	@media @media_min-step-l {
+        position: fixed;
+        z-index: 10;
+
+        left: 50%;
+        top: @source_main_nav--top;
+        width: @source_main_nav--width;
+        margin-left: @layout_col-main--max-width / 2 - @source_main_nav--width;
+
+        margin-top: 0; //reset
+        margin-right: 0; //reset
+		}
+	}
+
+	.source_main_nav:hover {
+		z-index: 20; /* Higher than any other elements */
+		}
+
+	.source_main_nav h2 {
+		font-weight: normal;
+		font-size: 15px;
+		color: #333;
+		margin: 0 0 5px;
+		line-height: 1.5;
+		font-family: inherit;
+		text-rendering: auto;
+		}
+
+	.source_main_nav.__menuScroll {
+		overflow-x: hidden;
+		overflow-y: auto;
+		bottom: 15px;
+		}
+
+	.source_main_nav_i {
+		margin: 10px 0;
+		font-size: 13px;
+		}
+		.source_main_nav_i:first-child {
+			margin-top: 0;
+			}
+
+	.source_main_nav_i + .source_main_nav_i {
+		padding-top: 10px;
+		border-top: 1px solid #dfe2e4;
+		}
+
+.source_main_nav_ul {
+	margin-left: -21px; /* menu padding compensation  */
+	margin-right: -21px;
+	}
+
+.source_main_nav_li {
+	line-height: 20px;
+	margin-bottom: 2px;
+	}
+
+.source_main_nav_ul2 {
+	padding: 0;
+	}
+
+.source_main_nav_li2 {
+	color: #666;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 0;
+	transition: line-height 0.2s;
+	}
+	.source_main_nav_li.__active .source_main_nav_li2 {
+		line-height: 20px;
+		}
+
+.source_main_nav_a {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 0 21px;
+	}
+	.source_main_nav_li2 .source_main_nav_a {
+		padding: 0 37px;
+		}
+	.source_main_nav .source_main_nav_a.__active  { /* for weight */
+		background-color: #8AB5D6;
+		color: #F9FBFD;
+		}
+
+.source_main_nav_ac_item {
+	position: relative;
+	line-height: 24px;
+	}
+
+/* /Navigation
+---------------------------------------------------------------------------------- */

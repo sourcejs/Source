@@ -1,0 +1,13 @@
+<h1>Plugins</h1>
+
+<div class="source_catalog" data-nav="plugins">
+
+    <ul class="source_catalog_list">
+        <!--Navigation is filed automaticaly-->
+        <img src="/core/i/process.gif" alt="Loading..."/>
+    </ul>
+</div>
+
+<div class="mt-M">
+    <a href="/docs" class="source_a_hl">Go to engine documentation</a>
+</div>

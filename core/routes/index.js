@@ -1,9 +1,10 @@
-require("./spec.js");
+require("./src.js");
 require("./redirects.js");
 
+// user custom routes
 try {
-    // user custom routes
     global.userRoutes = require("../../user/routes");
 } catch(e) {
+    console.log(e);
     process.exit(e.code);
 }
