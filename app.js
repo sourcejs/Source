@@ -13,11 +13,20 @@ var express = require('express')
     , ejs = require('ejs')
     , headerFooter = require('./core/headerFooter');
 
+
+/* Globals */
 global.app = express();
 global.opts = require('./core/options/');
 
 global.app.set('views', __dirname + '/core/views');
-global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
+global.app.use(express.compress());app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
+/* /Globals */
+
+
+/* Optimization */
+global.app.use(express.compress());
+/* /Optimization */
+
 
 /* LESS processing */
 //TODO: add config and move to other module, and add configurable varibles (/public folder etc)
@@ -29,11 +38,13 @@ global.app.use(lessMiddleware({
 }));
 /* /LESS processing */
 
+
 /*  Clarify module */
 var clarify = require('./core/clarify');
-app.use(clarify);
-app.use(express.static(__dirname + '/core/clarify')); // static for module css
+global.app.use(clarify);
+global.app.use(express.static(__dirname + '/core/clarify')); // static for module css
 /*  /Clarify module */
+
 
 /*  File tree module */
 fileTree = require('./core/file-tree');
@@ -45,11 +56,15 @@ global.app.use(function(req, res, next){
 });
 /*  /File tree module */
 
+
 /* Error handling */
 global.app.use(logErrors);
 global.app.use(clientErrorHandler);
 global.app.use(errorHandler);
+/* /Error handling */
 
+
+/* Includes */
 try {
     /* Routes */
     global.routes = require('./core/routes');
@@ -63,12 +78,13 @@ try {
     console.log(e);
     process.exit(e.code);
 }
+/* /Includes */
 
-/* serve static content */
+/* Serve static content */
 global.app.use(express.static(global.app.get('specs path')));
-app.use(express.static(tmpDir));
+global.app.use(express.static(tmpDir));
 
-app.use(function(req, res, next){
+global.app.use(function(req, res, next){
 
 	var path = req.url.replace('/index.html', '');
 
