@@ -79,7 +79,7 @@ define([
 
             var L_TARGET_FIELD = $('#livesearch');
 
-            if ( $('meta[name=source-page-role]').attr('content') === 'navigation' ) {
+            if ( $('meta[name=source-page-role]').attr('content') === 'navigation' && options.modulesOptions.search.autoFocusOnNavigationPage ||  options.modulesOptions.search.autoFocus) {
                 setTimeout(function() { //First focus fix
                     L_TARGET_FIELD.focus();
                 }, 1);
