@@ -8,9 +8,9 @@
 var express = require('express')
     , colors = require('colors')
     , fs = require('fs')
-    , lessMiddleware = require('less-middleware')
-    , os = require('os')
+    , less = require('less-middleware')
     , ejs = require('ejs')
+    , deepExtend = require('deep-extend')
     , headerFooter = require('./core/headerFooter');
 
 
@@ -19,7 +19,9 @@ global.app = express();
 global.opts = require('./core/options/');
 
 global.app.set('views', __dirname + '/core/views');
-global.app.use(express.compress());app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
+global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
+
+global.MODE = process.env.NODE_ENV || 'development';
 /* /Globals */
 
 
@@ -29,13 +31,15 @@ global.app.use(express.compress());
 
 
 /* LESS processing */
-//TODO: add config and move to other module, and add configurable varibles (/public folder etc)
-var tmpDir = os.tmpDir();
-global.app.use(lessMiddleware({
-    src: global.app.get('specs path'),
-    dest: tmpDir,
-    force: true
-}));
+if (global.MODE === 'development') {
+    var lessOpts = {
+        src: global.app.get('specs path')
+    }
+
+    deepExtend(lessOpts, global.opts.less);
+
+    global.app.use(less(lessOpts));
+}
 /* /LESS processing */
 
 
@@ -82,7 +86,6 @@ try {
 
 /* Serve static content */
 global.app.use(express.static(global.app.get('specs path')));
-global.app.use(express.static(tmpDir));
 
 global.app.use(function(req, res, next){
 

@@ -11,5 +11,8 @@
         "fileMask": ["index.html", "index.src"],
         "cron": false,
         "cronRepeatTime": 60000
+    },
+    "less": {
+        "compress": false
     }
 }

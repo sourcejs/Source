@@ -1,6 +1,6 @@
 var coreSettings = require("./options.json"),
-        deepExtend = require('deep-extend'),
-        fs = require('fs');
+    deepExtend = require('deep-extend'),
+    fs = require('fs');
 
 var userSettings = {},
     userSettingsFile = "/../../user/options/options.json";

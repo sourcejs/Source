@@ -27,7 +27,7 @@ body {
 }
 body {
   position: relative;
-  min-width: 780px;
+  min-width: 990px;
   font: 14px/1.5 Arial, Helvetica, sans-serif;
   background: #fff;
   color: #333;
@@ -368,6 +368,7 @@ body {
   -moz-transition: opacity .2s;
   -o-transition: opacity .2s;
   transition: opacity .2s;
+  white-space: nowrap;
 }
 @media all and (min-width: 990px) {
   .source_header {
@@ -384,6 +385,7 @@ body {
   *display: inline;
   *zoom: 1;
   vertical-align: baseline;
+  margin-right: 25px;
   line-height: 30px;
   color: #67a9d4;
   font-size: 24px;
@@ -401,7 +403,6 @@ body {
   *display: inline;
   *zoom: 1;
   vertical-align: 1px;
-  margin-left: 25px;
 }
 .source_header_nav_lst {
   margin: 0;
