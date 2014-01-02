@@ -9,24 +9,25 @@ var fs = require('fs'),
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
 var excludedDirs = global.opts.fileTree.excludedDirs;
 
-// files from parser get info
-// TODO: move info.json to options globally
-var infoFile = "info.json";
-
-// path to output file to write parsed data in json format
-// TODO: move output file name to options globally also for client code
-var outputFile = 'data/pages_tree.json';
-
 // File mask for search
 var fileMask = global.opts.fileTree.fileMask; //Arr
+
+// files from parser get info
+var INFO_FILE = "info.json";
+
+// path to output file to write parsed data in json format
+var OUTPUT_FILE = global.opts.fileTree.outputFile;
 
 // for waiting when function finished
 var NOT_EXEC = true;
 
+// Run script on first app start only
+var ONCE = false; //off by defult
+if (global.MODE === 'production') { ONCE=true; }  //true for production
+
 // configuration for function timeout
-// !!! on localhost recommend false on server true
-var cron = global.opts.fileTree.cron;
-var cronRepeatTime = global.opts.fileTree.cronRepeatTime;
+var CRON = global.opts.fileTree.cron;
+var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
 
 // formatting RegExp for parser
 var dirsForRegExp = '';
@@ -92,8 +93,8 @@ function fileTree(dir) {
 
             var page = {};
 
-            if (fs.existsSync(dir+'/'+infoFile)) {
-                    var fileJSON = require("../../"+dir+"/"+infoFile);
+            if (fs.existsSync(dir+'/'+INFO_FILE)) {
+                    var fileJSON = require("../../"+dir+"/"+INFO_FILE);
 
                 var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
                     lastmodSec = Date.parse(fileStats.mtime),
@@ -128,11 +129,11 @@ function fileTree(dir) {
 
 // function for write json file
 var GlobalWrite = function() {
-    fs.writeFile(global.app.get("specs path") + "/" + outputFile, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
+    fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_FILE, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Pages tree JSON saved to " + global.opts.common.pathToSpecs+"/"+outputFile);
+            console.log("Pages tree JSON saved to " + global.opts.common.pathToSpecs+"/"+OUTPUT_FILE);
             NOT_EXEC=true;
         }
     });
@@ -141,16 +142,16 @@ var GlobalWrite = function() {
 GlobalWrite();
 
 // setcron fot 1 minute (60000ms)
-if (cron) {
+if (CRON && !ONCE) {
     setInterval(function(){
         GlobalWrite();
-    }, cronRepeatTime);
+    }, CRON_REPEAT_TIME);
 }
 
 // run task from server homepage
 module.exports.scan = function () {
     // NOT_EXEC for waiting script end and only then can be run again
-    if (NOT_EXEC) {
+    if (NOT_EXEC && !ONCE) {
         NOT_EXEC = false;
         setTimeout(function(){
             GlobalWrite();

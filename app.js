@@ -107,7 +107,7 @@ global.app.use(function(req, res, next){
 
 if (!module.parent) {
     global.app.listen(80);
-    console.log('[SOURCE] is working on 80 port...'.blue);
+    console.log('[SOURCE] is working on 80 port in '.blue + MODE.blue + ' mode...'.blue);
 }
 
 function logErrors(err, req, res, next) {

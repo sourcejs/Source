@@ -27,14 +27,14 @@ define(["core/options"], function(options) {
 
             $.ajax({
                 url:"/user/templates/"+headerFile,
-                async:false,
+                async:true,
                 complete:function (data, status) {
                     if (status === 'success') {
                         insertHeader(data);
                     } else {
                         $.ajax({
                             url:"/core/templates/"+headerFile,
-                            async:false,
+                            async:true,
                             complete:function (data) {
                                 insertHeader(data);
                             }
@@ -47,14 +47,14 @@ define(["core/options"], function(options) {
 
             $.ajax({
                 url:"/user/templates/"+footerFile,
-                async:false,
+                async:true,
                 complete:function (data, status) {
                     if (status === 'success') {
                         insertFooter(data);
                     } else {
                         $.ajax({
                             url:"/core/templates/"+footerFile,
-                            async:false,
+                            async:true,
                             complete:function (data) {
                                 insertFooter(data);
                             }

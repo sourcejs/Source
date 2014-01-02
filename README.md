@@ -4,7 +4,7 @@
 
 **The most powerful tool for documenting web interfaces and building productive team work.**
 
-Source powered workflow allows developers to write directly **in the documentation**, it combines front-end interfaces building with documentation process and gives us powerful features for productive development and team work.
+Source powered workflow allows developers to **code new features directly in the documentation.** Source combines front-end interface building with documentation process, making it a powerful tool for productive development and teamwork.
 
 Documentation engine originally was developed at [Odnoklassniki.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end developers team and **is recommended for big and middle sized projects**, expecially for fast growing web portals.
 

@@ -10,7 +10,8 @@
         "excludedDirs": ["core","data","test","plugins","node_modules",".git",".idea"],
         "fileMask": ["index.html", "index.src"],
         "cron": false,
-        "cronRepeatTime": 60000
+        "cronRepeatTime": 60000,
+        "outputFile": "data/pages_tree.json"
     },
     "less": {
         "compress": false
