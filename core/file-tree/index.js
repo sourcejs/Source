@@ -65,7 +65,7 @@ function fileTree(dir) {
         var urlToFile = dir + '/' + targetFile,
             baseName = path.basename(dir);
 
-        urlToFile = path.normalize(urlToFile);
+        urlToFile = path.normalize(urlToFile).replace(/\\/g, '/');
         var urlFromHostRoot = urlToFile.replace('../','/');
 
         outputJSON[baseName] = outputJSON[baseName];
