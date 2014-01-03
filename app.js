@@ -106,8 +106,12 @@ global.app.use(function(req, res, next){
 });
 
 if (!module.parent) {
-    global.app.listen(80);
-    console.log('[SOURCE] is working on 80 port in '.blue + MODE.blue + ' mode...'.blue);
+    var port = global.opts.common.port;
+
+    global.app.listen(port);
+
+    var portString = global.opts.common.port.toString();
+    console.log('[SOURCE] is working on '.blue + portString.blue + ' port in '.blue + MODE.blue + ' mode...'.blue);
 }
 
 function logErrors(err, req, res, next) {

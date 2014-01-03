@@ -1,6 +1,7 @@
 {
     "common": {
-        "pathToSpecs": "public"
+        "pathToSpecs": "public",
+        "port": 8080
     },
     "fileTree": {
         "help": {
