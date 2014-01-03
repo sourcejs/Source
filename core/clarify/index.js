@@ -132,12 +132,13 @@ module.exports = function reply(req, res, next) {
 // [done] create JSON with data from <HEAD>
 // [done] parse several blocks in same page with one request
 // [done] switchers to another specs from cleared one;
-// [..partial] client-side UI controls to clarify specs
+// [done] clear template - @param {GET} clr
 // [done] phantomjs -> jsdom
+// [..partial] client-side UI controls to clarify specs
 // [...] support for other template engines
+// * [] Add check for OS, if not Mac, then link to other phantomjs binary, that need to be git ignored and custom description about the lack of it with installation instructions must be provided
 // * [] connect custom templates and scripts
 // * [] avoid hardcoded paths
-// [done] clear template - @param {GET} clr
 // * [] use css/js optionally by GET params
 // * [] save user session settings
 // * [] try POST instead GET
