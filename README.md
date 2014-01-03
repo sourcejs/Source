@@ -1,6 +1,6 @@
 # Source - Front-end documentation engine
 
-**v.0.3.2**
+**v.0.4.0**
 
 **The most powerful tool for documenting web interfaces and building productive team work.**
 
