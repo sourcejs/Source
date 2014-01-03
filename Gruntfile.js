@@ -1,13 +1,16 @@
+var path = require('path');
+
 module.exports = function(grunt) {
 
-    var removePathInDest = function(path, destBase, destPath) {
+    var removePathInDest = function(inputPath, destBase, destPath) {
         // remove some path from destination file path in public dir
 
         // TODO: refactor regex, to get rid off '//' in paths
         var newPath,
-            regex = '^'+path+'/|\\W'+path+'/';
+            regex = '^'+inputPath+'/|\\W'+inputPath+'/';
 
-        newPath =  destBase + destPath.replace(new RegExp(regex), '/');
+        newPath = destBase + destPath.replace(new RegExp(regex), '/');
+        newPath = path.normalize(newPath).replace(/\\/g, '/');
 
         return newPath;
     };
