@@ -17,7 +17,7 @@
 
         $ npm install
         $ grunt init
-        $ sudo node app.js
+        $ node app.js
     </code>
 
     <p>Make sure that you have <a href="http://help.github.com/articles/set-up-git">Git</a>, <a href="http://nodejs.org/">Node.js</a>, and <a href="http://gruntjs.com/getting-started">Grunt</a> installed before getting started. You can read more about Grunt task workflows with Source <a href="/docs/grunt">here</a>.</p>
