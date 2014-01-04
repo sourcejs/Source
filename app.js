@@ -8,7 +8,6 @@
 var express = require('express')
     , colors = require('colors')
     , fs = require('fs')
-    , less = require('less-middleware')
     , ejs = require('ejs')
     , deepExtend = require('deep-extend')
     , headerFooter = require('./core/headerFooter');
@@ -32,9 +31,11 @@ global.app.use(express.compress());
 
 /* LESS processing */
 if (global.MODE === 'development') {
+    var less = require('less-middleware');
+
     var lessOpts = {
         src: global.app.get('specs path')
-    }
+    };
 
     deepExtend(lessOpts, global.opts.less);
 
