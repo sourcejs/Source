@@ -22,105 +22,101 @@ module.exports = function reply(req, res, next) {
 		id = parsedUrl.query.id,
 		wrap = parsedUrl.query.wrap || true,
         phantom = parsedUrl.query.ph || false;
-//debugger;
 
+//// check if we have queried on file nor in navigation
+	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
 
-//// if we have query on index.html
-	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
-// reading file..
+// reading file
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
-            var responseData = data || '';
-
-            if (err) res.end('Huston, we have 404.\n'+ err);
-
-            if (responseData !== '') {
-
-                // make data for template
-                function reqHandler(res, html) {
-                    if (html.source) {
-                        //// переменные для Jade
-                        var locals = {
-                            head: {
-                                title: html.title,
-                                mAuthor: html.meta.author,
-                                mKeywords: html.meta.keywords,
-                                mDescription: html.meta.description,
-                                scripts: html.scripts,
-                                stylesheets: html.styles
-                            },
-                            body: {
-                                spec: html.source.content,
-                                specLength: html.source.length,
-                                specId: html.source.id,
-                                specIdSum: html.source.idSum,
-                                homeLink: 'http://'+ urlAdress
-                            },
-                            pretty: true
-                        };
-
-                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                        res.end(jady(locals, tpl));
-
-                    } else res.end('STDOUT: can\'t recieve content.');
-                }
-
-
-        // if using PhantomJs
-                if (phantom) {
-
-                    var params = "sudo core/clarify/phantomjs "+
-                        "core/clarify/phantom/ph.js "+
-                        "http://"+ urlAdress +" "+ id +" "+ wrap;
-
-                    // executes ph.js via phantomjs like separate child process
-                    exec(params, function (err, stdout, stderr) {
-                        if (err) console.log('Exec report error: ' + err);
-                        else {
-                            try {
-                                var html = JSON.parse(stdout);
-                            } catch(e) {
-                                html = 'Parsing error: ' + e;
-                            }
-        // PhantomJS output
-        console.log(html);
-        // got to show some view
-                            reqHandler(res, html);
-                        }
-                    });
-
-                }
-        // jsdom starts
-                else {
-                    jsdom.env(responseData.toString(), function (err, win) {
-        // 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
-                        if (err) console.log('JSdom report error: ' + err);
-                        else {
-                            console.log('JSDOM', wrap);
-                            var
-                                doc = win.document,
-                                html = {};
-
-                            try {
-                                html.title = doc.title;
-                                html.meta = dom.getMeta(doc);
-                                html.styles = dom.getHeadData(doc)[0];
-                                html.scripts = dom.getHeadData(doc)[1];
-                                html.source = dom.getSource(doc, id, wrap);
-                            } catch (e) {
-                                html.err = {
-                                    text: e,
-                                    type: e.name
-                                };
-                            }
-        console.log(html);
-
-        // got to show some view
-                            reqHandler(res, html);
-                        }
-                    });
-                }
-
+            if (err) {
+                res.end('No such file.\n'+ err);
+                return;
             }
+
+// make data for template
+            function reqHandler(res, html) {
+                if (html.source) {
+//// переменные для Jade
+                    var locals = {
+                        head: {
+                            title: html.title,
+                            mAuthor: html.meta.author,
+                            mKeywords: html.meta.keywords,
+                            mDescription: html.meta.description,
+                            scripts: html.scripts,
+                            stylesheets: html.styles
+                        },
+                        body: {
+                            spec: html.source.content,
+                            specLength: html.source.length,
+                            specId: html.source.id,
+                            specIdSum: html.source.idSum,
+                            homeLink: 'http://'+ urlAdress
+                        },
+                        pretty: true
+                    };
+
+                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                    res.end(jady(locals, tpl));
+
+                } else res.end('STDOUT: can\'t recieve content.');
+            }
+
+
+// if using PhantomJs
+            if (phantom) {
+
+                var params = "sudo core/clarify/phantomjs "+
+                    "core/clarify/phantom/ph.js "+
+                    "http://"+ urlAdress +" "+ id +" "+ wrap;
+
+// executes ph.js by phantomjs in new process
+                exec(params, function (err, stdout, stderr) {
+                    if (err) res.end('Exec report error:\n ' + err);
+                    else {
+                        try {
+                            var html = JSON.parse(stdout);
+                        } catch(e) {
+                            html = 'Parsing error: ' + e;
+                        }
+// PhantomJS output
+    console.log(html);
+    // got to show some view
+                        reqHandler(res, html);
+                    }
+                });
+
+// jsdom starts
+            } else {
+                jsdom.env(data.toString(), function (err, win) {
+         		// jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+                    if (err) res.end('JSdom report error:\n ' + err);
+                    else {
+                        console.log('JSDOM', wrap);
+                        var
+                            doc = win.document,
+                            html = {};
+
+                        try {
+                            html.title = doc.title;
+                            html.meta = dom.getMeta(doc);
+                            html.styles = dom.getHeadData(doc)[0];
+                            html.scripts = dom.getHeadData(doc)[1];
+                            html.source = dom.getSource(doc, id, wrap);
+                        } catch (e) {
+                            html.err = {
+                                text: e,
+                                type: e.name
+                            };
+                        }
+    console.log(html);
+
+    // show template
+                        reqHandler(res, html);
+                    }
+                });
+            }
+
 		});
 	} else next();
 };
@@ -136,7 +132,7 @@ module.exports = function reply(req, res, next) {
 // [done] phantomjs -> jsdom
 // [..partial] client-side UI controls to clarify specs
 // [...] support for other template engines
-// * [] Add check for OS, if not Mac, then link to other phantomjs binary, that need to be git ignored and custom description about the lack of it with installation instructions must be provided
+// * [] diffrernt links to phantomjs relative to OS
 // * [] connect custom templates and scripts
 // * [] avoid hardcoded paths
 // * [] use css/js optionally by GET params
@@ -148,4 +144,4 @@ module.exports = function reply(req, res, next) {
 // * [] screenshots by phatnomjs
 // * [] phantomjs: not to close session (improve perfomance?);
 // * [] buttons  to add custom libraries to clarified page (jQuery, require);
-// * [] another context templates [mob, clr, ...]
+// * [in progress..] another context templates [mob, clr, ...]
