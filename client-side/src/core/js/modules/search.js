@@ -45,9 +45,8 @@ define([
                     autocompleteValue = targetPage.title,
                     pclass = targetPage.pclass;
 
-				if ( (json[rootFolder[1]] !== undefined) && (json[rootFolder[1]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
-					keywordsPageName = rootFolder[ rootFolder.length-2 ];
-					keywordsPageName = '<span style="font-weight: 700">' + json[rootFolder[1]]['specFile'].title + ':</span> ' + keywordsPageName; // exclude <b> from search
+				if ( (json[rootFolder[ 1 ]] !== undefined) && (json[rootFolder[ 1 ]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
+					keywordsPageName = json[rootFolder[1]]['specFile'].title + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
 				}
 
                 if ((keywords !== undefined) && (keywords != '')) {
