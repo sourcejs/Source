@@ -7,7 +7,7 @@ var fs = require('fs'),
 var userTemplatesDir = __dirname + "/../../user/views/",
     coreTemplatesDir = __dirname + "/../views/";
 
-function serveContent(filePath, pathToSpec, res) {
+function serveContent(filePath, pathToSpec, res, req) {
     fs.exists(filePath, function(exists) {
 
         if(exists) {
@@ -61,10 +61,14 @@ function serveContent(filePath, pathToSpec, res) {
 
             });
         } else {
-            res.status(404).render('index', {
-                title: "Spec not found",
-                author: "Source",
-                content: "Sorry, page not found"
+
+            var headerFooterHTML = getHeaderAndFooter();
+            var path = req.url.replace('/index.html', '');
+
+            res.render('404', {
+                section: path,
+                header: headerFooterHTML.header,
+                footer: headerFooterHTML.footer
             });
         }
     });
@@ -90,7 +94,7 @@ global.app.get('/:dir/:spec/:file.src', function(req, res){
 
     var filePath =  pathToSpec + specFile;
 
-    serveContent(filePath, pathToSpec, res)
+    serveContent(filePath, pathToSpec, res, req)
 
 });
 
@@ -104,7 +108,7 @@ global.app.get('/:dir/:spec/:sub/:file.src', function(req, res){
 
     var filePath =  pathToSpec + specFile;
 
-    serveContent(filePath, pathToSpec, res)
+    serveContent(filePath, pathToSpec, res, req);
 
 });
 
