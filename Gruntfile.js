@@ -369,10 +369,10 @@ module.exports = function(grunt) {
     grunt.registerTask('initServer', ['copy:initServer', 'clean:initServer']);
 
     // Init client-side
-    grunt.registerTask('initClient', ['copy:main', 'copy:initClient', 'uglify:main', 'cssmin:main', 'clean:all']);
+    grunt.registerTask('initClient', ['copy:main', 'copy:initClient', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
 
     // Init new project in Source
-    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:initClient', 'uglify:main', 'cssmin:main', 'clean:all']);
+    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:initClient', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
 
     // Local deploy task to public folder without minimize
     grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
