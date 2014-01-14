@@ -68,7 +68,7 @@ module.exports = function reply(req, res, next) {
         // if using PhantomJs
                 if (phantom) {
 
-                    var params = "sudo core/clarify/phantomjs "+
+                    var params = "core/clarify/phantomjs "+
                         "core/clarify/phantom/ph.js "+
                         "http://"+ urlAdress +" "+ id +" "+ wrap;
 
