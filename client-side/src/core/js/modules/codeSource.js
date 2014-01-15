@@ -135,8 +135,8 @@ define([
                     else {
                         parent.wrap('<div class="'+SourceCode+'"><div class="' + SourceCodeCnt + '"></div></div>');
                         _this.closest('.' + SourceCode).prepend('' +
-                        '<a href="" class="' + SourceCodeToggle + ' ' + langClass + '"><span class="source_hide">' + RES_HIDE_CODE + '</span><span class="source_show">' + RES_SHOW_CODE + '</span> ' + RES_CODE + '</a>' +
-                        '');
+                            '<a href="" class="' + SourceCodeToggle + ' ' + langClass + '"><span class="source_hide">' + RES_HIDE_CODE + '</span><span class="source_show">' + RES_SHOW_CODE + '</span> ' + RES_CODE + '</a>' +
+                            '');
                     }
 
                 });
@@ -217,6 +217,7 @@ define([
                 prepareCodeBlocks();
                 onlyStatic = false;
                 Prism.highlightAll();
+                $('pre[class*="src-"] > code').addClass('__visible');
                 $('pre.source_visible').removeAttr('style');
             }
 
@@ -229,21 +230,20 @@ define([
                 utils.scrollToSection(navHash);
             };
 
-//            If url has '!sc', show source code by default
+            if ($('pre:not(.source_visible)')[0]) {
+                innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
+            }
+
+//          If url has '!sc', show source code by default
             var getUrlParam = document.location.href.split(options.modulesOptions.innerNavigation.hashSymb);
 
             getUrlParam = getUrlParam[getUrlParam.length - 1];
 
             if (getUrlParam === urlConfig) {
                 $(document).ajaxStop(function() {
+                    $('.source_main_nav_ac_tx:contains("'+RES_TOGGLER_SHOW_CODE+'")').next('.source_slider_frame').addClass('source_slider_frame__on');
                     showAllCode();
-                    $('.source_main_nav_ac_tx:contains("'+RES_TOGGLER_SHOW_CODE+'")').next('.source_slider_frame').trigger('click');
                 });
-            }
-
-            //Add Toggle show all code action if required
-            if ($('pre:not(.source_visible)')[0]) {
-                innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
             }
 
             showStaticCode();
