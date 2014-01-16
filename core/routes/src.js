@@ -65,7 +65,7 @@ function serveContent(filePath, pathToSpec, res, req) {
             var headerFooterHTML = getHeaderAndFooter();
             var path = req.url.replace('/index.html', '');
 
-            res.render('404', {
+            res.status(404).render('404', {
                 section: path,
                 header: headerFooterHTML.header,
                 footer: headerFooterHTML.footer

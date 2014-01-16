@@ -95,7 +95,7 @@ global.app.use(function(req, res, next){
 	if (req.accepts('html')) {
 
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
-		res.render(__dirname + '/core/views/404.ejs', {
+		res.status(404).render(__dirname + '/core/views/404.ejs', {
 			section: path,
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
