@@ -1,3 +1,4 @@
+// modules
 var
 	fs = require('fs'),
 	url = require('url'),
@@ -7,6 +8,8 @@ var
 	dom = require('./dom'),
 	jady = require('./jady');
 
+
+// custom vars & local dependencies
 var
 	opts = require('../options'),
 	publicPath = opts.common.pathToSpecs;
@@ -15,17 +18,18 @@ var
 module.exports = function reply(req, res, next) {
 	var
 		parsedUrl = url.parse(req.url, true),
-        _query = parsedUrl.query,
 		urlPath = parsedUrl.pathname,
 		urlHost = req.headers.host,
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
-		tpl = _query.get,
-		id = _query.id,
-		wrap = _query.wrap || true,
-        phantom = _query.ph || false,
-        nojs = _query.nojs || false;
 
-//// check if we have queried on file nor in navigation
+        q = parsedUrl.query,
+		tpl = q.get,
+		id = q.id,
+		wrap = q.wrap || true,
+        phantom = q.ph || false,
+        nojs = q.nojs || false;
+
+// check for current navigation position (navigation or file)
 	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
 
 // reading file
@@ -36,10 +40,10 @@ module.exports = function reply(req, res, next) {
                 return;
             }
 
-                // make data for template
+// make data for template
                 function reqHandler(res, html) {
                     if (html.source) {
-                        //// переменные для Jade
+// Jade's vars
                         var locals = {
                             head: {
                                 title: html.title,
@@ -59,6 +63,7 @@ module.exports = function reply(req, res, next) {
                             pretty: true
                         };
 
+// send headers and close request
                         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
                         res.end(jady(locals, tpl));
 
@@ -66,14 +71,14 @@ module.exports = function reply(req, res, next) {
                 }
 
 
-        // if using PhantomJs
+// if ph == true -> PhantomJS
                 if (phantom) {
 
                 var params = "core/clarify/phantomjs "+
                         "core/clarify/phantom/ph.js "+
                         "http://"+ urlAdress +" "+ id +" "+ wrap;
 
-// executes ph.js by phantomjs in new process
+// executes ph.js by phantomjs in new child process
                     exec(params, function (err, stdout, stderr) {
                     if (err) res.end('Exec report error:\n ' + err);
                         else {
@@ -82,17 +87,17 @@ module.exports = function reply(req, res, next) {
                             } catch(e) {
                                 html = 'Parsing error: ' + e;
                             }
-        // PhantomJS output
+// PhantomJS output
         console.log(html);
-        // got to show some view
+// template render function
                             reqHandler(res, html);
                         }
                     });
 
-        // jsdom starts
+// if ph == false (default) -> jsDom
             } else {
                 jsdom.env(data.toString(), function (err, win) {
-        // 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+            //  jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
                     if (err) res.end('JSdom report error:\n ' + err);
                         else {
                             console.log('JSDOM', wrap);
@@ -114,13 +119,15 @@ module.exports = function reply(req, res, next) {
                             }
         console.log(html);
 
-    // show template
+// template render function
                             reqHandler(res, html);
                         }
                     });
                 }
 
 		});
+
+// redirect to next express middleware
 	} else next();
 };
 
