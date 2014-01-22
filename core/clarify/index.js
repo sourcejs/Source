@@ -15,13 +15,15 @@ var
 module.exports = function reply(req, res, next) {
 	var
 		parsedUrl = url.parse(req.url, true),
+        _query = parsedUrl.query,
 		urlPath = parsedUrl.pathname,
 		urlHost = req.headers.host,
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
-		tpl = parsedUrl.query.get,
-		id = parsedUrl.query.id,
-		wrap = parsedUrl.query.wrap || true,
-        phantom = parsedUrl.query.ph || false;
+		tpl = _query.get,
+		id = _query.id,
+		wrap = _query.wrap || true,
+        phantom = _query.ph || false,
+        nojs = _query.nojs || false;
 
 //// check if we have queried on file nor in navigation
 	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
@@ -29,6 +31,7 @@ module.exports = function reply(req, res, next) {
 // reading file
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
             if (err) {
+                res.writeHead(404, {'Content-Type': 'text/plain'});
                 res.end('No such file.\n'+ err);
                 return;
             }
@@ -43,7 +46,7 @@ module.exports = function reply(req, res, next) {
                                 mAuthor: html.meta.author,
                                 mKeywords: html.meta.keywords,
                                 mDescription: html.meta.description,
-                                scripts: html.scripts,
+                                scripts: (nojs)?  null : html.scripts,
                                 stylesheets: html.styles
                             },
                             body: {

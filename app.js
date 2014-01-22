@@ -112,7 +112,13 @@ if (!module.parent) {
     global.app.listen(port);
 
     var portString = global.opts.common.port.toString();
-    console.log('[SOURCE] is working on '.blue + portString.blue + ' port in '.blue + MODE.blue + ' mode...'.blue);
+
+    var d = new Date(),
+        dateArr = [d.getHours(), d.getMinutes(), d.getSeconds()],
+        dateArr = dateArr.map(function (el) { return (el > 9)? el : '0'+ el; }),
+        fullStr = (MODE == 'development')? ' startup in '.blue + dateArr.join(':').red : '';
+
+    console.log('[SOURCE]'.blue + fullStr +' is working on '.blue + portString.blue + ' port in '.blue + MODE.blue + ' mode...'.blue);
 }
 
 function logErrors(err, req, res, next) {
