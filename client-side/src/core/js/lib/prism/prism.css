@@ -6,6 +6,7 @@
 
 pre[class*="src-"],
 pre[class*="src-"] code {
+
     color: black;
     /*text-shadow: 0 1px white;*/
     font:12px/1.5 Consolas, Monaco, 'Andale Mono', monospace;
@@ -20,13 +21,21 @@ pre[class*="src-"] code {
     -moz-tab-size: 4;
     -o-tab-size: 4;
     tab-size: 4;
-
     -webkit-hyphens: none;
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
-}
 
+}
+pre[class*="src-"] code.__visible {
+    opacity:1;
+    -webkit-transition: opacity .3s;
+    -moz-transition: opacity .3s;
+    -o-transition: opacity .3s;
+    transition: opacity .3s;
+}
+pre[class*="src-"] code {
+}
 pre[class*="src-"]::-moz-selection, pre[class*="src-"] ::-moz-selection,
 pre[class*="src-"] code::-moz-selection, pre[class*="src-"] code ::-moz-selection
 /*code[class*="src-"]::-moz-selection, code[class*="src-"] ::-moz-selection */
@@ -38,7 +47,7 @@ pre[class*="src-"] code::-moz-selection, pre[class*="src-"] code ::-moz-selectio
 pre[class*="src-"]::selection, pre[class*="src-"] ::selection,
 pre[class*="src-"] code::selection, pre[class*="src-"] code::selection {
     text-shadow: none;
-    background: #f1f2f3;
+    background: #ceeeff;
 }
 
 @media print {
