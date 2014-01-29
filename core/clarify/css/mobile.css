@@ -1,6 +1,8 @@
 /* Source blocks
 ---------------------------------------------------------------------------------- */
-
+body {
+    min-width: 0 !important;
+    }
 .clarify .source_example {
 	width: 100%;
 	min-width: 100%;
