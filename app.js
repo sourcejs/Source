@@ -11,6 +11,12 @@ var deepExtend = require('deep-extend');
 var headerFooter = require('./core/headerFooter.js');
 var loadOptions = require('./core/loadOptions');
 
+// Parse args
+commander
+  .version(pkg.version)
+  .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
+  .parse(process.argv);
+
 /* Globals */
 global.app = express();
 global.opts = loadOptions();
@@ -122,6 +128,11 @@ global.app.use(function(req, res, next){
 });
 /* /Serving content */
 
+if (!module.parent) {
+    var port = global.opts.common.port;
+    if (commander.port) {
+      port = parseInt(commander.port);
+    }
 
 
 /* Error handling */
