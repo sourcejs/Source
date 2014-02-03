@@ -13,7 +13,6 @@ var loadOptions = require('./core/loadOptions');
 
 // Parse args
 commander
-  .version(pkg.version)
   .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
   .parse(process.argv);
 
