@@ -10,11 +10,11 @@ var express = require('express')
     , fs = require('fs')
     , ejs = require('ejs')
     , deepExtend = require('deep-extend')
+    , commander = require('commander')
     , headerFooter = require('./core/headerFooter');
 
 // Parse args
 commander
-  .version(pkg.version)
   .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
   .parse(process.argv);
 
