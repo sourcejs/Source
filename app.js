@@ -13,10 +13,6 @@ var express = require('express')
     , commander = require('commander')
     , headerFooter = require('./core/headerFooter');
 
-// Parse args
-commander
-  .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
-  .parse(process.argv);
 
 /* Globals */
 global.app = express();
@@ -27,6 +23,13 @@ global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
 
 global.MODE = process.env.NODE_ENV || 'development';
 /* /Globals */
+
+
+/* Args */
+commander
+  .option('-p, --port [number]', 'Server port (default: '+global.opts.common.port+')', global.opts.common.port)
+  .parse(process.argv);
+/* Args */
 
 
 /* Optimization */
@@ -104,7 +107,7 @@ global.app.use(function(req, res, next){
 			section: path,
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
-		})
+		});
 
 		return;
 	}
