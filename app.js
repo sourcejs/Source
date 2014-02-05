@@ -10,8 +10,13 @@ var express = require('express')
     , fs = require('fs')
     , ejs = require('ejs')
     , deepExtend = require('deep-extend')
+    , commander = require('commander')
     , headerFooter = require('./core/headerFooter');
 
+// Parse args
+commander
+  .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
+  .parse(process.argv);
 
 /* Globals */
 global.app = express();
@@ -108,10 +113,13 @@ global.app.use(function(req, res, next){
 
 if (!module.parent) {
     var port = global.opts.common.port;
+    if (commander.port) {
+      port = parseInt(commander.port);
+    }
 
     global.app.listen(port);
 
-    var portString = global.opts.common.port.toString();
+    var portString = port.toString();
     console.log('[SOURCE] is working on '.blue + portString.blue + ' port in '.blue + MODE.blue + ' mode...'.blue);
 }
 
