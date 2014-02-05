@@ -11,10 +11,6 @@ var deepExtend = require('deep-extend');
 var headerFooter = require('./core/headerFooter.js');
 var loadOptions = require('./core/loadOptions');
 
-// Parse args
-commander
-  .option('-p, --port [number]', 'Server port (default: 8080)', 8080)
-  .parse(process.argv);
 
 /* Globals */
 global.app = express();
@@ -27,10 +23,14 @@ global.MODE = process.env.NODE_ENV || 'development';
 /* /Globals */
 
 
+/* Args */
+commander
+  .option('-p, --port [number]', 'Server port (default: '+global.opts.common.port+')', global.opts.common.port)
+  .parse(process.argv);
+/* Args */
 
-/* App config */
 
-// Optimization
+/* Optimization */
 global.app.use(express.compress());
 
 // Cookies
