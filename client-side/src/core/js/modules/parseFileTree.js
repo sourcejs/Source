@@ -64,7 +64,7 @@ define([
                                     var isSingle = false;
                                     if (getSpecificCat.indexOf('specFile') === -1) {
                                         for (innerCat in returnedTreeObj) {
-                                            if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, true) ) {
+                                            if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, getCatInfo) ) {
                                                 if (innerCat == 'specFile' && (!excludeRootDocument)) {
                                                     fileTree[innerCat] = {};
                                                     fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
@@ -79,7 +79,7 @@ define([
                                         isSingle = true;
                                     }
                                     return isSingle;
-                                }
+                                };
 
                                 // absolute path
                                 if (getSpecificCat.indexOf('/') == 0) {
@@ -209,7 +209,7 @@ define([
 
     ParseFileTree.prototype.getParsedJSON = function() {
     	return this.json;
-    }
+    };
 
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
@@ -231,7 +231,7 @@ define([
 					}
 				}
 			}
-        }
+        };
 
         lookForIndexOrGoDeeper(fileTree);
         return fileFlat;

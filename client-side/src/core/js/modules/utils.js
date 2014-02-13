@@ -43,22 +43,23 @@ define([
         return specName;
     };
 
-    Utils.prototype.getPathToPage = function(fullUrl) {
+    Utils.prototype.getPathToPage = function(specUrlFromFileTree) {
         var pathToSpec = (function(){
             var path;
 
-            if (typeof fullUrl === 'undefined') {
+            //specUrl is used from parseFileTree, and contains only path, without file like "/docs/spec"
+            if (typeof specUrlFromFileTree === 'undefined') {
                 path = window.location.pathname;
+
+                path = path.split("/"); //Breaking url to array
+                path.splice(path.length - 1, 1); //Clear page.html from array
+                path = path.join("/");
             } else {
-                path = fullUrl;
+                path = specUrlFromFileTree;
             }
 
             return path;
         }());
-
-        pathToSpec = pathToSpec.split("/"); //Breaking url to array
-        pathToSpec.splice(pathToSpec.length - 1, 1); //Clear page.html from array
-        pathToSpec = pathToSpec.join("/");
 
         return pathToSpec;
     };
