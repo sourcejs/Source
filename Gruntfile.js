@@ -1,6 +1,11 @@
 var path = require('path');
 
 module.exports = function(grunt) {
+    // load all grunt tasks matching the `grunt-*` pattern
+    require('load-grunt-tasks')(grunt);
+
+    // measuring processing time
+    require('time-grunt')(grunt);
 
     var removePathInDest = function(inputPath, destBase, destPath) {
         // remove some path from destination file path in public dir
@@ -354,14 +359,6 @@ module.exports = function(grunt) {
         }
     });
 
-    // Load plugins installed via npm install
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-sftp-deploy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
 
     // TODO: make cleaning task for existing plugins update
 
@@ -376,15 +373,19 @@ module.exports = function(grunt) {
 
     // Local deploy task to public folder without minimize
     grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
+    grunt.registerTask('ud', ['updateDebug']); // alias
 
     // Local deploy task to public folder
-    grunt.registerTask('update', ['less:main','copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
+    grunt.registerTask('update', ['less:main','copy:main', 'newer:uglify:main','newer:cssmin:main', 'newer:uglify:addBanner','newer:cssmin:addBanner', 'clean:all']);
+    grunt.registerTask('u', ['update']); // alias
+    grunt.registerTask('default', ['update']); // alias
 
     // Upload files to remote via sftp
-    grunt.registerTask('deployRemoteDebug', ['clean:build', 'less:main', 'copy:remote', 'clean:remote']);
+    //TODO: refactor remote deploy tasks
+//    grunt.registerTask('deployRemoteDebug', ['clean:build', 'less:main', 'copy:remote', 'clean:remote']);
 
     // Minify and upload files to remote via sftp
-    grunt.registerTask('deployRemote', ['clean:build', 'less:main', 'copy:remote',  'cssmin:remote', 'cssmin:addRemoteBanner', 'uglify:remote', 'uglify:addRemoteBanner', 'clean:remote', 'sftp-deploy:deploy']);
+//    grunt.registerTask('deployRemote', ['clean:build', 'less:main', 'copy:remote',  'cssmin:remote', 'cssmin:addRemoteBanner', 'uglify:remote', 'uglify:addRemoteBanner', 'clean:remote', 'sftp-deploy:deploy']);
 
     // Watching client-side changes and running minify, less, copy to public
     grunt.registerTask('runWatch', ['watch']);
