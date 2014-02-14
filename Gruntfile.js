@@ -9,8 +9,6 @@ module.exports = function(grunt) {
 
     var removePathInDest = function(inputPath, destBase, destPath) {
         // remove some path from destination file path in public dir
-
-        // TODO: refactor regex, to get rid off '//' in paths
         var newPath,
             regex = '^'+inputPath+'/|\\W'+inputPath+'/';
 
@@ -372,13 +370,13 @@ module.exports = function(grunt) {
     grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:initClient', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
 
     // Local deploy task to public folder without minimize
-    grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
-    grunt.registerTask('ud', ['updateDebug']); // alias
+        grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
+        grunt.registerTask('ud', ['updateDebug']); // alias
 
     // Local deploy task to public folder
     grunt.registerTask('update', ['less:main','copy:main', 'newer:uglify:main','newer:cssmin:main', 'newer:uglify:addBanner','newer:cssmin:addBanner', 'clean:all']);
-    grunt.registerTask('u', ['update']); // alias
-    grunt.registerTask('default', ['update']); // alias
+        grunt.registerTask('u', ['update']); // alias
+        grunt.registerTask('default', ['update']); // alias
 
     // Upload files to remote via sftp
     //TODO: refactor remote deploy tasks
@@ -389,4 +387,5 @@ module.exports = function(grunt) {
 
     // Watching client-side changes and running minify, less, copy to public
     grunt.registerTask('runWatch', ['watch']);
+        grunt.registerTask('rw', ['runWatch']); // alias
 };

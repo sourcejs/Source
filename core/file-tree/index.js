@@ -1,5 +1,6 @@
 var fs = require('fs'),
     extend = require('extend'),
+    deepExtend = require('deep-extend'),
     path = require('path');
 
     // sourceMaster root path
@@ -54,7 +55,7 @@ var isSpec = function(file) {
     return response;
 };
 
-function fileTree(dir) {
+var fileTree = function(dir) {
     var outputJSON = {},
         dirContent = fs.readdirSync(dir);
 
@@ -83,49 +84,30 @@ function fileTree(dir) {
             }
 
         } else if (isSpec(targetFile)) {
+            var page = {};
 
             var urlForJson = urlFromHostRoot.substring(rootLength, urlFromHostRoot.length);
-
             //Removing filename from path
             urlForJson = urlForJson.split('/');
             urlForJson.pop();
             urlForJson = urlForJson.join('/');
 
-            var page = {};
+            page.url = urlForJson || '';
+            page.lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.') || '';
+            page.lastmodSec = Date.parse(fileStats.mtime) || '';
+            page.fileName = targetFile  || '';
 
             if (fs.existsSync(dir+'/'+INFO_FILE)) {
-                    var fileJSON = require("../../"+dir+"/"+INFO_FILE);
+                var fileJSON = require("../../"+dir+"/"+INFO_FILE);
 
-                var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
-                    lastmodSec = Date.parse(fileStats.mtime),
-                    fileName = targetFile,
-                    author = fileJSON.author,
-                    title = fileJSON.title,
-                    keywords = fileJSON.keywords,
-                    info = fileJSON.info;
-            } else {
-                // if infoFile don't exist in project folder
-                var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
-                    lastmodSec = Date.parse(fileStats.mtime),
-                    fileName = targetFile
+                deepExtend(page, fileJSON);
             }
-
-            page = {
-                url: urlForJson,
-                lastmod: lastmod,
-                fileName: fileName,
-                lastmodSec: lastmodSec,
-                author: author,
-                title: title,
-                keywords: keywords,
-                info: info
-            };
 
             outputJSON['specFile'] = extend(page);
         }
     });
     return outputJSON;
-}
+};
 
 // function for write json file
 var GlobalWrite = function() {

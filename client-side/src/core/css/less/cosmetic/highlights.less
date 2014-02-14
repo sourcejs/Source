@@ -2,8 +2,6 @@
 ---------------------------------------------------------------------------------- */
 
 /* TODO: optimize those kind of selectors range with preprocessor */
-.source_hl,
-
 .source_main > code:not(:empty),
 .source_main > *:not(.source_example) > code:not(:empty),
 .source_main > *:not(.source_example) > *:not(.source_example) > code:not(:empty),
@@ -14,9 +12,8 @@
   background: #f1f2f3;
   font-family: Menlo, Monaco, Consolas, monospace;
   font-size: .85em;
-  padding: 1px 4px;
+  padding: 2px 4px 1px;
 
-  -moz-border-radius: 3px;
   border-radius: 3px;
 
   border: 1px solid #dfe2e4;
@@ -28,9 +25,10 @@
   background: #ceeeff;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1em;
-  padding: 1px 3px;
+  padding: 1px 3px 2px;
 
   border: none;
+  border-radius: 3px;
 
   color: #333;
   }
