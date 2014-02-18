@@ -66,11 +66,12 @@ define([
 		var sourceHeaders = [],
 			navHeaders,
 			currentHeader = -1,
-			extension = '.html';
+			filename, extension;
 
-		if (window.location.href.indexOf('.src') != '-1') {
-			extension = '.src';
-		}
+		filename = document.location.href.split('/').pop().split('.');
+
+		extension = /\w+/.exec(filename[1]);
+		filename = filename[0];
 
 		// watch headers position
 		var watchSectionTop = function () {
@@ -108,7 +109,7 @@ define([
 
 				// Modern browsers uses history API for correct back-button-browser functionality
 				if (!!(window.history && history.pushState)) {
-					window.history.replaceState({anchor: closestHeader+1}, document.title, 'index' + extension + href);
+					window.history.replaceState({anchor: closestHeader+1}, document.title, filename + '.' +  extension + href);
 				} else { // ie9 fallback
 					 window.location.hash = href;
 				}
