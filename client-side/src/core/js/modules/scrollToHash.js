@@ -14,18 +14,14 @@ define([
 
     	function showSections() {
 			for (var i = 0; i < sections.length; i++) {
-				sections[i].className = sections[i].className.replace(' __hidden', '');
+				sections[i].className += ' __loaded';
 			}
 
-			navigation.className = navigation.className.replace(' __hidden', '');
+			navigation.className += ' __loaded';
 			mainContainer.className = mainContainer.className.replace(' __loading', '');
     	}
 
     	(function hideSections() {
-			for (var i = 0; i < sections.length; i++) {
-				sections[i].className += ' __hidden';
-			}
-			navigation.className += ' __hidden';
 			mainContainer.className += ' __loading';
     	})();
 

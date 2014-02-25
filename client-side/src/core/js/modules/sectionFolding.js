@@ -212,8 +212,6 @@ define([
             }
 
             if (navHash != '') {
-            	console.log ('!!! — Section folding', window.rdkTemplatesTotal );
-
                 utils.scrollToSection(navHash);
             }
         }
