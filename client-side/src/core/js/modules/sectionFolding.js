@@ -211,18 +211,17 @@ define([
                 }
             }
 
-/* Check call from scrollTohash.js — duplicated
             if (navHash != '') {
             	console.log ('!!! — Section folding', window.rdkTemplatesTotal );
 
                 utils.scrollToSection(navHash);
             }
-*/
         }
 
         //If supports history API
         if (window.history && history.pushState && !$.browser.msie)  {
             window.addEventListener('popstate', function (event) {
+
                 openOnNavigation();
             });
         } else {
@@ -237,7 +236,7 @@ define([
                     href = href[href.length - 1];
 
                     window.location.hash = href;
-
+console.log('click!');
                     openOnNavigation();
 
                 }
