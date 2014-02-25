@@ -211,9 +211,13 @@ define([
                 }
             }
 
+/* Check call from scrollTohash.js — duplicated
             if (navHash != '') {
+            	console.log ('!!! — Section folding', window.rdkTemplatesTotal );
+
                 utils.scrollToSection(navHash);
             }
+*/
         }
 
         //If supports history API
