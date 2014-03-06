@@ -12,7 +12,6 @@ var express = require('express')
     , deepExtend = require('deep-extend')
     , headerFooter = require('./core/headerFooter');
 
-
 /* Globals */
 global.app = express();
 global.opts = require('./core/options/');
@@ -28,6 +27,16 @@ global.MODE = process.env.NODE_ENV || 'development';
 global.app.use(express.compress());
 /* /Optimization */
 
+/* Cookies */
+global.app.use(express.cookieParser());
+
+app.use(function (req, res, next) {
+    res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
+
+    // keep executing the router middleware
+    next();
+});
+/* /Cookies */
 
 /* LESS processing */
 if (global.MODE === 'development') {
