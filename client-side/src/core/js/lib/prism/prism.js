@@ -350,7 +350,8 @@
         }
     }
 
-})();;
+})();
+
 Prism.languages.html = {
     'comment': /&lt;!--[\w\W]*?-->/g,
     'prolog': /&lt;\?.+?\?>/,
@@ -505,10 +506,10 @@ Prism.languages.insertBefore('bash', 'comment', {
 Prism.hooks.add('after-highlight', function (env) {
     // works only for <code> wrapped inside <pre data-line-numbers> (not inline)
     var pre = env.element.parentNode;
+
     if (!pre || !/pre/i.test(pre.nodeName)) {
         return;
     }
-
     var linesNum = (1 + env.code.split('\n').length);
     var lineNumbersWrapper;
 
@@ -525,4 +526,4 @@ Prism.hooks.add('after-highlight', function (env) {
 
     env.element.appendChild(lineNumbersWrapper);
 
-});;
+});

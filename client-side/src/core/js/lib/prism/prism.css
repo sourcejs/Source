@@ -123,6 +123,20 @@ pre[class*="src-"] {
     cursor: help;
 }
 
+.token.json-property {
+    color: #07A;
+    }
+
+.token.old {
+    margin-right: .25em;
+    color: #f66;
+    text-decoration:line-through
+    }
+
+.token.new {
+    color:#690
+    }
+
 .line-numbers-rows {
     position: absolute;
     pointer-events: none;
