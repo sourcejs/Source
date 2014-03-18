@@ -22,10 +22,6 @@ var OUTPUT_FILE = global.opts.fileTree.outputFile;
 // for waiting when function finished
 var NOT_EXEC = true;
 
-// Run script on first app start only
-var ONCE = false; //off by defult
-if (global.MODE === 'production') { ONCE=true; }  //true for production
-
 // configuration for function timeout
 var CRON = global.opts.fileTree.cron;
 var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
@@ -123,8 +119,8 @@ var GlobalWrite = function() {
 // run function on server start
 GlobalWrite();
 
-// setcron fot 1 minute (60000ms)
-if (CRON && !ONCE) {
+// setcron
+if (CRON && global.MODE === 'production') {
     setInterval(function(){
         GlobalWrite();
     }, CRON_REPEAT_TIME);
@@ -133,7 +129,7 @@ if (CRON && !ONCE) {
 // run task from server homepage
 module.exports.scan = function () {
     // NOT_EXEC for waiting script end and only then can be run again
-    if (NOT_EXEC && !ONCE) {
+    if (NOT_EXEC) {
         NOT_EXEC = false;
         setTimeout(function(){
             GlobalWrite();
