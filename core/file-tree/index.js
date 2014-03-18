@@ -94,7 +94,7 @@ var fileTree = function(dir) {
             page.fileName = targetFile  || '';
 
             if (fs.existsSync(dir+'/'+INFO_FILE)) {
-                var fileJSON = require("../../"+dir+"/"+INFO_FILE);
+                var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+INFO_FILE, "utf8"));
 
                 deepExtend(page, fileJSON);
             }
@@ -102,6 +102,7 @@ var fileTree = function(dir) {
             outputJSON['specFile'] = extend(page);
         }
     });
+
     return outputJSON;
 };
 
