@@ -696,6 +696,7 @@ body p.source_doc,
   margin: 20px 33.6% 20px 0;
   padding: 10px 25px;
   background: #DCFCDA;
+  font-family: Menlo, Monaco, Consolas, monospace;
 }
 body p.source_data,
 .source_data {
@@ -728,8 +729,8 @@ body p.source_data,
   font-size: 16px;
   font-weight: normal;
   color: #333;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   background-color: #f1f2f3;
   font-family: inherit;
 }
@@ -836,8 +837,12 @@ body .source_section > h2:first-child {
   content: "▼";
 }
 .source_section__open .source_source-code__show,
-.source_section__open .source_source-code__static {
+.source_section__open .source_source-code__static,
+.source_section__open .source_context.__show {
   display: block !important;
+}
+.source_section__open .source_context {
+  display: none !important;
 }
 /* Header actions */
 .source_section_h:hover .source_section_h_expand {
