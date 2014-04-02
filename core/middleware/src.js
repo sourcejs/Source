@@ -11,6 +11,10 @@ var userTemplatesDir = path.normalize(__dirname + "/../../user/views/"),
 * check if requested file is *.src and render
 * */
 exports.process = function (req, res, next) {
+    handleRequest(req, res, next)
+};
+
+function handleRequest(req, res, next) {
     var physicalPath = global.app.get('specs path') + req.url; // get the physical path of a requested file
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
@@ -84,7 +88,10 @@ exports.process = function (req, res, next) {
                 requestedDir += '/';
             }
             if (exists) {
-                res.redirect(requestedDir + "index.src");
+                //res.redirect(requestedDir + "index.src");
+                handleRequest({
+                    url: requestedDir + "index.src"
+                }, res, next)
             } else {
                 next();
             }
@@ -92,4 +99,4 @@ exports.process = function (req, res, next) {
     } else {
         next();
     }
-};
+}

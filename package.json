@@ -24,7 +24,8 @@
     "grunt-contrib-less": "~0.7.0",
     "grunt-newer": "~0.6.1",
     "time-grunt": "~0.2.9",
-    "load-grunt-tasks": "~0.3.0"
+    "load-grunt-tasks": "~0.3.0",
+    "path": "^0.4.9"
   },
   "devDependencies": {
     "less-middleware": "~0.1.12"
