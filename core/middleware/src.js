@@ -3,8 +3,8 @@ var fs = require('fs'),
         path = require('path'),
         getHeaderAndFooter = require('../headerFooter').getHeaderAndFooter;
 
-var userTemplatesDir = __dirname + "/../../user/views/",
-        coreTemplatesDir = __dirname + "/../views/";
+var userTemplatesDir = path.normalize(__dirname + "/../../user/views/"),
+        coreTemplatesDir = path.normalize(__dirname + "/../views/");
 
 
 /*
@@ -72,6 +72,19 @@ exports.process = function (req, res, next) {
 
                 });
 
+            } else {
+                next();
+            }
+        });
+    } else if (extension == "") {
+        fs.exists(physicalPath + "index.src", function(exists) {
+            var requestedDir = req.url;
+
+            if (requestedDir.slice(-1) != '/') {
+                requestedDir += '/';
+            }
+            if (exists) {
+                res.redirect(requestedDir + "index.src");
             } else {
                 next();
             }
