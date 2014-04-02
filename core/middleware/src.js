@@ -13,11 +13,12 @@ var userTemplatesDir = __dirname + "/../../user/views/",
 exports.process = function (req, res, next) {
     var physicalPath = global.app.get('specs path') + req.url; // get the physical path of a requested file
 
-    //var directory = path.dirname(physicalPath); // get the dir of a requested file
+    var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
     var extension = path.extname(physicalPath); // extension of a requested file
+    var infoJson = directory + '/info.json';
 
-    if (extension == "src") {
+    if (extension == ".src") {
         fs.exists(physicalPath, function(exists) {
 
             if (exists) {
