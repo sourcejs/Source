@@ -18,11 +18,14 @@ define([
             CATALOG : 'source_catalog',
             CATALOG_LIST : 'source_catalog_list',
             CATALOG_LIST_I : 'source_catalog_list_i',
-
+                CATALOG_LIST_I_PREVIEW_NAME : 'thumbnail.png',
             CATALOG_LIST_ALL : 'source_catalog_all',
                 CATALOG_LIST_ALL_A : 'source_a_bl',
 
+            CATALOG_IMG_TUMBLER: 'catalog-image-tumbler',
+
             CATALOG_LIST_A : 'source_catalog_a source_a_g',
+            CATALOG_LIST_A_IMG : 'source_catalog_img',
             CATALOG_LIST_A_TX : 'source_catalog_title',
             CATALOG_LIST_DATE : 'source_catalog_footer',
             CATALOG_LIST_BUBBLES : 'source_bubble',
@@ -46,6 +49,8 @@ define([
 
     GlobalNav.prototype.init = function () {
         this.drawNavigation();
+        this.drawToggler();
+        this.hideImgWithError();
     };
 
     //Drawing navigation and page info in each catalog defined on page
@@ -54,11 +59,13 @@ define([
             L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG),
             CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST,
             CATALOG_LIST_I = this.options.modulesOptions.globalNav.CATALOG_LIST_I,
+                CATALOG_LIST_I_PREVIEW_NAME = this.options.modulesOptions.globalNav.CATALOG_LIST_I_PREVIEW_NAME,
 
             CATALOG_LIST_ALL = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL,
                 CATALOG_LIST_ALL_A = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL_A,
 
             CATALOG_LIST_A = this.options.modulesOptions.globalNav.CATALOG_LIST_A,
+                CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG,
                 CATALOG_LIST_A_TX = this.options.modulesOptions.globalNav.CATALOG_LIST_A_TX,
 
             CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
@@ -178,6 +185,7 @@ define([
                         navTreeHTML += '' +
                                 '<li class="' + CATALOG_LIST_I + '">' +
                                 '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
+                                '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >' +
                                 '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
                                 '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
 
@@ -190,6 +198,7 @@ define([
                         navTreeHTML +=
                                 '</a>' +
                                 '</li>';
+
                     };
 
                     var navListItems = (pageLimit > targetCatArray.length)
@@ -220,6 +229,8 @@ define([
                         addNavPosition(targetPage);
                     }
 
+
+
                     //Injecting nav tree
                     L_CATALOG_LIST.html(navTreeHTML);
 
@@ -238,11 +249,50 @@ define([
                 }
 
             } else {
+
             	if (navListDir !== undefined) {
 					//Display error
 					L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
             	}
             }
+
+
+        });
+    };
+
+    GlobalNav.prototype.drawToggler = function(){
+        var _this = this,
+            L_CATALOG = $('.' + _this.options.modulesOptions.globalNav.CATALOG),
+            CATALOG_LIST_A_IMG = _this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG,
+            CATALOG_IMG_TUMBLER = _this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
+
+
+        L_CATALOG.filter('[data-nav]').each(function(){
+            $(this).append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+        });
+
+        $(document).on('click', '.' + CATALOG_IMG_TUMBLER, function(e){
+            e.preventDefault();
+
+            var $this = $(this),
+                tumblerText = $this.text();
+
+            tumblerText = (tumblerText == 'Показать превьюшки') ? 'Скрыть превьюшки' : 'Показать превьюшки';
+
+            $this
+                .text(tumblerText)
+                .parent().find('.' + CATALOG_LIST_A_IMG).toggleClass('__show');
+        });
+    };
+
+    GlobalNav.prototype.hideImgWithError = function(){
+        var CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG;
+
+        //check valid all img
+        $('.' + CATALOG_LIST_A_IMG).each(function(){
+            this.onerror = function(){
+                this.remove();
+            };
         });
     };
 

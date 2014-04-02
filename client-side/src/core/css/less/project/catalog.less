@@ -7,6 +7,7 @@
     }
 
 .source_catalog {
+  	position: relative;
 
     &_h2,
     h2 {
@@ -15,6 +16,14 @@
 		margin: 0 0 10px;
 		font-weight: normal;
 		}
+  	.catalog-image-tumbler {
+	  	position: absolute;
+	  	top: 0; right: 5%;
+	  	border-bottom: 1px dotted #333;
+	  	text-decoration: none;
+	  	color: #333;
+		}
+
     }
 
 .source_catalog_tx {
@@ -33,11 +42,9 @@
 	}
 
 .source_catalog_list_i {
-	width: 25%;
-	margin-right: 5%;
+	width: 40%;
+	margin-right: 10%;
 	display: inline-block;
-	*display: inline;
-	*zoom: 1;
 	vertical-align: top;
 	}
 
@@ -50,12 +57,18 @@
 	position: relative;
 	display: block;
 	margin-left: -5px;
-	padding: 5px 25px 5px 5px;
+	padding: 5px 5px 5px 45px;
 
 	font-size: 13px;
 	text-decoration: none;
 
-    a&:hover { //tag for weight
+  	.source_status_badge {
+	  	position: absolute;
+	  	top: 5px;
+	  	left: 5px;
+		}
+
+	a&:hover { //tag for weight
         text-decoration: none;
         background-color: #f1f2f3;
 
@@ -83,6 +96,18 @@
 	-o-transition: opacity .2s;
 	transition: opacity .2s;
 	}
+
+.source_catalog_img {
+  	display: none;
+  	max-width: 100%;
+  	max-height: 60px;
+  	margin-bottom: 5px;
+  	border: 1px solid #ddd;
+  	border-radius: 2px;
+	}
+	.source_catalog_img.__show {
+  		display: block;
+		}
 
 .source_catalog_all {
 	margin-top: 5px;
