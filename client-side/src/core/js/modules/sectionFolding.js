@@ -234,7 +234,7 @@ define([
                     href = href[href.length - 1];
 
                     window.location.hash = href;
-console.log('click!');
+
                     openOnNavigation();
 
                 }
