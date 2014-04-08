@@ -4,7 +4,7 @@
 *
 */
 
-define(["modules/module"], function(module) {
+define(["modules/module", "modules/utils"], function(module, utils) {
 
 	function LoadEvents() {}
 
@@ -13,14 +13,17 @@ define(["modules/module"], function(module) {
 
 	LoadEvents.prototype.init = function( callback ) {
 
-		var callback = callback || function () {};
+		var callback = callback || function () {},
+			complete = false;
 
 		function checkPluginsDefinition() {
 			return ( (window.source !== undefined) && (window.source.loadEvents !== undefined) && (Object.keys(window.source.loadEvents).length) );
 		};
 
 		function generateSuccessEvent(eventName) {
-			console.log('event happens ' + eventName );
+			if (utils.isDevelopmentMode()) {
+				console.log('event happens ' + eventName );
+			}
 
 			if (window.CustomEvent) {
 				event = new CustomEvent(eventName);
@@ -31,7 +34,10 @@ define(["modules/module"], function(module) {
 
 			document.dispatchEvent(event);
 
-			callback();
+			if (!complete) {
+				complete = true;
+				callback();
+			}
 		}
 
 		(function checkPluginsState() {
@@ -51,10 +57,16 @@ define(["modules/module"], function(module) {
 
 				for (var plugin in pluginsSection) {
 
+					if (pluginsSection[plugin].finish) {
+						pluginsSection[plugin].timeExpected = now-1;
+					}
+
 					if ( !Array.isArray( pluginsSection[plugin]) ) {
 						// first time
+
 						if (pluginsSection[plugin].timeExpected === undefined) {
-							pluginsSection[plugin].timeExpected = now + (pluginsSection[plugin].timeOut || defaultPluginTimeout);
+
+							pluginsSection[plugin].timeExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout);
 
 							// When plugin finish his work, it send "finishEvent", which differs for each plugin
 							pluginsSection[plugin].finishEvent && document.addEventListener(pluginsSection[plugin].finishEvent, function() {
@@ -64,15 +76,16 @@ define(["modules/module"], function(module) {
 
 							// When plugin need to update work's timeout, it generate "updateEvent"
 							pluginsSection[plugin].updateEvent && document.addEventListener(pluginsSection[plugin].updateEvent, function() {
-								pluginsSection[plugin].timeExpected = now + (pluginsSection[plugin].timeOut || defaultPluginTimeout);
+								pluginsSection[plugin].timeExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout);
 							})
 
 						// Plugin already was initialized
 						} else {
+
 							// If timeout come, increase counter
 							if ( pluginsSection[plugin].timeExpected < now ) {
-								if (pluginsSection[plugin].finish === undefined) {
-									generateSuccessEvent(plugin + 'Timeout');
+								if (!pluginsSection[plugin].finish) {
+									generateSuccessEvent(plugin + ' timeout');
 								}
 
 								pluginsSection[plugin].finish = true;
@@ -84,7 +97,7 @@ define(["modules/module"], function(module) {
 						var subPluginFinish = 0;
 						pluginFinish++;
 
-						if ( (pluginsSection[plugin].length) && (pluginsSection[plugin].finish === undefined) ) {
+						if ( (pluginsSection[plugin].length) && (!pluginsSection[plugin].finish) ) {
 
 							for (var i = 0; i < pluginsSection[plugin].length; i++ ) {
 								var subPlugin = pluginsSection[plugin][i];
@@ -96,7 +109,7 @@ define(["modules/module"], function(module) {
 
 							if ( pluginsSection[plugin].length == subPluginFinish) {
 								pluginsSection[plugin].finish = true;
-								generateSuccessEvent(plugin + 'GroupFinish');
+								generateSuccessEvent(plugin + ' GroupFinish');
 							}
 						}
 					}
@@ -113,6 +126,7 @@ define(["modules/module"], function(module) {
 				}
 
 				generateSuccessEvent('allPluginsFinish');
+				return;
 			}
 
 			checkPlugins();

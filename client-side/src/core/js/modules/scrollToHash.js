@@ -7,7 +7,8 @@ define([
     var navHash = utils.parseNavHash(),
 	    sections = document.querySelectorAll('.source_section'),
 	    navigation = document.querySelector('.source_nav'),
-	    mainContainer = document.querySelector('.source_main');
+	    mainContainer = document.querySelector('.source_main'),
+	    body = document.querySelector('body');
 
 	// Show hidden sections and navigation
 	function showSections() {
@@ -17,9 +18,11 @@ define([
 
 		navigation.className += ' __loaded';
 		mainContainer.className = mainContainer.className.replace(' __loading', '');
+		body.className = body.className.replace(' __loading', '');
 	}
 
 	mainContainer.className += ' __loading';
+	body.className += ' __loading';
 
 	loadEvents.init(function() {
 		showSections();
