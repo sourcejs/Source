@@ -15,7 +15,7 @@ define(["modules/module", "modules/utils"], function(module, utils) {
 
 		var callback = callback || function () {},
 			complete = false,
-			debug = true;
+			debug = false;
 
 		function checkPluginsDefinition() {
 			return ( (window.source !== undefined) && (window.source.loadEvents !== undefined) && (Object.keys(window.source.loadEvents).length) );

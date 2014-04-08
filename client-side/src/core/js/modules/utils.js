@@ -83,7 +83,7 @@ define([
     	if (this.getCookie('source-mode') == 'development') {
     		return true;
     	} else {
-    		return true;
+    		return false;
     	}
 
     }
