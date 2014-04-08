@@ -73,5 +73,20 @@ define([
         return false;
     };
 
+    Utils.prototype.isDevelopmentMode = function() {
+
+		function getCookie(name) {
+			var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+			return matches ? decodeURIComponent(matches[1]) : undefined;
+		}
+
+    	if (getCookie('source-mode') == 'development') {
+    		return true;
+    	} else {
+    		return false;
+    	}
+
+    }
+
     return new Utils();
 });

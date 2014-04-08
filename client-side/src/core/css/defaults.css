@@ -32,6 +32,9 @@ html body {
   background: #fff;
   color: #333;
 }
+body.__loading {
+  overflow: hidden;
+}
 /* Fonts
 -------------------------------------------------- */
 @media all and (min-width: 990px) {
@@ -243,8 +246,6 @@ html body {
 }
 .source_col {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   vertical-align: top;
   width: 33.1%;
   padding-right: 25px;
@@ -327,7 +328,7 @@ html body {
   box-sizing: border-box;
   counter-reset: h2;
 }
-.__loading:after {
+.source_main.__loading:after {
   content: '';
   position: absolute;
   left: 0;
@@ -751,7 +752,6 @@ body p.source_data,
 ---------------------------------------------------------------------------------- *//* Section
 ---------------------------------------------------------------------------------- */
 .source_section {
-  margin: 20px 0;
   padding-left: 25px;
   counter-reset: h3;
   /* Error detection */
@@ -861,6 +861,7 @@ body p.source_data,
   width: auto;
   overflow: visible;
   top: 0;
+  margin: 20px 0;
 }
 body .source_section > * {
   display: none;
