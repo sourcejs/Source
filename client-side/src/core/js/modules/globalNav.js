@@ -80,20 +80,39 @@ define([
             sortType = this.options.modulesOptions.globalNav.sortType || 'sortByDate';
             ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
+        //TODO: refactor this module and write tests
         L_CATALOG.each(function () {
             var sourceCat = $(this),
                 navListDir = sourceCat.attr('data-nav'),
                 navListCat = sourceCat.attr('data-cat'),
-                catAndDirMode = navListDir !== undefined && navListCat !== undefined;
+                specifCatAndDirDefined = typeof navListDir !== 'undefined' && typeof navListCat !== 'undefined';
 
-            var checkCat = function(currentObj){
+            //Filtering by specified catalogue
+            var skipSpec = function(currentObj){
                 var obj = currentObj,
-                    response = false;
+                    response = true; // skip by default
 
                 //obj['cat'] is an array
-                if (obj['cat'] !==undefined && obj['cat'].indexOf(navListCat) > -1) {
-                    response = true;
-                } else if (navListCat === 'without-cat' && (obj['cat'] === undefined || obj['cat'].length === 0 || obj['cat'].indexOf("hidden") === -1)) {
+                //if cat has needed value
+                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf(navListCat) > -1) {
+                    response = false;
+
+                //without-cat mode, showing all specs without cat field in info.json defined or
+                } else if ( navListCat === 'without-cat' && (typeof obj['cat'] === 'undefined' || obj['cat'].length === 0) ) {
+
+                    response = false;
+                }
+
+                return response;
+            };
+
+            //Filtering hidden specs
+            var isHidden = function(currentObj){
+                var obj = currentObj,
+                    response = false; // skip by default
+
+                //obj['cat'] is an array
+                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf("hidden") > -1 ) {
                     response = true;
                 }
 
@@ -122,7 +141,7 @@ define([
 					}
 				}
 
-				if (typeof catObj === 'object' && !catAndDirMode) {
+				if (typeof catObj === 'object' && !specifCatAndDirDefined) {
 
 					if ( (!sourceCat.find('.source_catalog_title').length) && (catObj.title !== undefined) ) {
 						sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>')
@@ -218,12 +237,9 @@ define([
                         	continue;
                         }
 
-                        //If we're in can n dir mode
-                        if (catAndDirMode) {
-                            //Filter specs by specified cat
-                            if ( !(checkCat(targetCatArray[j]['specFile'])) ) {
-                                continue;
-                            }
+                        //Skip spec if we're filtering it by specific cat
+                        if (specifCatAndDirDefined && skipSpec(targetCatArray[j]['specFile']) || isHidden(targetCatArray[j]['specFile']) ) {
+                            continue; //skip
                         }
 
                         addNavPosition(targetPage);
