@@ -1,4 +1,4 @@
-{
+    {
     "common": {
         "pathToSpecs": "public",
         "port": 8080
