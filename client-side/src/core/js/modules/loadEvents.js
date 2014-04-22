@@ -14,8 +14,22 @@ define(["modules/module", "modules/utils"], function(module, utils) {
 	LoadEvents.prototype.init = function( callback ) {
 
 		var callback = callback || function () {},
+			evt,
 			complete = false,
-			debug = false;
+			debug = module.options.modulesOptions.loadEvents.debug;
+
+		if (!module.options.modulesEnabled.loadEvents) {
+			if (debug && utils.isDevelopmentMode()) {
+				console.log('LoadEvents Module disabled.');
+			}
+
+			callback();
+			return;
+		} else {
+			if (debug && utils.isDevelopmentMode()) {
+				console.log('LoadEvents Module enabled.');
+			}
+		}
 
 		function checkPluginsDefinition() {
 			return ( (window.source !== undefined) && (window.source.loadEvents !== undefined) && (Object.keys(window.source.loadEvents).length) );
@@ -26,14 +40,14 @@ define(["modules/module", "modules/utils"], function(module, utils) {
 				console.log('event happens ' + eventName );
 			}
 
-			if (window.CustomEvent) {
-				event = new CustomEvent(eventName);
+			if (typeof window.CustomEvent === 'function') {
+				evt = new CustomEvent(eventName);
 			} else {
-				event = document.createEvent('CustomEvent');
-				event.initCustomEvent(eventName, true, true);
+				evt = document.createEvent('CustomEvent');
+				evt.initCustomEvent(eventName, false, false, {});
 			}
 
-			document.dispatchEvent(event);
+			document.dispatchEvent(evt);
 
 			if (!complete) {
 				complete = true;

@@ -307,7 +307,7 @@ define([
         //check valid all img
         $('.' + CATALOG_LIST_A_IMG).each(function(){
             this.onerror = function(){
-                this.remove();
+                $(this).remove();
             };
         });
     };
