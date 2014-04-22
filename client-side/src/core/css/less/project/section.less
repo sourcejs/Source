@@ -126,6 +126,11 @@
 		margin-bottom: 20px;
 	}
 
+    & > script,
+    & > style {
+    	display: none !important;
+    	}
+
     body & > * { //body for weihgt
         display: none;
         }
@@ -133,14 +138,17 @@
     body & > h2:first-child { //body for weihgt
 		display: block;
 		}
+
+	.ie9 & > *:not(.source_example) {
+		display: block;
+		}
+
+    .ie9 .source_example {
+		display: inline-block !important;
+		}
 	}
 
 .source_section__open {
-
-    & > script,
-    & > style {
-    	display: none !important;
-    	}
 
     & > *:not(.source_example) {
 		display: block;
@@ -152,8 +160,6 @@
 
     .source_example {
 		display: inline-block;
-		*display: inline;
-		*zoom: 1;
 		}
 
     .spoiler-cont_css_w,
