@@ -331,6 +331,9 @@ body.__loading {
   box-sizing: border-box;
   counter-reset: h2;
 }
+.mozilla .source_main {
+  flex: 1;
+}
 .source_main.__loading:after {
   content: '';
   position: absolute;
