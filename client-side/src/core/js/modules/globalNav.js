@@ -279,25 +279,46 @@ define([
     GlobalNav.prototype.drawToggler = function(){
         var _this = this,
             L_CATALOG = $('.' + _this.options.modulesOptions.globalNav.CATALOG),
-            CATALOG_LIST_A_IMG = _this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG,
             CATALOG_IMG_TUMBLER = _this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
 
+        L_CATALOG.filter('[data-nav*="base"],[data-nav*="project"]').each(function(){
 
-        L_CATALOG.filter('[data-nav]').each(function(){
-            $(this).append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+            /* for each type of data-nav own localStorage */
+            var _tumblerMode = $(this).attr('data-nav').substr(1),
+                tumblerMode = localStorage.getItem( _tumblerMode + 'TumblerMode');
+
+            if ( tumblerMode && tumblerMode == 'showPreview' ) {
+
+                $(this)
+                    .addClass('__show-preview')
+                    .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
+
+            } else {
+
+                $(this).prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+            }
+
         });
 
-        $(document).on('click', '.' + CATALOG_IMG_TUMBLER, function(e){
+        $(document).on('click', '.' + CATALOG_IMG_TUMBLER, function(e) {
             e.preventDefault();
 
             var $this = $(this),
-                tumblerText = $this.text();
+                tumblerText = $this.text(),
+                _tumblerMode = $this.parent().attr('data-nav').substr(1);
 
-            tumblerText = (tumblerText == 'Показать превьюшки') ? 'Скрыть превьюшки' : 'Показать превьюшки';
+            if ( tumblerText == 'Показать превьюшки' ) {
+                tumblerText = 'Скрыть превьюшки';
+                localStorage.setItem( _tumblerMode + "TumblerMode", "showPreview");
+            } else {
+                tumblerText = 'Показать превьюшки';
+                localStorage.setItem( _tumblerMode + "TumblerMode", "hidePreview");
+            }
 
             $this
                 .text(tumblerText)
-                .parent().find('.' + CATALOG_LIST_A_IMG).toggleClass('__show');
+                .parent().toggleClass('__show-preview');
+
         });
     };
 

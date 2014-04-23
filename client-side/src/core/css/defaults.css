@@ -477,23 +477,12 @@ body.__loading {
   border: 1px solid #dfe2e4;
   border-radius: 10px;
 }
-.source_catalog {
-  position: relative;
-}
 .source_catalog_h2,
 .source_catalog h2 {
   font-size: 18px;
   color: #333;
   margin: 0 0 10px;
   font-weight: normal;
-}
-.source_catalog .catalog-image-tumbler {
-  position: absolute;
-  top: 0;
-  right: 5%;
-  border-bottom: 1px dotted #333;
-  text-decoration: none;
-  color: #333;
 }
 .source_catalog_tx {
   min-height: 36px;
@@ -510,8 +499,8 @@ body.__loading {
   padding: 0;
 }
 .source_catalog_list_i {
-  width: 40%;
-  margin-right: 10%;
+  width: 25%;
+  margin-right: 5%;
   display: inline-block;
   vertical-align: top;
 }
@@ -525,14 +514,9 @@ body.__loading {
   position: relative;
   display: block;
   margin-left: -5px;
-  padding: 5px 5px 5px 45px;
+  padding: 5px 25px 5px 5px;
   font-size: 13px;
   text-decoration: none;
-}
-.source_catalog_a .source_status_badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
 }
 a.source_catalog_a:hover {
   text-decoration: none;
@@ -551,17 +535,6 @@ a.source_catalog_a:hover .source_catalog_title {
   text-decoration: none !important;
   opacity: 0;
   transition: opacity .2s;
-}
-.source_catalog_img {
-  display: none;
-  max-width: 100%;
-  max-height: 60px;
-  margin-bottom: 5px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-}
-.source_catalog_img.__show {
-  display: block;
 }
 .source_catalog_all {
   margin-top: 5px;
@@ -1138,6 +1111,41 @@ input.source_search_it:focus {
 }
 /* /Auto complete plugin */
 /* /Search
+---------------------------------------------------------------------------------- *//* Nav statuses plugin
+---------------------------------------------------------------------------------- */
+.source_catalog {
+  position: relative;
+}
+.source_catalog .catalog-image-tumbler {
+  float: right;
+  border-bottom: 1px dotted #333;
+  text-decoration: none;
+  color: #333;
+}
+.source_catalog_list_i {
+  width: 40%;
+  margin-right: 10%;
+}
+.source_catalog_a {
+  padding: 5px 5px 5px 45px;
+}
+.source_catalog_a .source_status_badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.source_catalog_img {
+  display: none;
+  max-width: 100%;
+  max-height: 60px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+.source_catalog.__show-preview .source_catalog_img {
+  display: block;
+}
+/* /Nav statuses plugin
 ---------------------------------------------------------------------------------- *//* Highlights
 ---------------------------------------------------------------------------------- */
 /* TODO: optimize those kind of selectors range with preprocessor */
