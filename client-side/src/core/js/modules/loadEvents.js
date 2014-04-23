@@ -18,7 +18,7 @@ define(["modules/module", "modules/utils"], function(module, utils) {
 			complete = false,
 			debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
-		if (!module.options.modulesEnabled.loadEvents) {
+		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined)) {
 			if (debug && utils.isDevelopmentMode()) {
 				console.log('LoadEvents Module disabled.');
 			}
