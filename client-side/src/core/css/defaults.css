@@ -381,12 +381,7 @@ body.__loading {
   right: 0;
   font-size: 14px;
   background: #333;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: opacity .2s;
-  -moz-transition: opacity .2s;
-  -o-transition: opacity .2s;
   transition: opacity .2s;
   white-space: nowrap;
 }
@@ -402,8 +397,6 @@ body.__loading {
 }
 .source_logo {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   vertical-align: baseline;
   margin-right: 25px;
   line-height: 30px;
@@ -420,8 +413,6 @@ body.__loading {
 -------------------------------------------------- */
 .source_header_nav {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   vertical-align: 1px;
 }
 .source_header_nav_lst {
@@ -431,8 +422,6 @@ body.__loading {
 }
 .source_header_nav_i {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   margin-left: 20px;
   /* Reset */
 
@@ -558,9 +547,6 @@ a.source_catalog_a:hover .source_catalog_title {
   font-size: 11px;
   text-decoration: none !important;
   opacity: 0;
-  -webkit-transition: opacity .2s;
-  -moz-transition: opacity .2s;
-  -o-transition: opacity .2s;
   transition: opacity .2s;
 }
 .source_catalog_img {
@@ -773,7 +759,6 @@ body p.source_data,
   font-size: 16px;
   font-weight: normal;
   color: #333;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   background-color: #f1f2f3;
   font-family: inherit;
@@ -940,8 +925,6 @@ body .source_section > h2:first-child {
 .source_example {
   position: relative;
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
   vertical-align: top;
   padding: 20px;
   min-width: 500px;
