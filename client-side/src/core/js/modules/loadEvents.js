@@ -16,7 +16,7 @@ define(["modules/module", "modules/utils"], function(module, utils) {
 		var callback = callback || function () {},
 			evt,
 			complete = false,
-			debug = module.options.modulesOptions.loadEvents.debug;
+			debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
 		if (!module.options.modulesEnabled.loadEvents) {
 			if (debug && utils.isDevelopmentMode()) {
