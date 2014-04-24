@@ -272,7 +272,6 @@ define([
             	}
             }
 
-
         });
     };
 
@@ -283,19 +282,27 @@ define([
 
         L_CATALOG.filter('[data-nav*="base"],[data-nav*="project"]').each(function(){
 
-            /* for each type of data-nav own localStorage */
-            var _tumblerMode = $(this).attr('data-nav').substr(1),
+            var $this = $(this),
+                /* for each type of data-nav own localStorage */
+                _tumblerMode = $this.attr('data-nav').substr(1),
                 tumblerMode = localStorage.getItem( _tumblerMode + 'TumblerMode');
 
             if ( tumblerMode && tumblerMode == 'showPreview' ) {
 
-                $(this)
+                $this
+                    .addClass('__show-preview')
+                    .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
+
+            } else if (!tumblerMode && _tumblerMode == 'base' ) {
+
+                // for base spec show preview by default
+                $this
                     .addClass('__show-preview')
                     .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
 
             } else {
 
-                $(this).prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+                $this.prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
             }
 
         });
