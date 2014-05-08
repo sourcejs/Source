@@ -1,4 +1,7 @@
-define(["modules/module"], function (module) {
+define([
+	'modules/module',
+	'modules/utils'
+	], function (module, u) {
 
     function ModuleLoader() {
         this.initModules('module');
@@ -22,7 +25,7 @@ define(["modules/module"], function (module) {
         for(var item in this.options[typeEnabled]){
 			var targetObj = this.options[typeEnabled][item];
 
-			if (item === 'custom' && Object.prototype.toString.call( targetObj ) ) {
+			if (item === 'custom' && u.isArray(targetObj) ) {
 				targetObj.forEach(function(item){
 					require([item]);
 				});
