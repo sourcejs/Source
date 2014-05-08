@@ -20,7 +20,13 @@ define(["modules/module"], function (module) {
         }
 
         for(var item in this.options[typeEnabled]){
-            if(this.options[typeEnabled][item]){
+			var targetObj = this.options[typeEnabled][item];
+
+			if (item === 'custom' && Object.prototype.toString.call( targetObj ) ) {
+				targetObj.forEach(function(item){
+					require([item]);
+				});
+			} else if (targetObj){
                 jsPath = item;
 
                 if(type === 'plugin') {

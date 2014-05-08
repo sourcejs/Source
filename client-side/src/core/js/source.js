@@ -11,6 +11,7 @@ requirejs.config({
         lib: '/core/js/lib',
         templates: '/core/templates',
         plugins: '/plugins',
+        npmPlugins: '/data/node/user/node_modules',  //temp dir path, for plugins migration TODO
         user: '/user'
     }
 });

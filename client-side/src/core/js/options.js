@@ -60,7 +60,8 @@ define([
         colMain : 'source_col-main',
 
         // Plugins
-        pluginsDir: '/plugins/'
+        pluginsDir: '/plugins/',
+        npmPluginsDir: '/data/node/user/node_modules/' //temp dir path, for plugins migration TODO
     };
 
     // Default options for landing page
