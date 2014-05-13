@@ -1,11 +1,11 @@
 var fs = require('fs'),
-        ejs = require('ejs'),
-        path = require('path'),
-        getHeaderAndFooter = require('../headerFooter').getHeaderAndFooter;
+    ejs = require('ejs'),
+    path = require('path'),
+    root = path.dirname(require.main.filename),
+    getHeaderAndFooter = require(root + '/core/headerFooter').getHeaderAndFooter;
 
-var userTemplatesDir = path.normalize(__dirname + "/../../user/views/"),
-        coreTemplatesDir = path.normalize(__dirname + "/../views/");
-
+var userTemplatesDir = root + "/user/views/",
+    coreTemplatesDir = root + "/core/views/";
 
 /*
 * check if requested file is *.src and render
@@ -20,7 +20,7 @@ function handleRequest(req, res, next) {
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
     var extension = path.extname(physicalPath); // extension of a requested file
-    var infoJson = directory + '/info.json';
+    var infoJson = directory + '/' + global.opts.src.infoFile;
 
     if (extension == ".src") {
         fs.exists(physicalPath, function(exists) {
@@ -38,6 +38,11 @@ function handleRequest(req, res, next) {
                         };
 
                         if (fs.existsSync(infoJson)) {
+                            // avoid caching of require if it is already cached
+                            if (typeof require.cache[infoJson] === 'object') {
+                                delete require.cache[infoJson];
+                            }
+
                             info = require(infoJson);
                         }
 
