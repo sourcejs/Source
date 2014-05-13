@@ -1,4 +1,3 @@
-require("./src.js");
 require("./redirects.js");
 
 // user custom routes

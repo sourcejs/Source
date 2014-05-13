@@ -66,12 +66,16 @@ define([
 		var sourceHeaders = [],
 			navHeaders,
 			currentHeader = -1,
-			filename, extension;
+			filename = '',
+			extension = '';
 
-		filename = document.location.href.split('/').pop().split('.');
+		var fullFilename = document.location.href.split('/').pop().split('.');
 
-		extension = /\w+/.exec(filename[1]);
-		filename = filename[0];
+		//update extension and filename only if there is one in URL
+		if( !(fullFilename.length === 1) ) {
+			extension = /\w+/.exec(fullFilename[1]);
+			filename = fullFilename[0];
+		}
 
 		// watch headers position
 		var watchSectionTop = function () {
@@ -101,7 +105,7 @@ define([
 				utils.addClass(navHeaders[closestHeader], '__active');
 
 				var parent = utils.closest(navHeaders[closestHeader], 'source_main_nav_li'),
-					href = navHeaders[closestHeader].getAttribute('href');
+					hashFromLink = navHeaders[closestHeader].getAttribute('href');
 
 				if (!!parent && parent) {
 					utils.addClass(parent, '__active');
@@ -109,9 +113,11 @@ define([
 
 				// Modern browsers uses history API for correct back-button-browser functionality
 				if (!!(window.history && history.pushState)) {
-					window.history.replaceState({anchor: closestHeader+1}, document.title, filename + '.' +  extension + href);
+					var fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
+
+					window.history.replaceState({anchor: closestHeader+1}, document.title, fileNameInUrl + hashFromLink);
 				} else { // ie9 fallback
-					 window.location.hash = href;
+					 window.location.hash = hashFromLink;
 				}
 
 				currentHeader = closestHeader;

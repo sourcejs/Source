@@ -3,6 +3,9 @@
         "pathToSpecs": "public",
         "port": 8080
     },
+    "src": {
+        "infoFile": "info.json"
+    },
     "fileTree": {
         "help": {
             "cron":"For locally project use false",
