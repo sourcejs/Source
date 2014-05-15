@@ -95,6 +95,7 @@ try {
 /* /Includes */
 
 /* Serve *.src content */
+global.app.use(src.handleIndex);
 global.app.use(src.process);
 
 /* Serve static content */

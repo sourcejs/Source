@@ -1,9 +1,7 @@
     {
     "common": {
         "pathToSpecs": "public",
-        "port": 8080
-    },
-    "src": {
+        "port": 8080,
         "infoFile": "info.json"
     },
     "fileTree": {

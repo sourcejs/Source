@@ -14,13 +14,26 @@ exports.process = function (req, res, next) {
     handleRequest(req, res, next)
 };
 
+/*
+* if URL ends with "index.src" => redirect to trailing slash
+* */
+exports.handleIndex = function (req, res, next) {
+    if (req.url.slice(-9) === 'index.src') {
+        res.redirect(301, req.url.slice(0, -9));
+    }
+
+    next();
+};
+
+
+
 function handleRequest(req, res, next) {
     var physicalPath = global.app.get('specs path') + req.url; // get the physical path of a requested file
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
     var extension = path.extname(physicalPath); // extension of a requested file
-    var infoJson = directory + '/' + global.opts.src.infoFile;
+    var infoJson = directory + '/' + global.opts.common.infoFile;
 
     if (extension == ".src") {
         fs.exists(physicalPath, function(exists) {
@@ -31,52 +44,49 @@ function handleRequest(req, res, next) {
                         res.send(err);
                     } else {
 
-                        var info = {
-                            title: "New spec",
-                            author: "Anonymous",
-                            keywords: ""
-                        };
-
-                        if (fs.existsSync(infoJson)) {
-                            // avoid caching of require if it is already cached
-                            if (typeof require.cache[infoJson] === 'object') {
-                                delete require.cache[infoJson];
-                            }
-
-                            info = require(infoJson);
-                        }
-
-                        var headerFooterHTML = getHeaderAndFooter();
-
-                        var template;
-
-                        if (info.role === 'navigation') {
-                            if (fs.existsSync(userTemplatesDir + "navigation.ejs")) {
-                                template = fs.readFileSync(userTemplatesDir + "navigation.ejs", "utf-8");
+                        fs.readFile(infoJson, 'utf8', function (err, info) {
+                            if (err) {
+                                info = {
+                                    title: "New spec",
+                                    author: "Anonymous",
+                                    keywords: ""
+                                };
                             } else {
-                                template = fs.readFileSync(coreTemplatesDir + "navigation.ejs", "utf-8");
+                                info = JSON.parse(info);
                             }
-                        } else {
-                            if (fs.existsSync(userTemplatesDir + "spec.ejs")) {
-                                template = fs.readFileSync(userTemplatesDir + "spec.ejs", "utf-8");
+
+                            var headerFooterHTML = getHeaderAndFooter();
+
+                            var template;
+
+                            if (info.role === 'navigation') {
+                                if (fs.existsSync(userTemplatesDir + "navigation.ejs")) {
+                                    template = fs.readFileSync(userTemplatesDir + "navigation.ejs", "utf-8");
+                                } else {
+                                    template = fs.readFileSync(coreTemplatesDir + "navigation.ejs", "utf-8");
+                                }
                             } else {
-                                template = fs.readFileSync(coreTemplatesDir + "spec.ejs", "utf-8");
+                                if (fs.existsSync(userTemplatesDir + "spec.ejs")) {
+                                    template = fs.readFileSync(userTemplatesDir + "spec.ejs", "utf-8");
+                                } else {
+                                    template = fs.readFileSync(coreTemplatesDir + "spec.ejs", "utf-8");
+                                }
                             }
-                        }
 
-                        var templateJSON = {
-                            content: data,
-                            header: headerFooterHTML.header,
-                            footer: headerFooterHTML.footer
-                        };
+                            var templateJSON = {
+                                content: data,
+                                header: headerFooterHTML.header,
+                                footer: headerFooterHTML.footer
+                            };
 
-                        templateJSON.title = info.title ? info.title : "New spec";
-                        templateJSON.author = info.author ? info.author : "Anonymous";
-                        templateJSON.keywords = info.keywords ? info.keywords : "";
+                            templateJSON.title = info.title ? info.title : "New spec";
+                            templateJSON.author = info.author ? info.author : "Anonymous";
+                            templateJSON.keywords = info.keywords ? info.keywords : "";
 
-                        var html = ejs.render(template, templateJSON);
+                            var html = ejs.render(template, templateJSON);
 
-                        res.send(html);
+                            res.send(html);
+                        });
                     }
 
                 });
