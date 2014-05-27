@@ -79,12 +79,14 @@ define([
     };
 
     Utils.prototype.isDevelopmentMode = function() {
-		return this.getCookie('source-mode') === 'development';
-    };
 
-	Utils.prototype.isArray = function(arr) {
-		return Object.prototype.toString.call(arr) == '[object Array]';
-	};
+    	if (this.getCookie('source-mode') == 'development') {
+    		return true;
+    	} else {
+    		return false;
+    	}
+
+    };
 
     return new Utils();
 });
