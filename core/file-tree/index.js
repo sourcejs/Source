@@ -26,6 +26,10 @@ var NOT_EXEC = true;
 var CRON = global.opts.fileTree.cron;
 var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
 
+// spec dependencies variables
+var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.specDependenciesTree.outputFile;
+var includedDirs = global.opts.specDependenciesTree.includedDirs;
+
 // formatting RegExp for parser
 var dirsForRegExp = '';
 var i = 1;
@@ -106,6 +110,32 @@ var fileTree = function(dir) {
     return outputJSON;
 };
 
+var specDependenciesTree = function(dir) {
+    var outputJSON = {},
+        specsDirs = {};
+
+    includedDirs.forEach(function(includedDir) {
+        specsDirs = fs.readdirSync(dir + '/' + includedDir);
+
+        specsDirs.forEach(function(specDir) {
+            var pathToInfo = dir + '/' + includedDir + '/' + specDir;
+
+            if (fs.existsSync(pathToInfo + '/' + INFO_FILE)) {
+                var fileJSON = JSON.parse(fs.readFileSync(pathToInfo + '/' + INFO_FILE, "utf8"));
+
+                if (fileJSON['usedSpecs']) {
+                    fileJSON['usedSpecs'].forEach(function(usedSpec){
+                        outputJSON[usedSpec] = outputJSON[usedSpec] || [];
+                        outputJSON[usedSpec].push(includedDir + '/' + specDir);
+                    });
+                }
+            }
+        });
+    });
+
+    return outputJSON;
+};
+
 // function for write json file
 var GlobalWrite = function() {
     fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_FILE, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
@@ -116,7 +146,19 @@ var GlobalWrite = function() {
             NOT_EXEC=true;
         }
     });
+    SpecDependenciesWrite();
 };
+
+var SpecDependenciesWrite = function() {
+    fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Spec dependencies JSON saved to " + global.opts.common.pathToSpecs+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
+        }
+    });
+};
+
 // run function on server start
 GlobalWrite();
 

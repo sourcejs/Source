@@ -652,7 +652,8 @@ a.source_catalog_a:hover .source_catalog_title {
 .source_doc,
 .source_note,
 .source_warn,
-.source_info {
+.source_info,
+.source_dep {
   display: block;
   position: relative;
   border-radius: 10px;
@@ -661,21 +662,24 @@ a.source_catalog_a:hover .source_catalog_title {
 .source_doc:empty,
 .source_note:empty,
 .source_warn:empty,
-.source_info:empty {
+.source_info:empty,
+.source_dep:empty {
   display: none;
 }
 .source_data p,
 .source_doc p,
 .source_note p,
 .source_warn p,
-.source_info p {
+.source_info p,
+.source_dep p {
   margin: 0 0 10px;
 }
 .source_data p:last-child,
 .source_doc p:last-child,
 .source_note p:last-child,
 .source_warn p:last-child,
-.source_info p:last-child {
+.source_info p:last-child,
+.source_dep p:last-child {
   margin-bottom: 0;
 }
 body p.source_info,
@@ -712,6 +716,12 @@ body p.source_data,
   border: 1px dotted #ccc;
   background: #f9f9f9;
   font-size: 11px;
+}
+body p.source_dep,
+.source_dep {
+  margin: 20px 33.6% 20px 0;
+  padding: 10px 25px;
+  background: #f9f9f9;
 }
 /* /Info blocks
 ---------------------------------------------------------------------------------- *//* Section
