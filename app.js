@@ -8,9 +8,9 @@
 var express = require('express')
     , colors = require('colors')
     , fs = require('fs')
-    , ejs = require('ejs')
     , deepExtend = require('deep-extend')
-    , headerFooter = require('./core/headerFooter');
+    , headerFooter = require('./core/headerFooter')
+    , src = require("./core/middleware/src");
 
 /* Globals */
 global.app = express();
@@ -93,6 +93,10 @@ try {
     process.exit(e.code);
 }
 /* /Includes */
+
+/* Serve *.src content */
+global.app.use(src.handleIndex);
+global.app.use(src.process);
 
 /* Serve static content */
 global.app.use(express.static(global.app.get('specs path')));
