@@ -378,7 +378,9 @@ html body.__loading {
   min-width: 990px;
   padding-top: 11px;
   padding-bottom: 10px;
-  z-index: 30;
+  z-index: 9999;
+  /* overlap all */
+
   top: 0;
   left: 0;
   right: 0;
