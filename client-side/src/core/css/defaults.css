@@ -32,7 +32,7 @@ html body {
   background: #fff;
   color: #333;
 }
-body.__loading {
+html body.__loading {
   overflow: hidden;
 }
 /* Fonts
