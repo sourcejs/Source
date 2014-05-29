@@ -15,10 +15,6 @@
         "cronRepeatTime": 60000,
         "outputFile": "data/pages_tree.json"
     },
-    "specDependenciesTree": {
-        "includedDirs": ["base","project"],
-        "outputFile": "data/spec_dependencies_tree.json"
-    },
     "less": {
         "compress": false
     }

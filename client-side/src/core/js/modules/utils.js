@@ -86,5 +86,12 @@ define([
 		return Object.prototype.toString.call(arr) == '[object Array]';
 	};
 
+    Utils.prototype.unifySpecPath = function(url) {
+        if (url.charAt(0) != "/") url = "/" + url;
+        if (url.charAt(url.length - 1) == "/") url = url.slice(0, -1);
+
+        return url;
+    };
+
     return new Utils();
 });
