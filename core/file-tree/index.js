@@ -126,7 +126,7 @@ var specDependenciesTree = function(dir) {
                 if (fileJSON['usedSpecs']) {
                     fileJSON['usedSpecs'].forEach(function(usedSpec){
                         outputJSON[usedSpec] = outputJSON[usedSpec] || [];
-                        outputJSON[usedSpec].push(includedDir + '/' + specDir);
+                        outputJSON[usedSpec].push('/' + includedDir + '/' + specDir);
                     });
                 }
             }

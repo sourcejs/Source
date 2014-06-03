@@ -87,10 +87,23 @@ define([
 	};
 
     Utils.prototype.unifySpecPath = function(url) {
+        if (url.slice(-10) == "index.html") url = url.slice(0, -10);
+        if (url.slice(-9) == "index.src") url = url.slice(0, -9);
         if (url.charAt(0) != "/") url = "/" + url;
         if (url.charAt(url.length - 1) == "/") url = url.slice(0, -1);
 
         return url;
+    };
+
+    Utils.prototype.toggleBlock = function(elToClick, elToShow) {
+        var $elToClick = '.' + elToClick;
+
+        $(document).on('click', $elToClick, function() {
+            var $elToShow = $('.' + elToShow);
+
+            $(this).toggleClass('__open');
+            $elToShow.toggle();
+        });
     };
 
     return new Utils();
