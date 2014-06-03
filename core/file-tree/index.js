@@ -28,7 +28,7 @@ var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
 
 // spec dependencies variables
 var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.specDependenciesTree.outputFile;
-var includedDirs = global.opts.specDependenciesTree.includedDirs;
+var includedDirs = global.opts.specDependenciesTree.includedDirs || [];
 
 // formatting RegExp for parser
 var dirsForRegExp = '';
