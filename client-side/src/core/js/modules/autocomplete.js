@@ -36,7 +36,9 @@ define(['jquery'], function($) {
 		TAB: 9,
 		RETURN: 13,
 		UP: 38,
-		DOWN: 40
+		DOWN: 40,
+		CTRL: 17,
+		CMD: 91
 	};
 
 	var transliteration = {
@@ -141,14 +143,24 @@ define(['jquery'], function($) {
 
 		/**
 		 * @function initHandlers. It initializes handlers for search items & container events
+		 *
+		 * N.B.
+		 * To implement new handler you are to add it in "handlers" object below
+		 * To use implemented event handler you can recieve it by getHandler(<handlerName>) method.
+		 *
+		 * JFYI: Implemented handlers are binded (by jQuery.proxy) to Autocomplete instance,
+		 * due to that, "this" in handlers body is a pointer to Autocomplete instance.
 		 */
 		initHandlers: function() {
 			var self = this;
+			this.keyMap = [];
 			if (window.opera) {
 				$(this.target).on('keypress', this.getHandler("onKeyPress"));
 			} else {
 				$(this.target).on('keydown', this.getHandler("onKeyPress"));
 			}
+			$(this.target).on('keyup', this.getHandler("onKeyUp"));
+			$(this.target).on('input', this.getHandler("onValueChanged"));
 			var containerSelector = "." + this.config.classes.container;
 			var itemSelector = "." + this.config.classes.suggestion;
 			var callback = this.config.onSelect;
@@ -156,6 +168,10 @@ define(['jquery'], function($) {
 			$(this.container).on("mouseover", itemSelector, function() {
 				self.select(this);
 			});
+		},
+
+		getHandler: function(name) {
+			return $.proxy(handlers[name], this);
 		},
 
 		createResultRow: function(index, item) {
@@ -181,7 +197,7 @@ define(['jquery'], function($) {
 				return;
 			}
 			// TODO: make sure that we need it
-			inputText = inputText.replace(/[\{\}\[\]\(\)\/\\\.\*\?\+]{1}/g, "");
+			inputText = inputText.replace(/[\{\}\[\]\(\)\\\.\*\?\+]{1}/g, "");
 			if (this.config.transliteration) {
 				var transliterated = inputText.replace(/[\u0400-\u04FF]/gi, function(ch) {
 					return transliteration[ch];
@@ -255,8 +271,18 @@ define(['jquery'], function($) {
 			this.select();
 		},
 
-		applySelected: function() {
-			console.log("apply");
+		openSelected: function(inNewTab) {
+			var selectedItem = $(this.container).children().get(this.selectedIndex);
+			if (!selectedItem) return;
+
+			var link = $(selectedItem).find("a").attr("href");
+			if (!link) return;
+
+			if (!inNewTab) {
+				console.log("we shoud open link " + link);
+			} else {
+				console.log("we shoud open link " + link + " in new tab");
+			}
 		}
 	};
 
@@ -280,6 +306,8 @@ define(['jquery'], function($) {
 	// this for handlers is Autocomplete object instance
 	var handlers = {
 		"onKeyPress": function(e) {
+			e = e || event; //to deal with old IE
+			this.keyMap.push(e.keyCode);
 			switch(e.keyCode) {
 				case (keys.ESC) :
 					this.flush();
@@ -294,19 +322,25 @@ define(['jquery'], function($) {
 					this.selectNext();
 					break;
 				case (keys.RETURN):
-					this.applySelected()
 					break;
 				default:
-					this.onSearchRowChanged();
 					return;
 			}
+		},
+		"onKeyUp": function(e) {
+			e = e || event;
+			if ((~$.inArray(keys.CTRL, this.keyMap) || ~$.inArray(keys.CMD, this.keyMap)) && ~$.inArray(keys.RETURN, this.keyMap)) {
+				this.openSelected(true); // this is CTRL/CMD + ENTER command to open in new tab
+			} else if (~$.inArray(keys.RETURN, this.keyMap) && this.keyMap.length === 1) {
+				this.openSelected(false);
+			}
+			this.keyMap = [];
+		},
+		"onValueChanged": function(e) {
+			console.log("search request is changed");
+			this.onSearchRowChanged();
 		}
 	};
-
-	Autocomplete.prototype.getHandler = function(name) {
-		return $.proxy(handlers[name], this);
-	};
-
 	
 	$.fn.autocomplete = function (options, args) {
 		return this.each(function () {
