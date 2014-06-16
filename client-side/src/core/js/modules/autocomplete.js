@@ -103,7 +103,7 @@ define(['jquery'], function($) {
 				}
 				self.config[key] = value;
 			});
-			
+
 			this.states = {
 				"visible": false
 			};
@@ -111,7 +111,7 @@ define(['jquery'], function($) {
 			this.initContainer();
 			this.initHandlers();
 		},
-		
+
 		/**
 		 * @function initContainer. It initializes search results box,
 		 * its position and size.
@@ -123,7 +123,7 @@ define(['jquery'], function($) {
 			container.className = config.classes.container;
 			container.style.position = "absolute";
 			container.style.display = "none";
-			
+
 			$(container).appendTo(config.containerParent);
 
 			var relocate = function() {
@@ -135,9 +135,9 @@ define(['jquery'], function($) {
 				var width = self.$target.outerWidth(true) - 2;
 				$(container).width(width);
 			};
-		
+
 			$(window).resize(relocate);
-			
+
 			relocate();
 		},
 
@@ -274,15 +274,16 @@ define(['jquery'], function($) {
 		openSelected: function(inNewTab) {
 			var selectedItem = $(this.container).children().get(this.selectedIndex);
 			if (!selectedItem) return;
-
 			var link = $(selectedItem).find("a").attr("href");
 			if (!link) return;
+			// we should check if origin exists (in case of IE)
+			var url = window.location && window.location.origin
+				? window.location.origin + link
+				: window.location.protocol + "//" + window.location.hostname
+					+ (window.location.port ? ":" + window.location.port : "") + link
 
-			if (!inNewTab) {
-				console.log("we shoud open link " + link);
-			} else {
-				console.log("we shoud open link " + link + " in new tab");
-			}
+			window.open(link, inNewTab ? "_blank" : "_self");
+			window.focus();
 		}
 	};
 
@@ -302,7 +303,6 @@ define(['jquery'], function($) {
 		}
 	};
 
-	
 	// this for handlers is Autocomplete object instance
 	var handlers = {
 		"onKeyPress": function(e) {
@@ -341,7 +341,7 @@ define(['jquery'], function($) {
 			this.onSearchRowChanged();
 		}
 	};
-	
+
 	$.fn.autocomplete = function (options, args) {
 		return this.each(function () {
 			var searchInstance = new Autocomplete(this, options);
