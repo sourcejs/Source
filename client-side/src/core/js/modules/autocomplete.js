@@ -1,45 +1,24 @@
 define(['jquery'], function($) {
 "use strict";
 
-	// TODO: U need to do :retab with tabsize=4!!!!
+	// TODO: U need to do :retab with tabsize=4
 
 	// --------------------------------------------------
 	// issue: https://github.com/sourcejs/Source/issues/41
-	// So far we got live-search results in main input field.
-	// Few improvements to suggest here:
-	//
-	// ability to cmd/ctrl - click on result and have it opened in a tab or whatever (alternatively we could use extra link to open all results in separate tabs)
-	// have a new link to open separate page with all possible results on query Something like this: http://puu.sh/9evEI/66f6628168.png
 	//
 	// --------------------------------------------------
 	// issue: https://github.com/sourcejs/Source/issues/40
-	// Make available to use different languages in search with transcription using latin letters and vice versa.
-	//
-	// example:
-	//
-	// you search "lenta" - you get "лента"
-	// you search "триггер" - you get "trigger"
 	//
 	// --------------------------------------------------
 	// issue https://github.com/sourcejs/Source/issues/24
-	// It would be great to make more personalized service using user spec search requests. Output can be built / sort by request weight.
-	//
-	// Search settings can be saved in local account storage.
+	// 
 
 	var Autocomplete = function(target, options) {
 		if (!target) return;
 		this.init(target, options);
 	};
 
-	var keys = {
-		ESC: 27,
-		TAB: 9,
-		RETURN: 13,
-		UP: 38,
-		DOWN: 40,
-		CTRL: 17,
-		CMD: 91
-	};
+	var keys = { "ESC": 27, "TAB": 9, "RETURN": 13, "UP": 38, "DOWN": 40, "CTRL": 17, "CMD": 91 };
 
 	var transliteration = {
 		'ЗГ':'ZGH', 'Зг':'Zgh', 'зг':'zgh',
@@ -95,21 +74,10 @@ define(['jquery'], function($) {
 
 		init: function(target, options) {
 			this.target = target;
-			this.$target = $(target);
-			// merging options & config
-			var self = this;
-			$.each(options, function(key, value) {
-				if (typeof value === undefined || !self.config.hasOwnProperty(key)) {
-					return;
-				}
-				self.config[key] = value;
-			});
-
-			this.states = {
-				"visible": false
-			};
-
+			this.visible = false;
 			this.cachedSearchResults = this.cachedSearchResults || {};
+
+			$.extend(true, this.config, options);
 
 			this.initContainer();
 			this.initHandlers();
@@ -121,27 +89,28 @@ define(['jquery'], function($) {
 		 */
 		initContainer: function() {
 			var config = this.config;
-			var self = this;
-			var container = this.container = document.createElement('div');
-			container.className = config.classes.container;
-			container.style.position = "absolute";
-			container.style.display = "none";
-
-			$(container).appendTo(config.containerParent);
-
-			var relocate = function() {
-				var offset = self.$target.offset();
-				$(container).css({
-					"top": (offset.top + self.$target.outerHeight(true)) + "px",
-					"left": offset.left + "px",
+			var $target = $(this.target);
+			var container = $('<div>')
+				.addClass(config.classes.container)
+				.css({
+					"position": "absolute",
+					"display": "none",
 					"z-index": 1000
 				});
-				var width = self.$target.outerWidth(true) - 2;
+
+			$(container).appendTo(config.containerParent);
+			this.container = container.get(0);
+
+			var relocate = function() {
+				var offset = $target.offset();
+				$(container).css({
+					"top": (offset.top + $target.outerHeight(true)) + "px",
+					"left": offset.left + "px"
+				});
+				var width = $target.outerWidth(true) - 2;
 				$(container).width(width);
 			};
-
 			$(window).resize(relocate);
-
 			relocate();
 		},
 
@@ -157,7 +126,7 @@ define(['jquery'], function($) {
 		 */
 		initHandlers: function() {
 			var self = this;
-			this.keyMap = [];
+			this.keyMap = []; // this array helps to catch keys combination.
 			if (window.opera) {
 				$(this.target).on('keypress', this.getHandler("onKeyPress"));
 			} else {
@@ -170,7 +139,7 @@ define(['jquery'], function($) {
 			var callback = this.config.onSelect;
 
 			$(this.container).on("mouseover", itemSelector, function() {
-				self.select(this);
+				self.select($(this).data("index"));
 			});
 		},
 
@@ -179,11 +148,10 @@ define(['jquery'], function($) {
 		},
 
 		createResultRow: function(index, item) {
-			var row = document.createElement("div");
-			row.className = this.config.classes.suggestion;
-			row.setAttribute("data-index", index);
-			row.innerHTML = '<a href="' + item.data + '">' + item.value + '</a>';
-			return row;
+			return $("<div>")
+				.addClass(this.config.classes.suggestion)
+				.data("index", index)
+				.html('<a href="' + item.data + '">' + item.value + '</a>').get(0);
 		},
 
 		wrapItems: function(data) {
@@ -196,11 +164,11 @@ define(['jquery'], function($) {
 		},
 
 		getSearchQuery: function() {
-			var inputText = this.$target.val();
+			var inputText = this.target.value;
 			if (!inputText || !inputText.length) {
 				return;
 			}
-			// TODO: make sure that we need it
+			// TODO: make sure that we realy need it
 			inputText = inputText.replace(/[\{\}\[\]\(\)\\\.\*\?\+]{1}/g, "");
 			if (this.config.transliteration) {
 				var transliterated = inputText.replace(/[\u0400-\u04FF]/gi, function(ch) {
@@ -217,12 +185,11 @@ define(['jquery'], function($) {
 			$.map(this.config.lookup, function(item) {
 				var pattern = caseSensetive ? item.value : item.value.toLowerCase();
 				var substrStartPos = pattern.search(searchQuery);
-				if (substrStartPos >= 0) {
-					data.push({
-						"value": item.value.replace(new RegExp("(" + searchQuery + ")",'gi'), replacementExpr),
-						"data": item.data
-					});
-				}
+				if (substrStartPos < 0) return true;
+				data.push({
+					"value": item.value.replace(new RegExp("(" + searchQuery + ")",'gi'), replacementExpr),
+					"data": item.data
+				});
 			});
 			if (data.length && searchQuery) {
 				this.cachedSearchResults[searchQuery] = data;
@@ -237,13 +204,14 @@ define(['jquery'], function($) {
 			} else {
 				var searchResult = this.cachedSearchResults[searchQuery];
 				return (searchResult && searchResult.length)
-					? this.cachedSearchResults[searchQuery]
+					? searchResult
 					: this.getSearchResults(searchQuery);
 			}
 		},
 
 		flush: function() {
-			this.$target.val("");
+			this.visible = false;
+			this.target.value = "";
 			$(this.container).empty().hide();
 			this.flushSelection();
 		},
@@ -267,17 +235,17 @@ define(['jquery'], function($) {
 			this.select();
 		},
 
-		select: function(item) {
+		select: function(index) {
+			var selectionIndex = index ? index : this.selectedIndex;
+			if (selectionIndex < 0) return;
+
 			var items = $(this.container).children();
-			var selectedClass = this.config.classes.selected;
 			if (!items || !items.length) return;
 
-			if (item && item.dataset) {
-				this.selectedIndex = Number.parseInt(item.dataset["index"]);
-			}
-			if (this.selectedIndex < 0) return;
+			var selectedClass = this.config.classes.selected;
+
 			$(this.container).children("." + selectedClass).removeClass(selectedClass);
-			$(items.get(this.selectedIndex)).addClass(selectedClass);
+			$(items.get(selectionIndex)).addClass(selectedClass);
 		},
 
 		flushSelection: function() {
@@ -291,25 +259,30 @@ define(['jquery'], function($) {
 			var link = $(selectedItem).find("a").attr("href");
 			if (!link) return;
 			// we should check if origin exists (in case of IE)
-			var url = window.location && window.location.origin
-				? window.location.origin + link
-				: window.location.protocol + "//" + window.location.hostname
-					+ (window.location.port ? ":" + window.location.port : "") + link
+			var winLocation = window.location;
+			var url = winLocation && winLocation.origin
+				? winLocation.origin + link
+				: winLocation.protocol + "//" + winLocation.hostname + (winLocation.port ? ":" + winLocation.port : "") + link;
 
 			window.open(link, inNewTab ? "_blank" : "_self");
 			window.focus();
 		}
 	};
 
+	// We use setTimeout here to prevent huge number of handlers calls
 	var searchQueryTimeout;
 	Autocomplete.prototype.onSearchRowChanged = function() {
 		if (!searchQueryTimeout) {
 			var self = this;
+			var $container = $(this.container);
 			searchQueryTimeout = setTimeout(function() {
 				var dataSubset = self.formatSearchResult();
 				if (dataSubset && dataSubset.length) {
-					$(self.container).html(self.wrapItems(dataSubset)).show();
-					self.states.visible = true;
+					$container.html(self.wrapItems(dataSubset)).show();
+					self.visible = true;
+				} else {
+					self.visible = false;
+					$container.empty().hide();
 				}
 				searchQueryTimeout = 0;
 				self.flushSelection();
@@ -320,7 +293,7 @@ define(['jquery'], function($) {
 	// this for handlers is Autocomplete object instance
 	var handlers = {
 		"onKeyPress": function(e) {
-			e = e || event; //to deal with old IE
+			e = e || event; //to make a deal with old IE
 			this.keyMap.push(e.keyCode);
 			switch(e.keyCode) {
 				case (keys.ESC) :
@@ -342,11 +315,10 @@ define(['jquery'], function($) {
 			}
 		},
 		"onKeyUp": function(e) {
-			e = e || event;
-			if ((~$.inArray(keys.CTRL, this.keyMap) || ~$.inArray(keys.CMD, this.keyMap)) && ~$.inArray(keys.RETURN, this.keyMap)) {
-				this.openSelected(true); // this is CTRL/CMD + ENTER command to open in new tab
-			} else if (~$.inArray(keys.RETURN, this.keyMap) && this.keyMap.length === 1) {
-				this.openSelected(false);
+			e = e || event; // to make a deal with IE
+			if (~$.inArray(keys.RETURN, this.keyMap)) {
+				var isModifierPressed = ~$.inArray(keys.CTRL, this.keyMap) || ~$.inArray(keys.CMD, this.keyMap);
+				this.openSelected(isModifierPressed);
 			}
 			this.keyMap = [];
 		},
