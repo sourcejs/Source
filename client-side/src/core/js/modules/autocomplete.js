@@ -82,7 +82,8 @@ define(['jquery'], function($) {
 		config : {
 			"lookup": [],
 			"transliteration": true,
-			"autoSelectFirst": false,
+			"autoSelectFirst": true,
+			"caseSensetive": false,
 			"classes": {
 				"container": "autocomplete-suggestions",
 				"selected": "autocomplete-selected",
@@ -108,6 +109,8 @@ define(['jquery'], function($) {
 				"visible": false
 			};
 
+			this.cachedSearchResults = this.cachedSearchResults || {};
+
 			this.initContainer();
 			this.initHandlers();
 		},
@@ -130,7 +133,8 @@ define(['jquery'], function($) {
 				var offset = self.$target.offset();
 				$(container).css({
 					"top": (offset.top + self.$target.outerHeight(true)) + "px",
-					"left": offset.left + "px"
+					"left": offset.left + "px",
+					"z-index": 1000
 				});
 				var width = self.$target.outerWidth(true) - 2;
 				$(container).width(width);
@@ -208,12 +212,15 @@ define(['jquery'], function($) {
 
 		getSearchResults: function(searchQuery) {
 			var data = [];
-			console.log("searching ", searchQuery);
-			this.cachedSearchResults = this.cachedSearchResults || {};
-			for (var index in this.config.lookup) {
-				if (this.config.lookup[index].value.indexOf(searchQuery) > 0) {
-					data.push(this.config.lookup[index]);
+			var caseSensetive = this.config.caseSensetive;
+			$.map(this.config.lookup, function(item) {
+				var pattern = caseSensetive ? item.value : item.value.toLowerCase();
+				if (pattern.search(searchQuery) >= 0) {
+					data.push(item);
 				}
+			});
+			if (data.length && searchQuery) {
+				this.cachedSearchResults[searchQuery] = data;
 			}
 			return data;
 		},
@@ -223,7 +230,8 @@ define(['jquery'], function($) {
 			if (!searchQuery || !searchQuery.length) {
 				this.flush();
 			} else {
-				return (this.cachedSearchResults && this.cachedSearchResults[searchQuery])
+				var searchResult = this.cachedSearchResults[searchQuery];
+				return (searchResult && searchResult.length)
 					? this.cachedSearchResults[searchQuery]
 					: this.getSearchResults(searchQuery);
 			}
@@ -262,12 +270,13 @@ define(['jquery'], function($) {
 			if (item && item.dataset) {
 				this.selectedIndex = Number.parseInt(item.dataset["index"]);
 			}
+			if (this.selectedIndex < 0) return;
 			$(this.container).children("." + selectedClass).removeClass(selectedClass);
 			$(items.get(this.selectedIndex)).addClass(selectedClass);
 		},
 
 		flushSelection: function() {
-			this.selectedIndex = this.config.autoselectFirst ? 0 : -1;
+			this.selectedIndex = this.config.autoSelectFirst ? 0 : -1;
 			this.select();
 		},
 
@@ -337,7 +346,6 @@ define(['jquery'], function($) {
 			this.keyMap = [];
 		},
 		"onValueChanged": function(e) {
-			console.log("search request is changed");
 			this.onSearchRowChanged();
 		}
 	};
