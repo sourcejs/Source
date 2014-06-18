@@ -213,10 +213,15 @@ define(['jquery'], function($) {
 		getSearchResults: function(searchQuery) {
 			var data = [];
 			var caseSensetive = this.config.caseSensetive;
+			var replacementExpr = "<strong>$1</strong>";
 			$.map(this.config.lookup, function(item) {
 				var pattern = caseSensetive ? item.value : item.value.toLowerCase();
-				if (pattern.search(searchQuery) >= 0) {
-					data.push(item);
+				var substrStartPos = pattern.search(searchQuery);
+				if (substrStartPos >= 0) {
+					data.push({
+						"value": item.value.replace(new RegExp("(" + searchQuery + ")",'gi'), replacementExpr),
+						"data": item.data
+					});
 				}
 			});
 			if (data.length && searchQuery) {
