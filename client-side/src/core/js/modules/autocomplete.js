@@ -68,12 +68,11 @@ define(['jquery'], function($) {
 				"selected": "autocomplete-selected",
 				"suggestion": "autocomplete-suggestion"
 			},
-			"onSelect": function() {},
 			"containerParent": "body"
 		},
 
 		init: function(target, options) {
-			this.target = target;
+			this.$target = $(target);
 			this.visible = false;
 			this.cachedSearchResults = this.cachedSearchResults || {};
 
@@ -89,8 +88,8 @@ define(['jquery'], function($) {
 		 */
 		initContainer: function() {
 			var config = this.config;
-			var $target = $(this.target);
-			var container = $('<div>')
+			var $target = this.$target;
+			var $container = this.$container = $('<div>')
 				.addClass(config.classes.container)
 				.css({
 					"position": "absolute",
@@ -98,20 +97,19 @@ define(['jquery'], function($) {
 					"z-index": 1000
 				});
 
-			$(container).appendTo(config.containerParent);
-			this.container = container.get(0);
+			this.$container.appendTo(config.containerParent);
 
-			var relocate = function() {
+			var relocateContainer = function() {
 				var offset = $target.offset();
-				$(container).css({
+				$container.css({
 					"top": (offset.top + $target.outerHeight(true)) + "px",
 					"left": offset.left + "px"
 				});
 				var width = $target.outerWidth(true) - 2;
-				$(container).width(width);
+				$container.width(width);
 			};
-			$(window).resize(relocate);
-			relocate();
+			$(window).resize(relocateContainer);
+			relocateContainer();
 		},
 
 		/**
@@ -127,18 +125,15 @@ define(['jquery'], function($) {
 		initHandlers: function() {
 			var self = this;
 			this.keyMap = []; // this array helps to catch keys combination.
-			if (window.opera) {
-				$(this.target).on('keypress', this.getHandler("onKeyPress"));
-			} else {
-				$(this.target).on('keydown', this.getHandler("onKeyPress"));
-			}
-			$(this.target).on('keyup', this.getHandler("onKeyUp"));
-			$(this.target).on('input', this.getHandler("onValueChanged"));
+
+			this.$target.on(window.opera ? "keypress" : "keydown", this.getHandler("onKeyPress"))
+				.on('keyup', this.getHandler("onKeyUp"))
+				.on('input', this.getHandler("onValueChanged"));
 			var containerSelector = "." + this.config.classes.container;
 			var itemSelector = "." + this.config.classes.suggestion;
 			var callback = this.config.onSelect;
 
-			$(this.container).on("mouseover", itemSelector, function() {
+			this.$container.on("mouseover", itemSelector, function() {
 				self.select($(this).data("index"));
 			});
 		},
@@ -164,7 +159,7 @@ define(['jquery'], function($) {
 		},
 
 		getSearchQuery: function() {
-			var inputText = this.target.value;
+			var inputText = this.$target.val();
 			if (!inputText || !inputText.length) {
 				return;
 			}
@@ -211,8 +206,8 @@ define(['jquery'], function($) {
 
 		flush: function() {
 			this.visible = false;
-			this.target.value = "";
-			$(this.container).empty().hide();
+			this.$target.val("");
+			this.$container.empty().hide();
 			this.flushSelection();
 		},
 
@@ -220,7 +215,7 @@ define(['jquery'], function($) {
 		 * selection handlers for search results
 		 */
 		selectNext: function() {
-			var itemsLength = $(this.container).children().length;
+			var itemsLength = this.$container.children().length;
 			this.selectedIndex = (this.selectedIndex < 0) || (this.selectedIndex + 1 >= itemsLength)
 				? 0
 				: this.selectedIndex + 1;
@@ -228,7 +223,7 @@ define(['jquery'], function($) {
 		},
 
 		selectPrev: function() {
-			var itemsLength = $(this.container).children().length;
+			var itemsLength = this.$container.children().length;
 			this.selectedIndex  = this.selectedIndex < 0
 				? 0
 				: this.selectedIndex === 0 ? itemsLength - 1 : this.selectedIndex - 1;
@@ -239,12 +234,12 @@ define(['jquery'], function($) {
 			var selectionIndex = index ? index : this.selectedIndex;
 			if (selectionIndex < 0) return;
 
-			var items = $(this.container).children();
+			var items = this.$container.children();
 			if (!items || !items.length) return;
 
 			var selectedClass = this.config.classes.selected;
 
-			$(this.container).children("." + selectedClass).removeClass(selectedClass);
+			this.$container.children("." + selectedClass).removeClass(selectedClass);
 			$(items.get(selectionIndex)).addClass(selectedClass);
 		},
 
@@ -254,7 +249,7 @@ define(['jquery'], function($) {
 		},
 
 		openSelected: function(inNewTab) {
-			var selectedItem = $(this.container).children().get(this.selectedIndex);
+			var selectedItem = this.$container.children().get(this.selectedIndex);
 			if (!selectedItem) return;
 			var link = $(selectedItem).find("a").attr("href");
 			if (!link) return;
@@ -274,15 +269,14 @@ define(['jquery'], function($) {
 	Autocomplete.prototype.onSearchRowChanged = function() {
 		if (!searchQueryTimeout) {
 			var self = this;
-			var $container = $(this.container);
 			searchQueryTimeout = setTimeout(function() {
 				var dataSubset = self.formatSearchResult();
 				if (dataSubset && dataSubset.length) {
-					$container.html(self.wrapItems(dataSubset)).show();
+					self.$container.html(self.wrapItems(dataSubset)).show();
 					self.visible = true;
 				} else {
 					self.visible = false;
-					$container.empty().hide();
+					self.$container.empty().hide();
 				}
 				searchQueryTimeout = 0;
 				self.flushSelection();
