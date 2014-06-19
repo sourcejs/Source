@@ -1,33 +1,13 @@
 var fs = require('fs'),
     ejs = require('ejs'),
     path = require('path'),
-    root = path.dirname(require.main.filename),
-    getHeaderAndFooter = require(root + '/core/headerFooter').getHeaderAndFooter;
+    pathToApp = path.dirname(require.main.filename),
+    getHeaderAndFooter = require(pathToApp + '/core/headerFooter').getHeaderAndFooter;
 
-var userTemplatesDir = root + "/user/views/",
-    coreTemplatesDir = root + "/core/views/";
+var userTemplatesDir = pathToApp + "/user/views/",
+    coreTemplatesDir = pathToApp + "/core/views/";
 
-/*
-* check if requested file is *.src and render
-* */
-exports.process = function (req, res, next) {
-    handleRequest(req, res, next)
-};
-
-/*
-* if URL ends with "index.src" => redirect to trailing slash
-* */
-exports.handleIndex = function (req, res, next) {
-    if (req.url.slice(-9) === 'index.src') {
-        res.redirect(301, req.url.slice(0, -9));
-    }
-
-    next();
-};
-
-
-
-function handleRequest(req, res, next) {
+var handleRequest = function(req, res, next) {
     var physicalPath = global.app.get('specs path') + req.url; // get the physical path of a requested file
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
@@ -114,4 +94,22 @@ function handleRequest(req, res, next) {
     } else {
         next();
     }
-}
+};
+
+/*
+* check if requested file is *.src and render
+* */
+exports.process = function (req, res, next) {
+    handleRequest(req, res, next)
+};
+
+/*
+* if URL ends with "index.src" => redirect to trailing slash
+* */
+exports.handleIndex = function (req, res, next) {
+    if (req.url.slice(-9) === 'index.src') {
+        res.redirect(301, req.url.slice(0, -9));
+    }
+
+    next();
+};

@@ -1,15 +1,20 @@
-var coreSettings = require("./options.json"),
+var coreSettings = require('./options.json'),
     deepExtend = require('deep-extend'),
+    path = require('path'),
+    pathToApp = path.dirname(require.main.filename),
     fs = require('fs');
 
-var userSettings = {},
-    userSettingsFile = "/../../user/options/options.json";
+var userSettingsFile = pathToApp + '/user/options/options.json',
+    localSettingsFile = pathToApp + '/user/options/local-options.json';
 
-// if user settings file is present, override core settings
-if(fs.existsSync(__dirname + userSettingsFile)) {
-    userSettings = require(__dirname + userSettingsFile);
+// If user settings file is present, override core settings
+if(fs.existsSync(userSettingsFile)) {
+    deepExtend(coreSettings, require(userSettingsFile));
 }
 
-deepExtend(coreSettings, userSettings);
+// If local settings file is present, override core settings
+if(fs.existsSync(localSettingsFile)) {
+    deepExtend(coreSettings, require(localSettingsFile));
+}
 
 module.exports = coreSettings;
