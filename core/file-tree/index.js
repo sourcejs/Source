@@ -24,6 +24,7 @@ var NOT_EXEC = true;
 
 // configuration for function timeout
 var CRON = global.opts.fileTree.cron;
+var CRON_PROD = global.opts.fileTree.cronProd;
 var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
 
 // spec dependencies variables
@@ -163,7 +164,7 @@ var SpecDependenciesWrite = function() {
 GlobalWrite();
 
 // setcron
-if (CRON && global.MODE === 'production') {
+if (CRON || CRON_PROD) {
     setInterval(function(){
         GlobalWrite();
     }, CRON_REPEAT_TIME);
