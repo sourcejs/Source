@@ -47,12 +47,12 @@
 .source_a_g { /* Object link */
   	&:link,
 	&:visited {
-	  	color: @green;
+	  	color: lighten(@blue, 20%);
 	  	text-decoration: none;
 		}
 
     &:hover {
-		color: darken(@green, 10%);
+		color: @blue;
 		text-decoration: underline;
 		}
 	}

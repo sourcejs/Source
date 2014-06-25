@@ -1,6 +1,6 @@
 /* Nav statuses plugin
 ---------------------------------------------------------------------------------- */
-
+/*
 .source_catalog {
   	position: relative;
 
@@ -39,6 +39,65 @@
 .source_catalog.__show-preview .source_catalog_img {
  	display: block;
 	}
+*/
+.source_catalog {
+    position: relative;
 
+    .catalog-image-tumbler {
+        float: right;
+        border-bottom: 1px dotted #333;
+        text-decoration: none;
+        color: #333;
+        }
+    }
+
+.source_catalog_a {
+    padding-right: 45px;
+
+    .source_status_badge {
+        position: absolute;
+        top: 7px;
+        right: 5px;
+
+        display: none;
+        }
+
+    &:hover {
+        .source_status_badge {
+            display: block;
+            }
+        }
+    }
+
+.source_catalog_img {
+    display: none;
+    max-width: 100%;
+    max-height: 60px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+    }
+
+.source_catalog.__show-preview {
+    .source_catalog_img {
+        display: block;
+        }
+
+    .source_catalog_list_i {
+        margin-bottom: 30px;
+        }
+    }
+
+.source_catalog_list_i {
+    vertical-align: baseline;
+    }
+
+.source_subhead_filter-w {
+    float: right;
+
+    .source_status-toggler_img {
+        width: 30px;
+        opacity: 0.5;
+        }
+    }
 /* /Nav statuses plugin
 ---------------------------------------------------------------------------------- */

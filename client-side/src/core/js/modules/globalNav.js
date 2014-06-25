@@ -51,10 +51,17 @@ define([
         this.drawNavigation();
         this.drawToggler();
         this.hideImgWithError();
+
+        if (window.location.pathname == "/base/" ||
+            window.location.pathname == "/project/" ||
+            window.location.pathname == "/mob/") {
+            this.initStatusFilter();
+            this.drawFilters();
+        }
     };
 
     //Drawing navigation and page info in each catalog defined on page
-    GlobalNav.prototype.drawNavigation = function () {
+    GlobalNav.prototype.drawNavigation = function (sortType) {
         var _this = this,
             L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG),
             CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST,
@@ -77,7 +84,7 @@ define([
             RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO,
 
             pageLimit = this.options.modulesOptions.globalNav.pageLimit;
-            sortType = this.options.modulesOptions.globalNav.sortType || 'sortByDate';
+            sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
             ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         //TODO: refactor this module and write tests
@@ -193,7 +200,7 @@ define([
                         if (typeof target.author === 'undefined') {
                             authorName = '';
                         } else {
-                            authorName = ' | ' + RES_AUTHOR + ': ' + target.author + '';
+                            authorName = target.author;
                         }
 
                         //fixing relative path due to server settings
@@ -202,11 +209,11 @@ define([
                             targetUrl = '/' + targetUrl;
 
                         navTreeHTML += '' +
-                                '<li class="' + CATALOG_LIST_I + '">' +
-                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
+                                '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
                                 '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >' +
+                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
                                 '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
+                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + '</div>';
 
                         // TODO: move to plugins
                         if(parseInt(target.bubbles)) {
@@ -275,12 +282,12 @@ define([
         });
     };
 
-    GlobalNav.prototype.drawToggler = function(){
+    GlobalNav.prototype.drawToggler = function() {
         var _this = this,
             L_CATALOG = $('.' + _this.options.modulesOptions.globalNav.CATALOG),
             CATALOG_IMG_TUMBLER = _this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
 
-        L_CATALOG.filter('[data-nav*="base"],[data-nav*="project"]').each(function(){
+        L_CATALOG.filter('[data-nav*="base"][data-preview!="disable"],[data-nav*="project"][data-preview!="disable"]').each(function(){
 
             var $this = $(this),
                 /* for each type of data-nav own localStorage */
@@ -293,7 +300,7 @@ define([
                     .addClass('__show-preview')
                     .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
 
-            } else if (!tumblerMode && _tumblerMode == 'base' ) {
+            } else if ( !tumblerMode && _tumblerMode == 'base' ) {
 
                 // for base spec show preview by default
                 $this
@@ -358,6 +365,119 @@ define([
         else {
             return (a > b) ? 1 : -1;
         }
+    };
+
+    // Filter specs by dev status
+    GlobalNav.prototype.initStatusFilter = function() {
+        var $subhead = $('.source_subhead'),
+            enabledStatus = JSON.parse(localStorage.getItem('enabledStatus')) || {},
+            nav = '<div class="source_subhead_filter-w">' +
+                      '<label><input id="dev" class="source_status-toggler_i" type="checkbox">dev</label>' +
+                      '<label><input id="exp" class="source_status-toggler_i" type="checkbox">exp</label>' +
+                      '<label><input id="rec" class="source_status-toggler_i" type="checkbox">rec</label>' +
+                      '<label><input id="ready" class="source_status-toggler_i" type="checkbox">ready</label>' +
+                      '<label><input id="rev" class="source_status-toggler_i" type="checkbox">rev</label>' +
+                      '<a href="# id="dev"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/dev.png"></a>'+
+                      '<a href="# id="exp"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/exp.png"></a>'+
+                      '<a href="# id="rec"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rec.png"></a>'+
+                      '<a href="# id="ready"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/ready.png"></a>'+
+                      '<a href="# id="rev"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rev.png"></a>'+
+                  '</div>';
+
+        $subhead.prepend(nav);
+
+        var initEnabledStatusSpec = function() {
+            var $catalogItems = $('.source_catalog_list_i');
+
+            if ($.isEmptyObject(enabledStatus)) {
+                $catalogItems.show();
+                return;
+            }
+
+            $catalogItems.hide();
+
+            $.each(enabledStatus, function(statusId) {
+                $('.__' + statusId).closest('.source_catalog_list_i').show();
+                $('#' + statusId).prop('checked', true);
+            });
+        };
+
+        var updateLocalStorage = function(obj) {
+            localStorage.setItem('enabledStatus', JSON.stringify(obj));
+        };
+
+        var updateEnabledStatusObject = function(statusId) {
+            if ( $('#' + statusId).prop('checked') ) {
+                enabledStatus[statusId] = true;
+            } else {
+                delete enabledStatus[statusId];
+            }
+        };
+
+        $(document).on('click', '.source_status-toggler_i', function() {
+            var $this = $(this);
+            var statusId = $this.attr('id');
+
+            updateEnabledStatusObject(statusId);
+            updateLocalStorage(enabledStatus);
+            initEnabledStatusSpec();
+        });
+
+        // waiting when statuses update dom
+        var checkStatuses = setInterval(function(){
+            if ($('.source_status_badge').length) {
+                initEnabledStatusSpec();
+                clearInterval(checkStatuses);
+            }
+        }, 100);
+
+    };
+
+    GlobalNav.prototype.drawFilters = function(arr) {
+        var $w = $('.source_subhead_filter-w'),
+            html = '<br/><a id="sortByAlphabet" href="#sort=alphabet">Sort by alphabet</a>' +
+                   '<br/><a id="sortByDate" href="#sort=date">Sort by date</a>',
+            _this = this;
+
+        $w.append(html);
+
+        $(document).on('click', '#sortByAlphabet', function() {
+            _this.sortByChild('sortByAlph');
+        });
+        $(document).on('click', '#sortByDate', function() {
+            _this.sortByChild();
+        });
+    };
+
+    GlobalNav.prototype.sortByChild = function(sortType) {
+        var $list = $('.source_catalog_list');
+
+        $list.each(function() {
+            var $list_i = $(this).children('.source_catalog_list_i');
+
+            if (sortType == "sortByAlph") {
+
+                $list_i.sort(function(a, b) {
+                    a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
+                    b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
+
+                    return (a < b) ? -1 : (a > b) ? 1 : 0;
+                });
+
+            } else {
+
+                $list_i.sort(function(a, b) {
+                    a = parseInt( a.getAttribute('data-date') );
+                    b = parseInt( b.getAttribute('data-date') );
+
+                    return (a < b) ? 1 : (a > b) ? -1 : 0;
+                });
+
+            }
+
+            $(this).empty().append($list_i);
+        });
+
     };
 
     return new GlobalNav();
