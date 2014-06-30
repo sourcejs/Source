@@ -30,6 +30,9 @@ define([
             CATALOG_LIST_DATE : 'source_catalog_footer',
             CATALOG_LIST_BUBBLES : 'source_bubble',
 
+            CATALOG_FILTER : 'source_catalog-filter',
+            SOURCE_SUBHEAD : 'source_subhead',
+
             RES_LINK_TO_ALL : 'All',
             RES_AUTHOR : 'Author',
             RES_NO_DATA_ATTR : 'Data-nav attr not set',
@@ -52,12 +55,7 @@ define([
         this.drawToggler();
         this.hideImgWithError();
 
-        if (window.location.pathname == "/base/" ||
-            window.location.pathname == "/project/" ||
-            window.location.pathname == "/mob/") {
-            this.initStatusFilter();
-            this.drawFilters();
-        }
+        this.initCatalogFilter();
     };
 
     //Drawing navigation and page info in each catalog defined on page
@@ -77,6 +75,10 @@ define([
 
             CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
             CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES,
+
+            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
+
             RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL,
             RES_AUTHOR = this.options.modulesOptions.globalNav.RES_AUTHOR,
             RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR,
@@ -367,24 +369,36 @@ define([
         }
     };
 
-    // Filter specs by dev status
-    GlobalNav.prototype.initStatusFilter = function() {
-        var $subhead = $('.source_subhead'),
-            enabledStatus = JSON.parse(localStorage.getItem('enabledStatus')) || {},
-            nav = '<div class="source_subhead_filter-w">' +
-                      '<label><input id="dev" class="source_status-toggler_i" type="checkbox">dev</label>' +
-                      '<label><input id="exp" class="source_status-toggler_i" type="checkbox">exp</label>' +
-                      '<label><input id="rec" class="source_status-toggler_i" type="checkbox">rec</label>' +
-                      '<label><input id="ready" class="source_status-toggler_i" type="checkbox">ready</label>' +
-                      '<label><input id="rev" class="source_status-toggler_i" type="checkbox">rev</label>' +
-                      '<a href="# id="dev"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/dev.png"></a>'+
-                      '<a href="# id="exp"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/exp.png"></a>'+
-                      '<a href="# id="rec"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rec.png"></a>'+
-                      '<a href="# id="ready"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/ready.png"></a>'+
-                      '<a href="# id="rev"><img class="source_status-toggler_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rev.png"></a>'+
-                  '</div>';
+    GlobalNav.prototype.initCatalogFilter = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD;
 
-        $subhead.prepend(nav);
+        var $subhead = $('.' + SOURCE_SUBHEAD),
+            $filter = $('.' + CATALOG_FILTER);
+
+        if ($subhead.length && !$filter.length) {
+            $subhead.prepend('<div class="' + CATALOG_FILTER + '"></div>');
+            this.drawStatusFilter();
+            this.drawSortFilters();
+        }
+    };
+
+    // Filter specs by dev status
+    GlobalNav.prototype.drawStatusFilter = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+
+            $filterWrapper = $('.' + CATALOG_FILTER),
+            enabledStatus = JSON.parse(localStorage.getItem('enabledStatus')) || {},
+
+            nav = '<ul class="source_status-list">' +
+                      '<li class="source_status-list_li"><a href="#" id="dev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/dev.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="exp" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/exp.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="rec" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rec.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="ready" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/ready.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="rev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rev.png"></a>' +
+                  '</ul>';
+
+        $filterWrapper.append(nav);
 
         var initEnabledStatusSpec = function() {
             var $catalogItems = $('.source_catalog_list_i');
@@ -398,7 +412,7 @@ define([
 
             $.each(enabledStatus, function(statusId) {
                 $('.__' + statusId).closest('.source_catalog_list_i').show();
-                $('#' + statusId).prop('checked', true);
+                $('#' + statusId).addClass('__active');
             });
         };
 
@@ -407,16 +421,17 @@ define([
         };
 
         var updateEnabledStatusObject = function(statusId) {
-            if ( $('#' + statusId).prop('checked') ) {
+            if ( $('#' + statusId).hasClass('__active') ) {
                 enabledStatus[statusId] = true;
             } else {
                 delete enabledStatus[statusId];
             }
         };
 
-        $(document).on('click', '.source_status-toggler_i', function() {
+        $(document).on('click', '.source_status-list_a', function() {
             var $this = $(this);
             var statusId = $this.attr('id');
+            $('#' + statusId).toggleClass('__active');
 
             updateEnabledStatusObject(statusId);
             updateLocalStorage(enabledStatus);
@@ -433,23 +448,68 @@ define([
 
     };
 
-    GlobalNav.prototype.drawFilters = function(arr) {
-        var $w = $('.source_subhead_filter-w'),
-            html = '<br/><a id="sortByAlphabet" href="#sort=alphabet">Sort by alphabet</a>' +
-                   '<br/><a id="sortByDate" href="#sort=date">Sort by date</a>',
+    GlobalNav.prototype.drawSortFilters = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+
+            $filterWrapper = $('.' + CATALOG_FILTER),
+            enabledFilter = JSON.parse(localStorage.getItem('enabledFilter')) || {},
+
+            nav = '<ul class="source_sort-list">' +
+                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">Sort by alphabet</a></li>' +
+                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">Sort by date</a></li>' +
+                   '</ul>',
             _this = this;
 
-        $w.append(html);
+        $filterWrapper.append(nav);
 
-        $(document).on('click', '#sortByAlphabet', function() {
-            _this.sortByChild('sortByAlph');
+        var $activeFilter = $('#' + enabledFilter.sortType);
+        $activeFilter.parent().addClass('__active');
+
+        if (enabledFilter.sortDirection == 'forward') {
+            $activeFilter.parent().addClass('__forward');
+        }
+
+        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection)
+
+        var updateLocalStorage = function(obj) {
+            localStorage.setItem('enabledFilter', JSON.stringify(obj));
+        };
+
+        var updateEnabledStatusObject = function(sortType, sortDirection) {
+            enabledFilter.sortType = sortType;
+            enabledFilter.sortDirection = sortDirection;
+        };
+
+        var updateView = function(el) {
+            var $this = el;
+
+            $('.source_sort-list_li').removeClass('__active');
+            $this.parent()
+                .addClass('__active')
+                .toggleClass('__forward');
+
+            var sortType = $this.attr('id'),
+                sortDirection = 'backward';
+
+            if ( $this.parent().hasClass('__forward') ) {
+                sortDirection = 'forward';
+            }
+
+            updateEnabledStatusObject(sortType, sortDirection);
+            updateLocalStorage(enabledFilter);
+            _this.sortByChild(sortType, sortDirection);
+        }
+
+        $(document).on('click', '#sortByAlph', function() {
+            updateView($(this));
         });
+
         $(document).on('click', '#sortByDate', function() {
-            _this.sortByChild();
+            updateView($(this));
         });
     };
 
-    GlobalNav.prototype.sortByChild = function(sortType) {
+    GlobalNav.prototype.sortByChild = function(sortType, sortDirection) {
         var $list = $('.source_catalog_list');
 
         $list.each(function() {
@@ -461,14 +521,22 @@ define([
                     a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
                     b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
 
+                    if (sortDirection == 'backward') {
+                        return (a < b) ? 1 : (a > b) ? -1 : 0;
+                    }
+
                     return (a < b) ? -1 : (a > b) ? 1 : 0;
                 });
 
-            } else {
+            } else if (sortType == "sortByDate") {
 
                 $list_i.sort(function(a, b) {
                     a = parseInt( a.getAttribute('data-date') );
                     b = parseInt( b.getAttribute('data-date') );
+
+                    if (sortDirection == 'backward') {
+                        return (a < b) ? -1 : (a > b) ? 1 : 0;
+                    }
 
                     return (a < b) ? 1 : (a > b) ? -1 : 0;
                 });
