@@ -1,6 +1,6 @@
 /* Nav statuses plugin
 ---------------------------------------------------------------------------------- */
-
+/*
 .source_catalog {
   	position: relative;
 
@@ -39,6 +39,125 @@
 .source_catalog.__show-preview .source_catalog_img {
  	display: block;
 	}
+*/
+.grayscale-it(@value: 100%) {
+    -webkit-filter: grayscale(@value);
+    -moz-filter: grayscale(@value);
+    -o-filter: grayscale(@value);
+    -ms-filter: grayscale(@value);
+    filter: grayscale(@value);
+    }
+
+.source_catalog {
+    position: relative;
+
+    .catalog-image-tumbler {
+        float: right;
+        border-bottom: 1px dotted #333;
+        text-decoration: none;
+        color: #333;
+        }
+    }
+
+.source_catalog_a {
+    padding-right: 45px;
+
+    .source_status_badge {
+        position: absolute;
+        top: 7px;
+        right: 5px;
+
+        display: none;
+        }
+
+    &:hover {
+        .source_status_badge {
+            display: block;
+            }
+        }
+    }
+
+.source_catalog_img {
+    display: none;
+    max-width: 100%;
+    max-height: 60px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+    }
+
+.source_catalog.__show-preview {
+    .source_catalog_img {
+        display: block;
+        }
+
+    .source_catalog_list_i {
+        margin-bottom: 30px;
+        }
+    }
+
+.source_catalog_list_i {
+    vertical-align: baseline;
+    }
+
+.source_catalog-filter {
+    float: right;
+    margin-top: 10px;
+    width: 24.5%;
+    }
+
+.temp_source_status-list {
+    margin: 0;
+    padding: 0;
+
+    list-style-type: none;
+    }
+
+.source_status-list_img {
+    width: 30px;
+    opacity: 1;
+    transition: .2s;
+    .grayscale-it;
+    -webkit-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    transform: translateZ(0);
+    }
+
+.source_status-list_a.__active {
+    .source_status-list_img {
+        opacity: 1;
+        .grayscale-it(0);
+        }
+    }
+
+.source_sort-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    color: #606060;
+    }
+
+.source_sort-list_a {
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dotted;
+    color: #606060;
+    }
+
+.source_sort-list_li.__active {
+    &:after {
+        content: "\25B2";
+        font-size: 11px;
+        display: inline-block;
+        padding-left: 3px;
+        }
+
+
+    &.__forward:after {
+        content: "\25BC"
+        }
+    }
+
 
 /* /Nav statuses plugin
 ---------------------------------------------------------------------------------- */

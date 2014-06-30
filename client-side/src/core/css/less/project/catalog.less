@@ -1,5 +1,8 @@
 /* Catalog
 ---------------------------------------------------------------------------------- */
+@blue: #1c76c2;
+@blue_hover_item: #7EB6D9;
+
 .source_section .source_catalog {
     padding:10px 20px;
     border:1px solid #dfe2e4;
@@ -10,16 +13,28 @@
 
     &_h2,
     h2 {
-		font-size: 18px;
+		font-size: 22px;
 		color: #333;
-		margin: 0 0 10px;
+		margin: 20px 0 5px 0;
 		font-weight: normal;
-		}
+        }
+
+    .source_catalog_title
+        a {
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+                }
+            }
     }
 
 .source_catalog_tx {
 	min-height: 36px; /* 2 lines */
-	margin: 5px 0 20px;
+	margin: 0 0 20px;
+
+    color: #999;
+    font-size: 13px;
 
     p {
 		margin: 0 0 10px;
@@ -33,14 +48,14 @@
 	}
 
 .source_catalog_list_i {
-	width: 25%;
+	width: 28%;
 	margin-right: 5%;
 	display: inline-block;
 	vertical-align: top;
 	}
 
 	.source_col .source_catalog_list_i { /* Context */
-		width: 80%;
+		width: 100%;
 		display: block;
 		}
 
@@ -48,39 +63,43 @@
 	position: relative;
 	display: block;
 	margin-left: -5px;
-	padding: 5px 25px 5px 5px;
+	padding: 5px 10px;
 
-	font-size: 13px;
+	font-size: 14px;
 	text-decoration: none;
 
 	a&:hover { //tag for weight
         text-decoration: none;
-        background-color: #f1f2f3;
+        background-color: @blue_hover_item;
+        color: #fff;
+        border-radius: 5px;
 
         .source_catalog_footer {
-		    opacity: 1;
-		    }
-
-        .source_catalog_title {
-            text-decoration: underline;
+            color: #fff;
             }
+
         }
 	}
 
 .source_catalog_footer {
-	margin-top: 3px;
-
 	color: #999;
 	font-size: 11px;
 	text-decoration: none !important;
-
-	opacity: 0;
-
-	transition: opacity .2s;
 	}
 
 .source_catalog_all {
-	margin-top: 5px;
+	margin: 20px 0 0 5px;
+
+    a.source_a_bl {
+        color: lighten(@blue, 20%);
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+            }
+
+        }
+
 	}
 
 /* /Catalog

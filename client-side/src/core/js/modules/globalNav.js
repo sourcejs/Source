@@ -30,6 +30,9 @@ define([
             CATALOG_LIST_DATE : 'source_catalog_footer',
             CATALOG_LIST_BUBBLES : 'source_bubble',
 
+            CATALOG_FILTER : 'source_catalog-filter',
+            SOURCE_SUBHEAD : 'source_subhead',
+
             RES_LINK_TO_ALL : 'All',
             RES_AUTHOR : 'Author',
             RES_NO_DATA_ATTR : 'Data-nav attr not set',
@@ -51,10 +54,12 @@ define([
         this.drawNavigation();
         this.drawToggler();
         this.hideImgWithError();
+
+        this.initCatalogFilter();
     };
 
     //Drawing navigation and page info in each catalog defined on page
-    GlobalNav.prototype.drawNavigation = function () {
+    GlobalNav.prototype.drawNavigation = function (sortType) {
         var _this = this,
             L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG),
             CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST,
@@ -70,6 +75,10 @@ define([
 
             CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
             CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES,
+
+            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
+
             RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL,
             RES_AUTHOR = this.options.modulesOptions.globalNav.RES_AUTHOR,
             RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR,
@@ -77,7 +86,7 @@ define([
             RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO,
 
             pageLimit = this.options.modulesOptions.globalNav.pageLimit;
-            sortType = this.options.modulesOptions.globalNav.sortType || 'sortByDate';
+            sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
             ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         //TODO: refactor this module and write tests
@@ -193,20 +202,20 @@ define([
                         if (typeof target.author === 'undefined') {
                             authorName = '';
                         } else {
-                            authorName = ' | ' + RES_AUTHOR + ': ' + target.author + '';
+                            authorName = target.author;
                         }
 
                         //fixing relative path due to server settings
                         var targetUrl = target.url;
                         if(targetUrl.charAt(0) !== '/')
-                            targetUrl = '/' + targetUrl;
+                            targetUrl = '/' + targetUrsource_catalog_footerl;
 
                         navTreeHTML += '' +
-                                '<li class="' + CATALOG_LIST_I + '">' +
-                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
+                                '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
                                 '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >' +
+                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
                                 '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + target.lastmod + authorName + '</div>';
+                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
 
                         // TODO: move to plugins
                         if(parseInt(target.bubbles)) {
@@ -275,12 +284,12 @@ define([
         });
     };
 
-    GlobalNav.prototype.drawToggler = function(){
+    GlobalNav.prototype.drawToggler = function() {
         var _this = this,
             L_CATALOG = $('.' + _this.options.modulesOptions.globalNav.CATALOG),
             CATALOG_IMG_TUMBLER = _this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
 
-        L_CATALOG.filter('[data-nav*="base"],[data-nav*="project"]').each(function(){
+        L_CATALOG.filter('[data-nav*="base"][data-preview!="disable"],[data-nav*="project"][data-preview!="disable"]').each(function(){
 
             var $this = $(this),
                 /* for each type of data-nav own localStorage */
@@ -293,7 +302,7 @@ define([
                     .addClass('__show-preview')
                     .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
 
-            } else if (!tumblerMode && _tumblerMode == 'base' ) {
+            } else if ( !tumblerMode && _tumblerMode == 'base' ) {
 
                 // for base spec show preview by default
                 $this
@@ -358,6 +367,185 @@ define([
         else {
             return (a > b) ? 1 : -1;
         }
+    };
+
+    GlobalNav.prototype.initCatalogFilter = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD;
+
+        var $subhead = $('.' + SOURCE_SUBHEAD),
+            $filter = $('.' + CATALOG_FILTER);
+
+        if ($subhead.length && !$filter.length) {
+            $subhead.prepend('<div class="' + CATALOG_FILTER + '"></div>');
+            this.drawStatusFilter();
+            this.drawSortFilters();
+        }
+    };
+
+    // Filter specs by dev status
+    GlobalNav.prototype.drawStatusFilter = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+
+            $filterWrapper = $('.' + CATALOG_FILTER),
+            enabledStatus = JSON.parse(localStorage.getItem('enabledStatus')) || {},
+
+            nav = '<ul class="source_status-list">' +
+                      '<li class="source_status-list_li"><a href="#" id="dev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/dev.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="exp" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/exp.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="rec" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rec.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="ready" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/ready.png"></a>'+
+                      '<li class="source_status-list_li"><a href="#" id="rev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rev.png"></a>' +
+                  '</ul>';
+
+        $filterWrapper.append(nav);
+
+        var initEnabledStatusSpec = function() {
+            var $catalogItems = $('.source_catalog_list_i');
+
+            if ($.isEmptyObject(enabledStatus)) {
+                $catalogItems.show();
+                return;
+            }
+
+            $catalogItems.hide();
+
+            $.each(enabledStatus, function(statusId) {
+                $('.__' + statusId).closest('.source_catalog_list_i').show();
+                $('#' + statusId).addClass('__active');
+            });
+        };
+
+        var updateLocalStorage = function(obj) {
+            localStorage.setItem('enabledStatus', JSON.stringify(obj));
+        };
+
+        var updateEnabledStatusObject = function(statusId) {
+            if ( $('#' + statusId).hasClass('__active') ) {
+                enabledStatus[statusId] = true;
+            } else {
+                delete enabledStatus[statusId];
+            }
+        };
+
+        $(document).on('click', '.source_status-list_a', function() {
+            var $this = $(this);
+            var statusId = $this.attr('id');
+            $('#' + statusId).toggleClass('__active');
+
+            updateEnabledStatusObject(statusId);
+            updateLocalStorage(enabledStatus);
+            initEnabledStatusSpec();
+        });
+
+        // waiting when statuses update dom
+        var checkStatuses = setInterval(function(){
+            if ($('.source_status_badge').length) {
+                initEnabledStatusSpec();
+                clearInterval(checkStatuses);
+            }
+        }, 100);
+
+    };
+
+    GlobalNav.prototype.drawSortFilters = function() {
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+
+            $filterWrapper = $('.' + CATALOG_FILTER),
+            enabledFilter = JSON.parse(localStorage.getItem('enabledFilter')) || {},
+
+            nav = '<ul class="source_sort-list">' +
+                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">Sort by alphabet</a></li>' +
+                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">Sort by date</a></li>' +
+                   '</ul>',
+            _this = this;
+
+        $filterWrapper.append(nav);
+
+        var $activeFilter = $('#' + enabledFilter.sortType);
+        $activeFilter.parent().addClass('__active');
+
+        if (enabledFilter.sortDirection == 'forward') {
+            $activeFilter.parent().addClass('__forward');
+        }
+
+        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection)
+
+        var updateLocalStorage = function(obj) {
+            localStorage.setItem('enabledFilter', JSON.stringify(obj));
+        };
+
+        var updateEnabledStatusObject = function(sortType, sortDirection) {
+            enabledFilter.sortType = sortType;
+            enabledFilter.sortDirection = sortDirection;
+        };
+
+        var updateView = function(el) {
+            var $this = el;
+
+            $('.source_sort-list_li').removeClass('__active');
+            $this.parent()
+                .addClass('__active')
+                .toggleClass('__forward');
+
+            var sortType = $this.attr('id'),
+                sortDirection = 'backward';
+
+            if ( $this.parent().hasClass('__forward') ) {
+                sortDirection = 'forward';
+            }
+
+            updateEnabledStatusObject(sortType, sortDirection);
+            updateLocalStorage(enabledFilter);
+            _this.sortByChild(sortType, sortDirection);
+        }
+
+        $(document).on('click', '#sortByAlph', function() {
+            updateView($(this));
+        });
+
+        $(document).on('click', '#sortByDate', function() {
+            updateView($(this));
+        });
+    };
+
+    GlobalNav.prototype.sortByChild = function(sortType, sortDirection) {
+        var $list = $('.source_catalog_list');
+
+        $list.each(function() {
+            var $list_i = $(this).children('.source_catalog_list_i');
+
+            if (sortType == "sortByAlph") {
+
+                $list_i.sort(function(a, b) {
+                    a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
+                    b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
+
+                    if (sortDirection == 'backward') {
+                        return (a < b) ? 1 : (a > b) ? -1 : 0;
+                    }
+
+                    return (a < b) ? -1 : (a > b) ? 1 : 0;
+                });
+
+            } else if (sortType == "sortByDate") {
+
+                $list_i.sort(function(a, b) {
+                    a = parseInt( a.getAttribute('data-date') );
+                    b = parseInt( b.getAttribute('data-date') );
+
+                    if (sortDirection == 'backward') {
+                        return (a < b) ? -1 : (a > b) ? 1 : 0;
+                    }
+
+                    return (a < b) ? 1 : (a > b) ? -1 : 0;
+                });
+
+            }
+
+            $(this).empty().append($list_i);
+        });
+
     };
 
     return new GlobalNav();
