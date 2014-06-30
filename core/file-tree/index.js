@@ -164,7 +164,7 @@ var SpecDependenciesWrite = function() {
 GlobalWrite();
 
 // setcron
-if (CRON || CRON_PROD) {
+if (CRON || (global.MODE === 'production' && CRON_PROD)) {
     setInterval(function(){
         GlobalWrite();
     }, CRON_REPEAT_TIME);
