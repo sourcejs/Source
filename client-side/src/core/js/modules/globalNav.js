@@ -208,14 +208,14 @@ define([
                         //fixing relative path due to server settings
                         var targetUrl = target.url;
                         if(targetUrl.charAt(0) !== '/')
-                            targetUrl = '/' + targetUrl;
+                            targetUrl = '/' + targetUrsource_catalog_footerl;
 
                         navTreeHTML += '' +
                                 '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
                                 '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >' +
                                 '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
                                 '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + '</div>';
+                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
 
                         // TODO: move to plugins
                         if(parseInt(target.bubbles)) {
