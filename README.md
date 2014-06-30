@@ -1,6 +1,6 @@
 # Source - Front-end documentation engine
 
-**v.0.3.2**
+**v0.3.2** ([v0.4 dev](https://github.com/sourcejs/Source/tree/v.0.4.0))
 
 **The most powerful tool for documenting web interfaces and building productive team work.**
 
@@ -16,22 +16,24 @@ ___
 ___
 
 ## Updates
-* 23.09.13. Published [video recording](http://www.youtube.com/watch?v=3HNW5Bru0Ws) of Source engine presentation from [RIT++](http://ritconf.ru/) 2013 (RU)
+* 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
+* 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool, based on v0.4 API - Design-lego
+* * 31.12.13. **0.3.2** release
 * 09.10.13. Engine [presentation](http://rhr.me/pres/source-min/) on [Fronteers Jam](http://fronteers.nl/congres/2013/jam-session) ([video](https://vimeo.com/77989211))
-* 31.12.13. **0.3.2** release
-* 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool - Design-lego
+* 23.09.13. Published [video recording](http://www.youtube.com/watch?v=3HNW5Bru0Ws) of Source engine presentation from [RIT++](http://ritconf.ru/) 2013 (RU)
 
 ## Upcoming updates
 
+* Content API
+* Integrations with BEM and other popupar ecosystems
+* Stable plugin system
 * Open project blog with news, updates and best practises
 * Markdown support in spec pages
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
-* Auto spec pages builder
-* Comments plugins major updates
 
 ___
 
-Copyright © 2013 [Sourcejs.com](http://sourcejs.com)
+Copyright © 2014 [SourceJS](http://sourcejs.com)
 
 Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/source/wiki/MIT-License).
