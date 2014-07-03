@@ -1,4 +1,4 @@
-# Source - Front-end documentation engine
+# SourceJS - IME for front-end components documentation and maintenance
 
 **v.0.4.0**
 

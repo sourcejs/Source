@@ -6,7 +6,7 @@ var fs = require('fs'),
 var sourceRoot = '../../public';
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-var excludedDirs = ['data','plugins','core','node_modules','client','.idea','init','temp'];
+var excludedDirs = ['data','plugins','core','/node_modules','client','.idea','init','temp'];
 
 // path to output file to write parsed data in json format
 var outputFile = 'info.json';

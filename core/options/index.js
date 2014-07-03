@@ -4,8 +4,9 @@ var coreSettings = require('./options.json'),
     pathToApp = path.dirname(require.main.filename),
     fs = require('fs');
 
-var userSettingsFile = pathToApp + '/user/options/options.json',
-    localSettingsFile = pathToApp + '/user/options/local-options.json';
+// Using specific path to specs parsing, because we don't have global.opts yet
+var userSettingsFile = path.normalize(pathToApp + '/' + coreSettings.common.pathToUser + '/core/options/options.json'),
+    localSettingsFile = path.normalize(pathToApp + '/' + coreSettings.common.pathToUser + '/core/options/local-options.json');
 
 // If user settings file is present, override core settings
 if(fs.existsSync(userSettingsFile)) {

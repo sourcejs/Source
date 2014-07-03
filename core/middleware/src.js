@@ -4,11 +4,11 @@ var fs = require('fs'),
     pathToApp = path.dirname(require.main.filename),
     getHeaderAndFooter = require(pathToApp + '/core/headerFooter').getHeaderAndFooter;
 
-var userTemplatesDir = pathToApp + "/user/views/",
+var userTemplatesDir = global.app.get('user') + "/core/views/",
     coreTemplatesDir = pathToApp + "/core/views/";
 
 var handleRequest = function(req, res, next) {
-    var physicalPath = global.app.get('specs path') + req.url; // get the physical path of a requested file
+    var physicalPath = global.app.get('user') + req.url; // get the physical path of a requested file
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file

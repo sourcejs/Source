@@ -1,11 +1,13 @@
 var fs = require('fs'),
+    path = require('path'),
+    pathToApp = path.dirname(require.main.filename),
     ejs = require('ejs');
 
 exports.getHeaderAndFooter = function () {
-    var defaultTemplatePath = global.app.get('specs path') + "/core/templates/";
-    var userTemplatePath = global.app.get('specs path') + "/user/templates/";
-    var headerFile = "header.inc.html";
-    var footerFile = "footer.inc.html";
+    var defaultTemplatePath = pathToApp + "/assets/templates/",
+        userTemplatePath = global.app.get('user') + "/assets/templates/",
+        headerFile = "header.inc.html",
+        footerFile = "footer.inc.html";
 
     var data = {};
 

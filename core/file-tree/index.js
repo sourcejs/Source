@@ -4,8 +4,8 @@ var fs = require('fs'),
     path = require('path');
 
     // sourceMaster root path
-    var sourceRoot = global.opts.common.pathToSpecs,
-        rootLength = global.opts.common.pathToSpecs.length;
+    var sourceRoot = global.opts.common.pathToUser,
+        rootLength = global.opts.common.pathToUser.length;
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
 var excludedDirs = global.opts.fileTree.excludedDirs;
@@ -139,11 +139,11 @@ var specDependenciesTree = function(dir) {
 
 // function for write json file
 var GlobalWrite = function() {
-    fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_FILE, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
+    fs.writeFile(global.app.get('user') + "/" + OUTPUT_FILE, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Pages tree JSON saved to " + global.opts.common.pathToSpecs+"/"+OUTPUT_FILE);
+            console.log("Pages tree JSON saved to " + global.opts.common.pathToUser+"/"+OUTPUT_FILE);
             NOT_EXEC=true;
         }
     });
@@ -151,11 +151,11 @@ var GlobalWrite = function() {
 };
 
 var SpecDependenciesWrite = function() {
-    fs.writeFile(global.app.get("specs path") + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
+    fs.writeFile(global.app.get('user') + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Spec dependencies JSON saved to " + global.opts.common.pathToSpecs+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
+            console.log("Spec dependencies JSON saved to " + global.opts.common.pathToUser+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
         }
     });
 };

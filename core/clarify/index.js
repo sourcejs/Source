@@ -12,7 +12,7 @@ var
 // custom vars & local dependencies
 var
 	opts = require('../options'),
-	publicPath = opts.common.pathToSpecs;
+	publicPath = opts.common.pathToUser;
 
 
 module.exports = function reply(req, res, next) {

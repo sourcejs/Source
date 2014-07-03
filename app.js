@@ -1,6 +1,6 @@
-/*
-* Source - Front-end documentation engine
-* @copyright 2013 Sourcejs.com
+/*!
+* SourceJS - IME for front-end components documentation and maintenance
+* @copyright 2014 Sourcejs.com
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
@@ -9,15 +9,14 @@ var express = require('express')
     , colors = require('colors')
     , fs = require('fs')
     , deepExtend = require('deep-extend')
-    , headerFooter = require('./core/headerFooter')
-    , src = require("./core/middleware/src");
+    , headerFooter = require('./core/headerFooter');
 
 /* Globals */
 global.app = express();
 global.opts = require('./core/options/');
 
 global.app.set('views', __dirname + '/core/views');
-global.app.set('specs path', __dirname + '/' + global.opts.common.pathToSpecs);
+global.app.set('user', __dirname + '/' + global.opts.common.pathToUser);
 
 global.MODE = process.env.NODE_ENV || 'development';
 /* /Globals */
@@ -43,7 +42,7 @@ if (global.MODE === 'development') {
     var less = require('less-middleware');
 
     var lessOpts = {
-        src: global.app.get('specs path')
+        src: global.app.get('user')
     };
 
     deepExtend(lessOpts, global.opts.less);
@@ -79,27 +78,29 @@ global.app.use(errorHandler);
 
 
 /* Includes */
-try {
-    /* Routes */
-    global.routes = require('./core/routes');
 
+// Routes
+require('./core/routes');
+
+// User extenstions
+try {
     /* User plugins */
-    global.plugins = require("./user/plugins");
+    require(global.app.get('user') + "/core/plugins");
 
     /* User additional functionality */
-    global.extApp = require("./user/app.js");
-} catch(e) {
-    console.log(e);
-    process.exit(e.code);
-}
+    require(global.app.get('user') + "/core/app.js");
+} catch(e){}
 /* /Includes */
 
+
 /* Serve *.src content */
+var src = require("./core/middleware/src")
 global.app.use(src.handleIndex);
 global.app.use(src.process);
 
+
 /* Serve static content */
-global.app.use(express.static(global.app.get('specs path')));
+global.app.use(express.static(global.app.get('user')));
 
 global.app.use(function(req, res, next){
 

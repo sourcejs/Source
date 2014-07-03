@@ -1,6 +1,6 @@
-    {
+{
     "common": {
-        "pathToSpecs": "public",
+        "pathToUser": "user",
         "port": 8080,
         "infoFile": "info.json"
     },
@@ -9,7 +9,7 @@
             "cron":"For locally project use false",
             "excludedDirs":"write path from public root. Example: ['core','docs/base']"
         },
-        "excludedDirs": ["core","data","test","plugins","node_modules",".git",".idea"],
+        "excludedDirs": ["data","plugins","node_modules",".git",".idea"],
         "fileMask": ["index.html", "index.src"],
         "cron": false,
         "cronProd": true,
