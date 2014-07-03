@@ -22,7 +22,7 @@ define([
             CATALOG_LIST_ALL : 'source_catalog_all',
                 CATALOG_LIST_ALL_A : 'source_a_bl',
 
-            CATALOG_IMG_TUMBLER: 'catalog-image-tumbler',
+            CATALOG_IMG_TUMBLER: 'source_catalog_image-tumbler',
 
             CATALOG_LIST_A : 'source_catalog_a source_a_g',
             CATALOG_LIST_A_IMG : 'source_catalog_img',
@@ -52,9 +52,7 @@ define([
 
     GlobalNav.prototype.init = function () {
         this.drawNavigation();
-        this.drawToggler();
         this.hideImgWithError();
-
         this.initCatalogFilter();
     };
 
@@ -205,15 +203,21 @@ define([
                             authorName = target.author;
                         }
 
-                        //fixing relative path due to server settings
-                        var targetUrl = target.url;
-                        if(targetUrl.charAt(0) !== '/')
-                            targetUrl = '/' + targetUrsource_catalog_footerl;
+                        var previewPicture = '';
+                        if (target.thumbnail) {
+                            //fixing relative path due to server settings
+                            var targetUrl = target.url;
+                            if(targetUrl.charAt(0) !== '/')
+                                targetUrl = '/' + targetUrl;
+
+                            previewPicture = '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >';
+                        }
+
 
                         navTreeHTML += '' +
                                 '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
-                                '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >' +
                                 '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
+                                previewPicture +
                                 '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
                                 '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
 
@@ -284,57 +288,60 @@ define([
         });
     };
 
+    GlobalNav.prototype.initCatalogFilter = function() {
+        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
+            CATALOG_CLASS = this.options.modulesOptions.globalNav.CATALOG;
+
+        var $subhead = $('.' + SOURCE_SUBHEAD_CLASS),
+            $filter = $('.' + CATALOG_FILTER_CLASS),
+            $catalog = $('.' + CATALOG_CLASS);
+
+        if (!$subhead.length || !$catalog.length) return;
+
+        if (!$filter.length) {
+            $subhead.prepend('<div class="' + CATALOG_FILTER_CLASS + '"></div>');
+        }
+
+        this.drawSortFilters();
+        this.drawToggler();
+    };
+
     GlobalNav.prototype.drawToggler = function() {
-        var _this = this,
-            L_CATALOG = $('.' + _this.options.modulesOptions.globalNav.CATALOG),
-            CATALOG_IMG_TUMBLER = _this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
+        var CATALOG = this.options.modulesOptions.globalNav.CATALOG,
+            CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER,
+            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
 
-        L_CATALOG.filter('[data-nav*="base"][data-preview!="disable"],[data-nav*="project"][data-preview!="disable"]').each(function(){
+            initPreviewValue = localStorage.getItem( 'source_showPreviews') || localStorage.setItem( 'source_showPreviews', 'false'),
 
-            var $this = $(this),
-                /* for each type of data-nav own localStorage */
-                _tumblerMode = $this.attr('data-nav').substr(1),
-                tumblerMode = localStorage.getItem( _tumblerMode + 'TumblerMode');
+            $catalog = $('.' + CATALOG);
 
-            if ( tumblerMode && tumblerMode == 'showPreview' ) {
+        var $filter = $('.' + CATALOG_FILTER);
 
-                $this
-                    .addClass('__show-preview')
-                    .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
-
-            } else if ( !tumblerMode && _tumblerMode == 'base' ) {
-
-                // for base spec show preview by default
-                $this
-                    .addClass('__show-preview')
-                    .prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
-
-            } else {
-
-                $this.prepend('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
-            }
-
-        });
+        if (initPreviewValue == 'true') { // initPreviewValue is string, not boolean
+            $catalog.addClass('__show-preview');
+            $filter.append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
+        } else {
+            $filter.append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+        }
 
         $(document).on('click', '.' + CATALOG_IMG_TUMBLER, function(e) {
             e.preventDefault();
+            var showPreviews = localStorage.getItem( 'source_showPreviews');
 
             var $this = $(this),
-                tumblerText = $this.text(),
-                _tumblerMode = $this.parent().attr('data-nav').substr(1);
+                previewText;
 
-            if ( tumblerText == 'Показать превьюшки' ) {
-                tumblerText = 'Скрыть превьюшки';
-                localStorage.setItem( _tumblerMode + "TumblerMode", "showPreview");
+            if (showPreviews == 'true') { // string
+                previewText = 'Показать превьюшки';
+                localStorage.setItem('source_showPreviews' , false);
             } else {
-                tumblerText = 'Показать превьюшки';
-                localStorage.setItem( _tumblerMode + "TumblerMode", "hidePreview");
+                previewText = 'Скрыть превьюшки';
+                localStorage.setItem('source_showPreviews', true);
             }
 
-            $this
-                .text(tumblerText)
-                .parent().toggleClass('__show-preview');
-
+            $this.text(previewText);
+            $catalog.toggleClass('__show-preview');
         });
     };
 
@@ -369,95 +376,18 @@ define([
         }
     };
 
-    GlobalNav.prototype.initCatalogFilter = function() {
-        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD;
-
-        var $subhead = $('.' + SOURCE_SUBHEAD),
-            $filter = $('.' + CATALOG_FILTER);
-
-        if ($subhead.length && !$filter.length) {
-            $subhead.prepend('<div class="' + CATALOG_FILTER + '"></div>');
-            this.drawStatusFilter();
-            this.drawSortFilters();
-        }
-    };
-
-    // Filter specs by dev status
-    GlobalNav.prototype.drawStatusFilter = function() {
-        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-
-            $filterWrapper = $('.' + CATALOG_FILTER),
-            enabledStatus = JSON.parse(localStorage.getItem('enabledStatus')) || {},
-
-            nav = '<ul class="source_status-list">' +
-                      '<li class="source_status-list_li"><a href="#" id="dev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/dev.png"></a>'+
-                      '<li class="source_status-list_li"><a href="#" id="exp" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/exp.png"></a>'+
-                      '<li class="source_status-list_li"><a href="#" id="rec" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rec.png"></a>'+
-                      '<li class="source_status-list_li"><a href="#" id="ready" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/ready.png"></a>'+
-                      '<li class="source_status-list_li"><a href="#" id="rev" class="source_status-list_a"><img class="source_status-list_img" src="/data/node/user/node_modules/sourcejs-spec-status/i/rev.png"></a>' +
-                  '</ul>';
-
-        $filterWrapper.append(nav);
-
-        var initEnabledStatusSpec = function() {
-            var $catalogItems = $('.source_catalog_list_i');
-
-            if ($.isEmptyObject(enabledStatus)) {
-                $catalogItems.show();
-                return;
-            }
-
-            $catalogItems.hide();
-
-            $.each(enabledStatus, function(statusId) {
-                $('.__' + statusId).closest('.source_catalog_list_i').show();
-                $('#' + statusId).addClass('__active');
-            });
-        };
-
-        var updateLocalStorage = function(obj) {
-            localStorage.setItem('enabledStatus', JSON.stringify(obj));
-        };
-
-        var updateEnabledStatusObject = function(statusId) {
-            if ( $('#' + statusId).hasClass('__active') ) {
-                enabledStatus[statusId] = true;
-            } else {
-                delete enabledStatus[statusId];
-            }
-        };
-
-        $(document).on('click', '.source_status-list_a', function() {
-            var $this = $(this);
-            var statusId = $this.attr('id');
-            $('#' + statusId).toggleClass('__active');
-
-            updateEnabledStatusObject(statusId);
-            updateLocalStorage(enabledStatus);
-            initEnabledStatusSpec();
-        });
-
-        // waiting when statuses update dom
-        var checkStatuses = setInterval(function(){
-            if ($('.source_status_badge').length) {
-                initEnabledStatusSpec();
-                clearInterval(checkStatuses);
-            }
-        }, 100);
-
-    };
-
     GlobalNav.prototype.drawSortFilters = function() {
-        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
 
-            $filterWrapper = $('.' + CATALOG_FILTER),
-            enabledFilter = JSON.parse(localStorage.getItem('enabledFilter')) || {},
+            $filterWrapper = $('.' + CATALOG_FILTER_CLASS),
+            enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":"sortByDate","sortDirection":"forward"},
 
             nav = '<ul class="source_sort-list">' +
-                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">Sort by alphabet</a></li>' +
-                       '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">Sort by date</a></li>' +
-                   '</ul>',
+                '<li class="source_sort-list_li">Sort by&nbsp;</li>' +
+                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>' +
+                '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>' +
+                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>' +
+                '</ul>',
             _this = this;
 
         $filterWrapper.append(nav);
@@ -469,10 +399,10 @@ define([
             $activeFilter.parent().addClass('__forward');
         }
 
-        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection)
+        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection);
 
         var updateLocalStorage = function(obj) {
-            localStorage.setItem('enabledFilter', JSON.stringify(obj));
+            localStorage.setItem('source_enabledFilter', JSON.stringify(obj));
         };
 
         var updateEnabledStatusObject = function(sortType, sortDirection) {

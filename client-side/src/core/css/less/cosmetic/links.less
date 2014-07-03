@@ -1,9 +1,5 @@
 /* Links
 ---------------------------------------------------------------------------------- */
-@green: #1b9b19;
-@blue: #1c76c2;
-@black: #333;
-
 /* TODO: rename classes */
 .source_a_hl, /* Higlight link */
 .source_a_o { /* Regular link */
@@ -23,11 +19,6 @@
   	&:link,
 	&:visited {
 	  	color: @black;
-	  	text-decoration: none;
-		}
-
-    &:hover {
-		text-decoration: underline;
 		}
 	}
 
@@ -39,15 +30,14 @@
 		}
 
     &:hover {
-	 	color: lighten(@black, 20%);
-		text-decoration: underline;
+	 	color: #fff;
 		}
 	}
 
 .source_a_g { /* Object link */
   	&:link,
 	&:visited {
-	  	color: lighten(@blue, 20%);
+	  	color: @blue;
 	  	text-decoration: none;
 		}
 

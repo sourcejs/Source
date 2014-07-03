@@ -27,7 +27,7 @@ define([
 
         this.menuItemTemplate = $(menuItemTemplate);
         this.container = $(navTemplate);
-        $(".source_main > h1").after(this.container);
+        $(".source_main h1").after(this.container);
 
         $(function () {
             _this.injectNavigation();

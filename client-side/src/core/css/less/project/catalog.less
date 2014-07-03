@@ -1,7 +1,5 @@
 /* Catalog
 ---------------------------------------------------------------------------------- */
-@blue: #1c76c2;
-@blue_hover_item: #7EB6D9;
 
 .source_section .source_catalog {
     padding:10px 20px;
@@ -10,23 +8,35 @@
     }
 
 .source_catalog {
+    position: relative;
 
     &_h2,
     h2 {
-		font-size: 22px;
-		color: #333;
-		margin: 20px 0 5px 0;
-		font-weight: normal;
+        font-size: 22px;
+        color: #333;
+        margin: 20px 0 5px 0;
+        font-weight: normal;
         }
 
-    .source_catalog_title
-        a {
-            text-decoration: underline;
-
-            &:hover {
-                text-decoration: none;
-                }
+    &.__show-preview {
+        .source_catalog_img {
+            display: block;
             }
+
+        .source_catalog_list_i {
+            margin-bottom: 30px;
+            }
+        }
+    }
+
+.source_catalog_title {
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            color: @blue;
+            }
+        }
     }
 
 .source_catalog_tx {
@@ -48,21 +58,28 @@
 	}
 
 .source_catalog_list_i {
-	width: 28%;
-	margin-right: 5%;
+	width: 30%;
+	margin-right: 3%;
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: baseline;
 	}
 
-	.source_col .source_catalog_list_i { /* Context */
-		width: 100%;
-		display: block;
-		}
+@media (min-width: 1200px) {
+    .source_catalog_list_i {
+        width: 22%;
+        margin-right: 3%;
+        }
+    }
+
+.source_col .source_catalog_list_i { /* Context */
+    width: 100%;
+    display: block;
+    }
 
 .source_catalog_a {
 	position: relative;
 	display: block;
-	margin-left: -5px;
+	margin-left: -10px;
 	padding: 5px 10px;
 
 	font-size: 14px;
@@ -70,7 +87,7 @@
 
 	a&:hover { //tag for weight
         text-decoration: none;
-        background-color: @blue_hover_item;
+        background-color: @blue__hover;
         color: #fff;
         border-radius: 5px;
 
@@ -81,26 +98,94 @@
         }
 	}
 
+.source_catalog_image-tumbler {
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dotted;
+    color: #808080;
+
+    &:hover {
+        color: #303030;
+        text-decoration: none;
+        }
+    }
+
+.source_catalog_img {
+    display: none;
+    max-width: 100%;
+    max-height: 60px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+    }
+
 .source_catalog_footer {
-	color: #999;
+	color: @gray;
 	font-size: 11px;
 	text-decoration: none !important;
 	}
 
 .source_catalog_all {
-	margin: 20px 0 0 5px;
+	margin: 20px 0 0 0;
 
     a.source_a_bl {
-        color: lighten(@blue, 20%);
+        color: @gray;
         text-decoration: underline;
 
         &:hover {
-            text-decoration: none;
+            color: @black;
             }
 
         }
-
 	}
 
+.source_catalog-filter {
+    float: right;
+    margin-top: 10px;
+    width: 24.5%;
+    }
+
+.source_sort-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    color: #808080;
+    }
+
+.source_sort-list_li {
+    display: inline-block;
+
+    font-size: 13px;
+    }
+
+.source_sort-list_a {
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dotted;
+    color: #808080;
+
+    &:hover {
+        color: #303030;
+        text-decoration: none;
+        }
+    }
+
+.source_sort-list_li.__active {
+    color: #303030;
+
+    &:after {
+        content: "\25B2";
+        font-size: 11px;
+        display: inline-block;
+        padding-left: 3px;
+        }
+
+    &.__forward:after {
+        content: "\25BC";
+        }
+
+    .source_sort-list_a {
+        color: #303030;
+        }
+    }
 /* /Catalog
 ---------------------------------------------------------------------------------- */

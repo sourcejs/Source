@@ -40,6 +40,7 @@ function handleRequest(req, res, next) {
 
             if (exists) {
                 fs.readFile(physicalPath, 'utf8', function (err, data) {
+                    data = data.replace(/^\s+|\s+$/g, '');
                     if (err) {
                         res.send(err);
                     } else {
