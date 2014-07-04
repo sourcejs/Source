@@ -114,4 +114,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['clean-build','update']);
 
+    grunt.registerTask('watch-css', ['update','watch']);
+
 };
