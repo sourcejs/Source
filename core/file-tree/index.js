@@ -97,11 +97,16 @@ var fileTree = function(dir) {
             page.lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.') || '';
             page.lastmodSec = Date.parse(fileStats.mtime) || '';
             page.fileName = targetFile  || '';
+            page.thumbnail = false;
 
             if (fs.existsSync(dir+'/'+INFO_FILE)) {
                 var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+INFO_FILE, "utf8"));
 
                 deepExtend(page, fileJSON);
+            }
+
+            if (fs.existsSync(dir + '/thumbnail.png')) {
+                page.thumbnail = true;
             }
 
             outputJSON['specFile'] = extend(page);
