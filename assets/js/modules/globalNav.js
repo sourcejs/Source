@@ -134,7 +134,7 @@ define([
 				if (targetCat === undefined) return;
 
 				if ( !sourceCat.find('.source_catalog_list').length ) {
-					sourceCat.append('<ul class="source_catalog_list"><img src="/source/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
+					sourceCat.append('<ul class="source_catalog_list"><img src="/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
 				}
 
                 //Looking for catalogue info
