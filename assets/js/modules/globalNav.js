@@ -203,13 +203,13 @@ define([
                             authorName = target.author;
                         }
 
+                        //fixing relative path due to server settings
+                        var targetUrl = target.url;
+                        if (targetUrl.charAt(0) !== '/')
+                            targetUrl = '/' + targetUrl;
+
                         var previewPicture = '';
                         if (target.thumbnail) {
-                            //fixing relative path due to server settings
-                            var targetUrl = target.url;
-                            if(targetUrl.charAt(0) !== '/')
-                                targetUrl = '/' + targetUrl;
-
                             previewPicture = '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >';
                         }
 
