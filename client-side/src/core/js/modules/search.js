@@ -13,7 +13,8 @@ define([
     'lib/autocomplete',
     'modules/parseFileTree',
     'lib/modalbox',
-    ], function ($, options, autocomplete, parseFileTree, ModalBox) {
+    'modules/globalNav'
+    ], function ($, options, autocomplete, parseFileTree, ModalBox, globalNav) {
       var json = parseFileTree.getParsedJSON();
 
     //TODO: make localstorage caching
@@ -60,20 +61,14 @@ define([
             }
         };
 
-        // TODO: this thing should be done using some wrapper (e.g. from globalNav)
         var wrapSearchResults = function(results) {
-          var list = $("<ul>").addClass("source_catalog_list");
-          $.map(results, function(item) {
-            list.append(
-              $("<li class=\"source_catalog_list_i\">")
-                .html(
-                  "<a href=\"" + item.data + "\" class=\"source_catalog_a source_a_g\">"
-                    + "<img class=\"source_catalog_img\" src=\"" + item.data+ "/thumbnail.png\">"
-                    + "<span class=\"source_catalog_title\">" + item.value + "</span></a>"
-                )
-            );
-          });
-          return list;
+            var list = $("<ul>").addClass("source_catalog_list");
+            $.map(results, function(item) {
+                var specItem = parseFileTree.getCatAll(item.data).specFile;
+                specItem.title = item.value;
+                list.append(globalNav.createNavTreeItem(specItem));
+            });
+            return list;
         }
 
         var activateAutocomplete = function(target) {
