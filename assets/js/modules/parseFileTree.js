@@ -154,11 +154,15 @@ define([
     };
 
     ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
-        //If cat info needed
-        if (getCatInfo) {
-            return typeof targetSubCatObj['specFile'] === 'object' || currentSubCat === 'specFile';
-        } else {
-            return typeof targetSubCatObj['specFile'] === 'object';
+        if (targetSubCatObj) {
+
+            //If cat info needed
+            if (getCatInfo) {
+                return typeof targetSubCatObj['specFile'] === 'object' || currentSubCat === 'specFile';
+            } else {
+                return typeof targetSubCatObj['specFile'] === 'object';
+            }
+
         }
     };
 
