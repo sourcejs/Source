@@ -5,14 +5,10 @@ module.exports = function(grunt) {
     // measuring processing time
     require('time-grunt')(grunt);
 
-    var getSourceOptions = function() {
-        return require('./core/options');
-    };
-
     // Tasks
     grunt.initConfig({
         // load options from file
-        options: getSourceOptions(),
+        options: require('./core/options'),
         pathToUser: '<%= options.common.pathToUser %>',
 
         banner:'/*!\n' +
@@ -44,7 +40,7 @@ module.exports = function(grunt) {
         },
 
         cssmin: {
-            main: {
+            user: {
                 options: {
                     noAdvanced: true
                 },
@@ -94,9 +90,9 @@ module.exports = function(grunt) {
         watch: {
             main: {
                 files: [
-                    'assets/**/*.{less}'
+                    'assets/css/**/*.{less}'
                 ],
-                tasks: ['newer:less:dev'],
+                tasks: ['less'],
                 options: {
                     nospawn: true
                 }
@@ -104,15 +100,47 @@ module.exports = function(grunt) {
         },
     });
 
-    grunt.registerTask('clean-build', ['clean:build']);
+    grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
+        if (
+            grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' ||
+            grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod'
+            ) {
+
+            grunt.task.run('clean:build')
+        }
+
+    });
+
+    grunt.registerTask('last-prod', 'Tag build: prod', function(){
+        grunt.file.write('build/last-run', 'prod');
+    });
+
+    grunt.registerTask('last-dev', 'Tag build: dev', function(){
+        grunt.file.write('build/last-run', 'dev');
+    });
 
     // Regular development update task
-    grunt.registerTask('update', ['newer:less:main']);
+    grunt.registerTask('update', [
+        'less:main',
+        'last-dev'
+    ]);
 
     // Prod build, path to minified resources is routed by nodejs server
-    grunt.registerTask('build', ['clean-build','less:main','cssmin:build','cssmin:main','uglify:main','htmlcompressor:main']);
+    grunt.registerTask('build', [
+        'clean-build:prod',
+        'less:main',
+        'newer:cssmin:build',
+        'newer:cssmin:user',
+        'newer:uglify:main',
+        'newer:htmlcompressor:main',
+        'last-prod'
+    ]);
 
-    grunt.registerTask('default', ['clean-build','update']);
+    grunt.registerTask('default', [
+        'clean-build:dev',
+        'update',
+        'last-dev'
+    ]);
 
     grunt.registerTask('watch-css', ['update','watch']);
 
