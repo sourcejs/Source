@@ -6,7 +6,7 @@ define([
 
 var ModalBox = function(options, data) {
 	$.extend(true, this.config, options);
-	this. data = $.extend(true, {"title": "", "body": "", "close": "x"}, data);
+	this.data = $.extend(true, {"title": "", "body": "", "close": "x"}, data);
 	this.init();
 	this.visible = false;
 };
