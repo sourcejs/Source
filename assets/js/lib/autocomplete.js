@@ -103,7 +103,7 @@
 			}
 
 			this.$root = rootElement.css({
-				"position": "absolute",
+				"position": "fixed",
 				"display": "none",
 				"z-index": 9999
 			});
