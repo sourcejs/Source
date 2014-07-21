@@ -10,9 +10,11 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 define([
     'jquery',
     'source/options',
-    'sourceLib/jquery.autocomplete',
-    'sourceModules/parseFileTree'
-    ], function ($, options, autocomplete, parseFileTree) {
+    'sourceLib/autocomplete',
+    'sourceLib/modalbox',
+    'sourceModules/parseFileTree',
+    'sourceModules/globalNav'
+    ], function ($, options, autocomplete, modalBox, parseFileTree, globalNav) {
     	var json = parseFileTree.getParsedJSON();
 
     //TODO: make localstorage caching
@@ -59,13 +61,28 @@ define([
             }
         };
 
+        var wrapSearchResults = function(results) {
+            var list = $("<ul>").addClass("source_catalog_list");
+            $.map(results, function(item) {
+                var specItem = parseFileTree.getCatAll(item.data).specFile;
+                specItem.title = item.value;
+                list.append(globalNav.createNavTreeItem(specItem));
+            });
+            return list;
+        };
+
         var activateAutocomplete = function(target) {
             //initializing jquery.autocomplete
             target.autocomplete({
-                lookup:autocompleteData,
-                autoSelectFirst:true,
-                onSelect:function (suggestion) {
-                    window.location = suggestion.data;
+                "lookup": autocompleteData,
+                "autoSelectFirst": true,
+                "showAll": function (suggestions) {
+                    (new modalBox({
+                        "appendTo": "body"
+                    }, {
+                        "title": "Search results",
+                        "body": wrapSearchResults(suggestions)
+                    })).show();
                 }
             });
 
