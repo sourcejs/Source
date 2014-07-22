@@ -113,12 +113,15 @@
 
 			rootElement.appendTo(config.containerParent);
 
+			var _this = this;
+
 			var relocateContainer = function() {
-				var offset = $target.offset();
+				var offset = _this.$target.position();
 				var bottomOffset = 75; // px
+				var headerPadding
 				var wHeight = $(window).height();
 				rootElement.css({
-					"top": (offset.top + $target.outerHeight(true)) + "px",
+					"top": (offset.top + _this.$target.outerHeight(true)) + "px",
 					"left": offset.left + "px"
 				});
 				$container.css("max-height", (wHeight < containerHeight ? wHeight - bottomOffset : containerHeight) + "px");
@@ -257,32 +260,58 @@
 		 * selection handlers for search results
 		 */
 		selectNext: function() {
-			var itemsLength = this.$container.children().length;
-			this.selectedIndex = (this.selectedIndex < 0) || (this.selectedIndex + 1 >= itemsLength)
-				? 0
-				: this.selectedIndex + 1;
+			var $container = this.$container;
+			var itemsLength = $container.children().length;
+			if ((this.selectedIndex < 0) || (this.selectedIndex + 1 >= itemsLength)) {
+				// trigger event to select show all...
+				//this.$showAll.addClass("__active");
+			} else {
+				this.selectedIndex += 1;
+			}
+
+			var newItem = $(this.$container.children().get(this.selectedIndex));
+			var outerHeight = newItem.outerHeight();
+			var viewPortBottom = $container.scrollTop() + $container.height();
+			var itemBottom = (1 + this.selectedIndex) * outerHeight;
+
+			if (viewPortBottom <= itemBottom) {
+				$container.scrollTop($container.scrollTop() + outerHeight);
+			}
+
 			this.select();
 		},
 
 		selectPrev: function() {
-			var itemsLength = this.$container.children().length;
+			var $container = this.$container;
+			var itemsLength = $container.children().length;
 			this.selectedIndex  = this.selectedIndex < 0
 				? 0
-				: this.selectedIndex === 0 ? itemsLength - 1 : this.selectedIndex - 1;
+				: this.selectedIndex === 0 ? 0 : this.selectedIndex - 1;
+
+			var newItem = $(this.$container.children().get(this.selectedIndex));
+			var viewPortTop = $container.scrollTop();
+			var outerHeight = newItem.outerHeight();
+
+			var itemTop = (this.selectedIndex) * outerHeight;
+			if (viewPortTop >= itemTop) {
+				$container.scrollTop($container.scrollTop() - outerHeight);
+			}
 			this.select();
 		},
 
 		select: function(index) {
-			var selectionIndex = index ? index : this.selectedIndex;
+			var selectionIndex = this.selectedIndex = index ? index : this.selectedIndex;
 			if (selectionIndex < 0) return;
 
 			var items = this.$container.children();
 			if (!items || !items.length) return;
-
+			var $container = this.$container;
 			var selectedClass = this.config.classes.selected;
 
-			this.$container.children("." + selectedClass).removeClass(selectedClass);
-			$(items.get(selectionIndex)).addClass(selectedClass);
+			setTimeout(function() {
+				$container.children("." + selectedClass).removeClass(selectedClass);
+				$(items.get(selectionIndex)).addClass(selectedClass);
+			}, 1);
 		},
 
 		flushSelection: function() {

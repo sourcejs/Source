@@ -15,7 +15,7 @@ define([
     'sourceModules/parseFileTree',
     'sourceModules/globalNav'
     ], function ($, options, autocomplete, modalBox, parseFileTree, globalNav) {
-    	var json = parseFileTree.getParsedJSON();
+    var json = parseFileTree.getParsedJSON();
 
     //TODO: make localstorage caching
 
@@ -26,6 +26,8 @@ define([
             source_HEADER_FOCUS = 'source_header__focus',
 
             autocompleteData = [],
+
+            searchResultsLabel = "Результаты поиска:",
 
             activated = false;
 
@@ -78,9 +80,9 @@ define([
                 "autoSelectFirst": true,
                 "showAll": function (suggestions) {
                     (new modalBox({
-                        "appendTo": "body"
+                        "appendTo": ".source_main"
                     }, {
-                        "title": "Search results",
+                        "title": searchResultsLabel,
                         "body": wrapSearchResults(suggestions)
                     })).show();
                 }
@@ -94,8 +96,9 @@ define([
         ], function () {
 
             var L_TARGET_FIELD = $('#livesearch');
-
-            if ( $('meta[name=source-page-role]').attr('content') === 'navigation' && options.modulesOptions.search.autoFocusOnNavigationPage ||  options.modulesOptions.search.autoFocus) {
+            var isNavigation = $('meta[name=source-page-role]').attr('content') === 'navigation';
+            var searchOpts = options.modulesOptions.search;
+            if (isNavigation  && searchOpts.autoFocusOnNavigationPage ||  searchOpts.autoFocus) {
                 setTimeout(function() { //First focus fix
                     L_TARGET_FIELD.focus();
                 }, 1);

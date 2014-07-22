@@ -98,14 +98,18 @@ input.source_search_it { /* Cascade for weight */
 	cursor: pointer;
 	}
 
+	.autocomplete-suggestion>a {
+		color: #333;
+		}
+
 .autocomplete-selected {
 	background: #f1f2f3;
 	}
+
 	.autocomplete-selected:before {
 		content: "►";
 		color: #999;
-		position: absolute;
-		left: 8px;
+		margin: 0 6px 0 -18px;
 		}
 
 	.autocomplete-suggestions strong {
@@ -131,6 +135,12 @@ input.source_search_it { /* Cascade for weight */
 		.autocomplete-show-all>a {
 			color: #999;
 			}
+			
+			.autocomplete-show-all>a.__active {
+				color: #fff;
+				text-decoration: underline;
+				cursor: pointer;
+				}
 
 /* /Auto complete plugin */
 
