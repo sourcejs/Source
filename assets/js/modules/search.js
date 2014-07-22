@@ -62,7 +62,7 @@ define([
         };
 
         var wrapSearchResults = function(results) {
-            var list = $("<ul>").addClass("source_catalog_list");
+            var list = $("<ul>").addClass("source_catalog_list").addClass("__search-res");
             $.map(results, function(item) {
                 var specItem = parseFileTree.getCatAll(item.data).specFile;
                 specItem.title = item.value;

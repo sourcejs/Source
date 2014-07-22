@@ -65,6 +65,7 @@
 				"showAll": "autocomplete-show-all"
 			},
 			"containerParent": "body",
+			"containerHeight": 500, // px
 			"showAll": undefined, // e.g. function(data) { <do smth> }
 			"labels": {
 				"showAllButtonText": "Show all"
@@ -91,6 +92,8 @@
 			var $target = this.$target;
 			var $container = this.$container = $('<div>').addClass(config.classes.container);
 			var rootElement = $container;
+			var containerHeight = this.config.containerHeight;
+
 
 			if (typeof(config.showAll) === "function") {
 				var $showAll = this.$showAll = $("<div>")
@@ -112,10 +115,13 @@
 
 			var relocateContainer = function() {
 				var offset = $target.offset();
+				var bottomOffset = 75; // px
+				var wHeight = $(window).height();
 				rootElement.css({
 					"top": (offset.top + $target.outerHeight(true)) + "px",
 					"left": offset.left + "px"
 				});
+				$container.css("max-height", (wHeight < containerHeight ? wHeight - bottomOffset : containerHeight) + "px");
 				var width = $target.outerWidth(true) - 2;
 				rootElement.width(width);
 			};

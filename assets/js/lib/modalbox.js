@@ -21,7 +21,7 @@ ModalBox.prototype.init = function() {
 		"classes": {
 			"box": "source_modal_box",
 			"fade": "source_modal_fade",
-			"title": "source_modal_t",
+			"title": "source_modal_tx",
 			"body": "source_modal_body",
 			"close": "source_modal_close"
 		},
