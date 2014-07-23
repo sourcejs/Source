@@ -62,7 +62,8 @@
 				"selected": "autocomplete-selected",
 				"suggestion": "autocomplete-suggestion",
 				"wrapper": "autocomplete-wrapper",
-				"showAll": "autocomplete-show-all"
+				"showAll": "autocomplete-show-all",
+				"active": "__active"
 			},
 			"containerParent": "body",
 			"containerHeight": 500, // px
@@ -263,11 +264,12 @@
 			var $container = this.$container;
 			var itemsLength = $container.children().length;
 			if ((this.selectedIndex < 0) || (this.selectedIndex + 1 >= itemsLength)) {
-				// trigger event to select show all...
-				//this.$showAll.addClass("__active");
-			} else {
-				this.selectedIndex += 1;
+				this.$showAll.addClass(this.config.classes.active);
+				var selectedClass = this.config.classes.selected;
+				$container.children("." + selectedClass).removeClass(selectedClass);
+				return;
 			}
+			this.selectedIndex += 1;
 
 			var newItem = $(this.$container.children().get(this.selectedIndex));
 			var outerHeight = newItem.outerHeight();
@@ -284,10 +286,11 @@
 		selectPrev: function() {
 			var $container = this.$container;
 			var itemsLength = $container.children().length;
-			this.selectedIndex  = this.selectedIndex < 0
-				? 0
-				: this.selectedIndex === 0 ? 0 : this.selectedIndex - 1;
-
+			if (!this.$showAll.hasClass(this.config.classes.active)) {
+				this.selectedIndex  = this.selectedIndex < 0
+					? 0
+					: this.selectedIndex === 0 ? 0 : this.selectedIndex - 1;
+			}
 			var newItem = $(this.$container.children().get(this.selectedIndex));
 			var viewPortTop = $container.scrollTop();
 			var outerHeight = newItem.outerHeight();
@@ -300,7 +303,8 @@
 		},
 
 		select: function(index) {
-			var selectionIndex = this.selectedIndex = index ? index : this.selectedIndex;
+			this.$showAll.removeClass(this.config.classes.active);
+			var selectionIndex = this.selectedIndex = index >= 0 ? index : this.selectedIndex;
 			if (selectionIndex < 0) return;
 
 			var items = this.$container.children();
@@ -387,6 +391,11 @@
 		"onKeyUp": function(e) {
 			e = e || event; // to make a deal with IE
 			if (~$.inArray(keys.RETURN, this.keyMap)) {
+				if (this.$showAll.hasClass(this.config.classes.active)) {
+					this.$showAll.trigger("click");
+					this.flush();
+					return;
+				}
 				var isModifierPressed = ~$.inArray(keys.CTRL, this.keyMap) || ~$.inArray(keys.CMD, this.keyMap);
 				this.openSelected(isModifierPressed);
 			}
