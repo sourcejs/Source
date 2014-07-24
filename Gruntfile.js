@@ -97,18 +97,19 @@ module.exports = function(grunt) {
                     nospawn: true
                 }
             }
-        }
+        },
     });
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
-            grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' ||
-            grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod'
+            grunt.file.exists('build/last-run') &&
+            (grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' || grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod')
             ) {
 
             grunt.task.run('clean:build')
+        } else {
+            console.log('Skipping clean build dir');
         }
-
     });
 
     grunt.registerTask('last-prod', 'Tag build: prod', function(){
