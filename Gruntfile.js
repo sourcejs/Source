@@ -97,7 +97,7 @@ module.exports = function(grunt) {
                     nospawn: true
                 }
             }
-        },
+        }
     });
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
