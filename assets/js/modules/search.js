@@ -45,13 +45,13 @@ define([
                 var keywords = targetPage.keywords,
                     keywordsPageName = page, //get cat name
                     prepareKeywords = '',
-					rootFolder = page.split('/'),
+                    rootFolder = page.split('/'),
                     autocompleteValue = targetPage.title,
                     pclass = targetPage.pclass;
 
-				if ( (json[rootFolder[ 1 ]] !== undefined) && (json[rootFolder[ 1 ]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
-					keywordsPageName = json[rootFolder[1]]['specFile'].title + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
-				}
+                if ( (json[rootFolder[ 1 ]] !== undefined) && (json[rootFolder[ 1 ]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
+                    keywordsPageName = json[rootFolder[1]]['specFile'].title + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
+                }
 
                 if ((keywords !== undefined) && (keywords != '')) {
                     prepareKeywords += ', ' + keywords;
