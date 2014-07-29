@@ -1,4 +1,4 @@
-# SourceJS - IME for front-end components documentation and maintenance
+# SourceJS - Living Style Guide on Steroids
 
 **v.0.4.0**
 
@@ -25,12 +25,13 @@ ___
 ## Upcoming updates
 
 * Content API
-* Integrations with BEM and other popupar ecosystems
-* Stable plugin system
-* Open project blog with news, updates and best practises
+* Stable plugin system and file organization refactoring
+* Yeoman generators for setup and spec creation
+* Middleware support with fully supported `.src` spec templates
 * Markdown support in spec pages
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
+* Integrations with BEM and other popular ecosystems
 
 ___
 
