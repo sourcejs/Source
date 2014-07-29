@@ -1,6 +1,6 @@
 <h1>Plugins</h1>
 
-<div class="source_catalog" data-nav="plugins">
+<div class="source_catalog" data-nav="/docs/plugins">
 
     <ul class="source_catalog_list">
         <!--Navigation is filed automaticaly-->

@@ -94,7 +94,7 @@ function fileTree(dir) {
             var page = {};
 
             if (fs.existsSync(dir+'/'+INFO_FILE)) {
-                    var fileJSON = require("../../"+dir+"/"+INFO_FILE);
+                var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+INFO_FILE, "utf8"));
 
                 var lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.'),
                     lastmodSec = Date.parse(fileStats.mtime),

@@ -1,4 +1,6 @@
-# Source - Front-end documentation engine
+# SourceJS - Living Style Guide on Steroids
+
+[![Gitter chat](https://badges.gitter.im/sourcejs.png)](https://gitter.im/sourcejs)
 
 **v0.3.2** ([v0.4 dev](https://github.com/sourcejs/Source/tree/v.0.4.0))
 
@@ -25,12 +27,13 @@ ___
 ## Upcoming updates
 
 * Content API
-* Integrations with BEM and other popupar ecosystems
-* Stable plugin system
-* Open project blog with news, updates and best practises
+* Stable plugin system and file organization refactoring
+* Yeoman generators for setup and spec creation
+* Middleware support with fully supported `.src` spec templates
 * Markdown support in spec pages
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
+* Integrations with BEM and other popular ecosystems
 
 ___
 
