@@ -201,7 +201,7 @@ module.exports = function(grunt) {
 
         'less:main',
         'newer:cssmin:build',
-        'newer:cssmin:usets',
+        'newer:cssmin:user',
         'resolve-js-bundles',
         'newer:copy:js',
         'newer:uglify:main',
