@@ -1,5 +1,5 @@
 define([
-    "source/options",
+    "source/load-options",
     "sourceModules/browser"
     ], function(options) {
 

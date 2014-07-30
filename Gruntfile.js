@@ -1,3 +1,7 @@
+var path = require('path');
+var loadOptions = require('./core/loadOptions');
+var pathToApp = path.resolve('./');
+
 module.exports = function(grunt) {
     // load all grunt tasks matching the `grunt-*` pattern
     require('load-grunt-tasks')(grunt);
@@ -5,11 +9,10 @@ module.exports = function(grunt) {
     // measuring processing time
     require('time-grunt')(grunt);
 
-    // Tasks
     grunt.initConfig({
-        // load options from file
-        options: require('./core/options'),
-        pathToUser: '<%= options.common.pathToUser %>',
+        options: loadOptions(pathToApp),
+
+        pathToUser: '<%= options.core.common.pathToUser %>',
 
         banner:'/*!\n' +
                 '* SourceJS - IME for front-end components documentation and maintenance.\n' +
@@ -24,17 +27,28 @@ module.exports = function(grunt) {
             ]
         },
 
+        copy: {
+            js: {
+                expand: true,
+                dest: 'build',
+                src: [
+                    'assets/js/**/*.js',
+                    '<%= pathToUser %>/assets/js/**/*.js',
+                    '!assets/js/**/_*.js',
+                    '!<%= pathToUser %>/assets/js/**/_*.js'
+                ]
+            }
+        },
+
         uglify: {
             main: {
                 options: {
                     preserveComments: 'some'
                 },
                 expand: true,
-                dest: 'build',
+                dest: './',
                 src: [
-                    'assets/**/*.js',
-                    '<%= pathToUser %>/assets/**/*.js',
-                    '!assets/test/**/*.js'
+                    'build/**/*.js'
                 ]
             }
         },
@@ -63,18 +77,17 @@ module.exports = function(grunt) {
             }
         },
 
-        htmlcompressor: {
+        htmlmin: {
             main: {
                 options: {
-                    type: 'html',
-                    preserveServerScript: true
+                    removeComments: true,
+                    collapseWhitespace: true
                 },
                 expand: true,
                 dest: 'build',
                 src: [
-                    'assets/**/*.html',
-                    '<%= pathToUser %>/assets/**/*.html',
-                    '!assets/test/**/*.html'
+                    'assets/templates/**/*.html',
+                    '<%= pathToUser %>/assets/templates/**/*.html'
                 ]
             }
         },
@@ -88,17 +101,33 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            main: {
+            css: {
                 files: [
-                    'assets/css/**/*.{less}'
+                    'assets/css/**/*.less'
                 ],
                 tasks: ['less'],
+                options: {
+                    nospawn: true
+                }
+            },
+            js: {
+                files: [
+                    'assets/js/**/*.js'
+                ],
+                tasks: ['resolve-js-bundles'],
                 options: {
                     nospawn: true
                 }
             }
         },
     });
+
+
+    /*
+    *
+    * Сustom tasks
+    *
+    * */
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
@@ -112,6 +141,43 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('resolve-js-bundles', 'Resolving JS imports in _**.bundle.js', function(){
+        var gruntOpts = grunt.config.get('options');
+
+        // Setting custom delimiters for grunt.template
+        grunt.template.addDelimiters('customBundleDelimiter', '"{%', '%}"');
+
+        var files = grunt.file.expand([
+            'assets/js/**/_*.bundle.js',
+            '<%= pathToUser %>/assets/js/**/_*.bundle.js'
+        ]);
+
+        files.map(function(pathToFile){
+            // **/_*.bundle.js -> build/**/*bundle.js
+            var outputName = path.basename(pathToFile).replace(/^\_/, "");
+
+            var outputDir = path.dirname(pathToFile);
+            var outputFullPath = path.join('build', outputDir, outputName);
+
+            grunt.file.write(
+                outputFullPath,
+                grunt.template.process(grunt.file.read(pathToFile), {
+                    delimiters: 'customBundleDelimiter',
+                    data: {
+                        npmPluginsEnabled: JSON.stringify(gruntOpts.assets.npmPluginsEnabled, null, 4)
+                    }
+                })
+            );
+            grunt.log.ok('Writing to '+outputFullPath);
+        });
+    });
+
+    /*
+    *
+    * Build tasks
+    *
+    * */
+
     grunt.registerTask('last-prod', 'Tag build: prod', function(){
         grunt.file.write('build/last-run', 'prod');
     });
@@ -122,27 +188,29 @@ module.exports = function(grunt) {
 
     // Regular development update task
     grunt.registerTask('update', [
+        'clean-build:dts',
+        'resolve-js-bundles',
         'less:main',
         'last-dev'
     ]);
+    grunt.registerTask('default', ['update']);
 
     // Prod build, path to minified resources is routed by nodejs server
     grunt.registerTask('build', [
         'clean-build:prod',
+
         'less:main',
         'newer:cssmin:build',
-        'newer:cssmin:user',
+        'newer:cssmin:usets',
+        'resolve-js-bundles',
+        'newer:copy:js',
         'newer:uglify:main',
-        'newer:htmlcompressor:main',
+
+        'newer:htmlmin:main',
         'last-prod'
     ]);
 
-    grunt.registerTask('default', [
-        'clean-build:dev',
-        'update',
-        'last-dev'
-    ]);
-
-    grunt.registerTask('watch-css', ['update','watch']);
+    grunt.registerTask('watch-css', ['update','watch:css']);
+    grunt.registerTask('watch-all', ['update','watch']);
 
 };

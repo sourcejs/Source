@@ -3,5 +3,5 @@ require("./redirects.js");
 
 // User custom routes
 try {
-    require(global.app.get('user') + "/user/core/routes");
+    require(global.app.get('user') + "/core/routes");
 } catch(e){}

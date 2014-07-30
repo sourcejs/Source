@@ -1,9 +1,15 @@
+/*
+*
+* Migration script, for creating info.json near spec files
+*
+* */
+
 var fs = require('fs'),
     path = require('path');
     jsdom = require('jsdom');
 
 // sourceMaster root path
-var sourceRoot = '../../public';
+var sourceRoot = path.dirname(require.main.filename) + '/user';
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
 var excludedDirs = ['data','plugins','core','/node_modules','client','.idea','init','temp'];

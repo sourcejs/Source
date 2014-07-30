@@ -1,4 +1,4 @@
-define(["source/options"], function (options) {
+define(["source/load-options"], function (options) {
 
     function Module() {
         this.options = {};

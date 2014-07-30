@@ -4,39 +4,48 @@ define([
 	], function (module, u) {
 
     function ModuleLoader() {
-        this.initModules('module');
-        this.initModules('plugin');
+        this.loadModules('modules');
+        this.loadModules('plugins');
+        this.loadModules('npmPlugins');
     }
 
     /* наследуем от Module */
     ModuleLoader.prototype = module.createInstance();
     ModuleLoader.prototype.constructor = ModuleLoader;
 
-    ModuleLoader.prototype.initModules = function(type){
-        var path, typeEnabled, jsPath;
-        if(type === 'module') {
-            typeEnabled = 'modulesEnabled';
-            path = 'sourceModules/';
-        } else {
-            typeEnabled = 'pluginsEnabled';
-            path = 'plugins/';
+    ModuleLoader.prototype.loadModules = function(type){
+        var path,
+            typeEnabled,
+            optionsBase = this.options;
+
+        // Override options with exceptions
+        var isNav = $('meta[name=source-page-role]').attr('content') === 'navigation';
+        if (isNav) {
+            optionsBase = this.options.navPageModulesBuild;
         }
 
-        for(var item in this.options[typeEnabled]){
-			var targetObj = this.options[typeEnabled][item];
+        if(type === 'modules') {
+            typeEnabled = 'modulesEnabled';
+            path = 'sourceModules/';
+        } else if (type === 'plugins') {
+            typeEnabled = 'pluginsEnabled';
+            path = 'plugins/';
+        } else if (type === 'npmPlugins') {
+            typeEnabled = 'npmPluginsEnabled';
+            path = '';
+        } else {
+            console.log('Invalid loadModules argument');
 
-			if (item === 'custom' && u.isArray(targetObj) ) {
-				targetObj.forEach(function(item){
-					require([item]);
-				});
-			} else if (targetObj){
-                jsPath = item;
+            return;
+        }
 
-                if(type === 'plugin') {
-                    jsPath += '/js/' + item;
+        if (typeof optionsBase[typeEnabled] !== 'undefined'){
+            for(var item in optionsBase[typeEnabled]){
+                var targetObj = optionsBase[typeEnabled][item];
+
+                if (targetObj){
+                    require([path + item]);
                 }
-
-                require([path + jsPath]);
             }
         }
     };

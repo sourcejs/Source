@@ -1,21 +1,12 @@
-define(["source/options"], function(options) {
-    function Css (url,path) {
+define(["source/load-options"], function(options) {
+    function Css (url) {
         this.url = url;
-        this.plainPath = path;
-
-        this.path = this.plainPath || options.pluginsDir;
-        this.npmPath = options.npmPluginsDir;
 
         this.load();
     }
 
     Css.prototype.load = function(){
-		var href = this.path + this.url;
-
-		//Migrating to new plugins directory
-		if (typeof this.plainPath === 'undefined' && (/^sourcejs-/).test(this.url) ) {
-			href = this.npmPath + this.url;
-		}
+		var href = this.url;
 
 		var link = document.createElement("link");
 

@@ -8,7 +8,7 @@
 
 define([
     "jquery",
-    "source/options",
+    "source/load-options",
     "sourceModules/utils",
     "sourceModules/browser",
     "sourceModules/sections",

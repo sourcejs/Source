@@ -4,32 +4,32 @@ var fs = require('fs'),
     path = require('path');
 
     // sourceMaster root path
-    var sourceRoot = global.opts.common.pathToUser,
-        rootLength = global.opts.common.pathToUser.length;
+    var sourceRoot = global.opts.core.common.pathToUser,
+        rootLength = global.opts.core.common.pathToUser.length;
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-var excludedDirs = global.opts.fileTree.excludedDirs;
+var excludedDirs = global.opts.core.fileTree.excludedDirs;
 
 // File mask for search
-var fileMask = global.opts.fileTree.fileMask; //Arr
+var fileMask = global.opts.core.fileTree.fileMask; //Arr
 
 // files from parser get info
 var INFO_FILE = "info.json";
 
 // path to output file to write parsed data in json format
-var OUTPUT_FILE = global.opts.fileTree.outputFile;
+var OUTPUT_FILE = global.opts.core.fileTree.outputFile;
 
 // for waiting when function finished
 var NOT_EXEC = true;
 
 // configuration for function timeout
-var CRON = global.opts.fileTree.cron;
-var CRON_PROD = global.opts.fileTree.cronProd;
-var CRON_REPEAT_TIME = global.opts.fileTree.cronRepeatTime;
+var CRON = global.opts.core.fileTree.cron;
+var CRON_PROD = global.opts.core.fileTree.cronProd;
+var CRON_REPEAT_TIME = global.opts.core.fileTree.cronRepeatTime;
 
 // spec dependencies variables
-var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.specDependenciesTree.outputFile;
-var includedDirs = global.opts.specDependenciesTree.includedDirs || [];
+var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.core.specDependenciesTree.outputFile;
+var includedDirs = global.opts.core.specDependenciesTree.includedDirs || [];
 
 // formatting RegExp for parser
 var dirsForRegExp = '';
@@ -148,7 +148,7 @@ var GlobalWrite = function() {
         if (err) {
             console.log(err);
         } else {
-            console.log("Pages tree JSON saved to " + global.opts.common.pathToUser+"/"+OUTPUT_FILE);
+            console.log("Pages tree JSON saved to " + global.opts.core.common.pathToUser+"/"+OUTPUT_FILE);
             NOT_EXEC=true;
         }
     });
@@ -160,7 +160,7 @@ var SpecDependenciesWrite = function() {
         if (err) {
             console.log(err);
         } else {
-            console.log("Spec dependencies JSON saved to " + global.opts.common.pathToUser+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
+            console.log("Spec dependencies JSON saved to " + global.opts.core.common.pathToUser+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
         }
     });
 };

@@ -10,9 +10,7 @@ var
 
 
 // custom vars & local dependencies
-var
-	opts = require('../options'),
-	publicPath = opts.common.pathToUser;
+var publicPath = global.opts.core.common.pathToUser;
 
 
 module.exports = function reply(req, res, next) {

@@ -9,7 +9,7 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 
 define([
     'jquery',
-    'source/options',
+    'source/load-options',
     'sourceLib/jquery.autocomplete',
     'sourceModules/parseFileTree'
     ], function ($, options, autocomplete, parseFileTree) {

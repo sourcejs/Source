@@ -4,7 +4,7 @@
  * Time: 14:33
  */
 
-define(['sourceModules/module', 'source/options'], function (module, options) {
+define(['sourceModules/module', 'source/load-options'], function (module, options) {
 
     return describe('Base module - module.js', function () {
         var m;

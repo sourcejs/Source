@@ -1,5 +1,5 @@
 define([
-    "source/options"
+    "source/load-options"
     //, other modules
     ], function(options) {
 

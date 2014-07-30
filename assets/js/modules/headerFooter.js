@@ -1,4 +1,4 @@
-define(["source/options"], function(options) {
+define(["source/load-options"], function(options) {
     if(options.modulesEnabled.headerFooter) {
         var headerExists = $(".source_header").length;
         var footerExists = $(".source_footer").length;

@@ -8,7 +8,7 @@ var path = require('path'),
 
 // First, check if there's minified assets
 global.app.use('/source/assets', express.static(pathToApp + '/build/assets'));
-global.app.use('/assets', express.static(pathToApp + '/build/'+ global.opts.common.pathToUser +'/assets'));
+global.app.use('/assets', express.static(pathToApp + '/build/'+ global.opts.core.common.pathToUser +'/assets'));
 
 // Redirecting core client-side file requests to app root paths
 global.app.use('/source/assets', express.static(pathToApp + '/assets'));

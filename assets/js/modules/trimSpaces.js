@@ -7,7 +7,7 @@
 * */
 
 define([
-    "source/options",
+    "source/load-options",
     "sourceModules/codeSource"
     ], function(options) {
 

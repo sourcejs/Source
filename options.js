@@ -1,17 +1,32 @@
-/*
- *
- * Core options
- *
- * */
+// Default options for core and assets
 
-define([
-    'jquery',
-    'js/options',
-    'sourceModules/inlineOptions'
-    ], function($, userOptions, inlineOptions) {
+module.exports = {
 
-    // Settings
-    var sourceOptions = {
+    // Restart app after changing core options
+    core : {
+        common: {
+            pathToUser: 'user',
+            port: 8080,
+            infoFile: 'info.json'
+        },
+        fileTree: {
+            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+            fileMask: ['index.html', 'index.src'],
+            cron: false,
+            cronProd: true,
+            cronRepeatTime: 60000,
+            outputFile: 'data/pages_tree.json'
+        },
+        specDependenciesTree: {
+            outputFile: 'data/spec_dependencies_tree.json'
+        },
+        less: {
+            compress: false
+        }
+    },
+
+    // Run `grunt` after changing assets options. Or use`grunt watch-all`.
+    assets: {
         // Core modules
         modulesEnabled : {
             headerFooter: true,
@@ -42,10 +57,6 @@ define([
             }
         },
 
-        pluginsEnabled: {
-
-        },
-
         // Page classes
         containerClass : 'source_container',
         headerClass : 'source_header',
@@ -56,34 +67,18 @@ define([
 
         colMain : 'source_col-main',
 
-        // Plugins
-        pluginsDir: '/plugins/',
-        npmPluginsDir: '/node_modules/'
-    };
-
-    // Default options for landing page
-    var landingOptionsExceptions = {
-        modulesEnabled : {
-            sectionFolding: false,
-            innerNavigation: false,
-            trimSpaces: false,
-            scrollToHash: false,
-            sections: false,
-            codeSource: false
+        // Landing page options for moduleLoader (override without extend)
+        navPageModulesBuild: {
+            modulesEnabled : {
+                headerFooter: true,
+                specDecorations: true,
+                specAssets: true,
+                globalNav: true,
+                search: true,
+                navHighlight: true
+            },
+            pluginsEnabled: {},
+            npmPluginsEnabled: {}
         }
-    };
-
-    // Override with user options
-    $.extend(true, sourceOptions, userOptions.sourceOptions);
-
-    // Override options with exceptions
-    var isNav = $('meta[name=source-page-role]').attr('content') === 'navigation';
-    if (isNav) {
-        $.extend(true, sourceOptions, landingOptionsExceptions, userOptions.landingOptionsExceptions);
     }
-
-    // Override with from page inline options
-    $.extend(true, sourceOptions, inlineOptions);
-
-    return sourceOptions;
-});
+};

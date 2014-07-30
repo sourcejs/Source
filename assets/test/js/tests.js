@@ -5,21 +5,9 @@
  * */
 
 requirejs.config({
-    baseUrl: "/source/assets/js",
     urlArgs: 'cb=' + Math.random(), /* to avoid caching */
 
     paths: {
-        // /source/assets requests are routed to /assets
-        source: '/source/assets/js',
-        sourceModules: '/source/assets/js/modules',
-        sourceLib: '/source/assets/js/lib',
-        sourceJam: '/source/assets/jam',
-        sourceTemplates: '/source/assets/templates',
-
-        js: "/assets/js",
-        plugins: '/plugins',
-        npmPlugins: '/node_modules',
-
         test: '/test',
         jasmine: '/test/jasmine/jasmine',
         'jasmine-html': '/test/jasmine/jasmine-html'

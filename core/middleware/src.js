@@ -2,7 +2,7 @@ var fs = require('fs'),
     ejs = require('ejs'),
     path = require('path'),
     pathToApp = path.dirname(require.main.filename),
-    getHeaderAndFooter = require(pathToApp + '/core/headerFooter').getHeaderAndFooter;
+    getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 
 var userTemplatesDir = global.app.get('user') + "/core/views/",
     coreTemplatesDir = pathToApp + "/core/views/";
@@ -13,7 +13,7 @@ var handleRequest = function(req, res, next) {
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
     var extension = path.extname(physicalPath); // extension of a requested file
-    var infoJson = directory + '/' + global.opts.common.infoFile;
+    var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
     if (extension == ".src") {
         fs.exists(physicalPath, function(exists) {

@@ -8,7 +8,7 @@
 
 define([
     "jquery",
-    "source/options",
+    "source/load-options",
     "sourceModules/utils",
     "sourceModules/css",
     "sourceModules/browser",
@@ -118,7 +118,7 @@ define([
 
             //Code show toggle on each code block
             var prepareCodeBlocks = function() {
-                new css('prism/prism.css','/source/assets/js/lib/');
+                new css('/source/assets/js/lib/prism/prism.css');
                 var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
                     var _this = $(this)
