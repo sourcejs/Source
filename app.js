@@ -76,6 +76,11 @@ global.app.use(function(req, res, next){
     next();
 });
 
+// *.src content
+var src = require("./core/middleware/src");
+global.app.use(src.handleIndex);
+global.app.use(src.process);
+
 /* /Middlewares */
 
 
@@ -98,12 +103,6 @@ try {
 
 
 /* Serving content */
-
-// *.src content
-var src = require("./core/middleware/src");
-global.app.use(src.handleIndex);
-global.app.use(src.process);
-
 
 // Static content
 global.app.use(express.static(global.app.get('user')));

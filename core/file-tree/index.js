@@ -1,14 +1,13 @@
-var fs = require('fs'),
-    extend = require('extend'),
-    deepExtend = require('deep-extend'),
-    path = require('path');
-
-    // sourceMaster root path
-    var sourceRoot = global.opts.core.common.pathToUser,
-        rootLength = global.opts.core.common.pathToUser.length;
+var fs = require('fs');
+var extend = require('extend');
+var deepExtend = require('deep-extend');
+var path = require('path');
+var sourceRoot = global.opts.core.common.pathToUser;
+var rootLength = global.opts.core.common.pathToUser.length;
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
 var excludedDirs = global.opts.core.fileTree.excludedDirs;
+var includedDirs = global.opts.core.fileTree.includedDirs;
 
 // File mask for search
 var fileMask = global.opts.core.fileTree.fileMask; //Arr
@@ -29,7 +28,7 @@ var CRON_REPEAT_TIME = global.opts.core.fileTree.cronRepeatTime;
 
 // spec dependencies variables
 var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.core.specDependenciesTree.outputFile;
-var includedDirs = global.opts.core.specDependenciesTree.includedDirs || [];
+var specDepsIncludedDirs = global.opts.core.specDependenciesTree.includedDirs || [];
 
 // formatting RegExp for parser
 var dirsForRegExp = '';
@@ -56,17 +55,30 @@ var isSpec = function(file) {
     return response;
 };
 
+
 var fileTree = function(dir) {
     var outputJSON = {},
         dirContent = fs.readdirSync(dir);
 
-    dirContent.forEach(function(file) {
-        var targetFile = file;
+    // Adding paths to files in array
+    for (var i=0; dirContent.length > i ;i++) {
+        dirContent[i] = path.join(dir, dirContent[i]);
+    }
 
+    //on first call we add includedDirs
+    if (dir === sourceRoot){
+        includedDirs.map(function(includedDir){
+            dirContent.push(includedDir)
+        });
+    }
+
+    dirContent.forEach(function(pathToFile) {
+        // Path is excluded
         if (excludes.test(dir)) {return}
 
-        var urlToFile = dir + '/' + targetFile,
-            baseName = path.basename(dir);
+        var targetFile = path.basename(pathToFile);
+        var urlToFile = pathToFile;
+        var baseName = path.basename(dir);
 
         urlToFile = path.normalize(urlToFile).replace(/\\/g, '/');
         var urlFromHostRoot = urlToFile.replace('../','/');
@@ -87,7 +99,15 @@ var fileTree = function(dir) {
         } else if (isSpec(targetFile)) {
             var page = {};
 
-            var urlForJson = urlFromHostRoot.substring(rootLength, urlFromHostRoot.length);
+            // If starts with root
+            if (urlFromHostRoot.lastIndexOf(sourceRoot, 0) === 0) {
+                // Clean of from path
+                var urlForJson = urlFromHostRoot.replace(sourceRoot, '');
+            } else {
+                // Making path absolute
+                var urlForJson = '/' + urlFromHostRoot;
+            }
+
             //Removing filename from path
             urlForJson = urlForJson.split('/');
             urlForJson.pop();
@@ -120,7 +140,7 @@ var specDependenciesTree = function(dir) {
     var outputJSON = {},
         specsDirs = {};
 
-    includedDirs.forEach(function(includedDir) {
+    specDepsIncludedDirs.forEach(function(includedDir) {
         specsDirs = fs.readdirSync(dir + '/' + includedDir);
 
         specsDirs.forEach(function(specDir) {

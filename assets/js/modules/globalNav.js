@@ -15,6 +15,8 @@ define([
         var _this = this;
 
         this.options.modulesOptions.globalNav = $.extend(true, {
+            filterEnabled: true,
+
             CATALOG : 'source_catalog',
             CATALOG_LIST : 'source_catalog_list',
             CATALOG_LIST_I : 'source_catalog_list_i',
@@ -53,7 +55,10 @@ define([
     GlobalNav.prototype.init = function () {
         this.drawNavigation();
         this.hideImgWithError();
-        this.initCatalogFilter();
+
+        if (this.options.modulesOptions.globalNav.filterEnabled){
+            this.initCatalogFilter();
+        }
     };
 
     //Drawing navigation and page info in each catalog defined on page
@@ -150,7 +155,7 @@ define([
 
 				if (typeof catObj === 'object' && !specifCatAndDirDefined) {
 
-					if ( (!sourceCat.find('.source_catalog_title').length) && (catObj.title !== undefined) ) {
+					if (  (catObj.title !== undefined) && (!sourceCat.find('.source_catalog_title').length)) {
 						sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>')
 					}
 

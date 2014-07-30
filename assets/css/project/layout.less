@@ -87,12 +87,22 @@
 
 .source_subhead {
     position: relative;
-    height: 100px;
+    min-height: 65px;
     margin: -35px -100% 20px;
-    padding-left: 100%;
-    padding-right: 100%;
+    padding: 0 100%;
 
     background-color: #f2f2f2;
+
+    // Clearfix
+    &:before,
+    &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+        }
+
+    &:after {
+        clear: both;
+        }
     }
 
 .source_main_descr > ul,

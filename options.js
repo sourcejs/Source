@@ -10,6 +10,7 @@ module.exports = {
             infoFile: 'info.json'
         },
         fileTree: {
+            includedDirs: ['docs'],
             excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
             fileMask: ['index.html', 'index.src'],
             cron: false,
@@ -44,6 +45,10 @@ module.exports = {
         },
 
         modulesOptions : {
+            globalNav: {
+                filterEnabled: false
+            },
+
             innerNavigation : {
                 hashSymb: '!'
             },

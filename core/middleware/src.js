@@ -10,6 +10,11 @@ var userTemplatesDir = global.app.get('user') + "/core/views/",
 var handleRequest = function(req, res, next) {
     var physicalPath = global.app.get('user') + req.url; // get the physical path of a requested file
 
+    // TODO: move to config with array of exclusions
+    if (req.url.lastIndexOf('/docs/', 0) === 0) {
+        physicalPath = pathToApp + req.url;
+    }
+
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
     var extension = path.extname(physicalPath); // extension of a requested file
