@@ -2,7 +2,7 @@
 ---------------------------------------------------------------------------------- */
 
 .source_section .source_catalog {
-    padding:10px 20px;
+    padding: 0 20px 20px;
     border:1px solid #dfe2e4;
     border-radius:10px;
     }
@@ -39,6 +39,14 @@
         }
     }
 
+.source_catalog_a:hover {
+    text-decoration: none !important;
+
+    .source_catalog_title {
+        color: #fff;
+        }
+    }
+
 .source_catalog_tx {
 	min-height: 36px; /* 2 lines */
 	margin: 0 0 20px;
@@ -61,8 +69,12 @@
 	width: 30%;
 	margin-right: 3%;
 	display: inline-block;
-	vertical-align: baseline;
+	vertical-align: top;
 	}
+
+.source_catalog.__show-preview .source_catalog_list_i {
+    vertical-align: baseline;
+    }
 
 @media (min-width: 1200px) {
     .source_catalog_list_i {
@@ -75,6 +87,10 @@
     width: 100%;
     display: block;
     }
+
+.source_section .source_catalog_list_i {
+    width: 47% !important;
+  }
 
 .source_catalog_a {
 	position: relative;

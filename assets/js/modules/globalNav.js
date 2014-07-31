@@ -16,6 +16,8 @@ define([
 
         this.options.modulesOptions.globalNav = $.extend(true, {
             filterEnabled: true,
+            showPreviews: false,
+            sortBy: 'date',
 
             CATALOG : 'source_catalog',
             CATALOG_LIST : 'source_catalog_list',
@@ -316,12 +318,11 @@ define([
         var CATALOG = this.options.modulesOptions.globalNav.CATALOG,
             CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER,
             CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            showPreviews = this.options.modulesOptions.globalNav.previews,
 
-            initPreviewValue = localStorage.getItem( 'source_showPreviews') || localStorage.setItem( 'source_showPreviews', 'false'),
-
-            $catalog = $('.' + CATALOG);
-
-        var $filter = $('.' + CATALOG_FILTER);
+            initPreviewValue = localStorage.getItem( 'source_showPreviews') || showPreviews,
+            $catalog = $('.' + CATALOG),
+            $filter = $('.' + CATALOG_FILTER);
 
         if (initPreviewValue == 'true') { // initPreviewValue is string, not boolean
             $catalog.addClass('__show-preview');
@@ -383,9 +384,10 @@ define([
 
     GlobalNav.prototype.drawSortFilters = function() {
         var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            defaultSort = this.options.modulesOptions.globalNav.sortType,
 
             $filterWrapper = $('.' + CATALOG_FILTER_CLASS),
-            enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":"sortByDate","sortDirection":"forward"},
+            enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":defaultSort,"sortDirection":"forward"},
 
             nav = '<ul class="source_sort-list">' +
                 '<li class="source_sort-list_li">Sort by&nbsp;</li>' +
