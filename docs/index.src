@@ -2,7 +2,7 @@
     <h1>Documentation and Examples</h1>
 </div>
 
-<div class="source_catalog" data-nav="/docs">
+<div class="source_catalog" data-nav="/docs" data-status-filter="true">
     <h2 class="source_catalog_title"></h2>
 
     <ul class="source_catalog_list">

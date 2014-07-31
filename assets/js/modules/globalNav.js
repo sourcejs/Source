@@ -16,6 +16,7 @@ define([
 
         this.options.modulesOptions.globalNav = $.extend(true, {
             filterEnabled: true,
+            previewEnabledOnProd: true,
 
             CATALOG : 'source_catalog',
             CATALOG_LIST : 'source_catalog_list',
@@ -316,12 +317,23 @@ define([
         var CATALOG = this.options.modulesOptions.globalNav.CATALOG,
             CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER,
             CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+            previewEnabledOnProd = this.options.modulesOptions.globalNav.previewEnabledOnProd,
 
-            initPreviewValue = localStorage.getItem( 'source_showPreviews') || localStorage.setItem( 'source_showPreviews', 'false'),
+            initPreviewValue = localStorage.getItem( 'source_showPreviews') || '',
+            $catalog = $('.' + CATALOG),
+            $filter = $('.' + CATALOG_FILTER);
 
-            $catalog = $('.' + CATALOG);
-
-        var $filter = $('.' + CATALOG_FILTER);
+        //if first visit
+        if (initPreviewValue == '') {
+            //enable preview by default if production
+            if (!utils.isDevelopmentMode() && previewEnabledOnProd) {
+                localStorage.setItem( 'source_showPreviews', 'true');
+                initPreviewValue = 'true';
+            } else {
+                localStorage.setItem( 'source_showPreviews', 'false');
+                initPreviewValue = 'false';
+            }
+        }
 
         if (initPreviewValue == 'true') { // initPreviewValue is string, not boolean
             $catalog.addClass('__show-preview');

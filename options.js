@@ -18,9 +18,6 @@ module.exports = {
             cronRepeatTime: 60000,
             outputFile: 'data/pages_tree.json'
         },
-        specDependenciesTree: {
-            outputFile: 'data/spec_dependencies_tree.json'
-        },
         less: {
             compress: false
         }
@@ -46,7 +43,8 @@ module.exports = {
 
         modulesOptions : {
             globalNav: {
-                filterEnabled: false
+                filterEnabled: true,
+                previewEnabledOnProd: true
             },
 
             innerNavigation : {
