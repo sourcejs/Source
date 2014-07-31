@@ -1,0 +1,120 @@
+<!-- Custom -->
+<style>
+    .emph { color: #67A9D4 }
+</style>
+
+<h1>Clarify</h1>
+
+<div class="source_warn">
+    <p>Not supports <code>*.src</code> files, till 0.4 stable.</p>
+</div>
+
+<section class="source_section">
+    <h2>What?</h2>
+
+    <p>Plugin for doumentation engine "Source", that allow to cut
+        chosen code blocks in separate page with predefined context.
+        (as example: environment for mobile devices). New context you
+        may create using Jade or made new one.
+    </p>
+
+    <h3>..should I do to make it work?</h3>
+    <p>Clarify works "from box", its uses Jsdom for cutting code,
+        but keep in mind that you may use builded-in PhantomJS if
+        you need cut specs rendered by client-side templating
+        and by default in repo it's prepared for Linux. For Mac or
+        PC <a href="http://phantomjs.org/download.html">Download</a>
+        or <a href="http://phantomjs.org/build.html">build</a> suitable
+        one.
+    </p>
+
+    <h3>..we're using behind?</h3>
+    <ul>
+        <li><a href="http://nodejs.org">Nodejs</a> - back-end;
+        <li><a href="http://jade-lang.com/">Jade</a> - template engine;
+        <li><a href="http://phantomjs.org/">PhantomJS</a> - Webkit engine to parse page;
+        <li><a href="https://npmjs.org/package/jsdom">Jsdom</a> - nodejs npm module to work with page DOM;
+    </ul>
+
+</section>
+
+<section class="source_section">
+    <h2>How?</h2>
+
+    <h3>..it can be used</h3>
+
+    <p>To clarify code block you interested in from noise of bunch
+        information you should do request with following pattern: <br>
+    <b>http://
+        <span class="emph">source.org</span>
+       /.../
+        <span class="emph">index.html
+        </span>?get=<span class="emph">mob</span>&id=<span
+            class="emph">1,2</span></b> <br>
+       , where: <br>
+    </p>
+    <ul>
+        <li><span class="emph">source.org</span> - hostname/localhost;
+        <li><span class="emph">index.html</span> - used to match specs nor navigation;
+        <li><span class="emph">mob</span> - predefined context for mobile devices;
+        <li><span class="emph">1,2</span> - this is .source_example bocks, counting by order from 1, may be written in custom order, accordingly to blocks need to cut from main specs;
+    </ul>
+
+    <a class="source_a_hl" href="/docs/spec/index.html?get=mob&id=1">Check this example from Spec documentation first block.</a>
+
+    <h3>..little more options</h3>
+
+    <p>With last update Clarify include Jsdom module, it provide more fast spec clarification, but hasnt work with client template engines yet.</p>
+
+    <p>Added new context value (in a fact new template)</p>
+
+    <ul>
+        <li>?get=<span class="emph">clr</span></li> {String}    new context template, absolutely clear page;
+    </ul>
+
+    <p>Надстрйоки:</p>
+    <ul>
+        <li>?ph=<span class="emph">false</span></li> {Boolean}   use PhantomJS engine (default: false)
+        <li>?wrap=<span class="emph">true</span></li> {Boolean}    use .source_example wrapper  (default: true)
+    </ul>
+
+    <h3>..it solve problems</h3>
+
+    <p>
+        <b>Problem:</b> script works when catch index.html in URL bar and this helps him to understnd that it is start to work;<br>
+        <b>Answer:</b> Check your URL for index.html before request parameters.
+    </p>
+    <p>
+        <b>P: </b>As result you get empty HTML page<br>
+        <b>A1: </b>Page which you try to render by Clarify is used template engine and it hasn't enough time to parse page, before Clarify make work done. Fix it by changing timeout in clarify/phantom/ph.js file</p><br>
+        <b>A2: </b>You miss change proper PhantomJS version for your platform.
+</section>
+
+<section class="source_section">
+   <h2>Why?</h2>
+   <h3>..it may be useful for you</h3>
+
+    <p>
+        а) testing specs on mobile devices; <br>
+        б) testing on old browsers;
+    </p>
+
+
+    <h3>..also it may be good fro you</h3>
+    <p>а) make fullscreen specs in Source and easy test in single page;<br>
+       б) check how work you page in unobtrusive javascript mode;<br>
+       в) verify the same layout in as many context as you wish;<br>
+       г) responsive layout testing;
+    </p>
+
+</section>
+
+<section class="source_section">
+
+   <h2>Translations</h2>
+
+   <ul>
+       <li><a href="ru">Русская версия</a></li>
+   </ul>
+
+</section>

@@ -1,0 +1,23 @@
+﻿<h1>Documentation Page</h1>
+
+<div class="source_info">
+    <p>
+        Developer: Name <br>
+        Designer: Name
+    </p>
+
+    <p>Useful information regarding this spec can be left for your team members here.</p>
+</div>
+
+<a class="source_a_hl" href="/docs/spec">Spec Page Documentation</a>
+
+<section class="source_section">
+    <h2>Spec Section Heading</h2>
+
+    <p>Useful notes.</p>
+
+    <div class="source_example">
+        <p>Rendered code examples.</p>
+    </div>
+
+</section>

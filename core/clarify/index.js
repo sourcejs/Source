@@ -1,3 +1,4 @@
+// modules
 var
 	fs = require('fs'),
 	url = require('url'),
@@ -7,9 +8,9 @@ var
 	dom = require('./dom'),
 	jady = require('./jady');
 
-var
-	opts = require('../options'),
-	publicPath = opts.common.pathToSpecs;
+
+// custom vars & local dependencies
+var publicPath = global.opts.core.common.pathToUser;
 
 
 module.exports = function reply(req, res, next) {
@@ -18,34 +19,36 @@ module.exports = function reply(req, res, next) {
 		urlPath = parsedUrl.pathname,
 		urlHost = req.headers.host,
 		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
-		tpl = parsedUrl.query.get,
-		id = parsedUrl.query.id,
-		wrap = parsedUrl.query.wrap || true,
-        phantom = parsedUrl.query.ph || false;
-//debugger;
 
+        q = parsedUrl.query,
+		tpl = q.get,
+		id = q.id,
+		wrap = q.wrap || true,
+        phantom = q.ph || false,
+        nojs = q.nojs || false;
 
-//// if we have query on index.html
-	if (path.basename(parsedUrl.path).indexOf('index.html') != -1 && parsedUrl.query.get) {
-// reading file..
+// check for current navigation position (navigation or file)
+	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
+
+// reading file
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
-            var responseData = data || '';
+            if (err) {
+                res.writeHead(404, {'Content-Type': 'text/plain'});
+                res.end('No such file.\n'+ err);
+                return;
+            }
 
-            if (err) res.end('Huston, we have 404.\n'+ err);
-
-            if (responseData !== '') {
-
-                // make data for template
+// make data for template
                 function reqHandler(res, html) {
                     if (html.source) {
-                        //// переменные для Jade
+// Jade's vars
                         var locals = {
                             head: {
                                 title: html.title,
                                 mAuthor: html.meta.author,
                                 mKeywords: html.meta.keywords,
                                 mDescription: html.meta.description,
-                                scripts: html.scripts,
+                                scripts: (nojs)?  null : html.scripts,
                                 stylesheets: html.styles
                             },
                             body: {
@@ -58,6 +61,7 @@ module.exports = function reply(req, res, next) {
                             pretty: true
                         };
 
+// send headers and close request
                         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
                         res.end(jady(locals, tpl));
 
@@ -65,35 +69,34 @@ module.exports = function reply(req, res, next) {
                 }
 
 
-        // if using PhantomJs
+// if ph == true -> PhantomJS
                 if (phantom) {
 
-                    var params = "core/clarify/phantomjs "+
+                var params = "core/clarify/phantomjs "+
                         "core/clarify/phantom/ph.js "+
                         "http://"+ urlAdress +" "+ id +" "+ wrap;
 
-                    // executes ph.js via phantomjs like separate child process
+// executes ph.js by phantomjs in new child process
                     exec(params, function (err, stdout, stderr) {
-                        if (err) console.log('Exec report error: ' + err);
+                    if (err) res.end('Exec report error:\n ' + err);
                         else {
                             try {
                                 var html = JSON.parse(stdout);
                             } catch(e) {
                                 html = 'Parsing error: ' + e;
                             }
-        // PhantomJS output
+// PhantomJS output
         console.log(html);
-        // got to show some view
+// template render function
                             reqHandler(res, html);
                         }
                     });
 
-                }
-        // jsdom starts
-                else {
-                    jsdom.env(responseData.toString(), function (err, win) {
-        // 	     		jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
-                        if (err) console.log('JSdom report error: ' + err);
+// if ph == false (default) -> jsDom
+            } else {
+                jsdom.env(data.toString(), function (err, win) {
+            //  jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+                    if (err) res.end('JSdom report error:\n ' + err);
                         else {
                             console.log('JSDOM', wrap);
                             var
@@ -114,14 +117,15 @@ module.exports = function reply(req, res, next) {
                             }
         console.log(html);
 
-        // got to show some view
+// template render function
                             reqHandler(res, html);
                         }
                     });
                 }
 
-            }
 		});
+
+// redirect to next express middleware
 	} else next();
 };
 
@@ -136,7 +140,7 @@ module.exports = function reply(req, res, next) {
 // [done] phantomjs -> jsdom
 // [..partial] client-side UI controls to clarify specs
 // [...] support for other template engines
-// * [] Add check for OS, if not Mac, then link to other phantomjs binary, that need to be git ignored and custom description about the lack of it with installation instructions must be provided
+// * [] diffrernt links to phantomjs relative to OS
 // * [] connect custom templates and scripts
 // * [] avoid hardcoded paths
 // * [] use css/js optionally by GET params
@@ -148,4 +152,4 @@ module.exports = function reply(req, res, next) {
 // * [] screenshots by phatnomjs
 // * [] phantomjs: not to close session (improve perfomance?);
 // * [] buttons  to add custom libraries to clarified page (jQuery, require);
-// * [] another context templates [mob, clr, ...]
+// * [in progress..] another context templates [mob, clr, ...]

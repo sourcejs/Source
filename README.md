@@ -2,7 +2,7 @@
 
 [![Gitter chat](https://badges.gitter.im/sourcejs.png)](https://gitter.im/sourcejs)
 
-**v0.3.2** ([v0.4 dev](https://github.com/sourcejs/Source/tree/v.0.4.0))
+**v0.4.0-beta** ([v0.4 dev](https://github.com/sourcejs/Source/tree/v.0.4.0))
 
 **The most powerful tool for documenting web interfaces and building productive team work.**
 
@@ -18,6 +18,7 @@ ___
 ___
 
 ## Updates
+* * 31.07.14. **0.4.0-beta** release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
 * 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool, based on v0.4 API - Design-lego
 * * 31.12.13. **0.3.2** release

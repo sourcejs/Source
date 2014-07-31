@@ -1,21 +1,11 @@
-.*
-*.dat
+*.idea
 *.iml
-tmp
+*.DS_Store
 node_modules
 
-# Build folder fo ftp deploy
+# Build folder for assets
 /build
-
-# Git ignore fo initing
-!/client-side/init/.gitignore
-
-# Custom client-side plugins folder, managed with volo packet manager
-/client-side/plugins
-
-# Custom user folder for Source server side
-/user
 
 # Web server root, and your specs home
 # You can store other repository in this path
-/public
+/user

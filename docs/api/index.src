@@ -1,0 +1,15 @@
+<div class="source_subhead">
+    <h1>[beta] API documentation</h1>
+</div>
+
+<div class="source_catalog" data-nav="/docs/api">
+    <h2 class="source_catalog_title"></h2>
+    <ul class="source_catalog_list">
+        <!--Navigation is filed automaticaly-->
+        <img src="/source/assets/i/process.gif" alt="Loading..."/>
+    </ul>
+</div>
+
+<div class="mt-M">
+    <a href="/docs" class="source_a_hl">Go to engine documentation</a>
+</div>

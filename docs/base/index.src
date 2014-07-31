@@ -1,0 +1,103 @@
+﻿<h1>Basic Engine Documentation</h1>
+
+<div class="source_info">
+    <p>This page (and the rest of the site) is powered by the SourceJS engine. All documentation comes built in in every SourceJS instance.</p>
+
+    <p>The <a href="http://sourcejs.com">Sourcejs.com</a> client-side source code is stored in our <a href="https://github.com/sourcejs/Sourcejs.com">github repo</a>.</p>
+</div>
+
+<section class="source_section">
+    <h2>Quick Start</h2>
+
+    <p>First, install needed dependencies for getting started: <a href="http://help.github.com/articles/set-up-git">Git</a>, <a href="http://nodejs.org/">NodeJS</a>, <a href="http://gruntjs.com/getting-started">Grunt</a> and <a href="http://yeoman.io/">Yeoman</a> generators:</p>
+
+    <code class="src-html source_visible">
+        $ npm install -g yo
+        $ npm install -g generator-sourcejs
+    </code>
+
+    <p>Then init SourceJS with Yeoman and you're ready to start:</p>
+
+    <code class="src-html source_visible">
+        $ mkdir my-source
+        $ cd my-source
+        $ yo sourcejs
+    </code>
+
+    <p>If you're running Windows, and have some issues with <a href="https://github.com/tmpvar/jsdom">jsdom</a> dependencies compilation, check this <a href="https://github.com/sourcejs/Source/issues/23">topic</a>.</p>
+
+    <h3>Run Commands</h3>
+
+    <p>Yeoman generator will suggest you starting SourceJS right after initialization, besides that, here's a run command for main app:</p>
+
+    <code class="src-html source_visible">
+        $ node app
+    </code>
+
+    <p>For first dev build Grunt will run automatically right after Yeoman init, here's a list of <a href="/docs/grunt">all Grunt tasks available</a>.</p>
+
+    <h3>Spec Starting Template</h3>
+
+    <p>The starting template for new <strong>Spec</strong> pages can be found in <a href="/docs/starting">/docs/starting</a>. Copy the contents to a new folder and you'll be ready to write a new spec.</p>
+
+    <a href="/docs/spec" class="source_a_hl">Read more about <strong>Spec</strong> pages here.</a>
+</section>
+
+<section class="source_section">
+    <h2>File Structure</h2>
+
+    <p>Engine architecture is based on <strong>two enviroments:</strong></p>
+
+    <ul>
+        <li><strong>assets</strong> - JavaScript front-end</li>
+        <li><strong>core</strong> - NodeJS back-end</li>
+    </ul>
+</section>
+
+<section class="source_section">
+    <h2>Options</h2>
+
+    <p>All default options for <code>assets</code> and <code>core</code> are located in <code>/options.js</code>. To overwrite basic options, user your own <code>/user/options.js</code> file, from your SourceJS instance home directory.</p>
+
+    <p>Options examples are located in source files.</p>
+
+    <h3>Page level overrides</h3>
+
+    <p>All client-side options can be overridden from within any page using the following approach:</p>
+
+    <code class="src-html source_visible">
+        <script>
+            define('sourceModules/inlineOptions', {
+                modulesOptions : {
+                    globalNav : {
+                        pageLimit: 6
+                    }
+                }
+            })
+        </script>
+    </code>
+
+</section>
+
+<section class="source_section">
+    <h2>Plugins</h2>
+
+    <p>All modules in SourceJS core are configurable and you can add as many plugins as you want. All official public plugins are available in <a href="https://github.com/sourcejs">SourceJS home on Github</a>.</p>
+
+    <p>Plugins could have <code>core</code> and <code>assets</code> parts to improve both back-end and front-end. To install any of official plugin, just use <code>npm install</code> (note that some of them needs additional dependencies like <a href="http://www.mongodb.org/">MongoDB</a> or <a href="http://couchdb.apache.org/">CouchDB</a>).</p>
+
+    <p>Here's few official plugins:</p>
+
+    <ul>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-spec-status">sourcejs-spec-status</a></li>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-crowd-voice">sourcejs-crowd-voice</a></li>
+    </ul>
+
+</section>
+
+<section class="source_section">
+    <h2>Contact us</h2>
+
+    <p>Leave your questions and feedback as <a href="https://github.com/sourcejs/Source/issues">issues</a> on Github.</p>
+
+</section>

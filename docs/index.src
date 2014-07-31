@@ -1,0 +1,12 @@
+<div class="source_subhead">
+    <h1>Documentation and Examples</h1>
+</div>
+
+<div class="source_catalog" data-nav="/docs">
+    <h2 class="source_catalog_title"></h2>
+
+    <ul class="source_catalog_list">
+        <!--Navigation is generated dynamically from value of data-nav attribute-->
+        <img src="/source/assets/i/process.gif" alt="Loading..."/>
+    </ul>
+</div>

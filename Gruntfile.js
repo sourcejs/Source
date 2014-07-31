@@ -1,391 +1,216 @@
 var path = require('path');
+var loadOptions = require('./core/loadOptions');
+var pathToApp = path.resolve('./');
 
 module.exports = function(grunt) {
+    // load all grunt tasks matching the `grunt-*` pattern
+    require('load-grunt-tasks')(grunt);
 
-    var removePathInDest = function(inputPath, destBase, destPath) {
-        // remove some path from destination file path in public dir
+    // measuring processing time
+    require('time-grunt')(grunt);
 
-        // TODO: refactor regex, to get rid off '//' in paths
-        var newPath,
-            regex = '^'+inputPath+'/|\\W'+inputPath+'/';
-
-        newPath = destBase + destPath.replace(new RegExp(regex), '/');
-        newPath = path.normalize(newPath).replace(/\\/g, '/');
-
-        return newPath;
-    };
-
-    var getSourceOptions = function() {
-        var options = require('./core/options');
-
-        return options;
-    };
-
-    // Tasks
     grunt.initConfig({
-        // load options from file
-        options: getSourceOptions(),
-        pathToSpecs: '<%= options.common.pathToSpecs %>',
-        pathToSpecsOnRemote: '<%= options.grunt.remote.pathToDir %>',
-        deployHost: '<%= options.grunt.remote.host %>',
-        deployPort: '<%= options.grunt.remote.port %>',
-        deployKey: '<%= options.grunt.remote.key %>',
+        options: loadOptions(pathToApp),
 
-        banner:'/*\n' +
-                '* Source - Front-end documentation engine\n' +
-                '* @copyright 2013 Sourcejs.com\n' +
+        pathToUser: '<%= options.core.common.pathToUser %>',
+
+        banner:'/*!\n' +
+                '* SourceJS - IME for front-end components documentation and maintenance.\n' +
+                '* @copyright 2014 Sourcejs.com\n' +
                 '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
                 '* */\n',
 
-        filesToWatch:                       [
-                                                'client-side/src/**',
-                                                'client-side/src/**/*'
-                                            ],
-
-        excludedFilesForUpload:             ['**/.DS_Store'],
-
-        // copy all files excluding ignored to project folder
-        copy: {
-            initClient: {
-                files: [
-                    {
-                        src: [
-                            'client-side/init/**',
-                            'client-side/init/.gitignore'
-                        ],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/init',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/src/data/**'],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['License.md'],
-                        dest: '<%= pathToSpecs %>/'
-                    },
-                    {
-                        src: ['_.ftppass'],
-                        dest: '.ftppass'
-                    }
-                ]
-            },
-
-            initServer: {
-                files: [
-                    {
-                        src: [
-                            'init/**'
-                        ],
-                        dest: 'user/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('init',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            main: {
-                files: [
-                    {
-                        src: [
-                            'client-side/src/**'
-                            ],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**','!client-side/plugins/package.json'],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            remote: {
-                files: [
-                    {
-                        src: ['client-side/src/**'],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**','!client-side/plugins/package.json'],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            }
-        },
-
-        // minify all css needed files
-        cssmin: {
-            main: {
-                files: [
-                    {
-                        src: [
-                            'client-side/src/**/*.css',
-                            '!client-side/src/core/css/core.css',
-                            '!client-side/src/data/docs/project.css'
-                        ],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**/*.css'],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            remote: {
-                files: [
-                    {
-                        src: [
-                            'client-side/src/**/*.css',
-                            '!client-side/src/core/css/core.css'
-                        ],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**/*.css'],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            addBanner: {
-                expand: true,
-                options: {
-                    banner: '<%= banner %>'
-                },
-                src: ['client-side/src/core/css/defaults.css'],
-                dest: '<%= pathToSpecs %>/',
-                ext: '.css',
-                rename: function(destBase, destPath) {
-                    return removePathInDest('client-side/src',destBase, destPath);
-                }
-            },
-
-            addRemoteBanner: {
-                expand: true,
-                options: {
-                    banner: '<%= banner %>'
-                },
-                src: ['client-side/src/core/css/defaults.css'],
-                dest: 'build/',
-                ext: '.css',
-                rename: function(destBase, destPath) {
-                    return removePathInDest('client-side/src',destBase, destPath);
-                }
-            }
-        },
-
-        // minify all js files via uglify
-        uglify: {
-
-            // TODO: kill this copypaste
-            main: {
-                files: [
-                    {
-                        src: [
-                            'client-side/src/**/*.js',
-                            '!client-side/src/test/js/**/*.js',
-                            '!client-side/src/test/spec/**/*.js'
-                        ],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**/*.js'],
-                        dest: '<%= pathToSpecs %>/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            remote: {
-                files: [
-                    {
-                        src: [
-                            'client-side/src/**/*.js',
-                            '!client-side/src/test/js/**/*.js',
-                            '!client-side/src/test/spec/**/*.js'
-                        ],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side/src',destBase, destPath);
-                        }
-                    },
-                    {
-                        src: ['client-side/plugins/**/*.js'],
-                        dest: 'build/',
-                        expand: true,
-                        rename: function(destBase, destPath) {
-                            return removePathInDest('client-side',destBase, destPath);
-                        }
-                    }
-                ]
-            },
-
-            addBanner: {
-                options: {
-                        banner: '<%= banner %>\n'
-                    },
-                files: [{
-                    expand: true,
-                    src: 'client-side/src/core/js/*.js',
-                    dest: '<%= pathToSpecs %>/',
-                    rename: function(destBase, destPath) {
-                        return removePathInDest('client-side/src',destBase, destPath);
-                    }
-                }]
-            },
-
-            addRemoteBanner: {
-                options: {
-                        banner: '<%= banner %>\n'
-                    },
-                files: [{
-                    expand: true,
-                    src: 'client-side/src/core/js/*.js',
-                    dest: 'build/',
-                    rename: function(destBase, destPath) {
-                        return removePathInDest('client-side/src',destBase, destPath);
-                    }
-                }]
-            }
-        },
-
-        // deploy to remote all needed file
-        'sftp-deploy': {
-            deploy: {
-                auth: {
-                    host: '<%= deployHost %>',
-                    port: '<%= deployPort %>',
-                    authKey: '<%= deployKey %>'
-                },
-                src: 'build',
-                dest: '<%= pathToSpecsOnRemote %>',
-                exclusions: '<%= excludedFilesForUpload %>'
-            }
-        },
-
         // clean files after build
         clean: {
-            build: {
-                src: ['build/']
-            },
-            all: {
+            build: [
+                'build'
+            ]
+        },
+
+        copy: {
+            js: {
+                expand: true,
+                dest: 'build',
                 src: [
-                    '<%= pathToSpecs %>/client-side'
-                    ]
-            },
-            remote: {
-                src: [
-                    'build/client-side'
-                    ]
-            },
-            initServer: {
-                src: [
-                    'user/init'
-                    ]
+                    'assets/js/**/*.js',
+                    '<%= pathToUser %>/assets/js/**/*.js',
+                    '!assets/js/**/_*.js',
+                    '!<%= pathToUser %>/assets/js/**/_*.js'
+                ]
             }
         },
 
-        watch: {
+        uglify: {
             main: {
-                files: '<%= filesToWatch %>',
-                tasks: ['less:main','copy:main','clean:all'],
                 options: {
-                    nospawn: true
-                }
+                    preserveComments: 'some'
+                },
+                expand: true,
+                dest: './',
+                src: [
+                    'build/**/*.js'
+                ]
+            }
+        },
+
+        cssmin: {
+            user: {
+                options: {
+                    noAdvanced: true
+                },
+                expand: true,
+                dest: 'build',
+                src: [
+                    '<%= pathToUser %>/assets/**/*.css'
+                ]
+            },
+
+            // For processing files after preprocessors
+            build: {
+                options: {
+                    noAdvanced: true
+                },
+                expand: true,
+                dest: 'build',
+                cwd: 'build',
+                src: ['**/*.css']
+            }
+        },
+
+        htmlmin: {
+            main: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                expand: true,
+                dest: 'build',
+                src: [
+                    'assets/templates/**/*.html',
+                    '<%= pathToUser %>/assets/templates/**/*.html'
+                ]
             }
         },
 
         less: {
             main: {
                 files: {
-                    "client-side/src/core/css/defaults.css": "client-side/src/core/css/less/defaults.less"
+                    "build/assets/css/defaults.css": "assets/css/defaults.less"
                 }
             }
+        },
+
+        watch: {
+            css: {
+                files: [
+                    'assets/css/**/*.less'
+                ],
+                tasks: ['less'],
+                options: {
+                    nospawn: true
+                }
+            },
+            js: {
+                files: [
+                    'assets/js/**/*.js'
+                ],
+                tasks: ['resolve-js-bundles'],
+                options: {
+                    nospawn: true
+                }
+            }
+        },
+    });
+
+
+    /*
+    *
+    * Сustom tasks
+    *
+    * */
+
+    grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
+        if (
+            grunt.file.exists('build/last-run') &&
+            (grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' || grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod')
+            ) {
+
+            grunt.task.run('clean:build')
+        } else {
+            console.log('Skipping clean build dir');
         }
     });
 
-    // Load plugins installed via npm install
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-sftp-deploy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.registerTask('resolve-js-bundles', 'Resolving JS imports in _**.bundle.js', function(){
+        var gruntOpts = grunt.config.get('options');
 
-    // TODO: make cleaning task for existing plugins update
+        // Setting custom delimiters for grunt.template
+        grunt.template.addDelimiters('customBundleDelimiter', '"{%', '%}"');
 
-    // Init server-side
-    grunt.registerTask('initServer', ['copy:initServer', 'clean:initServer']);
+        var files = grunt.file.expand([
+            'assets/js/**/_*.bundle.js',
+            '<%= pathToUser %>/assets/js/**/_*.bundle.js'
+        ]);
 
-    // Init client-side
-    grunt.registerTask('initClient', ['copy:main', 'copy:initClient', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
+        files.map(function(pathToFile){
+            // **/_*.bundle.js -> build/**/*bundle.js
+            var outputName = path.basename(pathToFile).replace(/^\_/, "");
 
-    // Init new project in Source
-    grunt.registerTask('init', ['copy:initServer', 'clean:initServer', 'copy:main', 'copy:initClient', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
+            var outputDir = path.dirname(pathToFile);
+            var outputFullPath = path.join('build', outputDir, outputName);
 
-    // Local deploy task to public folder without minimize
-    grunt.registerTask('updateDebug', ['less:main','copy:main', 'clean:all']);
+            grunt.file.write(
+                outputFullPath,
+                grunt.template.process(grunt.file.read(pathToFile), {
+                    delimiters: 'customBundleDelimiter',
+                    data: {
+                        npmPluginsEnabled: JSON.stringify(gruntOpts.assets.npmPluginsEnabled, null, 4)
+                    }
+                })
+            );
+            grunt.log.ok('Writing to '+outputFullPath);
+        });
+    });
 
-    // Local deploy task to public folder
-    grunt.registerTask('update', ['less:main','copy:main', 'uglify:main', 'uglify:addBanner', 'cssmin:main', 'cssmin:addBanner', 'clean:all']);
+    grunt.registerTask('last-prod', 'Tag build: prod', function(){
+        grunt.file.write('build/last-run', 'prod');
+    });
 
-    // Upload files to remote via sftp
-    grunt.registerTask('deployRemoteDebug', ['clean:build', 'less:main', 'copy:remote', 'clean:remote']);
+    grunt.registerTask('last-dev', 'Tag build: dev', function(){
+        grunt.file.write('build/last-run', 'dev');
+    });
 
-    // Minify and upload files to remote via sftp
-    grunt.registerTask('deployRemote', ['clean:build', 'less:main', 'copy:remote',  'cssmin:remote', 'cssmin:addRemoteBanner', 'uglify:remote', 'uglify:addRemoteBanner', 'clean:remote', 'sftp-deploy:deploy']);
 
-    // Watching client-side changes and running minify, less, copy to public
-    grunt.registerTask('runWatch', ['watch']);
+    /*
+    *
+    * Build tasks
+    *
+    * */
+    // Regular development update task
+    grunt.registerTask('update', [
+        'clean-build:dev',
+        'resolve-js-bundles',
+        'less:main',
+        'last-dev'
+    ]);
+    grunt.registerTask('default', ['update']);
+
+    // Prod build, path to minified resources is routed by nodejs server
+    grunt.registerTask('build', [
+        'clean-build:prod',
+
+        'less:main',
+        'newer:cssmin:build',
+        'newer:cssmin:user',
+        'resolve-js-bundles',
+        'newer:copy:js',
+        'newer:uglify:main',
+
+        'newer:htmlmin:main',
+        'last-prod'
+    ]);
+
+    grunt.registerTask('watch-css', ['update','watch:css']);
+    grunt.registerTask('watch-all', ['update','watch']);
+
 };

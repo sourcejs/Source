@@ -1,0 +1,31 @@
+<h1>Build tasks with Grunt</h1>
+
+<section class="source_section">
+    <h2>Intro</h2>
+
+    <p><a href="http://gruntjs.com/">Grunt</a> tasks are used to build dev and production assets for Source.</p>
+
+    <code class="src-js source_visible">
+        $ grunt
+        $ grunt update
+
+        $ grunt build
+
+        $ grunt watch-css
+        $ grunt watch-all
+    </code>
+
+    <ul>
+        <li><code>grunt update</code> - same as <code>grunt</code> (default), runs dev build</li>
+        <li><code>grunt build</code> - runs production build with all assets minification</li>
+        <li><code>grunt watch-css</code>, <code>grunt watch-all</code> - watch helper tasks for Source development</li>
+    </ul>
+</section>
+
+<section class="source_section">
+    <h2>Custom tasks</h2>
+
+    <p>You can use as many custom tasks as you want in private folder <code>source/user</code>.</p>
+
+    <p>For Source and Specs deployment we recommend using Version Control Systems (like git), with auto-pull.</p>
+</section>
