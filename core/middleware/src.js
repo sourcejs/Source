@@ -43,20 +43,26 @@ var handleRequest = function(req, res, next) {
 
                             var headerFooterHTML = getHeaderAndFooter();
 
+                            var getTemplate = function(name){
+                                var output;
+
+                                if (fs.existsSync(userTemplatesDir + name)) {
+                                    output = fs.readFileSync(userTemplatesDir + name, "utf-8");
+                                } else {
+                                    output = fs.readFileSync(coreTemplatesDir + name, "utf-8");
+                                }
+
+                                return output;
+                            };
+
                             var template;
 
-                            if (info.role === 'navigation') {
-                                if (fs.existsSync(userTemplatesDir + "navigation.ejs")) {
-                                    template = fs.readFileSync(userTemplatesDir + "navigation.ejs", "utf-8");
-                                } else {
-                                    template = fs.readFileSync(coreTemplatesDir + "navigation.ejs", "utf-8");
-                                }
+                            if (info.template) {
+                                template = getTemplate(info.template + '.ejs');
+                            } else if (info.role === 'navigation') {
+                                template = getTemplate("navigation.ejs");
                             } else {
-                                if (fs.existsSync(userTemplatesDir + "spec.ejs")) {
-                                    template = fs.readFileSync(userTemplatesDir + "spec.ejs", "utf-8");
-                                } else {
-                                    template = fs.readFileSync(coreTemplatesDir + "spec.ejs", "utf-8");
-                                }
+                                template = getTemplate("spec.ejs");
                             }
 
                             var templateJSON = {
