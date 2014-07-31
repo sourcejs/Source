@@ -2,7 +2,7 @@
 ---------------------------------------------------------------------------------- */
 
 .source_section .source_catalog {
-    padding:10px 20px;
+    padding: 0 20px 20px;
     border:1px solid #dfe2e4;
     border-radius:10px;
     }
@@ -36,6 +36,14 @@
         &:hover {
             color: @blue;
             }
+        }
+    }
+
+.source_catalog_a:hover {
+    text-decoration: none !important;
+
+    .source_catalog_title {
+        color: #fff;
         }
     }
 
@@ -79,6 +87,10 @@
     width: 100%;
     display: block;
     }
+
+.source_section .source_catalog_list_i {
+    width: 47% !important;
+  }
 
 .source_catalog_a {
 	position: relative;
