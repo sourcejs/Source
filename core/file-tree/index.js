@@ -13,10 +13,7 @@ var includedDirs = global.opts.core.fileTree.includedDirs;
 var fileMask = global.opts.core.fileTree.fileMask; //Arr
 
 // files from parser get info
-var INFO_FILE = "info.json";
-
-// path to output file to write parsed data in json format
-var OUTPUT_FILE = global.opts.core.fileTree.outputFile;
+var infoFile = "info.json";
 
 // for waiting when function finished
 var NOT_EXEC = true;
@@ -119,8 +116,8 @@ var fileTree = function(dir) {
             page.fileName = targetFile  || '';
             page.thumbnail = false;
 
-            if (fs.existsSync(dir+'/'+INFO_FILE)) {
-                var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+INFO_FILE, "utf8"));
+            if (fs.existsSync(dir+'/'+infoFile)) {
+                var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+infoFile, "utf8"));
 
                 deepExtend(page, fileJSON);
             }
@@ -146,8 +143,8 @@ var specDependenciesTree = function(dir) {
         specsDirs.forEach(function(specDir) {
             var pathToInfo = dir + '/' + includedDir + '/' + specDir;
 
-            if (fs.existsSync(pathToInfo + '/' + INFO_FILE)) {
-                var fileJSON = JSON.parse(fs.readFileSync(pathToInfo + '/' + INFO_FILE, "utf8"));
+            if (fs.existsSync(pathToInfo + '/' + infoFile)) {
+                var fileJSON = JSON.parse(fs.readFileSync(pathToInfo + '/' + infoFile, "utf8"));
 
                 if (fileJSON['usedSpecs']) {
                     fileJSON['usedSpecs'].forEach(function(usedSpec){
@@ -164,23 +161,40 @@ var specDependenciesTree = function(dir) {
 
 // function for write json file
 var GlobalWrite = function() {
-    fs.writeFile(global.app.get('user') + "/" + OUTPUT_FILE, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
+    var outputFile = global.app.get('user') + "/" + global.opts.core.fileTree.outputFile;
+    var outputPath = path.dirname(outputFile);
+
+    if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath)
+    }
+
+    fs.writeFile(outputFile, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
         if (err) {
-            console.log(err);
+            console.log('Error writing file tree: ', err);
         } else {
-            console.log("Pages tree JSON saved to " + global.opts.core.common.pathToUser+"/"+OUTPUT_FILE);
+            console.log("Pages tree JSON saved to " + outputFile);
             NOT_EXEC=true;
         }
     });
-    SpecDependenciesWrite();
+
+    if (global.opts.core.specDependenciesTree.enabled) {
+        SpecDependenciesWrite();
+    }
 };
 
 var SpecDependenciesWrite = function() {
-    fs.writeFile(global.app.get('user') + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
+    var outputFile = global.app.get('user') + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE;
+    var outputPath = path.dirname(outputFile);
+
+    if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath)
+    }
+
+    fs.writeFile(outputFile, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
         if (err) {
-            console.log(err);
+            console.log('Error writing spec dependencies tree: ', err);
         } else {
-            console.log("Spec dependencies JSON saved to " + global.opts.core.common.pathToUser+"/"+OUTPUT_SPEC_DEPENDENCIES_FILE);
+            console.log("Spec dependencies JSON saved to " + outputFile);
         }
     });
 };

@@ -19,6 +19,7 @@ module.exports = {
             outputFile: 'data/pages_tree.json'
         },
         specDependenciesTree: {
+            enabled: false,
             outputFile: 'data/spec_dependencies_tree.json'
         },
         less: {

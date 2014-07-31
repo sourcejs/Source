@@ -5,6 +5,10 @@
 
 <h1>Clarify</h1>
 
+<div class="source_warn">
+    <p>Not supports <code>*.src</code> files, till 0.4 stable.</p>
+</div>
+
 <section class="source_section">
     <h2>What?</h2>
 

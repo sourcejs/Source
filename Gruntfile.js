@@ -172,12 +172,6 @@ module.exports = function(grunt) {
         });
     });
 
-    /*
-    *
-    * Build tasks
-    *
-    * */
-
     grunt.registerTask('last-prod', 'Tag build: prod', function(){
         grunt.file.write('build/last-run', 'prod');
     });
@@ -186,6 +180,12 @@ module.exports = function(grunt) {
         grunt.file.write('build/last-run', 'dev');
     });
 
+
+    /*
+    *
+    * Build tasks
+    *
+    * */
     // Regular development update task
     grunt.registerTask('update', [
         'clean-build:dev',
