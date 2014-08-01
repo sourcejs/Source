@@ -373,6 +373,8 @@ define([
     };
 
     GlobalNav.prototype.sortByAlpha = function (a, b) {
+        if (!a['specFile'].title || !b['specFile'].title) return 0;
+
         a = a['specFile'].title.replace(/(^\s+|\s+$)/g,'');
         b = b['specFile'].title.replace(/(^\s+|\s+$)/g,'');
 
