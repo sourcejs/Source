@@ -6,7 +6,7 @@
     <p>The <a href="http://sourcejs.com">Sourcejs.com</a> client-side source code is stored in our <a href="https://github.com/sourcejs/Sourcejs.com">github repo</a>.</p>
 </div>
 
-<section class="source_section">
+<section class="source_section" id="install">
     <h2>Quick Start</h2>
 
     <p>First, install needed dependencies for getting started: <a href="http://help.github.com/articles/set-up-git">Git</a>, <a href="http://nodejs.org/">NodeJS</a>, <a href="http://gruntjs.com/getting-started">Grunt</a> and <a href="http://yeoman.io/">Yeoman</a> generators:</p>
@@ -42,6 +42,17 @@
 
     <a href="/docs/spec" class="source_a_hl">Read more about <strong>Spec</strong> pages here.</a>
 </section>
+
+<div class="source_section" id="examples">
+    <h2>Examples</h2>
+
+    <p>Main project website <a href="http://sourcejs.com">Sourcejs.com</a> is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out <a href="/docs/spec/">this section</a>.</p>
+
+    <p>You can inspect <a href="https://github.com/sourcejs/Sourcejs.com">Sourcejs.com source code</a>, that demonstrates basic <code>source/user</code> folder contents.</p>
+
+    <p>More examples and screencasts coming soon, but for now, you can check this <a href="http://tohtml.it/post/92553150643/sourcejs">SourceJS video presentation</a> (ru).</p>
+
+</div>
 
 <section class="source_section">
     <h2>File Structure</h2>

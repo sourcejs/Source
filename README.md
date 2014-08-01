@@ -1,6 +1,8 @@
 # SourceJS - Living Style Guide on Steroids
 
-**v.0.4.0**
+[![Gitter chat](https://badges.gitter.im/sourcejs.png)](https://gitter.im/sourcejs/Source)
+
+**v0.4.0**
 
 **The most powerful tool for documenting web interfaces and building productive team work.**
 
@@ -16,6 +18,8 @@ ___
 ___
 
 ## Updates
+* 01.08.14. [Video review](http://tohtml.it/post/93482335118/sourcejs) of SourceJS engine and workflow example (RU)
+* * 31.07.14. **0.4.0-beta** release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
 * 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool, based on v0.4 API - Design-lego
 * * 31.12.13. **0.3.2** release
@@ -25,9 +29,7 @@ ___
 ## Upcoming updates
 
 * Content API
-* Stable plugin system and file organization refactoring
-* Yeoman generators for setup and spec creation
-* Middleware support with fully supported `.src` spec templates
+* Middleware support
 * Markdown support in spec pages
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
