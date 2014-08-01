@@ -17,7 +17,7 @@ define([
         this.options.modulesOptions.globalNav = $.extend(true, {
             filterEnabled: true,
             showPreviews: false,
-            sortBy: 'date',
+            sortType: 'sortByDate',
 
             CATALOG : 'source_catalog',
             CATALOG_LIST : 'source_catalog_list',
