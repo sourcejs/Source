@@ -47,9 +47,7 @@ module.exports = {
 
         modulesOptions : {
             globalNav: {
-                filterEnabled: false,
-                showPreviews: true,
-                sortType: 'sortByAlph' // or 'sortByAlph'
+                filterEnabled: false
             },
 
             innerNavigation : {
