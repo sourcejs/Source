@@ -13,7 +13,7 @@ Documentation engine originally was developed at [Odnoklassniki.ru](http://corp.
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base/index.html#1!)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base)
 
 ___
 
