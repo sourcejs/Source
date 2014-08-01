@@ -24,38 +24,30 @@
     <p>Output of:</p>
 
     <code class="source_visible src-html">
-        <div class="source_catalog" data-nav="/docs/plugins"></div>
+        <div class="source_catalog" data-nav="/docs/api"></div>
     </code>
 
     <p>Renders like this:</p>
 
-    <div class="source_catalog" data-nav="/docs/plugins"></div>
+    <div class="source_catalog" data-nav="/docs/api"></div>
 
     <p>Also, you could leave a direct path to any Spec:</p>
 
     <code class="source_visible src-html">
-        <div class="source_catalog" data-nav="/docs/plugins/clarify/index.html"></div>
+        <div class="source_catalog" data-nav="/docs/clarify"></div>
     </code>
 
-    <div class="source_catalog" data-nav="/docs/plugins/clarify/index.html"></div>
+    <div class="source_catalog" data-nav="/docs/clarify"></div>
 
 
     <h3 class="source_section_h">Relative path</h3>
     <p>Relative paths are also supported, but are less stable (with some issues):</p>
 
     <code class="source_visible src-html">
-        <div class="source_catalog" data-nav="plugins"></div>
+        <div class="source_catalog" data-nav="api"></div>
     </code>
 
-    <div class="source_catalog" data-nav="plugins"></div>
-
-    <p>You also could math catalogue by parent:</p>
-
-    <code class="source_visible src-html">
-        <div class="source_catalog" data-nav="plugins/clarify"></div>
-    </code>
-
-    <div class="source_catalog" data-nav="plugins/clarify"></div>
+    <div class="source_catalog" data-nav="api"></div>
 
 </section>
 

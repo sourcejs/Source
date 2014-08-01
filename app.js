@@ -10,6 +10,7 @@ var fs = require('fs');
 var deepExtend = require('deep-extend');
 var headerFooter = require('./core/headerFooter.js');
 var loadOptions = require('./core/loadOptions');
+var commander = require('commander');
 
 /* Globals */
 global.app = express();
@@ -24,6 +25,11 @@ global.MODE = process.env.NODE_ENV || 'development';
 
 
 /* App config */
+
+// Args
+commander
+  .option('-p, --port [number]', 'Server port (default: '+global.opts.core.common.port+')', global.opts.core.common.port)
+  .parse(process.argv);
 
 // Optimization
 global.app.use(express.compress());
@@ -153,15 +159,18 @@ global.app.use(errorHandler);
 // Server start
 if (!module.parent) {
     var port = global.opts.core.common.port;
+    if (commander.port) {
+        port = parseInt(commander.port);
+    }
 
     global.app.listen(port);
 
-    var portString = global.opts.core.common.port.toString();
+    var portString = port.toString();
 
     var d = new Date(),
         dateArr = [d.getHours(), d.getMinutes(), d.getSeconds()],
         dateArr = dateArr.map(function (el) { return (el > 9)? el : '0'+ el; }),
         dateString = dateArr.join(':').red;
 
-    console.log(dateString + ' [SOURCE] lauched on '.blue + portString.red + ' port in '.blue + MODE.blue + ' mode...'.blue);
+    console.log(dateString + ' [SOURCE] lauched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
 }

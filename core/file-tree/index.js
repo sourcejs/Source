@@ -23,10 +23,6 @@ var CRON = global.opts.core.fileTree.cron;
 var CRON_PROD = global.opts.core.fileTree.cronProd;
 var CRON_REPEAT_TIME = global.opts.core.fileTree.cronRepeatTime;
 
-// spec dependencies variables
-var OUTPUT_SPEC_DEPENDENCIES_FILE = global.opts.core.specDependenciesTree.outputFile;
-var specDepsIncludedDirs = global.opts.core.specDependenciesTree.includedDirs || [];
-
 // formatting RegExp for parser
 var dirsForRegExp = '';
 var i = 1;
@@ -133,31 +129,6 @@ var fileTree = function(dir) {
     return outputJSON;
 };
 
-var specDependenciesTree = function(dir) {
-    var outputJSON = {},
-        specsDirs = {};
-
-    specDepsIncludedDirs.forEach(function(includedDir) {
-        specsDirs = fs.readdirSync(dir + '/' + includedDir);
-
-        specsDirs.forEach(function(specDir) {
-            var pathToInfo = dir + '/' + includedDir + '/' + specDir;
-
-            if (fs.existsSync(pathToInfo + '/' + infoFile)) {
-                var fileJSON = JSON.parse(fs.readFileSync(pathToInfo + '/' + infoFile, "utf8"));
-
-                if (fileJSON['usedSpecs']) {
-                    fileJSON['usedSpecs'].forEach(function(usedSpec){
-                        outputJSON[usedSpec] = outputJSON[usedSpec] || [];
-                        outputJSON[usedSpec].push('/' + includedDir + '/' + specDir);
-                    });
-                }
-            }
-        });
-    });
-
-    return outputJSON;
-};
 
 // function for write json file
 var GlobalWrite = function() {
@@ -176,28 +147,8 @@ var GlobalWrite = function() {
             NOT_EXEC=true;
         }
     });
-
-    if (global.opts.core.specDependenciesTree.enabled) {
-        SpecDependenciesWrite();
-    }
 };
 
-var SpecDependenciesWrite = function() {
-    var outputFile = global.app.get('user') + "/" + OUTPUT_SPEC_DEPENDENCIES_FILE;
-    var outputPath = path.dirname(outputFile);
-
-    if (!fs.existsSync(outputPath)) {
-        fs.mkdirSync(outputPath)
-    }
-
-    fs.writeFile(outputFile, JSON.stringify(specDependenciesTree(sourceRoot), null, 4), function (err) {
-        if (err) {
-            console.log('Error writing spec dependencies tree: ', err);
-        } else {
-            console.log("Spec dependencies JSON saved to " + outputFile);
-        }
-    });
-};
 
 // run function on server start
 GlobalWrite();
