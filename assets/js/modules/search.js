@@ -10,9 +10,11 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 define([
     'jquery',
     'source/load-options',
-    'sourceLib/jquery.autocomplete',
-    'sourceModules/parseFileTree'
-    ], function ($, options, autocomplete, parseFileTree) {
+    'sourceLib/autocomplete',
+    'sourceLib/modalbox',
+    'sourceModules/parseFileTree',
+    'sourceModules/globalNav'
+    ], function ($, options, autocomplete, modalBox, parseFileTree, globalNav) {
     	var json = parseFileTree.getParsedJSON();
 
     //TODO: make localstorage caching
@@ -24,12 +26,19 @@ define([
             source_HEADER_FOCUS = 'source_header__focus',
 
             autocompleteData = [],
+            searchResultsLabel,
 
             activated = false;
 
         var prepareAutoCompleteData = function() {
-            var
-                autocomleteDataItem = function (value, data) {
+            options.modulesOptions.search = $.extend (true, {
+                searchResultClass: "__search-res",
+                searchResultsLabel: "Результаты поиска:"
+            }, options.modulesOptions.search);
+
+            searchResultsLabel = options.modulesOptions.search.searchResultsLabel;
+
+            var autocomleteDataItem = function (value, data) {
                     this.value = value;
                     this.data = data;
                 };
@@ -59,13 +68,36 @@ define([
             }
         };
 
+        var wrapSearchResults = function(results) {
+            var modulesOptions = options.modulesOptions;
+            var classes = [
+                modulesOptions.globalNav.CATALOG_LIST,
+                modulesOptions.search.searchResultClass,
+                modulesOptions.globalNav.CATALOG
+            ];
+            if (modulesOptions.globalNav.showPreviews) {
+                classes.push("__show-preview");
+            }
+            var list = $('<ul class="' + classes.join(' ') + '">');
+            $.map(results, function(item) {
+                var specItem = parseFileTree.getCatAll(item.data).specFile;
+                specItem.title = item.value;
+                list.append(globalNav.createNavTreeItem(specItem));
+            });
+            return list;
+        };
+
         var activateAutocomplete = function(target) {
-            //initializing jquery.autocomplete
             target.autocomplete({
-                lookup:autocompleteData,
-                autoSelectFirst:true,
-                onSelect:function (suggestion) {
-                    window.location = suggestion.data;
+                "lookup": autocompleteData,
+                "autoSelectFirst": true,
+                "showAll": function (suggestions) {
+                    (new modalBox({
+                        "appendTo": ".source_main"
+                    }, {
+                        "title": searchResultsLabel,
+                        "body": wrapSearchResults(suggestions)
+                    })).show();
                 }
             });
 
