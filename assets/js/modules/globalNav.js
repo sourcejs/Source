@@ -319,7 +319,7 @@ define([
             ].join(''));
         }
         var result = this.createNavTreeItem.template.clone(true);
-        result.find("." + navConfig.CATALOG_LIST_A).attr("href", targetUrl);
+        result.find("." + navConfig.CATALOG_LIST_A.split(' ').join('.')).attr("href", targetUrl);
         result.find("." + navConfig.CATALOG_LIST_A_IMG)
             .attr("src", imageUrl)
             .error(function(e) {
