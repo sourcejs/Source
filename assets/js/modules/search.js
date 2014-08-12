@@ -32,7 +32,7 @@ var Search = function() {
             searchResults: "Результаты поиска:",
             showAllButtonText: "Show all search results"
         },
-        suggestionsLimit: 10
+        suggestionsLimit: 4
     }, this.options.modulesOptions.search);
 
     this.prepareAutoCompleteData();
