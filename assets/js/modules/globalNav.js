@@ -295,6 +295,45 @@ define([
         });
     };
 
+    GlobalNav.prototype.createNavTreeItem = function(target) {
+        if (!target) return;
+        var navConfig = this.options.modulesOptions.globalNav;
+        var author = target.author
+            ? " | " + navConfig.RES_AUTHOR + ": " + target.author
+            : "";
+
+        //fixing relative path due to server settings
+        var targetUrl = target.url.charAt(0) === '/' ? target.url : '/' + target.url;
+        var imageUrl = targetUrl + '/' + navConfig.CATALOG_LIST_I_PREVIEW_NAME;
+
+        if (!this.createNavTreeItem.template) {
+            this.createNavTreeItem.template = $([
+                '<li class="', navConfig.CATALOG_LIST_I, '">',
+                    '<a class="', navConfig.CATALOG_LIST_A, '" href="#">',
+                        '<img class="', navConfig.CATALOG_LIST_A_IMG,'" />',
+                        '<span class="', navConfig.CATALOG_LIST_A_TX,'"></span>',
+                        '<div class="', navConfig.CATALOG_LIST_DATE,'"></div>',
+                        '<div class="', navConfig.CATALOG_LIST_BUBBLES,'"></div>',
+                    '</a>',
+                '</li>'
+            ].join(''));
+        }
+        var result = this.createNavTreeItem.template.clone(true);
+        result.find("." + navConfig.CATALOG_LIST_A).attr("href", targetUrl);
+        result.find("." + navConfig.CATALOG_LIST_A_IMG)
+            .attr("src", imageUrl)
+            .error(function(e) {
+                $(this).css({"display": "none"});
+            });
+        result.find("." + navConfig.CATALOG_LIST_A_TX).html(target.title);
+        result.find("." + navConfig.CATALOG_LIST_DATE).html(target.lastmod + author);
+        if(parseInt(target.bubbles)) {
+            result.find("." + navConfig.CATALOG_LIST_BUBBLES).html(target.bubbles);
+        }
+
+        return result;
+    };
+
     GlobalNav.prototype.initCatalogFilter = function() {
         var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
             SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
