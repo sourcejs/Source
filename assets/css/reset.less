@@ -68,38 +68,21 @@ html body { //cascade for weight
 
 /* complex cascade for targeting only spec decorations, excluding .source_example blocks */
 .source_catalog_tx a,
-
 .source_main_nav a,
-
 .source_info a,
-
 .source_main > a,
-
 .source_section > a,
-.source_section > *:not(.source_example) > a,
-.source_section > *:not(.source_example) > *:not(.source_example) > a,
-.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a {
-	color:#4792D2;
-	text-decoration:none
-	}
+.source_section > *@{notCleaningClasses} > a,
+.source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > a,
+.source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > a {
+    color: #4792D2;
+    text-decoration: none;
 
-
-	.source_catalog_tx a:hover,
-
-	.source_main_nav a:hover,
-
-	.source_info a:hover,
-
-	.source_main > a:hover,
-
-	.source_section > a:hover,
-	.source_section > *:not(.source_example) > a:hover,
-	.source_section > *:not(.source_example) > *:not(.source_example) > a:hover,
-	.source_section > *:not(.source_example) > *:not(.source_example) > *:not(.source_example) > a:hover {
-		color: #1c76c2;
-		text-decoration: underline;
-		}
-
+    &:hover {
+        color: #1c76c2;
+        text-decoration: underline;
+        }
+    }
 /* /Spec page resets */
 
 /* /Reset
