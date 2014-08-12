@@ -62,7 +62,7 @@
                 "selected": "autocomplete-selected",
                 "suggestion": "autocomplete-suggestion",
                 "wrapper": "autocomplete-wrapper",
-                "showAll": "autocomplete-show-all",
+                "showAll": "autocomplete-show-all autocomplete-suggestion",
                 "active": "__active"
             },
             "containerParent": "body",
@@ -70,12 +70,14 @@
             "showAll": undefined, // e.g. function(data) { <do smth> }
             "labels": {
                 "showAllButtonText": "Show all"
-            }
+            },
+            "suggestionsLimit": 0
         },
 
         init: function(target, options) {
             this.$target = $(target);
             this.visible = false;
+            this.resultsCount = 0;
             this.cachedSearchResults = this.cachedSearchResults || {};
 
             $.extend(true, this.config, options);
@@ -97,9 +99,13 @@
 
 
             if (typeof(config.showAll) === "function") {
+                var showAllLabel = this.resultsCount > 0
+                    ? config.labels.showAllButtonText + ' (' + this.resultsCount +')'
+                    : config.labels.showAllButtonText;
+
                 var $showAll = this.$showAll = $("<div>")
                     .addClass(config.classes.showAll)
-                    .html("<a href=\"#\">" + config.labels.showAllButtonText + "</a>");
+                    .html("<a href=\"#\">" + showAllLabel + "</a>");
                 var $wrapper = $("<div>").addClass(config.classes.wrapper)
                     .append($container)
                     .append($showAll);
@@ -168,8 +174,12 @@
             var itemSelector = "." + this.config.classes.suggestion;
             var callback = this.config.onSelect;
 
-            this.$container.on("mouseover", itemSelector, function() {
+            this.$container.on("mouseenter", itemSelector, function() {
                 _this.select($(this).data("index"));
+            });
+            this.$container.on("mouseleave", itemSelector, function() {
+                _this.selectedIndex = -1;
+                _this.select();
             });
 
             if (this.$showAll) {
@@ -191,9 +201,11 @@
         wrapItems: function(data) {
             var result = document.createDocumentFragment();
             var _this = this;
-            $.each(data, function(index, item) {
-                result.appendChild(_this.createResultRow(index, item));
-            });
+            var limit = this.config.suggestionsLimit;
+            var max = limit > 0 && limit < data.length ? limit : data.length;
+            for (var i = 0; i < max; i++) {
+                result.appendChild(_this.createResultRow(i, data[i]));
+            }
             return result;
         },
 
@@ -248,10 +260,13 @@
             if (!searchQuery || !searchQuery.length) {
                 this.flush();
             } else {
-                var searchResult = this.cachedSearchResults[searchQuery];
-                return (searchResult && searchResult.length)
-                    ? searchResult
+                var cachedResult = this.cachedSearchResults[searchQuery];
+                var searchResult = cachedResult && cachedResult.length
+                    ? cachedResult
                     : this.getSearchResults(searchQuery);
+                this.resultsCount = searchResult.length;
+                this.refreshItemsCount();
+                return searchResult;
             }
         },
 
@@ -261,6 +276,14 @@
             this.$container.empty()
             this.$root.hide();
             this.flushSelection();
+        },
+
+        refreshItemsCount: function() {
+            var showAllLabel = this.resultsCount > 0
+                ? this.config.labels.showAllButtonText + ' (' + this.resultsCount +')'
+                : this.config.labels.showAllButtonText;
+
+            this.$showAll.find('a').html(showAllLabel);
         },
 
         /**
@@ -311,13 +334,16 @@
         select: function(index) {
             this.$showAll.removeClass(this.config.classes.active);
             var selectionIndex = this.selectedIndex = index >= 0 ? index : this.selectedIndex;
-            if (selectionIndex < 0) return;
-
-            var items = this.$container.children();
-            if (!items || !items.length) return;
             var $container = this.$container;
             var selectedClass = this.config.classes.selected;
 
+            if (selectionIndex < 0) {
+                $container.children("." + selectedClass).removeClass(selectedClass);
+                return;
+            }
+
+            var items = this.$container.children();
+            if (!items || !items.length) return;
             setTimeout(function() {
                 $container.children("." + selectedClass).removeClass(selectedClass);
                 $(items.get(selectionIndex)).addClass(selectedClass);

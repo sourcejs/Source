@@ -9,129 +9,144 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 
 define([
     'jquery',
-    'source/load-options',
+    'sourceModules/module',
     'sourceLib/autocomplete',
     'sourceLib/modalbox',
     'sourceModules/parseFileTree',
-    'sourceModules/globalNav'
-    ], function ($, options, autocomplete, modalBox, parseFileTree, globalNav) {
-    	var json = parseFileTree.getParsedJSON();
+    'sourceModules/globalNav',
+    'sourceModules/headerFooter'
+], function ($, module, autocomplete, modalBox, parseFileTree, globalNav) {
 
-    //TODO: make localstorage caching
+var Search = function() {
+    this.header = $('.source_header');
+    this.data = [];
+    this.activated = false;
+    this.targetField = $('#livesearch');
 
-    //If search enabled
-    $(function(){
-        var
-            L_source_HEADER = $('.source_header'),
-            source_HEADER_FOCUS = 'source_header__focus',
+    this.options.modulesOptions.search = $.extend (true, {
+        classes: {
+            searchResult: "__search-res",
+            headerFocus: "source_header__focus"
+        },
+        labels: {
+            searchResults: "Результаты поиска:",
+            showAllButtonText: "Show all search results"
+        },
+        suggestionsLimit: 10
+    }, this.options.modulesOptions.search);
 
-            autocompleteData = [],
-            searchResultsLabel,
+    this.prepareAutoCompleteData();
+    this.initSearchField();
 
-            activated = false;
+    return this;
+};
 
-        var prepareAutoCompleteData = function() {
-            options.modulesOptions.search = $.extend (true, {
-                searchResultClass: "__search-res",
-                searchResultsLabel: "Результаты поиска:"
-            }, options.modulesOptions.search);
+Search.prototype = module.createInstance();
+Search.prototype.constructor = Search;
 
-            searchResultsLabel = options.modulesOptions.search.searchResultsLabel;
+Search.prototype.prepareAutoCompleteData = function() {
+    var autocomleteDataItem = function (value, data) {
+        this.value = value;
+        this.data = data;
+    };
 
-            var autocomleteDataItem = function (value, data) {
-                    this.value = value;
-                    this.data = data;
-                };
+    var pagesData = parseFileTree.getAllPages();
 
-            var pagesData = parseFileTree.getAllPages();
-            for (var page in pagesData) {
-                var targetPage = pagesData[page]['specFile'];
+    for (var page in pagesData) {
+        var targetPage = pagesData[page]['specFile'];
 
-                var keywords = targetPage.keywords,
-                    keywordsPageName = page, //get cat name
-                    prepareKeywords = '',
-					rootFolder = page.split('/'),
-                    autocompleteValue = targetPage.title,
-                    pclass = targetPage.pclass;
+        var keywords = targetPage.keywords;
+        var keywordsPageName = page; //get cat name
+        var prepareKeywords = '';
+        var rootFolder = page.split('/');
+        var autocompleteValue = targetPage.title;
+        var pclass = targetPage.pclass;
+        var searchOptions = this.options.modulesOptions.search;
+        var json = parseFileTree.getParsedJSON();
 
-				if ( (json[rootFolder[ 1 ]] !== undefined) && (json[rootFolder[ 1 ]]['specFile'] !== undefined) && (options.modulesOptions.search.replacePathBySectionName) ) {
-					keywordsPageName = json[rootFolder[1]]['specFile'].title + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
-				}
 
-                if ((keywords !== undefined) && (keywords != '')) {
-                    prepareKeywords += ', ' + keywords;
-                }
+        var isRootSpecExists = json[rootFolder[ 1 ]] && json[rootFolder[ 1 ]]['specFile'];
 
-                autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
+        if (isRootSpecExists  && searchOptions.replacePathBySectionName) {
+            keywordsPageName = json[rootFolder[1]]['specFile'].title
+                + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
+        }
+        if (keywords && keywords != '') {
+            prepareKeywords += ', ' + keywords;
+        }
 
-                autocompleteData[autocompleteData.length] = new autocomleteDataItem(autocompleteValue, targetPage.url);
-            }
-        };
+        autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
+        this.data[this.data.length] = new autocomleteDataItem(autocompleteValue, targetPage.url);
+    }
+};
 
-        var wrapSearchResults = function(results) {
-            var modulesOptions = options.modulesOptions;
-            var classes = [
-                modulesOptions.globalNav.CATALOG_LIST,
-                modulesOptions.search.searchResultClass,
-                modulesOptions.globalNav.CATALOG
-            ];
-            if (modulesOptions.globalNav.showPreviews) {
-                classes.push("__show-preview");
-            }
-            var list = $('<ul class="' + classes.join(' ') + '">');
-            $.map(results, function(item) {
-                var specItem = parseFileTree.getCatAll(item.data).specFile;
-                specItem.title = item.value;
-                list.append(globalNav.createNavTreeItem(specItem));
-            });
-            return list;
-        };
-
-        var activateAutocomplete = function(target) {
-            target.autocomplete({
-                "lookup": autocompleteData,
-                "autoSelectFirst": true,
-                "showAll": function (suggestions) {
-                    (new modalBox({
-                        "appendTo": ".source_main"
-                    }, {
-                        "title": searchResultsLabel,
-                        "body": wrapSearchResults(suggestions)
-                    })).show();
-                }
-            });
-
-            activated = true;
-        };
-
-        require([
-            "sourceModules/headerFooter"
-        ], function () {
-
-            var L_TARGET_FIELD = $('#livesearch');
-
-            if ( $('meta[name=source-page-role]').attr('content') === 'navigation' && options.modulesOptions.search.autoFocusOnNavigationPage ||  options.modulesOptions.search.autoFocus) {
-                setTimeout(function() { //First focus fix
-                    L_TARGET_FIELD.focus();
-                }, 1);
-            }
-
-            //Unblur header on focus
-            L_TARGET_FIELD.on({
-                'focus':function () {
-                    L_source_HEADER.addClass(source_HEADER_FOCUS);
-
-                    if (!activated) {
-                        prepareAutoCompleteData();
-                        activateAutocomplete(L_TARGET_FIELD);
-                    }
-                },
-                'blur':function () {
-                    L_source_HEADER.removeClass(source_HEADER_FOCUS);
-                }
-            });
-        });
-
+Search.prototype.wrapSearchResults = function(results) {
+    var modulesOptions = this.options.modulesOptions;
+    var classes = [
+        modulesOptions.globalNav.CATALOG_LIST,
+        modulesOptions.search.classes.searchResult,
+        modulesOptions.globalNav.CATALOG
+    ];
+    if (modulesOptions.globalNav.showPreviews) {
+        classes.push("__show-preview");
+    }
+    var list = $('<ul class="' + classes.join(' ') + '">');
+    $.map(results, function(item) {
+        var specItem = parseFileTree.getCatAll(item.data).specFile;
+        specItem.title = item.value;
+        list.append(globalNav.createNavTreeItem(specItem));
     });
+    return list;
+};
 
+Search.prototype.activateAutocomplete = function() {
+    var _this = this;
+    var searchOptions = this.options.modulesOptions.search;
+
+    this.targetField.autocomplete({
+        "lookup": _this.data,
+        "autoSelectFirst": true,
+        "suggestionsLimit": searchOptions.suggestionsLimit,
+        "labels": {
+            "showAllButtonText": searchOptions.labels.showAllButtonText
+        },
+        "showAll": function (suggestions) {
+            (new modalBox({
+                "appendTo": ".source_main"
+            }, {
+                "title": searchOptions.labels.searchResults,
+                "body": _this.wrapSearchResults(suggestions)
+            })).show();
+        }
+    });
+    this.activated = true;
+};
+
+Search.prototype.initSearchField = function() {
+    var isNavigation = $('meta[name=source-page-role]').attr('content') === 'navigation';
+    var searchOptions = this.options.modulesOptions.search;
+    var _this = this;
+
+    if (isNavigation && searchOptions.autoFocusOnNavigationPage ||  searchOptions.autoFocus) {
+        setTimeout(function() { //First focus fix
+            _this.targetField.focus();
+        }, 1);
+    }
+
+    //Unblur header on focus
+    this.targetField.on({
+        'focus':function () {
+            _this.header.addClass(searchOptions.classes.headerFocus);
+            if (!_this.activated) {
+                _this.prepareAutoCompleteData();
+                _this.activateAutocomplete();
+            }
+        },
+        'blur':function () {
+            _this.header.removeClass(searchOptions.classes.headerFocus);
+        }
+    });
+};
+
+return new Search();
 });
