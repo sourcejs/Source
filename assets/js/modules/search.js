@@ -35,7 +35,6 @@ var Search = function() {
         suggestionsLimit: 4
     }, this.options.modulesOptions.search);
 
-    this.prepareAutoCompleteData();
     this.initSearchField();
 
     return this;
@@ -49,6 +48,8 @@ Search.prototype.prepareAutoCompleteData = function() {
         this.value = value;
         this.data = data;
     };
+
+    this.data = [];
 
     var pagesData = parseFileTree.getAllPages();
 
