@@ -6,7 +6,7 @@ define([
     "sourceModules/sections",
     "sourceModules/headerFooter",
     "text!sourceTemplates/nav.inc.html",
-    "text!sourceTemplates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate,menuItemTemplate) {
+    "text!sourceTemplates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate, menuItemTemplate) {
 
     function InnerNavigation() {
         var _this = this;
@@ -21,13 +21,26 @@ define([
             MENU_SCROLL_MOD_CLASS: '__menuScroll',
             MAIN_NAV_AC: 'source_main_nav_ac',
             MAIN_NAV_AC_TX: 'source_main_nav_ac_tx',
+            INJECT_AFTER: '.source_main h1',
             hashSymb: '!',
             RESERVED_HEIGHT: 250 // (185 + 15 + 50) px
         }, this.options.modulesOptions.innerNavigation);
 
         this.menuItemTemplate = $(menuItemTemplate);
         this.container = $(navTemplate);
-        $(".source_main h1").after(this.container);
+
+        var $injectAfter = $(this.options.modulesOptions.innerNavigation.INJECT_AFTER).first();
+
+        // Checking if inject after element exists, and isn't used in source example sections
+        if (
+            $injectAfter.length !== 0 &&
+            $injectAfter.parents('.'+this.options.exampleSectionClass).length === 0 &&
+            $injectAfter.parents('.'+this.options.exampleCleanClass).length === 0
+        ) {
+            $injectAfter.after(this.container);
+        } else {
+            $('.'+this.options.mainClass).prepend(this.container);
+        }
 
         $(function () {
             _this.injectNavigation();
