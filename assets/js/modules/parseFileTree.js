@@ -255,7 +255,7 @@ define([
     };
 
     //TODO: it should be refactored asap.
-    var getCurrentCatalogSpec = function(navListDir, targetCatalog) {
+    var getCurrCatalogSpec = function(navListDir, targetCatalog) {
         var catObj;
         if (!!targetCatalog[navListDir + '/specFile']) {
             catObj = targetCatalog[navListDir + '/specFile'];
@@ -266,15 +266,20 @@ define([
         }
         return catObj;
     };
+    
+    ParseFileTree.prototype.getCurrentCatalogSpec = function(catalogName) {
+        if (!catalogName) return;
+        var specsHash = this.parsePages(catalogName, true);
+        return getCurrCatalogSpec(catalogName, specsHash);
+    };
 
     ParseFileTree.prototype.getCatalog = function(catalogName, sortingCallback) {
         if (!catalogName) return;
         var specsHash = this.parsePages(catalogName, true);
-        var currentCat = getCurrentCatalogSpec(catalogName, specsHash); 
         var result = $.map(specsHash, function(k, v) {
             return k['specFile'] ? [k] : undefined;
         });
-        return {"catalog": currentCat, "data": result.sort(sortingCallback)};
+        return result.sort(sortingCallback);
     };
 
     return new ParseFileTree();

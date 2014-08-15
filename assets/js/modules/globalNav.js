@@ -11,10 +11,11 @@ define([
     'sourceModules/parseFileTree'
     ], function($, module, utils, parseFileTree) {
 
-    var defaults = {
+        var defaults = {
         "filterEnabled": true,
         "showPreviews": false,
         "sortType": 'sortByDate',
+        "sortDirection":"forward",
         "pageLimit": 999,
         "ignorePages": [],
         "thumbnailName": 'thumbnail.png',
@@ -44,7 +45,11 @@ define([
 
     function GlobalNav() {
         var _this = this;
-        this.options.modulesOptions.globalNav = $.extend(true, defaults, this.options.modulesOptions.globalNav);
+        this.options.modulesOptions.globalNav = $.extend(true,
+            defaults,
+            this.options.modulesOptions.globalNav,
+            JSON.parse(localStorage.getItem('source_enabledFilter')) || {}
+        );
         $(function(){
             _this.init();
         });
@@ -57,38 +62,35 @@ define([
         var navOptions = this.options.modulesOptions.globalNav;
         this.catalog = $("." + navOptions.classes.CATALOG);
         this.drawNavigation();
-        this.hideImgWithError();
 
-        if (this.options.modulesOptions.globalNav.filterEnabled){
+        if (this.options.modulesOptions.globalNav.filterEnabled) {
             this.initCatalogFilter();
         }
     };
 
 
-    //Filtering by specified catalogue
+    // Filtering by specified catalogue
     var skipSpec = function(navListCat, currentObj) {
         var obj = currentObj;
         var response = true; // skip by default
 
-        //obj['cat'] is an array
-        //if cat has needed value
+        // obj['cat'] is an array; if cat has needed value
         if (!!obj['cat'] && obj['cat'].indexOf(navListCat) > -1) {
             response = false;
 
-        //without-cat mode, showing all specs without cat field in info.json defined or
+        // without-cat mode, showing all specs without cat field in info.json defined or
         } else if ( navListCat === 'without-cat' && (typeof obj['cat'] === 'undefined' || obj['cat'].length === 0) ) {
             response = false;
         }
-
         return response;
     };
 
-    //Filtering hidden specs
+    // Filtering hidden specs
     var isHidden = function(currentObj) {
         var obj = currentObj;
         var response = false; // skip by default
 
-        //obj['cat'] is an array
+        // obj['cat'] is an array
         if (!!obj['cat'] && obj['cat'].indexOf("hidden") > -1 ) {
             response = true;
         }
@@ -124,50 +126,56 @@ define([
         }
     };
 
-    //Drawing navigation and page info in each catalog defined on page
-    GlobalNav.prototype.drawNavigation = function (sortType) {
+    // Drawing navigation and page info in each catalog defined on page
+    GlobalNav.prototype.drawNavigation = function (sortType, sortDirection) {
         var _this = this;
         var navOptions = this.options.modulesOptions.globalNav;
         var classes = navOptions.classes;
         var labels = navOptions.labels;
         var sortType = sortType || navOptions.sortType;
+        var sortDirection = sortDirection || navOptions.sortDirection;
 
         this.catalog.each(function () {
             var catalog = $(this);
             var navListDir = catalog.attr('data-nav');
             var navListCat = catalog.attr('data-cat');
-            var specifCatAndDirDefined = !!navListDir && !!navListCat;
 
-            //Catalog has no data about category
-            var catalogData = parseFileTree.getCatalog(navListDir, _this[sortType]);
-            if (!catalogData) return;
-            var targetData = catalogData.data;
-            var targetCatalog = catalogData.catalog;
-            _this.initCatalog(catalog, targetCatalog, specifCatAndDirDefined);
-            var L_CATALOG_LIST = catalog.find('.' + classes.CATALOG_LIST);
+            // Catalog has no data about category
+            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
+            _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
 
+            // TODO: check if its valid
             if (navListDir && !navListDir.length) {
-                //Display error
-                L_CATALOG_LIST.html(labels.RES_NO_DATA_ATTR);
+                // Display error
+                catalog.find('.' + classes.CATALOG_LIST).html(labels.RES_NO_DATA_ATTR);
                 return;
             }
 
-            //Building navigation HTML
-            if (L_CATALOG_LIST.length === 1 && targetData.length) {
-                //getting fragment with items
-                var renderedItems = _this.getNavigationItemsList(targetData, navListDir, function(spec) {
-                    var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
-                    var isFiltered = specifCatAndDirDefined && skipSpec(navListCat, spec) || isHidden(spec);
-
-                    return isInIgnoreList || isFiltered ? false : true;
-                });
-                L_CATALOG_LIST.html(renderedItems);
-            }
+            var targetData = parseFileTree.getCatalog(navListDir, _this.getSortCondition(sortType, sortDirection));
+            _this.renderNavigationList(catalog, targetData);
         });
     };
 
+    GlobalNav.prototype.renderNavigationList = function(catalog, data) {
+        var navOptions = this.options.modulesOptions.globalNav;
+        var target = catalog.find('.' + navOptions.classes.CATALOG_LIST);
+        var navListDir = catalog.attr('data-nav');
+        var navListCat = catalog.attr('data-cat');
+
+        var filter = function(spec) {
+            var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
+            var isFiltered = !!navListDir && !!navListCat && skipSpec(navListCat, spec) || isHidden(spec);
+            return isInIgnoreList || isFiltered ? false : true;
+        };
+
+        if(target && target.length === 1 && data && data.length) {
+            var itemsDocFragment = this.getNavigationItemsList(data, navListDir, filter);
+            target.html(itemsDocFragment);
+        }
+    };
+
     GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
-        //temporary container to hold navigation items.
+        // temporary container to hold navigation items.
         var navigationItemsList = document.createDocumentFragment();
         var navOptions = this.options.modulesOptions.globalNav;
         var pageLimit = navOptions.pageLimit;
@@ -184,7 +192,7 @@ define([
             navigationItemsList.appendChild(this.createNavTreeItem(spec).get(0));
         }
 
-        //Go to cat page link
+        // Go to cat page link
         if (specifications.length > lengthLimit) {
             navigationItemsList.appendChild($([
                 '<li class="', classes.CATALOG_LIST_I, ' ', classes.CATALOG_LIST_ALL, '">',
@@ -203,7 +211,7 @@ define([
             ? " | " + navConfig.RES_AUTHOR + ": " + target.author
             : "";
 
-        //fixing relative path due to server settings
+        // fixing relative path due to server settings
         var targetUrl = target.url.charAt(0) === '/' ? target.url : '/' + target.url;
         var imageUrl = targetUrl + '/' + navConfig.thumbnailName;
 
@@ -224,7 +232,7 @@ define([
         result.find("." + classes.CATALOG_LIST_A_IMG)
             .attr("src", imageUrl)
             .error(function(e) {
-                $(this).css({"display": "none"});
+                $(this).remove();
             });
         result.find("." + classes.CATALOG_LIST_A_TX).html(target.title);
         result.find("." + classes.CATALOG_LIST_DATE).html(target.lastmod + author);
@@ -236,18 +244,16 @@ define([
     };
 
     GlobalNav.prototype.initCatalogFilter = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
-            CATALOG_CLASS = this.options.modulesOptions.globalNav.CATALOG;
+        var navOptions = this.options.modulesOptions.globalNav;
 
-        var $subhead = $('.' + SOURCE_SUBHEAD_CLASS),
-            $filter = $('.' + CATALOG_FILTER_CLASS),
-            $catalog = $('.' + CATALOG_CLASS);
+        var $subhead = $('.' + navOptions.classes.SOURCE_SUBHEAD),
+            $filter = $('.' + navOptions.classes.CATALOG_FILTER),
+            $catalog = $('.' + navOptions.classes.CATALOG);
 
         if (!$subhead.length || !$catalog.length) return;
 
         if (!$filter.length) {
-            $subhead.prepend('<div class="' + CATALOG_FILTER_CLASS + '"></div>');
+            $subhead.prepend('<div class="' + navOptions.classes.CATALOG_FILTER + '"></div>');
         }
 
         this.drawSortFilters();
@@ -255,9 +261,9 @@ define([
     };
 
     GlobalNav.prototype.drawToggler = function() {
-        var CATALOG = this.options.modulesOptions.globalNav.CATALOG,
-            CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER,
-            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+        var CATALOG = this.options.modulesOptions.globalNav.classes.CATALOG,
+            CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.classes.CATALOG_IMG_TUMBLER,
+            CATALOG_FILTER = this.options.modulesOptions.globalNav.classes.CATALOG_FILTER,
             showPreviews = this.options.modulesOptions.globalNav.previews,
 
             initPreviewValue = localStorage.getItem( 'source_showPreviews') || showPreviews,
@@ -291,41 +297,8 @@ define([
         });
     };
 
-    GlobalNav.prototype.hideImgWithError = function(){
-        var CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG;
-
-        //check valid all img
-        $('.' + CATALOG_LIST_A_IMG).each(function(){
-            this.onerror = function(){
-                $(this).remove();
-            };
-        });
-    };
-
-    GlobalNav.prototype.sortByDate = function (a, b) {
-        a = parseInt(a['specFile'].lastmodSec);
-        b = parseInt(b['specFile'].lastmodSec);
-
-        if(a == b) return 0;
-        else {
-            return (a > b) ? -1 : 1;
-        }
-    };
-
-    GlobalNav.prototype.sortByAlpha = function (a, b) {
-        if (!a['specFile'].title || !b['specFile'].title) return 0;
-
-        a = a['specFile'].title.replace(/(^\s+|\s+$)/g,'');
-        b = b['specFile'].title.replace(/(^\s+|\s+$)/g,'');
-
-        if(a == b) return 0;
-        else {
-            return (a > b) ? 1 : -1;
-        }
-    };
-
     GlobalNav.prototype.drawSortFilters = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
+        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.classes.CATALOG_FILTER,
             defaultSort = this.options.modulesOptions.globalNav.sortType,
 
             $filterWrapper = $('.' + CATALOG_FILTER_CLASS),
@@ -347,8 +320,6 @@ define([
         if (enabledFilter.sortDirection == 'forward') {
             $activeFilter.parent().addClass('__forward');
         }
-
-        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection);
 
         var updateLocalStorage = function(obj) {
             localStorage.setItem('source_enabledFilter', JSON.stringify(obj));
@@ -376,7 +347,7 @@ define([
 
             updateEnabledStatusObject(sortType, sortDirection);
             updateLocalStorage(enabledFilter);
-            _this.sortByChild(sortType, sortDirection);
+            _this.drawNavigation(sortType, sortDirection)
         }
 
         $(document).on('click', '#sortByAlph', function() {
@@ -388,45 +359,27 @@ define([
         });
     };
 
-    GlobalNav.prototype.sortByChild = function(sortType, sortDirection) {
-        var $list = $('.source_catalog_list');
+    GlobalNav.prototype.getSortCondition = function(type, direction) {
+        var multiplexer = direction === "forward" ? 1 : -1;
+        if (type === "sortByAlph") {
+            return function sortByAlph(a, b) {
+                if (!a['specFile'].title || !b['specFile'].title) return 0;
+                a = a['specFile'].title.replace(/(^\s+|\s+$)/g,'');
+                b = b['specFile'].title.replace(/(^\s+|\s+$)/g,'');
 
-        $list.each(function() {
-            var $list_i = $(this).children('.source_catalog_list_i');
+                if (a === b) return 0;
+                return multiplexer * ((a > b) ? 1 : -1);
 
-            if (sortType == "sortByAlph") {
-
-                $list_i.sort(function(a, b) {
-                    a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
-                    b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
-
-                    if (sortDirection == 'backward') {
-                        return (a < b) ? 1 : (a > b) ? -1 : 0;
-                    }
-
-                    return (a < b) ? -1 : (a > b) ? 1 : 0;
-                });
-
-            } else if (sortType == "sortByDate") {
-
-                $list_i.sort(function(a, b) {
-                    a = parseInt( a.getAttribute('data-date') );
-                    b = parseInt( b.getAttribute('data-date') );
-
-                    if (sortDirection == 'backward') {
-                        return (a < b) ? -1 : (a > b) ? 1 : 0;
-                    }
-
-                    return (a < b) ? 1 : (a > b) ? -1 : 0;
-                });
-
-            }
-
-            $(this).empty().append($list_i);
-        });
-
+            };
+        }
+        // type === "sortByDate", this is default one
+        return function sortByDate(a, b) {
+            a = parseInt(a['specFile'].lastmodSec);
+            b = parseInt(b['specFile'].lastmodSec);
+            if(a === b) return 0;
+            return multiplexer * ((a > b) ? -1 : 1);
+        };
     };
 
     return new GlobalNav();
-
 });
