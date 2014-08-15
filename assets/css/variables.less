@@ -3,6 +3,7 @@
 
 @max-width: 1400px;
 
+
 /* Media
 -------------------------------------------------- */
 
@@ -10,6 +11,7 @@
 @media_min-step-m: ~'all and (min-width: 990px)';
 @media_min-step-l: ~'all and (min-width: 1400px)';
 /* /Media */
+
 
 /* Layout
 -------------------------------------------------- */
@@ -20,18 +22,40 @@
 @layout_spec--inner-margin-right: 33.6%;
 /* /Layout */
 
+
 /* Colors
 -------------------------------------------------- */
-@blue: #4593D5;
-@blue__hover: #7EB6D9;
-@green: #1b9b19;
-@black: #333;
-@gray: #999;
-/* /Color */
+
+// primary
+@color-primary : #4593D5;
+@blue : @color-primary;
+
+@color-highlight : #7EB6D9;
+@blue__hover: @color-highlight;
+
+// secondary
+@color-secondary : #1b9b19;
+@green: @color-secondary;
+
+// main
+@color-main : #333;
+@black: @color-main;
+
+// aux
+@color-aux : #999;
+@gray: @color-aux;
+
+/* /Colors */
+
+
+/* Extras
+-------------------------------------------------- */
 
 @cleaningClasses: '.source_example, .source_clean';
 @notCleaningClasses: ~':not(.source_example):not(.source_clean)'; // TODO: generate automatically
 //@basicClasses:
+
+/* /Extras */
 
 /* /Variables
 ---------------------------------------------------------------------------------- */
