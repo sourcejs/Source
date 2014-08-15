@@ -20,6 +20,7 @@ var handleRequest = function(req, res, next) {
     var extension = path.extname(physicalPath); // extension of a requested file
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
+    /* если запрашивается файл */
     if (extension == ".src") {
         fs.exists(physicalPath, function(exists) {
 
@@ -77,7 +78,9 @@ var handleRequest = function(req, res, next) {
 
                             var html = ejs.render(template, templateJSON);
 
-                            res.send(html);
+                            req.renderedHtml = html;
+                            next();
+                            //res.send(html);
                         });
                     }
 
@@ -87,7 +90,9 @@ var handleRequest = function(req, res, next) {
                 next();
             }
         });
-    } else if (extension == "") {
+    }
+    /* если запрашивается директория */
+    else if (extension == "") {
         fs.exists(physicalPath + "index.src", function(exists) {
             var requestedDir = req.url;
 
@@ -95,10 +100,11 @@ var handleRequest = function(req, res, next) {
                 requestedDir += '/';
             }
             if (exists) {
-                //res.redirect(requestedDir + "index.src");
-                handleRequest({
-                    url: requestedDir + "index.src"
-                }, res, next)
+                /* подменяем урл в запросе */
+                req.url = requestedDir + "index.src";
+
+                /* рекурсивно вызываем handleRequest с запросом на конкретный файл */
+                handleRequest(req, res, next)
             } else {
                 next();
             }

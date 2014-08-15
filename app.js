@@ -87,6 +87,16 @@ var src = require("./core/middleware/src");
 global.app.use(src.handleIndex);
 global.app.use(src.process);
 
+// other middleware to be added
+
+global.app.use(function(req, res, next) {
+    if (req.renderedHtml) {
+        res.send(req.renderedHtml);
+    } else {
+        next();
+    }
+});
+
 /* /Middlewares */
 
 
