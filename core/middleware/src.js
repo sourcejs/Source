@@ -76,11 +76,9 @@ var handleRequest = function(req, res, next) {
                             templateJSON.author = info.author ? info.author : "Anonymous";
                             templateJSON.keywords = info.keywords ? info.keywords : "";
 
-                            var html = ejs.render(template, templateJSON);
+                            req.renderedHtml = ejs.render(template, templateJSON);
 
-                            req.renderedHtml = html;
                             next();
-                            //res.send(html);
                         });
                     }
 
