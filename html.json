@@ -2,23 +2,40 @@
     "base": {
         "btn": {
             "specFile": {
-                "url": "/base/btn",
+                "id": "/base/btn",
                 "contents": [
                     {
-                        "id": 1,
+                        "id": "1",
                         "class": "",
+                        "title": "",
                         "html": [
                             "<div class='some-btn' style='background-color: red;'>BUTTON HTML</div>"
                         ],
                         "nested": [
                             {
-                                "id": 1,
+                                "id": "1_1",
                                 "class": "",
+                                "title": "",
                                 "html": [
                                     "<div class='some-btn' style='background-color: green;'>BUTTON VARIATION</div>"
                                 ],
                                 "nested": []
                             }
+                        ]
+                    }
+                ]
+            }
+        },
+        "nav": {
+            "specFile": {
+                "id": "/base/nav",
+                "contents": [
+                    {
+                        "id": "1",
+                        "class": "",
+                        "title": "",
+                        "html": [
+                            "<div class='nav' style='background-color: green;'>NAV HTML</div>"
                         ]
                     }
                 ]

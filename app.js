@@ -13,6 +13,7 @@ var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var compression = require('compression');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 /* Globals */
 global.app = express();
@@ -44,6 +45,8 @@ app.use(function (req, res, next) {
     // keep executing the router middleware
     next();
 });
+
+app.use(bodyParser.json());
 /* /App config */
 
 
