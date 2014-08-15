@@ -67,14 +67,7 @@ html body { //cascade for weight
 -------------------------------------------------- */
 
 /* complex cascade for targeting only spec decorations, excluding .source_example blocks */
-.source_catalog_tx a,
-.source_main_nav a,
-.source_info a,
-.source_main > a,
-.source_section > a,
-.source_section > *@{notCleaningClasses} > a,
-.source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > a,
-.source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > a {
+.source-only(a,{
     color: #4792D2;
     text-decoration: none;
 
@@ -82,7 +75,7 @@ html body { //cascade for weight
         color: #1c76c2;
         text-decoration: underline;
         }
-    }
+    });
 /* /Spec page resets */
 
 /* /Reset

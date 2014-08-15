@@ -31,6 +31,29 @@
 
 @cleaningClasses: '.source_example, .source_clean';
 @notCleaningClasses: ~':not(.source_example):not(.source_clean)'; // TODO: generate automatically
+//@basicClasses:
+
+/* /Variables
+---------------------------------------------------------------------------------- */
+
+/* Mixins and functions
+---------------------------------------------------------------------------------- */
+
+/**
+ * Mixin for applying styles everywhere except .source_example
+ *
+ * @Params: @selector - String (div, a, etc)
+ *          @rules - css properties ({border: 1px; color: red;})
+ */
+.source-only(@selector, @rules) {
+    .source_main > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector} {
+        @rules();
+        }
+    }
 
 /* /Variables
 ---------------------------------------------------------------------------------- */
