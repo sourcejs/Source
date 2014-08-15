@@ -88,6 +88,8 @@ global.app.use(src.handleIndex);
 global.app.use(src.process);
 
 // other middleware to be added
+var smiles = require("./core/middleware/smiles");
+global.app.use(smiles.process);
 
 global.app.use(function(req, res, next) {
     if (req.renderedHtml) {
