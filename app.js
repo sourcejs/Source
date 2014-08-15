@@ -11,6 +11,8 @@ var deepExtend = require('deep-extend');
 var headerFooter = require('./core/headerFooter.js');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
+var compression = require('compression');
+var cookieParser = require('cookie-parser');
 
 /* Globals */
 global.app = express();
@@ -32,10 +34,10 @@ commander
   .parse(process.argv);
 
 // Optimization
-global.app.use(express.compress());
+global.app.use(compression());
 
 // Cookies
-global.app.use(express.cookieParser());
+global.app.use(cookieParser());
 app.use(function (req, res, next) {
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
@@ -95,6 +97,9 @@ global.app.use(src.process);
 
 // Routes
 require('./core/routes');
+
+// Routes
+require('./core/api');
 
 // User extenstions
 try {

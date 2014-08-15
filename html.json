@@ -1,0 +1,28 @@
+{
+    "base": {
+        "btn": {
+            "specFile": {
+                "url": "/base/btn",
+                "contents": [
+                    {
+                        "id": 1,
+                        "class": "",
+                        "html": [
+                            "<div class='some-btn' style='background-color: red;'>BUTTON HTML</div>"
+                        ],
+                        "nested": [
+                            {
+                                "id": 1,
+                                "class": "",
+                                "html": [
+                                    "<div class='some-btn' style='background-color: green;'>BUTTON VARIATION</div>"
+                                ],
+                                "nested": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
