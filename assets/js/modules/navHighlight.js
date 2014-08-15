@@ -67,7 +67,8 @@ define([
 			navHeaders,
 			currentHeader = -1,
 			filename = '',
-			extension = '';
+			extension = '',
+			hashThreshold = 300;
 
 		var fullFilename = document.location.href.split('/').pop().split('.');
 
@@ -82,7 +83,20 @@ define([
 
 			var headersLength = sourceHeaders.length,
 				minDistance = Number.MAX_VALUE,
-				closestHeader = -1;
+				closestHeader = -1,
+				fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
+
+			if ((document.body.scrollTop || document.documentElement.scrollTop) < hashThreshold) {
+
+				if (!!window.location.hash)	{
+					currentHeader = -1;
+					if (!!(window.history && history.pushState)) {
+						window.history.replaceState({anchor: 0}, document.title, window.location.pathname);
+					}
+				}
+
+				return;
+			}
 
 			// catch section which is closed for top window border
 			for (var i=0; i < headersLength; i++) {
@@ -111,10 +125,10 @@ define([
 					utils.addClass(parent, '__active');
 				}
 
+
+
 				// Modern browsers uses history API for correct back-button-browser functionality
 				if (!!(window.history && history.pushState)) {
-					var fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
-
 					window.history.replaceState({anchor: closestHeader+1}, document.title, fileNameInUrl + hashFromLink);
 				} else { // ie9 fallback
 					 window.location.hash = hashFromLink;

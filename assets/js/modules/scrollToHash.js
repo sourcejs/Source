@@ -1,34 +1,32 @@
 //In separate module, to trace script ready state
 define([
+	"jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",
     "sourceModules/sectionFolding"
-    ], function(utils, loadEvents) {
+    ], function($, utils, loadEvents) {
     var navHash = utils.parseNavHash(),
-	    sections = document.querySelectorAll('.source_section'),
-	    navigation = document.querySelector('.source_nav'),
-	    mainContainer = document.querySelector('.source_main'),
-	    body = document.querySelector('body');
+	    $sections = $('.source_section'),
+	    $navigation = $('.source_nav'),
+	    $mainContainer = $('.source_main'),
+	    $body = $('body');
 
 	// Show hidden sections and navigation
 	function showSections() {
-		for (var i = 0; i < sections.length; i++) {
-			sections[i].className += ' __loaded';
-		}
-
-		navigation.className += ' __loaded';
-		mainContainer.className = mainContainer.className.replace(' __loading', '');
-		body.className = body.className.replace(' __loading', '');
+		$sections.addClass('__loaded');
+		$navigation.addClass('__loaded');
+		$mainContainer.removeClass('__loading');
+		$body.removeClass('__loading');
 	}
 
-	mainContainer.className += ' __loading';
-	body.className += ' __loading';
+	$mainContainer.addClass('__loading');
+	$body.addClass('__loading');
 
 	loadEvents.init(function() {
 		showSections();
 
 		// Chrome scroll bug
-		if ( document.querySelector('html').className.indexOf('webkit') != '-1' ) {
+		if ($('html').hasClass('webkit')) {
 
 			var t = setInterval(function() {
 				if (window.pageYOffset != 0) {

@@ -29,7 +29,10 @@ define([
             new_position_padding = 60; //Header heights
 
         if (new_position) {
-            window.scrollTo(new_position.left, new_position.top - new_position_padding);
+
+            $('html, body').animate({
+				scrollTop: (new_position.top - new_position_padding)
+			 }, 300);
         }
     };
 
