@@ -254,5 +254,28 @@ define([
         return this.parsePages(getSpecificCat, true);
     };
 
+    //TODO: it should be refactored asap.
+    var getCurrentCatalogSpec = function(navListDir, targetCatalog) {
+        var catObj;
+        if (!!targetCatalog[navListDir + '/specFile']) {
+            catObj = targetCatalog[navListDir + '/specFile'];
+        } else if (!!targetCatalog[ 'specFile' ]) {
+            catObj = targetCatalog['specFile']['specFile']
+                ? targetCatalog['specFile']['specFile']
+                : targetCatalog['specFile'];
+        }
+        return catObj;
+    };
+
+    ParseFileTree.prototype.getCatalog = function(catalogName, sortingCallback) {
+        if (!catalogName) return;
+        var specsHash = this.parsePages(catalogName, true);
+        var currentCat = getCurrentCatalogSpec(catalogName, specsHash); 
+        var result = $.map(specsHash, function(k, v) {
+            return k['specFile'] ? [k] : undefined;
+        });
+        return {"catalog": currentCat, "data": result.sort(sortingCallback)};
+    };
+
     return new ParseFileTree();
 });

@@ -11,41 +11,40 @@ define([
     'sourceModules/parseFileTree'
     ], function($, module, utils, parseFileTree) {
 
-    function GlobalNav() {
-        var _this = this;
-
-        this.options.modulesOptions.globalNav = $.extend(true, {
-            filterEnabled: true,
-            showPreviews: false,
-            sortType: 'sortByDate',
-
-            CATALOG : 'source_catalog',
-            CATALOG_LIST : 'source_catalog_list',
-            CATALOG_LIST_I : 'source_catalog_list_i',
-                CATALOG_LIST_I_PREVIEW_NAME : 'thumbnail.png',
-            CATALOG_LIST_ALL : 'source_catalog_all',
-                CATALOG_LIST_ALL_A : 'source_a_bl',
-
+    var defaults = {
+        "filterEnabled": true,
+        "showPreviews": false,
+        "sortType": 'sortByDate',
+        "pageLimit": 999,
+        "ignorePages": [],
+        "thumbnailName": 'thumbnail.png',
+        "classes": {
+            CATALOG: 'source_catalog',
+            CATALOG_LIST: 'source_catalog_list',
+            CATALOG_LIST_I: 'source_catalog_list_i',
+            CATALOG_LIST_ALL: 'source_catalog_all',
+            CATALOG_LIST_ALL_A: 'source_a_bl',
             CATALOG_IMG_TUMBLER: 'source_catalog_image-tumbler',
-
-            CATALOG_LIST_A : 'source_catalog_a source_a_g',
-            CATALOG_LIST_A_IMG : 'source_catalog_img',
-            CATALOG_LIST_A_TX : 'source_catalog_title',
-            CATALOG_LIST_DATE : 'source_catalog_footer',
-            CATALOG_LIST_BUBBLES : 'source_bubble',
-
+            CATALOG_LIST_A: 'source_catalog_a source_a_g',
+            CATALOG_LIST_A_IMG: 'source_catalog_img',
+            CATALOG_LIST_A_TX: 'source_catalog_title',
+            CATALOG_LIST_DATE: 'source_catalog_footer',
+            CATALOG_LIST_BUBBLES: 'source_bubble',
             CATALOG_FILTER : 'source_catalog-filter',
-            SOURCE_SUBHEAD : 'source_subhead',
-
+            SOURCE_SUBHEAD : 'source_subhead'
+        },
+        "labels": {
             RES_LINK_TO_ALL : 'All',
             RES_AUTHOR : 'Author',
             RES_NO_DATA_ATTR : 'Data-nav attr not set',
             RES_NO_CATALOG : 'Specified catalog is empty or does not exist',
-            RES_NO_CATALOG_INFO : 'Specified catalog does not have data about it',
+            RES_NO_CATALOG_INFO : 'Specified catalog does not have data about it'
+        }
+    };
 
-            pageLimit : 999
-        }, this.options.modulesOptions.globalNav);
-
+    function GlobalNav() {
+        var _this = this;
+        this.options.modulesOptions.globalNav = $.extend(true, defaults, this.options.modulesOptions.globalNav);
         $(function(){
             _this.init();
         });
@@ -55,6 +54,8 @@ define([
     GlobalNav.prototype.constructor = GlobalNav;
 
     GlobalNav.prototype.init = function () {
+        var navOptions = this.options.modulesOptions.globalNav;
+        this.catalog = $("." + navOptions.classes.CATALOG);
         this.drawNavigation();
         this.hideImgWithError();
 
@@ -63,272 +64,172 @@ define([
         }
     };
 
+
+    //Filtering by specified catalogue
+    var skipSpec = function(navListCat, currentObj) {
+        var obj = currentObj;
+        var response = true; // skip by default
+
+        //obj['cat'] is an array
+        //if cat has needed value
+        if (!!obj['cat'] && obj['cat'].indexOf(navListCat) > -1) {
+            response = false;
+
+        //without-cat mode, showing all specs without cat field in info.json defined or
+        } else if ( navListCat === 'without-cat' && (typeof obj['cat'] === 'undefined' || obj['cat'].length === 0) ) {
+            response = false;
+        }
+
+        return response;
+    };
+
+    //Filtering hidden specs
+    var isHidden = function(currentObj) {
+        var obj = currentObj;
+        var response = false; // skip by default
+
+        //obj['cat'] is an array
+        if (!!obj['cat'] && obj['cat'].indexOf("hidden") > -1 ) {
+            response = true;
+        }
+        return response;
+    };
+
+    GlobalNav.prototype.initCatalog = function(catalog, catalogMeta, specifCatAndDirDefined) {
+        var classes = this.options.modulesOptions.globalNav.classes;
+        if (catalog.find('.' + classes.CATALOG_LIST).length === 0) {
+            catalog.append([
+                '<ul class="', classes.CATALOG_LIST, '">',
+                    '<img src="/source/assets/i/process.gif" alt="Загрузка..."/>',
+                '</ul>'
+            ].join(''));
+        }
+        if (!specifCatAndDirDefined && catalogMeta) {
+            var isHeaderAdded = catalog.find('.' + classes.CATALOG_LIST_A_TX).length !== 0;
+            var isInfoAdded = catalog.find('.source_catalog_tx').length !== 0;
+
+
+
+            if (catalogMeta && !isHeaderAdded) {
+                catalog.prepend(['<h2 class="', classes.CATALOG_LIST_A_TX, '">', catalogMeta.title,'</h2>'].join(''));
+            }
+            if (catalogMeta.info && $.trim(catalogMeta.info) !== '' && !isInfoAdded) {
+                sourceCatalog
+                    .children('.' + classes.CATALOG_LIST_A_TX)
+                    .first()
+                    .after('<div class="source_catalog_tx">' + catalogMeta.info + '</div>');
+            }
+        } else {
+            console.log(this.options.modulesOptions.globalNav.labels.RES_NO_CATALOG_INFO);
+        }
+    };
+
     //Drawing navigation and page info in each catalog defined on page
     GlobalNav.prototype.drawNavigation = function (sortType) {
-        var _this = this,
-            L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG),
-            CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST,
-            CATALOG_LIST_I = this.options.modulesOptions.globalNav.CATALOG_LIST_I,
-                CATALOG_LIST_I_PREVIEW_NAME = this.options.modulesOptions.globalNav.CATALOG_LIST_I_PREVIEW_NAME,
+        var _this = this;
+        var navOptions = this.options.modulesOptions.globalNav;
+        var classes = navOptions.classes;
+        var labels = navOptions.labels;
+        var sortType = sortType || navOptions.sortType;
 
-            CATALOG_LIST_ALL = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL,
-                CATALOG_LIST_ALL_A = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL_A,
+        this.catalog.each(function () {
+            var catalog = $(this);
+            var navListDir = catalog.attr('data-nav');
+            var navListCat = catalog.attr('data-cat');
+            var specifCatAndDirDefined = !!navListDir && !!navListCat;
 
-            CATALOG_LIST_A = this.options.modulesOptions.globalNav.CATALOG_LIST_A,
-                CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG,
-                CATALOG_LIST_A_TX = this.options.modulesOptions.globalNav.CATALOG_LIST_A_TX,
+            //Catalog has no data about category
+            var catalogData = parseFileTree.getCatalog(navListDir, _this[sortType]);
+            if (!catalogData) return;
+            var targetData = catalogData.data;
+            var targetCatalog = catalogData.catalog;
+            _this.initCatalog(catalog, targetCatalog, specifCatAndDirDefined);
+            var L_CATALOG_LIST = catalog.find('.' + classes.CATALOG_LIST);
 
-            CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
-            CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES,
-
-            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
-
-            RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL,
-            RES_AUTHOR = this.options.modulesOptions.globalNav.RES_AUTHOR,
-            RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR,
-            RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG,
-            RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO,
-
-            pageLimit = this.options.modulesOptions.globalNav.pageLimit;
-            sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
-            ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
-
-        //TODO: refactor this module and write tests
-        L_CATALOG.each(function () {
-            var sourceCat = $(this),
-                navListDir = sourceCat.attr('data-nav'),
-                navListCat = sourceCat.attr('data-cat'),
-                specifCatAndDirDefined = typeof navListDir !== 'undefined' && typeof navListCat !== 'undefined';
-
-            //Filtering by specified catalogue
-            var skipSpec = function(currentObj){
-                var obj = currentObj,
-                    response = true; // skip by default
-
-                //obj['cat'] is an array
-                //if cat has needed value
-                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf(navListCat) > -1) {
-                    response = false;
-
-                //without-cat mode, showing all specs without cat field in info.json defined or
-                } else if ( navListCat === 'without-cat' && (typeof obj['cat'] === 'undefined' || obj['cat'].length === 0) ) {
-
-                    response = false;
-                }
-
-                return response;
-            };
-
-            //Filtering hidden specs
-            var isHidden = function(currentObj){
-                var obj = currentObj,
-                    response = false; // skip by default
-
-                //obj['cat'] is an array
-                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf("hidden") > -1 ) {
-                    response = true;
-                }
-
-                return response;
-            };
-
-            if ( (navListDir !== undefined) && (navListDir != '') ) { //Catalog has data about category
-
-                var targetCat = parseFileTree.getCatAll(navListDir),
-                	catObj;
-
-				if (targetCat === undefined) return;
-
-				if ( !sourceCat.find('.source_catalog_list').length ) {
-					sourceCat.append('<ul class="source_catalog_list"><img src="/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
-				}
-
-                //Looking for catalogue info
-				if (typeof targetCat[ navListDir + '/specFile' ] === 'object') {
-					catObj = targetCat[ navListDir + '/specFile' ];
-				} else if ( typeof targetCat[ 'specFile' ] === 'object' ) {
-					if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
-						catObj = targetCat[ 'specFile' ][ 'specFile' ];
-					} else {
-						catObj = targetCat[ 'specFile' ];
-					}
-				}
-
-				if (typeof catObj === 'object' && !specifCatAndDirDefined) {
-
-					if (  (catObj.title !== undefined) && (!sourceCat.find('.source_catalog_title').length)) {
-						sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>')
-					}
-
-					if ( (!sourceCat.find('.source_catalog_tx').length) && (catObj.info !== undefined) && ( $.trim(catObj.info) !== '' )) {
-						sourceCat
-							.children('.source_catalog_title')
-							.first()
-								.after('<div class="source_catalog_tx">' + catObj.info + '</div>')
-					}
-
-				} else {
-					console.log(RES_NO_CATALOG_INFO);
-				}
-
-				var L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
-
-                // cast Object to Array of objects
-                if (typeof targetCat === 'object'){
-                    var targetCatArray = $.map(targetCat, function(k, v) {
-                        if(typeof k['specFile'] === 'object') {
-                            return [k];
-                        }
-                    });
-
-                    // sort
-                    targetCatArray.sort(function(a, b){
-                    	if (sortType == 'sortByDate') {
-                    		return _this.sortByDate(a, b)
-                    	} else if (sortType == 'sortByAlpha') {
-                    		return _this.sortByAlpha(a, b);
-                    	} else {
-							return _this.sortByDate(a, b)
-									|| _this.sortByAlpha(a, b);
-                    	}
-                    });
-                }
-
-                //Collecting nav tree
-                if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
-
-                    var navTreeHTML = '',
-                        authorName = '';
-
-                    //Building navigation HTML
-                    var addNavPosition = function (target) {
-
-                        if (typeof target.author === 'undefined') {
-                            authorName = '';
-                        } else {
-                            authorName = target.author;
-                        }
-
-                        //fixing relative path due to server settings
-                        var targetUrl = target.url;
-                        if (targetUrl.charAt(0) !== '/')
-                            targetUrl = '/' + targetUrl;
-
-                        var previewPicture = '';
-                        if (target.thumbnail) {
-                            previewPicture = '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >';
-                        }
-
-
-                        navTreeHTML += '' +
-                                '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
-                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
-                                previewPicture +
-                                '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
-
-                        // TODO: move to plugins
-                        if(parseInt(target.bubbles)) {
-                            navTreeHTML +=
-                            '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
-                        }
-
-                        navTreeHTML +=
-                                '</a>' +
-                                '</li>';
-
-                    };
-
-                    var navListItems = (pageLimit > targetCatArray.length)
-                            ? targetCatArray.length
-                            : pageLimit;
-
-                    for (var j = 0; j < navListItems; j++) {
-                        var targetPage = targetCatArray[j]['specFile'];
-
-                        //Ignore page list
-                        if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
-                        	continue;
-                        }
-
-                        //Undefined title
-                        if (targetPage === undefined || targetPage.title === undefined) {
-                        	continue;
-                        }
-
-                        //Skip spec if we're filtering it by specific cat
-                        if (specifCatAndDirDefined && skipSpec(targetCatArray[j]['specFile']) || isHidden(targetCatArray[j]['specFile']) ) {
-                            continue; //skip
-                        }
-
-                        addNavPosition(targetPage);
-                    }
-
-
-
-                    //Injecting nav tree
-                    L_CATALOG_LIST.html(navTreeHTML);
-
-                    //Go to cat page link
-                    if (targetCatArray.length > navListItems) {
-                        L_CATALOG_LIST.append(
-                            '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + navListDir + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
-                            '</li>');
-                    }
-
-                }
-
-                if (targetCat === undefined) {
-                    L_CATALOG_LIST.html(RES_NO_CATALOG);
-                }
-
-            } else {
-
-            	if (navListDir !== undefined) {
-					//Display error
-					L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
-            	}
+            if (navListDir && !navListDir.length) {
+                //Display error
+                L_CATALOG_LIST.html(labels.RES_NO_DATA_ATTR);
+                return;
             }
 
+            //Building navigation HTML
+            if (L_CATALOG_LIST.length === 1 && targetData.length) {
+                //getting fragment with items
+                var renderedItems = _this.getNavigationItemsList(targetData, navListDir, function(spec) {
+                    var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
+                    var isFiltered = specifCatAndDirDefined && skipSpec(navListCat, spec) || isHidden(spec);
+
+                    return isInIgnoreList || isFiltered ? false : true;
+                });
+                L_CATALOG_LIST.html(renderedItems);
+            }
         });
+    };
+
+    GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
+        //temporary container to hold navigation items.
+        var navigationItemsList = document.createDocumentFragment();
+        var navOptions = this.options.modulesOptions.globalNav;
+        var pageLimit = navOptions.pageLimit;
+        var classes = navOptions.classes;
+        var labels = navOptions.labels;
+        var lengthLimit = pageLimit > specifications.length
+            ? specifications.length
+            : pageLimit;
+        for (var j = 0; j < lengthLimit; j++) {
+            var spec = specifications[j]['specFile'];
+            if (!isValid(spec)) {
+                continue;
+            }
+            navigationItemsList.appendChild(this.createNavTreeItem(spec).get(0));
+        }
+
+        //Go to cat page link
+        if (specifications.length > lengthLimit) {
+            navigationItemsList.appendChild($([
+                '<li class="', classes.CATALOG_LIST_I, ' ', classes.CATALOG_LIST_ALL, '">',
+                    '<a class="', classes.CATALOG_LIST_ALL_A, '" href="', catalogUrl, '">', labels.RES_LINK_TO_ALL, ' ', specifications.length, '</a>',
+                '</li>'].join('')).get(0)
+            );
+        }
+        return navigationItemsList;
     };
 
     GlobalNav.prototype.createNavTreeItem = function(target) {
         if (!target) return;
         var navConfig = this.options.modulesOptions.globalNav;
+        var classes = navConfig.classes;
         var author = target.author
             ? " | " + navConfig.RES_AUTHOR + ": " + target.author
             : "";
 
         //fixing relative path due to server settings
         var targetUrl = target.url.charAt(0) === '/' ? target.url : '/' + target.url;
-        var imageUrl = targetUrl + '/' + navConfig.CATALOG_LIST_I_PREVIEW_NAME;
+        var imageUrl = targetUrl + '/' + navConfig.thumbnailName;
 
         if (!this.createNavTreeItem.template) {
             this.createNavTreeItem.template = $([
-                '<li class="', navConfig.CATALOG_LIST_I, '">',
-                    '<a class="', navConfig.CATALOG_LIST_A, '" href="#">',
-                        '<img class="', navConfig.CATALOG_LIST_A_IMG,'" />',
-                        '<span class="', navConfig.CATALOG_LIST_A_TX,'"></span>',
-                        '<div class="', navConfig.CATALOG_LIST_DATE,'"></div>',
-                        '<div class="', navConfig.CATALOG_LIST_BUBBLES,'"></div>',
+                '<li class="', classes.CATALOG_LIST_I, '">',
+                    '<a class="', classes.CATALOG_LIST_A, '" href="#">',
+                        '<img class="', classes.CATALOG_LIST_A_IMG,'" />',
+                        '<span class="', classes.CATALOG_LIST_A_TX,'"></span>',
+                        '<div class="', classes.CATALOG_LIST_DATE,'"></div>',
+                        '<div class="', classes.CATALOG_LIST_BUBBLES,'"></div>',
                     '</a>',
                 '</li>'
             ].join(''));
         }
         var result = this.createNavTreeItem.template.clone(true);
-        result.find("." + navConfig.CATALOG_LIST_A.split(' ').join('.')).attr("href", targetUrl);
-        result.find("." + navConfig.CATALOG_LIST_A_IMG)
+        result.find("." + classes.CATALOG_LIST_A.split(' ').join('.')).attr("href", targetUrl);
+        result.find("." + classes.CATALOG_LIST_A_IMG)
             .attr("src", imageUrl)
             .error(function(e) {
                 $(this).css({"display": "none"});
             });
-        result.find("." + navConfig.CATALOG_LIST_A_TX).html(target.title);
-        result.find("." + navConfig.CATALOG_LIST_DATE).html(target.lastmod + author);
+        result.find("." + classes.CATALOG_LIST_A_TX).html(target.title);
+        result.find("." + classes.CATALOG_LIST_DATE).html(target.lastmod + author);
         if(parseInt(target.bubbles)) {
-            result.find("." + navConfig.CATALOG_LIST_BUBBLES).html(target.bubbles);
+            result.find("." + classes.CATALOG_LIST_BUBBLES).html(target.bubbles);
         }
 
         return result;
