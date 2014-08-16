@@ -1,14 +1,19 @@
 var fs = require('fs'),
-    ejs = require('ejs'),
     path = require('path'),
-    pathToApp = path.dirname(require.main.filename),
-    getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
+    pathToApp = path.dirname(require.main.filename);
 
-var userTemplatesDir = global.app.get('user') + "/core/views/",
-    coreTemplatesDir = pathToApp + "/core/views/";
-
+/*
+* Считываем контент спеки и записываем его в реквест
+*
+* @param {object} req - Request object
+* @param {object} res - Response object
+* @param {function} next - The callback function
+* */
 var handleRequest = function(req, res, next) {
-    var physicalPath = global.app.get('user') + req.url; // get the physical path of a requested file
+    req.specData = {};
+
+    // get the physical path of a requested file
+    var physicalPath = global.app.get('user') + req.url;
 
     // TODO: move to config with array of exclusions
     if (req.url.lastIndexOf('/docs/', 0) === 0) {
@@ -42,41 +47,8 @@ var handleRequest = function(req, res, next) {
                                 info = JSON.parse(info);
                             }
 
-                            var headerFooterHTML = getHeaderAndFooter();
-
-                            var getTemplate = function(name){
-                                var output;
-
-                                if (fs.existsSync(userTemplatesDir + name)) {
-                                    output = fs.readFileSync(userTemplatesDir + name, "utf-8");
-                                } else {
-                                    output = fs.readFileSync(coreTemplatesDir + name, "utf-8");
-                                }
-
-                                return output;
-                            };
-
-                            var template;
-
-                            if (info.template) {
-                                template = getTemplate(info.template + '.ejs');
-                            } else if (info.role === 'navigation') {
-                                template = getTemplate("navigation.ejs");
-                            } else {
-                                template = getTemplate("spec.ejs");
-                            }
-
-                            var templateJSON = {
-                                content: data,
-                                header: headerFooterHTML.header,
-                                footer: headerFooterHTML.footer
-                            };
-
-                            templateJSON.title = info.title ? info.title : "New spec";
-                            templateJSON.author = info.author ? info.author : "Anonymous";
-                            templateJSON.keywords = info.keywords ? info.keywords : "";
-
-                            req.renderedHtml = ejs.render(template, templateJSON);
+                            req.specData.info = info; // записываем инфу о спеке в реквест
+                            req.specData.renderedHtml = data; // записываем контент спеки в реквест
 
                             next();
                         });
@@ -114,6 +86,10 @@ var handleRequest = function(req, res, next) {
 
 /*
 * check if requested file is *.src and render
+*
+* @param {object} req - Request object
+* @param {object} res - Response object
+* @param {function} next - The callback function
 * */
 exports.process = function (req, res, next) {
     handleRequest(req, res, next)
@@ -121,6 +97,10 @@ exports.process = function (req, res, next) {
 
 /*
 * if URL ends with "index.src" => redirect to trailing slash
+*
+* @param {object} req - Request object
+* @param {object} res - Response object
+* @param {function} next - The callback function
 * */
 exports.handleIndex = function (req, res, next) {
     if (req.url.slice(-9) === 'index.src') {

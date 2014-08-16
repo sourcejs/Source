@@ -83,21 +83,18 @@ global.app.use(function(req, res, next){
 });
 
 // *.src content
-var src = require("./core/middleware/src");
-global.app.use(src.handleIndex);
-global.app.use(src.process);
+var read = require("./core/middleware/read");
+global.app.use(read.handleIndex);
+global.app.use(read.process);
 
-// other middleware to be added
 var smiles = require("./core/middleware/smiles");
 global.app.use(smiles.process);
 
-global.app.use(function(req, res, next) {
-    if (req.renderedHtml) {
-        res.send(req.renderedHtml);
-    } else {
-        next();
-    }
-});
+var wrap = require("./core/middleware/wrap");
+global.app.use(wrap.process);
+
+var send = require("./core/middleware/send");
+global.app.use(send.process);
 
 /* /Middlewares */
 
