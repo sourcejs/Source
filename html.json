@@ -2,7 +2,6 @@
     "base": {
         "btn": {
             "specFile": {
-                "id": "/base/btn",
                 "contents": [
                     {
                         "id": "1",
@@ -28,7 +27,6 @@
         },
         "nav-sm": {
             "specFile": {
-                "id": "/base/nav-sm",
                 "contents": [
                     {
                         "id": "1",

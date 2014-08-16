@@ -8,6 +8,7 @@ var pathToApp = path.dirname(require.main.filename);
 var parseHTML = new parseData('html');
 var parseSpecs = new parseData('specs');
 
+// Api header config
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -22,6 +23,8 @@ router.route('/specs')
     .post(function(req, res) {
         var data = {};
         var reqID = req.body.id;
+        var reqFilter = req.body.filter;
+        var reqFilterOut = req.body.filterOut;
 
         if (parseSpecs.dataEsixts()) {
             if (reqID) {
@@ -35,12 +38,29 @@ router.route('/specs')
                     });
                 }
 
-            } else {
+            } else if (reqFilter || reqFilterOut) {
+                var dataFiltered = parseSpecs.getFilteredData({
+                    filter: reqFilter,
+                    filterOut: reqFilterOut
+                });
+
+                if (dataFiltered && typeof dataFiltered === 'object') {
+                    res.status(200).jsonp(dataFiltered);
+                } else {
+                    res.status(404).jsonp({
+                        message: "id not found"
+                    });
+                }
+            }
+
+            // If not filtering query set
+            if (!reqID || !reqFilter || !reqFilterOut) {
                 data = parseSpecs.getAll();
+
                 res.status(200).jsonp(data);
             }
         } else {
-            res.status(200).jsonp({
+            res.status(404).jsonp({
                 message: "pages_tree.json not found"
             });
         }
@@ -66,6 +86,7 @@ router.route('/specs/html')
 
             } else {
                 data = parseHTML.getAll();
+
                 res.status(200).jsonp(data);
             }
 
