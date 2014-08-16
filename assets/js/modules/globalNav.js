@@ -354,11 +354,7 @@ define([
             localStorage.setItem("source_enabledFilter", JSON.stringify(enabledFilter));
             _this.drawNavigation(sortType, sortDirection)
         }
-
-        $(document).on("click", "#sortByAlph", function() {
-            updateView($(this));
-        });
-        $(document).on("click", "#sortByDate", function() {
+        $(document).on("click", ".source_sort-list_a", function() {
             updateView($(this));
         });
     };

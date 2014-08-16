@@ -275,7 +275,8 @@ define([
     };
 
     ParseFileTree.prototype.getCatalog = function(catalogName, sortingCallback) {
-        var specsHash = catalogName.length 
+        if (catalogName === undefined) return;
+        var specsHash = catalogName.length
             ? this.parsePages(catalogName, true)
             : this.getAllPages();
         var result = $.map(specsHash, function(k, v) {
