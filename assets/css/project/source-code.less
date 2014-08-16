@@ -3,7 +3,7 @@
 
 .source_source-code,
 code.brush {
-	display: none !important; /* Hide all code source by default */
+	display: none; /* Hide all code source by default */
 	}
 
 .source_source-code {
@@ -15,19 +15,20 @@ code.brush {
 .source_source-code__min .source_source-code_toggle .source_show {display: inline;}
 
 .source_source-code__min .source_source-code_cnt {
-	display: none !important;
+	display: none;
 	}
 
 .source_source-code_toggle {
 	display: inline-block;
 	height: 14px;
 	margin-bottom: 10px;
-	border-bottom: #25588D dashed 1px;
-	font-size: 10px;
-	text-decoration: none !important;
+	border-bottom: #25588D dashed 1px !important;
+	font-size: 10px !important;
+	text-decoration: none;
 	}
 	.source_source-code_toggle:hover {
-		border-bottom: none;
+		border-bottom: none !important;
+        text-decoration: none !important;
 		padding-bottom: 1px;
 		}
 

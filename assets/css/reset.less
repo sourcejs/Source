@@ -1,49 +1,46 @@
 /* Reset
 ---------------------------------------------------------------------------------- */
+.reset() {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    vertical-align: baseline;
+    background: none;
+    outline: none;
+    text-align: left;
+    text-decoration: none;
+    z-index: 1;
+    line-height: 1;
+    list-style: none;
+    quotes: none;
+    content: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    }
 
-html {
-	overflow-y: scroll;
-	}
-
-html,
-html body { //cascade for weight
-	padding: 0;
-	margin: 0;
-	height: 100%;
-	}
-
-html body { //cascade for weight
-	position: relative;
-	min-width: 990px;
-	font: 14px/1.5 Arial, Helvetica, sans-serif;
-	background: #fff;
-	color: #333;
-
-		&.__loading {
-				overflow: hidden;
-			}
-	}
 
 /* Fonts
 -------------------------------------------------- */
 
 @media @media_min-step-m {
-		/* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
-		@font-face {
-		    font-family: 'Museo';
-		    src: url('/source/assets/fonts/museocyrl_500-webfont.woff2') format('woff2'),
-                 url('/source/assets/fonts/museocyrl_500-webfont.woff') format('woff');
-		    font-weight: normal;
-		    font-style: normal;
-		}
+    /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
+    @font-face {
+        font-family: 'Museo';
+        src: url('/source/assets/fonts/museocyrl_500-webfont.woff2') format('woff2'),
+             url('/source/assets/fonts/museocyrl_500-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        }
 
-		@font-face {
-		    font-family: 'Museo Sans';
-		    src: url('/source/assets/fonts/museosanscyrl-500-webfont.woff2') format('woff2'),
-                 url('/source/assets/fonts/museosanscyrl-500-webfont.woff') format('woff');
-		    font-weight: normal;
-		    font-style: normal;
-		}
+    @font-face {
+        font-family: 'Museo Sans';
+        src: url('/source/assets/fonts/museosanscyrl-500-webfont.woff2') format('woff2'),
+             url('/source/assets/fonts/museosanscyrl-500-webfont.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        }
 	}
 
 /* /Fonts */
@@ -65,17 +62,48 @@ html body { //cascade for weight
 
 /* Spec page resets
 -------------------------------------------------- */
-
-/* complex cascade for targeting only spec decorations, excluding .source_example blocks */
 .source-only(a,{
     color: #4792D2;
     text-decoration: none;
+    line-height: 1.5;
 
     &:hover {
         color: #1c76c2;
         text-decoration: underline;
         }
     });
+.source-only(div,{});
+.source-only(p,{});
+.source-only(ul,{});
+.source-only(li,{});
+.source-only(ol,{});
+.source-only(h1,{});
+.source-only(h2,{});
+.source-only(h3,{});
+.source-only(h4,{});
+.source-only(h5,{});
+.source-only(h6,{});
+.source-only(span,{});
+.source-only(q,{});
+.source-only(blockquote,{});
+.source-only(strong,{});
+.source-only(b,{});
+.source-only(em,{});
+.source-only(i,{});
+.source-only(section,{});
+.source-only(table,{});
+.source-only(nav,{});
+.source-only(aside,{});
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    }
+.source_section p, .source_section div {
+    line-height: 1.5;
+    }
 /* /Spec page resets */
 
 /* /Reset
