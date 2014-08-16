@@ -11,6 +11,7 @@ var fs = require('fs'),
 * */
 var handleRequest = function(req, res, next) {
     req.specData = {};
+    req.specData.isJade = false;
 
     // get the physical path of a requested file
     var physicalPath = global.app.get('user') + req.url;
@@ -26,7 +27,7 @@ var handleRequest = function(req, res, next) {
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
     /* если запрашивается файл */
-    if (extension == ".src") {
+    if (extension == ".src" || extension == ".jade") {
         fs.exists(physicalPath, function(exists) {
 
             if (exists) {
@@ -45,6 +46,11 @@ var handleRequest = function(req, res, next) {
                                 };
                             } else {
                                 info = JSON.parse(info);
+                            }
+
+                            /* if requested file is *.jade, then write flag to request */
+                            if (extension == ".jade") {
+                                req.specData.isJade = true;
                             }
 
                             req.specData.info = info; // записываем инфу о спеке в реквест
@@ -76,7 +82,17 @@ var handleRequest = function(req, res, next) {
                 /* рекурсивно вызываем handleRequest с запросом на конкретный файл */
                 handleRequest(req, res, next)
             } else {
-                next();
+                fs.exists(physicalPath + "index.jade", function(exists) {
+                    if (exists) {
+                        /* подменяем урл в запросе */
+                        req.url = requestedDir + "index.jade";
+
+                        /* рекурсивно вызываем handleRequest с запросом на конкретный файл */
+                        handleRequest(req, res, next)
+                    } else {
+                        next();
+                    }
+                });
             }
         });
     } else {
