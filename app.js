@@ -90,7 +90,9 @@ global.app.use(read.process);
 // user defined middleware
 try {
     require(global.app.get('user') + "/core/middleware/");
-} catch(e){}
+} catch(e){
+    console.log("User middleware require error:", e);
+}
 
 var wrap = require("./core/middleware/wrap");
 global.app.use(wrap.process);
@@ -114,7 +116,9 @@ try {
 
     /* User additional functionality */
     require(global.app.get('user') + "/core/app.js");
-} catch(e){}
+} catch(e){
+    console.log("User plugins require error:", e);
+}
 /* /Includes */
 
 
