@@ -7,7 +7,7 @@
 * @param {function} next - The callback function
 * */
 exports.process = function (req, res, next) {
-    if (req.specData.renderedHtml) {
+    if (req.specData && req.specData.renderedHtml) {
         res.send(req.specData.renderedHtml);
     } else {
         next();

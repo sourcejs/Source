@@ -87,8 +87,10 @@ var read = require("./core/middleware/read");
 global.app.use(read.handleIndex);
 global.app.use(read.process);
 
-var smiles = require("./core/middleware/smiles");
-global.app.use(smiles.process);
+// user defined middleware
+try {
+    require(global.app.get('user') + "/core/middleware/");
+} catch(e){}
 
 var wrap = require("./core/middleware/wrap");
 global.app.use(wrap.process);

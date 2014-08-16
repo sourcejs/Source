@@ -34,7 +34,7 @@ function getTemplate(name) {
 * */
 exports.process = function (req, res, next) {
 
-    if (req.specData.renderedHtml) {
+    if (req.specData && req.specData.renderedHtml) {
         // получаем контент спеки
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
 
