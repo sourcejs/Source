@@ -9,7 +9,7 @@ var
     fs = require('fs'),
     phantom = require('phantomjs'),
     childProcess = require('child_process'),
-    pages_tree = require('/Users/dmitrylapynov/odkl/Source-odkl/core/api/../../user/data/pages_tree.json'),
+    pages_tree = require('/user/data/pages_tree.json'),
     pagesParser = require('./pagesParser'),
     exec = childProcess.exec,
 
