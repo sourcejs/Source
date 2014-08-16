@@ -21,16 +21,16 @@ define([
         "ignorePages": [],
         "thumbnailName": "thumbnail.png",
         "classes": {
-            "CATALOG": "source_catalog",
-            "CATALOG_LIST": "source_catalog_list",
-            "CATALOG_LIST_I": "source_catalog_list_i",
-            "CATALOG_LIST_ALL": "source_catalog_all",
-            "CATALOG_LIST_ALL_A": "source_a_bl",
-            "CATALOG_IMG_TUMBLER": "source_catalog_image-tumbler",
-            "CATALOG_LIST_A": "source_catalog_a source_a_g",
-            "CATALOG_LIST_A_IMG": "source_catalog_img",
-            "CATALOG_LIST_A_TX": "source_catalog_title",
-            "CATALOG_LIST_DATE": "source_catalog_footer",
+            "catalog": "source_catalog",
+            "catalogList": "source_catalog_list",
+            "catalogListItem": "source_catalog_list_i",
+            "catalogListAll": "source_catalog_all",
+            "catalogLinkToAll": "source_a_bl",
+            "catalogImageThumbler": "source_catalog_image-tumbler",
+            "catalogListLink": "source_catalog_a source_a_g",
+            "catalogListImage": "source_catalog_img",
+            "catalogListTitle": "source_catalog_title",
+            "catalogListDate": "source_catalog_footer",
             "catalogListBubbles": "source_bubble",
             "catalogFilter" : "source_catalog-filter",
             "sourceSubhead" : "source_subhead",
@@ -38,7 +38,7 @@ define([
             "showPreview": "__show-preview"
         },
         "labels": {
-            "linkToAllSpecs": "All",
+            "linkToAllSpecs": "Все",
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
             "noCatalogInfo" : "Specified catalog does not have data about it",
@@ -64,27 +64,27 @@ define([
 
     GlobalNav.prototype.templates = {
         "catalogList": _.template([
-            '<ul class="<%= classes.CATALOG_LIST %>">',
+            '<ul class="<%= classes.catalogList %>">',
                 '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
             '</ul>'
         ].join("")),
 
-        "catalogHeader": _.template('<h2 class="<%= classes.CATALOG_LIST_A_TX %>"> <%= catalogMeta.title %></h2>'),
+        "catalogHeader": _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
 
         "catalogMeta": _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
 
         "catalogLinkToAll": _.template([
-            '<li class="<%= classes.CATALOG_LIST_I %> <%= classes.CATALOG_LIST_ALL %>">',
-                '<a class="<%= classes.CATALOG_LIST_ALL_A %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
+            '<li class="<%= classes.catalogListItem %> <%= classes.catalogListAll %>">',
+                '<a class="<%= classes.catalogLinkToAll %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
             '</li>'
         ].join("")),
 
         "navigationListItem": _.template([
-            '<li class="<%= classes.CATALOG_LIST_I %>">',
-                '<a class="<%= classes.CATALOG_LIST_A %>" href="#">',
-                    '<img class="<%= classes.CATALOG_LIST_A_IMG %>" />',
-                    '<span class="<%= classes.CATALOG_LIST_A_TX %>"></span>',
-                    '<div class="<%= classes.CATALOG_LIST_DATE %>"></div>',
+            '<li class="<%= classes.catalogListItem %>">',
+                '<a class="<%= classes.catalogListLink %>" href="#">',
+                    '<img class="<%= classes.catalogListImage %>" />',
+                    '<span class="<%= classes.catalogListTitle %>"></span>',
+                    '<div class="<%= classes.catalogListDate %>"></div>',
                     '<div class="<%= classes.catalogListBubbles %>"></div>',
                 '</a>',
             '</li>'
@@ -92,7 +92,7 @@ define([
 
         "catalogFilter": _.template('<div class="<%= classes.catalogFilter %>"></div>'),
 
-        "togglePreviewLink": _.template('<a class="<%= classes.CATALOG_IMG_TUMBLER %>" href="#"><%= togglePreviewLabel %></a>'),
+        "togglePreviewLink": _.template('<a class="<%= classes.catalogImageThumbler %>" href="#"><%= togglePreviewLabel %></a>'),
 
         "sortList": _.template([
             '<ul class="source_sort-list">',
@@ -106,7 +106,7 @@ define([
 
     GlobalNav.prototype.init = function () {
         var navOptions = this.options.modulesOptions.globalNav;
-        this.catalog = $("." + navOptions.classes.CATALOG);
+        this.catalog = $("." + navOptions.classes.catalog);
         this.drawNavigation();
 
         if (this.options.modulesOptions.globalNav.filterEnabled) {
@@ -114,45 +114,28 @@ define([
         }
     };
 
-
     // Filtering by specified catalogue
-    var skipSpec = function(navListCat, currentObj) {
-        var obj = currentObj;
-        var response = true; // skip by default
-
+    var skipSpec = function(navListCat, obj) {
         // obj["cat"] is an array; if cat has needed value
-        if (!!obj["cat"] && obj["cat"].indexOf(navListCat) > -1) {
-            response = false;
-
+        var inArray = !!obj["cat"] && obj["cat"].indexOf(navListCat) > -1;
         // without-cat mode, showing all specs without cat field in info.json defined or
-        } else if (navListCat === "without-cat" && (!obj["cat"] || obj["cat"].length === 0) ) {
-            response = false;
-        }
-        return response;
+        var isWithoutCat = navListCat === "without-cat" && (!obj["cat"] || obj["cat"].length === 0);
+        return !inArray && !isWithoutCat;
     };
 
     // Filtering hidden specs
-    var isHidden = function(currentObj) {
-        var obj = currentObj;
-        var response = false; // skip by default
-
-        // obj["cat"] is an array
-        if (!!obj["cat"] && obj["cat"].indexOf("hidden") > -1 ) {
-            response = true;
-        }
-        return response;
+    var isHidden = function(obj) {
+        return !!obj["cat"] && !!~obj["cat"].indexOf("hidden");
     };
 
     GlobalNav.prototype.initCatalog = function(catalog, catalogMeta, specifCatAndDirDefined) {
         var config = this.options.modulesOptions.globalNav;
         var classes = config.classes;
-
-        if (catalog.find("." + classes.CATALOG_LIST).length === 0) {
+        if (catalog.find("." + classes.catalogList).length === 0) {
             catalog.append(this.templates.catalogList(config));
         }
-
         if (!specifCatAndDirDefined && catalogMeta) {
-            var isHeaderAdded = catalog.find("." + classes.CATALOG_LIST_A_TX).length !== 0;
+            var isHeaderAdded = catalog.find("." + classes.catalogListTitle).length !== 0;
             var isInfoAdded = catalog.find("." + classes.catalogText).length !== 0;
 
             if (catalogMeta && !isHeaderAdded) {
@@ -160,7 +143,7 @@ define([
             }
             if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
                 sourceCatalog
-                    .children("." + classes.CATALOG_LIST_A_TX)
+                    .children("." + classes.catalogListTitle)
                     .first()
                     .after(this.templates.catalogInfo({"classes": classes, "catalogMeta": catalogMeta}));
             }
@@ -182,15 +165,13 @@ define([
             var catalog = $(this);
             var navListDir = catalog.attr("data-nav");
             var navListCat = catalog.attr("data-cat");
-
             // Catalog has no data about category
             var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
             _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
-
             // TODO: check if its valid
             if (navListDir && !navListDir.length) {
                 // Display error
-                catalog.find("." + classes.CATALOG_LIST).html(labels.noDataAttr);
+                catalog.find("." + classes.catalogList).html(labels.noDataAttr);
                 return;
             }
 
@@ -201,7 +182,7 @@ define([
 
     GlobalNav.prototype.renderNavigationList = function(catalog, data) {
         var navOptions = this.options.modulesOptions.globalNav;
-        var target = catalog.find("." + navOptions.classes.CATALOG_LIST);
+        var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-cat");
 
@@ -215,6 +196,7 @@ define([
             target.empty();
             return;
         }
+
         if(target && target.length === 1) {
             var itemsDocFragment = this.getNavigationItemsList(data, navListDir, filter);
             target.html(itemsDocFragment);
@@ -231,6 +213,7 @@ define([
         var lengthLimit = pageLimit > specifications.length
             ? specifications.length
             : pageLimit;
+
         for (var j = 0; j < lengthLimit; j++) {
             var spec = specifications[j]["specFile"];
             if (!isValid(spec)) {
@@ -250,6 +233,7 @@ define([
                 })).get(0)
             );
         }
+
         return navigationItemsList;
     };
 
@@ -264,64 +248,63 @@ define([
         // fixing relative path due to server settings
         var targetUrl = target.url.charAt(0) === "/" ? target.url : "/" + target.url;
         var imageUrl = targetUrl + "/" + navConfig.thumbnailName;
-
         if (!this.createNavTreeItem.template) {
             this.createNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }
         var result = $(this.createNavTreeItem.template).clone(true);
-        result.find("." + classes.CATALOG_LIST_A.split(" ").join(".")).attr("href", targetUrl);
-        result.find("." + classes.CATALOG_LIST_A_IMG)
+        result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", targetUrl);
+        result.find("." + classes.catalogListImage)
             .attr("src", imageUrl)
             .error(function(e) {
                 $(this).remove();
             });
-        result.find("." + classes.CATALOG_LIST_A_TX).html(target.title);
-        result.find("." + classes.CATALOG_LIST_DATE).html(target.lastmod + author);
-
+        result.find("." + classes.catalogListTitle).html(target.title);
+        result.find("." + classes.catalogListDate).html(target.lastmod + author);
         if(parseInt(target.bubbles)) {
             result.find("." + classes.catalogListBubbles).html(target.bubbles);
         }
-
         return result;
     };
 
     GlobalNav.prototype.initCatalogFilter = function() {
         var classes = this.options.modulesOptions.globalNav.classes;
         var $subhead = $("." + classes.sourceSubhead);
-        var $filter = $("." + classes.catalogFilter);
-        var $catalog = $("." + classes.CATALOG);
-
+        var $catalog = $("." + classes.catalog);
         if (!$subhead.length || !$catalog.length) return;
 
-        if (!$filter.length) {
-            $subhead.prepend(this.templates.catalogFilter({"classes": classes}));
-        }
-
-        this.drawSortFilters();
-        this.drawToggler();
+        this.renderFilters($subhead);
     };
 
-    GlobalNav.prototype.drawToggler = function() {
+    GlobalNav.prototype.renderFilters = function(filtersTarget) {
+        var classes = this.options.modulesOptions.globalNav.classes;
+        if (!filtersTarget.find("." + classes.catalogFilter).length) {
+            filtersTarget.prepend(this.templates.catalogFilter({"classes": classes}));
+        }
+        this.drawSortFilters();
+        this.drawPreviewsToggler();
+
+    };
+
+    GlobalNav.prototype.drawPreviewsToggler = function() {
         var classes = this.options.modulesOptions.globalNav.classes;
         var labels = this.options.modulesOptions.globalNav.labels;
         var showPreviews = this.options.modulesOptions.globalNav.previews;
         var initPreviewValue = localStorage.getItem( "source_showPreviews") || showPreviews;
-        var $catalog = $("." + classes.CATALOG);
         var $filter = $("." + classes.catalogFilter);
+        var catalog = this.catalog;
 
         if (initPreviewValue == "true") { // initPreviewValue is string, not boolean
-            $catalog.addClass(classes.showPreview);
+            catalog.addClass(classes.showPreview);
             $filter.append(this.templates.togglePreviewLink({"classes": classes, "togglePreviewLabel": labels.hidePreview}));
         } else {
             $filter.append(this.templates.togglePreviewLink({"classes": classes, "togglePreviewLabel": labels.showPreview}));
         }
 
-        $(document).on("click", "." + classes.CATALOG_IMG_TUMBLER, function(e) {
+        $(document).on("click", "." + classes.catalogImageThumbler, function(e) {
             e.preventDefault();
             var showPreviews = localStorage.getItem( "source_showPreviews");
-
-            var $this = $(this),
-                previewText;
+            var $this = $(this);
+            var previewText;
 
             if (showPreviews == "true") { // string
                 previewText = labels.showPreview;
@@ -332,17 +315,16 @@ define([
             }
 
             $this.text(previewText);
-            $catalog.toggleClass(classes.showPreview);
+            catalog.toggleClass(classes.showPreview);
         });
     };
 
     GlobalNav.prototype.drawSortFilters = function() {
-        var defaultSort = this.options.modulesOptions.globalNav.sortType,
-            $filterWrapper = $("." + this.options.modulesOptions.globalNav.classes.catalogFilter),
-            enabledFilter = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortType":defaultSort,"sortDirection":"forward"},
-
-            nav = this.templates.sortList(),
-            _this = this;
+        var defaultSort = this.options.modulesOptions.globalNav.sortType;
+        var $filterWrapper = $("." + this.options.modulesOptions.globalNav.classes.catalogFilter);
+        var enabledFilter = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortType":defaultSort,"sortDirection":"forward"};
+        var nav = this.templates.sortList();
+        var _this = this;
 
         $filterWrapper.append(nav);
 
@@ -353,39 +335,29 @@ define([
             $activeFilter.parent().addClass("__forward");
         }
 
-        var updateLocalStorage = function(obj) {
-            localStorage.setItem("source_enabledFilter", JSON.stringify(obj));
-        };
-
-        var updateEnabledStatusObject = function(sortType, sortDirection) {
-            enabledFilter.sortType = sortType;
-            enabledFilter.sortDirection = sortDirection;
-        };
-
         var updateView = function(el) {
             var $this = el;
+            var sortType = $this.attr("id");
+            var sortDirection = "backward";
 
             $(".source_sort-list_li").removeClass("__active");
             $this.parent()
                 .addClass("__active")
                 .toggleClass("__forward");
 
-            var sortType = $this.attr("id"),
-                sortDirection = "backward";
-
             if ( $this.parent().hasClass("__forward") ) {
                 sortDirection = "forward";
             }
 
-            updateEnabledStatusObject(sortType, sortDirection);
-            updateLocalStorage(enabledFilter);
+            enabledFilter.sortType = sortType;
+            enabledFilter.sortDirection = sortDirection;
+            localStorage.setItem("source_enabledFilter", JSON.stringify(enabledFilter));
             _this.drawNavigation(sortType, sortDirection)
         }
 
         $(document).on("click", "#sortByAlph", function() {
             updateView($(this));
         });
-
         $(document).on("click", "#sortByDate", function() {
             updateView($(this));
         });

@@ -13,11 +13,12 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 define([
     'jquery',
     'sourceModules/module',
-    fileTreeJson], function ($, module, data) {
+    fileTreeJson
+], function ($, module, data) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
-    }
+    };
 
 
     /* наследуем от Module */
@@ -266,7 +267,7 @@ define([
         }
         return catObj;
     };
-    
+
     ParseFileTree.prototype.getCurrentCatalogSpec = function(catalogName) {
         if (!catalogName) return;
         var specsHash = this.parsePages(catalogName, true);
@@ -274,9 +275,11 @@ define([
     };
 
     ParseFileTree.prototype.getCatalog = function(catalogName, sortingCallback) {
-        if (!catalogName) return;
-        var specsHash = this.parsePages(catalogName, true);
+        var specsHash = catalogName.length 
+            ? this.parsePages(catalogName, true)
+            : this.getAllPages();
         var result = $.map(specsHash, function(k, v) {
+            k['name'] = v;
             return k['specFile'] ? [k] : undefined;
         });
         return result.sort(sortingCallback);
