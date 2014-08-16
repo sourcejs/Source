@@ -19,7 +19,12 @@ page.onConsoleMessage = function(msg) {
 
 page.open('http://127.0.0.1:8080/'+ url, function (status) {
     if (status !== 'success') {
-        console.log('Сервер не отвечает.');
+        console.log(
+            JSON.stringify({
+                "error": "Неправильный адрес",
+                "url": url
+            })
+        );
         phantom.exit();
     }
 
@@ -60,8 +65,12 @@ page.open('http://127.0.0.1:8080/'+ url, function (status) {
                    return JSON.stringify(specData);
                }
                else {
-                   return 'Ошибка в парсинге спецификации: '+ url;
-console.log('--! setTimeout');
+                   return JSON.stringify({
+                       "error": "Ошибка в парсинге спецификации.",
+                       "url": url
+                   });
+
+//console.log('--! setTimeout');
                    setTimeout(getSections, 200);
                }
            }
@@ -181,12 +190,12 @@ console.log('--! setTimeout');
 
        console.log(code);
 
-   }, 1000);
+   }, 1500);
 
 
     setTimeout(function () {
         phantom.exit();
-    }, 1000)
+    }, 1500)
 
 });
 
