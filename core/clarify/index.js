@@ -2,154 +2,79 @@
 var
 	fs = require('fs'),
 	url = require('url'),
-	path = require('path'),
-	exec = require('child_process').exec,
-	jsdom = require('jsdom'),
-	dom = require('./dom'),
-	jady = require('./jady');
-
-
-// custom vars & local dependencies
-var publicPath = global.opts.core.common.pathToUser;
-
+	path = require('path');
 
 module.exports = function reply(req, res, next) {
-	var
-		parsedUrl = url.parse(req.url, true),
-		urlPath = parsedUrl.pathname,
-		urlHost = req.headers.host,
-		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
 
-        q = parsedUrl.query,
-		tpl = q.get,
-		id = q.id,
-		wrap = q.wrap || true,
-        phantom = q.ph || false,
-        nojs = q.nojs || false;
+    function prepareHTML(clientHTMLObj, sectionsID, tpl) {
 
-// check for current navigation position (navigation or file)
-	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
+        var clientHTML = "";
 
-// reading file
-		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
-            if (err) {
-                res.writeHead(404, {'Content-Type': 'text/plain'});
-                res.end('No such file.\n'+ err);
-                return;
-            }
+        for (var i = 0; i < sectionsID.length; i++) {
+            var id = sectionsID[i];
 
-// make data for template
-                function reqHandler(res, html) {
-                    if (html.source) {
-// Jade's vars
-                        var locals = {
-                            head: {
-                                title: html.title,
-                                mAuthor: html.meta.author,
-                                mKeywords: html.meta.keywords,
-                                mDescription: html.meta.description,
-                                scripts: (nojs)?  null : html.scripts,
-                                stylesheets: html.styles
-                            },
-                            body: {
-                                spec: html.source.content,
-                                specLength: html.source.length,
-                                specId: html.source.id,
-                                specIdSum: html.source.idSum,
-                                homeLink: 'http://'+ urlAdress
-                            },
-                            pretty: true
-                        };
-
-// send headers and close request
-                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                        res.end(jady(locals, tpl));
-
-                    } else res.end('STDOUT: can\'t recieve content.');
-                }
-
-
-// if ph == true -> PhantomJS
-                if (phantom) {
-
-                var params = "core/clarify/phantomjs "+
-                        "core/clarify/phantom/ph.js "+
-                        "http://"+ urlAdress +" "+ id +" "+ wrap;
-
-// executes ph.js by phantomjs in new child process
-                    exec(params, function (err, stdout, stderr) {
-                    if (err) res.end('Exec report error:\n ' + err);
-                        else {
-                            try {
-                                var html = JSON.parse(stdout);
-                            } catch(e) {
-                                html = 'Parsing error: ' + e;
-                            }
-// PhantomJS output
-        console.log(html);
-// template render function
-                            reqHandler(res, html);
-                        }
-                    });
-
-// if ph == false (default) -> jsDom
+            if (clientHTMLObj[id]) {
+                clientHTML += clientHTMLObj[id];
             } else {
-                jsdom.env(data.toString(), function (err, win) {
-            //  jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
-                    if (err) res.end('JSdom report error:\n ' + err);
-                        else {
-                            console.log('JSDOM', wrap);
-                            var
-                                doc = win.document,
-                                html = {};
+                clientHTML += "<div>id:"+id+" This section does not exist!</div>";
+            }
+        }
 
-                            try {
-                                html.title = doc.title;
-                                html.meta = dom.getMeta(doc);
-                                html.styles = dom.getHeadData(doc)[0];
-                                html.scripts = dom.getHeadData(doc)[1];
-                                html.source = dom.getSource(doc, id, wrap);
-                            } catch (e) {
-                                html.err = {
-                                    text: e,
-                                    type: e.name
-                                };
-                            }
-        console.log(html);
+        var placeHolder = "<%clarifyBody%>";
+        if (tpl != undefined) {
+            try {
 
-// template render function
-                            reqHandler(res, html);
-                        }
-                    });
+                try {
+                    tpl = fs.readFileSync("./user/core/clarify/tpl/"+tpl+".html", "utf8");
+                } catch (e) {
+                    tpl = fs.readFileSync(__dirname+"/tpl/"+tpl+".html", "utf8");
                 }
 
-		});
+                var start = tpl.indexOf(placeHolder);
+                var end = start+placeHolder.length;
 
-// redirect to next express middleware
+                var startStr = tpl.substr(0,start);
+                var endStr = tpl.substr(end);
+
+                clientHTML = startStr + clientHTML + endStr;
+
+            } catch (e) {
+                var fileList = fs.readdirSync(__dirname+"/tpl/").join(", ").replace(/.html/g, '');
+                clientHTML = "<div style='color: red;'>Template: "+tpl+" does not exist</div>" +
+                    "<div>There are: "+fileList+"</div>";
+            }
+        }
+
+        return clientHTML;
+    }
+
+	var parsedUrl = url.parse(req.url, true),
+		urlPath = parsedUrl.pathname;
+
+	if (req.url.indexOf("?clarify")>-1) {
+        var sectionsID = parsedUrl.query.id.split(",");
+        var tpl = parsedUrl.query.tpl;
+
+        var pathStr = urlPath.substr(1,urlPath.length-2);
+        var pathArr = pathStr.split("/");
+        var htmlJSON = require("../../html.json");
+
+        for (var i = 0; i < pathArr.length; i++) {
+            var path = pathArr[i];
+            htmlJSON = htmlJSON[path];
+        }
+
+        var sections = htmlJSON.specFile.contents;
+        var clientHTMLObj = {};
+
+        for (var i = 0; i < sections.length; i++) {
+            var sec = sections[i];
+            if (sectionsID.indexOf(sec.id.toString())>-1) {
+                clientHTMLObj[sec.id] = sec.html;
+            }
+        }
+
+        res.end(prepareHTML(clientHTMLObj, sectionsID, tpl));
+
 	} else next();
 };
-
-
-
-// TODO: check list below
-// [done] beatify HTML output
-// [done] create JSON with data from <HEAD>
-// [done] parse several blocks in same page with one request
-// [done] switchers to another specs from cleared one;
-// [done] clear template - @param {GET} clr
-// [done] phantomjs -> jsdom
-// [..partial] client-side UI controls to clarify specs
-// [...] support for other template engines
-// * [] diffrernt links to phantomjs relative to OS
-// * [] connect custom templates and scripts
-// * [] avoid hardcoded paths
-// * [] use css/js optionally by GET params
-// * [] save user session settings
-// * [] try POST instead GET
-// * [] Ajax
-// * [] link from already clarified code to original spec page
-// * [] phantomjs error with try to get unavaliable script
-// * [] screenshots by phatnomjs
-// * [] phantomjs: not to close session (improve perfomance?);
-// * [] buttons  to add custom libraries to clarified page (jQuery, require);
-// * [in progress..] another context templates [mob, clr, ...]
