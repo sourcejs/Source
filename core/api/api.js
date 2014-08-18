@@ -8,7 +8,7 @@ var
     path = require('path'),
     fs = require('fs'),
     phantom = require('phantomjs'),
-    unflatten = require('flat').unflatten,
+    unflatten = require('./unflat'),
     childProcess = require('child_process'),
     pages_tree = require('../../user/data/pages_tree.json'),
     pagesParser = require('./pagesParser'),
@@ -28,10 +28,11 @@ var params = {
 };
 
 specs = pagesParser(params);
-var specLength = 10,// specs.length
+var specLength = specs.length,// specs.length
     doneCounter = 0;
 
-specs.length = 10; // debug only
+// debug only
+//specs.length = 10;
 
 specs.map(function (elem, n) {
     console.log('Starts...' + n, elem);
@@ -65,8 +66,7 @@ console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
         fs.writeFile('html.json', JSON.stringify(html));
         console.log('-- All specs were written.');
 //        console.log(html);
-        debugger;
-        unflatten_html =  unflatten(html, { delimiter: '/', safe: true });
+        unflatten_html =  unflatten(html, { delimiter: '/', overwrite: 'root' });
         console.log('-- All specs were saved.');
 
         // After all specs were both written in file and saved in memory.

@@ -84,10 +84,10 @@ page.onCallback = function (data) {
                     return JSON.stringify(specData);
                 }
                 else {
-                    return JSON.stringify({
+                    return JSON.stringify([{
                         "error": "Ошибка в парсинге спецификации.",
                         "url": url
-                    });
+                    }]);
 
 //console.log('--! setTimeout');
                     setTimeout(getSections, 200);
