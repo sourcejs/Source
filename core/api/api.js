@@ -23,25 +23,31 @@ var
 
 var params = {
     obj: pages_tree,
-    filter: ['base'],
+    filter: ['mob'],
     flag: 'specFile'
 };
 
 specs = pagesParser(params);
-var specLength = specs.length,
+var specLength = 10,// specs.length
     doneCounter = 0;
 
-specs.map(function (i, n) {
-    console.log('Starts...' + n, i);
+specs.length = 10; // debug only
 
-    childProcess.exec(ph_path + " ph_modules/index.js " + i, function (error, stdout, stderr) {
-        handler(error, stdout, stderr, i, n);
+specs.map(function (elem, n) {
+    console.log('Starts...' + n, elem);
+
+    function callback() {
+        console.log('-- All specs were processed.')
+    }
+
+    childProcess.exec(ph_path + " ph_modules/index.js " + elem, function (error, stdout, stderr) {
+        handler(error, stdout, stderr, elem, n, callback);
     });
 });
 
 
-function handler(error, stdout, stderr, spec, n) {
-    if (error) console.log('Exec error: '+ error);
+function handler(error, stdout, stderr, spec, n, callback) {
+    if (error) console.log('Exec error: \f'+ error);
 
 //console.log('--- spec', spec);
     var path = spec && spec.split('/');
@@ -49,29 +55,23 @@ function handler(error, stdout, stderr, spec, n) {
 
 
     fs.writeFile('log/output-'+ file +'.txt', stdout);
-
+    if (path == 'mob/base') return;
     html[spec] = JSON.parse(stdout);
 
-console.log('Done... ', doneCounter, '/', specLength,  spec);
+console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
 
     doneCounter++;
     if (doneCounter == specLength) {
         fs.writeFile('html.json', JSON.stringify(html));
-        console.log('-- All specs has written.');
+        console.log('-- All specs were written.');
 //        console.log(html);
-        unflatten_html =  unflatten(html, { delimiter: '/'});
         debugger;
+        unflatten_html =  unflatten(html, { delimiter: '/', safe: true });
+        console.log('-- All specs were saved.');
+
+        // After all specs were both written in file and saved in memory.
+        callback();
     }
 }
-
-
-//var data = '';
-//process.on('data', function (err, chunk) {
-//    var data += chunk;
-//});
-//
-//process.on('end', function (err, chunk) {
-//   console.log('Channel over.')
-//});
 
 console.log('-- file ends.');

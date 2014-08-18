@@ -9,8 +9,19 @@ var page = require('webpage').create(),
 var url = system.args[1],
     id = system.args[2];
 
+page.onResourceReceived = function(response) {
+    if (response.id == 1 && response.status == 404 || response.status == 500) {
+        console.log(JSON.stringify({
+                "error": "Ошибка "+ response.status,
+                "url": url
+            })
+        );
+        phantom.exit();
+    }
+};
+
 page.onConsoleMessage = function(msg) {
-    console.log('-- webkit console: ' + msg);
+//    console.log('-- webkit console: ' + msg);
 };
 
 page.open('http://127.0.0.1:8080/'+ url, function (status) {
@@ -23,13 +34,20 @@ page.open('http://127.0.0.1:8080/'+ url, function (status) {
 
         phantom.exit();
     }
+
+    setTimeout(function () {
+        console.log(JSON.stringify([{
+                "error": "Too long request.",
+                "url": url
+            }])
+        );
+        phantom.exit();
+    }, 5000);
 });
 
 
 page.onCallback = function (data) {
     if (data.message) {
-        console.log(url +'...OK.')
-
 
         var code = page.evaluate(function (url) {
 
@@ -189,11 +207,16 @@ page.onCallback = function (data) {
 
         }, url);
 
+        // make reponse in {{ ... }} to parse only relevant part
         console.log(code);
-
+        phantom.exit();
 
     } else {
-        console.log(url +'...FAIL.')
+        console.log(JSON.stringify({
+                "error": "No callback recieved",
+                "url": url
+            })
+        );
         phantom.exit();
     }
 }
@@ -204,6 +227,17 @@ page.onError = function(msg, trace) {
     var file = url.split('/').join('-');
 
     fs.write('ph_modules/log/output_'+ file +'.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function);
+
+//    console.log(JSON.stringify({
+//        "error": "Error onpage",
+//        "message": msg,
+//        "file": trace[0],
+//        "line": trace[0].line,
+//        "function": trace[0].function
+//    }));
 }
 
 
+// TODO: check list below
+// [*] unify throw Error helper
+// [*] ...
