@@ -33,6 +33,9 @@
     "body-parser": "~1.6.4"
   },
   "devDependencies": {
-    "less-middleware": "~0.1.12"
+    "less-middleware": "~0.1.12",
+    "assert": "~1.1.1",
+    "should": "~4.0.4",
+    "supertest": "~0.13.0"
   }
 }

@@ -21,13 +21,13 @@ Get all, or filtered specs
 ### Examples
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{filter:{"fields":["info"]}}' http://localhost:8080/api/specs
+curl -H "Content-Type: application/json" -X POST -d '{"filter":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
 
 Will return all specs that has `info` field.
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{filterOut:{"fields":["info"]}}' http://localhost:8080/api/specs
+curl -H "Content-Type: application/json" -X POST -d '{"filterOut":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
 
 Will return all specs except those, which have `info` field.
@@ -37,6 +37,7 @@ Will return all specs except those, which have `info` field.
 
 ```
 {
+    cats: [],
     fields: [],
     tags: []
 }
@@ -47,7 +48,7 @@ Will return all specs except those, which have `info` field.
 Get all, or filtered specs HTML
 
 ```
-/api/html
+/api/specs/html
 ```
 
 ### Params

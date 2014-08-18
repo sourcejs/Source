@@ -22,13 +22,14 @@ router.get('/', function(req, res) {
 router.route('/specs')
     .post(function(req, res) {
         var data = {};
-        var reqID = req.body.id;
-        var reqFilter = req.body.filter;
-        var reqFilterOut = req.body.filterOut;
+        var body = req.body;
+        var reqID = body.id;
+        var reqFilter = body.filter;
+        var reqFilterOut = body.filterOut;
 
         if (parseSpecs.dataEsixts()) {
             if (reqID) {
-                var dataByID = parseSpecs.getByID(reqID);
+                var dataByID = parseSpecs.getByID(body);
 
                 if (dataByID && typeof dataByID === 'object') {
                     res.status(200).jsonp(dataByID);
@@ -42,20 +43,13 @@ router.route('/specs')
                 var dataFiltered = parseSpecs.getFilteredData({
                     filter: reqFilter,
                     filterOut: reqFilterOut
-                });
+                }, body);
 
                 if (dataFiltered && typeof dataFiltered === 'object') {
                     res.status(200).jsonp(dataFiltered);
-                } else {
-                    res.status(404).jsonp({
-                        message: "id not found"
-                    });
                 }
-            }
-
-            // If not filtering query set
-            if (!reqID || !reqFilter || !reqFilterOut) {
-                data = parseSpecs.getAll();
+            } else {
+                data = parseSpecs.getAll(body);
 
                 res.status(200).jsonp(data);
             }
@@ -69,12 +63,13 @@ router.route('/specs')
 router.route('/specs/html')
     .post(function(req, res) {
         var data = {};
-        var reqID = req.body.id;
+        var body = req.body;
+        var reqID = body.id;
 
         if (parseHTML.dataEsixts()) {
 
             if (reqID) {
-                var dataByID = parseHTML.getByID(reqID);
+                var dataByID = parseHTML.getByID(body);
 
                 if (dataByID && typeof dataByID === 'object') {
                     res.status(200).jsonp(dataByID);
@@ -85,7 +80,7 @@ router.route('/specs/html')
                 }
 
             } else {
-                data = parseHTML.getAll();
+                data = parseHTML.getAll(body);
 
                 res.status(200).jsonp(data);
             }

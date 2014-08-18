@@ -1,0 +1,42 @@
+{
+    "base": {
+        "base": {
+            "css": {},
+            "specFile": {
+                "url": "/base/base",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html",
+                "thumbnail": true,
+                "author": "Evgeny Khoroshilov",
+                "title": "Мелкие стандарты",
+                "cat": [
+                    "html"
+                ],
+                "info": "Страница с описанием небольших стартов, которые не доросли до своей спеки."
+            }
+        },
+        "button": {
+            "css": {},
+            "specFile": {
+                "url": "/base/button",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html",
+                "thumbnail": false,
+                "keywords": "base, standard",
+                "author": "Evgeny Khoroshilov",
+                "title": "Мелкие стандарты"
+            }
+        }
+    },
+    "specFile": {
+        "url": "",
+        "lastmod": "31.7.2014",
+        "lastmodSec": 1406793767000,
+        "fileName": "index.src",
+        "thumbnail": false,
+        "title": "OK Prototype",
+        "role": "navigation"
+    }
+}
