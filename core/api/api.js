@@ -75,3 +75,27 @@ console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
 }
 
 console.log('-- file ends.');
+
+// from old Clarify:
+// TODO: check list below
+// [done] beatify HTML output
+// [done] create JSON with data from <HEAD>
+// [done] parse several blocks in same page with one request
+// [done] switchers to another specs from cleared one;
+// [done] clear template - @param {GET} clr
+// [done] phantomjs -> jsdom
+// [..partial] client-side UI controls to clarify specs
+// [...] support for other template engines
+// * [] diffrernt links to phantomjs relative to OS
+// * [] connect custom templates and scripts
+// * [] avoid hardcoded paths
+// * [] use css/js optionally by GET params
+// * [] save user session settings
+// * [] try POST instead GET
+// * [] Ajax
+// * [] link from already clarified code to original spec page
+// * [] phantomjs error with try to get unavaliable script
+// * [] screenshots by phatnomjs
+// * [] phantomjs: not to close session (improve perfomance?);
+// * [] buttons  to add custom libraries to clarified page (jQuery, require);
+// * [in progress..] another context templates [mob, clr, ...]
