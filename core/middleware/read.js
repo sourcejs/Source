@@ -11,8 +11,6 @@ var pathToApp = path.dirname(require.main.filename);
  * */
 var handleRequest = function(req, res, next) {
     req.specData = {};
-    req.specData.isJade = false;
-    req.specData.isHaml = false;
 
     // get the physical path of a requested file
     var physicalPath = global.app.get('user') + req.url;
@@ -24,11 +22,14 @@ var handleRequest = function(req, res, next) {
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
     //var filename = path.basename(physicalPath); // filename of a requested file
-    var extension = path.extname(physicalPath); // extension of a requested file
+    var extension = path.extname(physicalPath).replace(".", ""); // extension of a requested file
+    var supportedExtensions = global.opts.core.common.extensions;
+    var extIndex = supportedExtensions.indexOf(extension);
+
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
-    // in case if a file is requested
-    if (extension == ".src" || extension == ".jade" || extension == ".haml") {
+    // in case if one of supported filetypes is requested
+    if (extIndex >= 0) {
         fs.exists(physicalPath, function(exists) {
 
             if (exists) {
@@ -49,13 +50,10 @@ var handleRequest = function(req, res, next) {
                                 info = JSON.parse(info);
                             }
 
-                            // if requested file is *.jade, then write flag to request
-                            if (extension == ".jade") {
-                                req.specData.isJade = true;
-                            }
-
-                            if (extension == ".haml") {
-                                req.specData.isHaml = true;
+                            // if requested file is one of supported filetypes, then write proper flag to request. f.e. req.specData.isJade; // true
+                            if (extension == supportedExtensions[extIndex]) {
+                                var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
+                                req.specData["is" + capitalizedExtension] = true;
                             }
 
                             req.specData.info = info; // add spec info object to request
@@ -81,11 +79,10 @@ var handleRequest = function(req, res, next) {
             requestedDir += '/';
         }
 
-        var extensions = ["src", "jade", "haml"];
         var oneOfExtensionsFound = false;
 
-        for (var j = 0; j < extensions.length; j++) {
-            var fileName = "index." + extensions[j];
+        for (var j = 0; j < supportedExtensions.length; j++) {
+            var fileName = "index." + supportedExtensions[j];
 
             if (fs.existsSync(physicalPath + fileName)) {
                 req.url = requestedDir + fileName;
