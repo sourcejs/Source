@@ -1,6 +1,6 @@
-var fs = require('fs'),
-    path = require('path'),
-    pathToApp = path.dirname(require.main.filename);
+var fs = require('fs');
+var path = require('path');
+var pathToApp = path.dirname(require.main.filename);
 
 /**
  * Get spec content and write it to request
@@ -12,6 +12,7 @@ var fs = require('fs'),
 var handleRequest = function(req, res, next) {
     req.specData = {};
     req.specData.isJade = false;
+    req.specData.isHaml = false;
 
     // get the physical path of a requested file
     var physicalPath = global.app.get('user') + req.url;
@@ -27,7 +28,7 @@ var handleRequest = function(req, res, next) {
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
     // in case if a file is requested
-    if (extension == ".src" || extension == ".jade") {
+    if (extension == ".src" || extension == ".jade" || extension == ".haml") {
         fs.exists(physicalPath, function(exists) {
 
             if (exists) {
@@ -53,6 +54,10 @@ var handleRequest = function(req, res, next) {
                                 req.specData.isJade = true;
                             }
 
+                            if (extension == ".haml") {
+                                req.specData.isHaml = true;
+                            }
+
                             req.specData.info = info; // add spec info object to request
                             req.specData.renderedHtml = data; // add spec content to request
 
@@ -69,32 +74,34 @@ var handleRequest = function(req, res, next) {
     }
     // if directory is requested
     else if (extension == "") {
-        fs.exists(physicalPath + "index.src", function(exists) {
-            var requestedDir = req.url;
+        var requestedDir = req.url;
 
-            if (requestedDir.slice(-1) != '/') {
-                requestedDir += '/';
-            }
-            if (exists) {
-                // url replace in request
-                req.url = requestedDir + "index.src";
+        // append trailing slash
+        if (requestedDir.slice(-1) != '/') {
+            requestedDir += '/';
+        }
+
+        var extensions = ["src", "jade", "haml"];
+        var oneOfExtensionsFound = false;
+
+        for (var j = 0; j < extensions.length; j++) {
+            var fileName = "index." + extensions[j];
+
+            if (fs.existsSync(physicalPath + fileName)) {
+                req.url = requestedDir + fileName;
 
                 // recursive call
-                handleRequest(req, res, next)
-            } else {
-                fs.exists(physicalPath + "index.jade", function(exists) {
-                    if (exists) {
-                        // url replace in request
-                        req.url = requestedDir + "index.jade";
+                handleRequest(req, res, next);
 
-                        // recursive call
-                        handleRequest(req, res, next)
-                    } else {
-                        next();
-                    }
-                });
+                oneOfExtensionsFound = true;
+                break;
             }
-        });
+        }
+
+        if (!oneOfExtensionsFound) {
+            next();
+        }
+
     } else {
         next();
     }
