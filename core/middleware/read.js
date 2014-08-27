@@ -2,13 +2,13 @@ var fs = require('fs'),
     path = require('path'),
     pathToApp = path.dirname(require.main.filename);
 
-/*
-* Считываем контент спеки и записываем его в реквест
-*
-* @param {object} req - Request object
-* @param {object} res - Response object
-* @param {function} next - The callback function
-* */
+/**
+ * Get spec content and write it to request
+ *
+ * @param {object} req - Request object
+ * @param {object} res - Response object
+ * @param {function} next - The callback function
+ * */
 var handleRequest = function(req, res, next) {
     req.specData = {};
     req.specData.isJade = false;
@@ -26,7 +26,7 @@ var handleRequest = function(req, res, next) {
     var extension = path.extname(physicalPath); // extension of a requested file
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
-    /* если запрашивается файл */
+    // in case if a file is requested
     if (extension == ".src" || extension == ".jade") {
         fs.exists(physicalPath, function(exists) {
 
@@ -48,13 +48,13 @@ var handleRequest = function(req, res, next) {
                                 info = JSON.parse(info);
                             }
 
-                            /* if requested file is *.jade, then write flag to request */
+                            // if requested file is *.jade, then write flag to request
                             if (extension == ".jade") {
                                 req.specData.isJade = true;
                             }
 
-                            req.specData.info = info; // записываем инфу о спеке в реквест
-                            req.specData.renderedHtml = data; // записываем контент спеки в реквест
+                            req.specData.info = info; // add spec info object to request
+                            req.specData.renderedHtml = data; // add spec content to request
 
                             next();
                         });
@@ -67,7 +67,7 @@ var handleRequest = function(req, res, next) {
             }
         });
     }
-    /* если запрашивается директория */
+    // if directory is requested
     else if (extension == "") {
         fs.exists(physicalPath + "index.src", function(exists) {
             var requestedDir = req.url;
@@ -76,18 +76,18 @@ var handleRequest = function(req, res, next) {
                 requestedDir += '/';
             }
             if (exists) {
-                /* подменяем урл в запросе */
+                // url replace in request
                 req.url = requestedDir + "index.src";
 
-                /* рекурсивно вызываем handleRequest с запросом на конкретный файл */
+                // recursive call
                 handleRequest(req, res, next)
             } else {
                 fs.exists(physicalPath + "index.jade", function(exists) {
                     if (exists) {
-                        /* подменяем урл в запросе */
+                        // url replace in request
                         req.url = requestedDir + "index.jade";
 
-                        /* рекурсивно вызываем handleRequest с запросом на конкретный файл */
+                        // recursive call
                         handleRequest(req, res, next)
                     } else {
                         next();
@@ -100,24 +100,24 @@ var handleRequest = function(req, res, next) {
     }
 };
 
-/*
-* check if requested file is *.src and render
-*
-* @param {object} req - Request object
-* @param {object} res - Response object
-* @param {function} next - The callback function
-* */
+/**
+ * check if requested file is *.src and render
+ *
+ * @param {object} req - Request object
+ * @param {object} res - Response object
+ * @param {function} next - The callback function
+ * */
 exports.process = function (req, res, next) {
     handleRequest(req, res, next)
 };
 
-/*
-* if URL ends with "index.src" => redirect to trailing slash
-*
-* @param {object} req - Request object
-* @param {object} res - Response object
-* @param {function} next - The callback function
-* */
+/**
+ * if URL ends with "index.src" => redirect to trailing slash
+ *
+ * @param {object} req - Request object
+ * @param {object} res - Response object
+ * @param {function} next - The callback function
+ * */
 exports.handleIndex = function (req, res, next) {
     if (req.url.slice(-9) === 'index.src') {
         res.redirect(301, req.url.slice(0, -9));

@@ -1,18 +1,18 @@
-var fs = require('fs'),
-    ejs = require('ejs'),
-    path = require('path'),
-    pathToApp = path.dirname(require.main.filename),
-    getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
+var fs = require('fs');
+var ejs = require('ejs');
+var path = require('path');
+var pathToApp = path.dirname(require.main.filename);
+var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
+var userTemplatesDir = global.app.get('user') + "/core/views/";
+var coreTemplatesDir = pathToApp + "/core/views/";
 
-var userTemplatesDir = global.app.get('user') + "/core/views/",
-    coreTemplatesDir = pathToApp + "/core/views/";
-
-/*
-* Получаем шаблон: дефолтовый или юзерский, если такой есть в файловой системе
-*
-* @param {string} name - Template name
-* @returns {string}
-* */
+/**
+ * Get template: default or user-defined if it exists.
+ *
+ *
+ * @param {string} name - Template name
+ * @returns {string}
+ * */
 function getTemplate(name) {
     var output;
 
@@ -25,26 +25,26 @@ function getTemplate(name) {
     return output;
 }
 
-/*
-* Оборачиваем html из реквеста в обертку спеки
-*
-* @param {object} req - Request object
-* @param {object} res - Response object
-* @param {function} next - The callback function
-* */
+/**
+ * Wrap rendered html from request with spec wrapper (header, footer, etc.)
+ *
+ * @param {object} req - Request object
+ * @param {object} res - Response object
+ * @param {function} next - The callback function
+ * */
 exports.process = function (req, res, next) {
 
     if (req.specData && req.specData.renderedHtml) {
-        // получаем контент спеки
+        // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
 
-        // получаем инфо о спеке
+        // get spec info
         var info = req.specData.info;
 
-        // получаем хедер и футер из шаблонов
+        // get header and footer
         var headerFooterHTML = getHeaderAndFooter();
 
-        // выбираем нужный шаблон исходя из типа страницы
+        // choose the proper template, depending on page type
         var template;
         if (info.template) {
             template = getTemplate(info.template + '.ejs');
@@ -54,7 +54,7 @@ exports.process = function (req, res, next) {
             template = getTemplate("spec.ejs");
         }
 
-        // формируем объект для передачи в итоговый шаблон спеки
+        // final data object for the template
         var templateJSON = {
             content : data,
             header  : headerFooterHTML.header,
@@ -64,10 +64,10 @@ exports.process = function (req, res, next) {
             keywords: info.keywords ? info.keywords : ""
         };
 
-        // рендерим страницу и записываем в реквест
+        // render page and send it as response
         req.specData.renderedHtml = ejs.render(template, templateJSON);
     }
 
-    // переходим в следующий middleware
+    // proceed to next middleware
     next();
 };

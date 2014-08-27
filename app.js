@@ -82,19 +82,19 @@ global.app.use(function(req, res, next){
     next();
 });
 
-/* Middleware that loads spec content */
+// Middleware that loads spec content
 var read = require("./core/middleware/read");
 global.app.use(read.handleIndex);
 global.app.use(read.process);
 
-/* Load user defined middleware, that processes spec content */
+// Load user defined middleware, that processes spec content
 require("./core/middleware/userMiddleware.js");
 
-/* Middleware that wraps spec with Source template */
+// Middleware that wraps spec with Source template
 var wrap = require("./core/middleware/wrap");
 global.app.use(wrap.process);
 
-/* Middleware that sends final spec response */
+// Middleware that sends final spec response
 var send = require("./core/middleware/send");
 global.app.use(send.process);
 
