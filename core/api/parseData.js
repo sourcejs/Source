@@ -3,6 +3,13 @@ var path = require('path');
 var util = require('util');
 var pathToApp = path.dirname(require.main.filename);
 
+
+/**
+ * ParseData Constructor
+ *
+ * @constructor
+ * @param {string} scope - Setting data scope (specs/html)
+ */
 function ParseData(scope) {
     this.data = {};
     this.scope = scope;
@@ -16,10 +23,17 @@ function ParseData(scope) {
     }
 }
 
+/** Check if data file exists. */
 ParseData.prototype.dataEsixts = function(){
     return fs.existsSync(this.dataPath);
 };
 
+
+/**
+ * Removing catalogue description objects
+ *
+ * @param {Object} data - Data object wil all specs/html
+ */
 ParseData.prototype.removeCatalogueDescription = function(data){
     var output = {};
 
@@ -34,7 +48,13 @@ ParseData.prototype.removeCatalogueDescription = function(data){
     return output;
 };
 
-// Return flat item list
+/**
+ * Get all data
+ *
+ * @param {Object} body - Request body with params
+ *
+ * @returns {Object} Flat data object with all itmes
+ */
 ParseData.prototype.getAll = function(body){
     var output = {};
     var testData = path.join(pathToApp, 'test', 'api-test-' + this.scope + '.json');
@@ -54,6 +74,13 @@ ParseData.prototype.getAll = function(body){
     return output;
 };
 
+/**
+ * Flatten given data
+ *
+ * @param {Object} data - Data object wil all specs/html
+ *
+ * @returns {Object} Return flattened data
+ */
 ParseData.prototype.flattenTillSpec = function(data){
     var delimiter = '/';
     var output = {};
@@ -84,69 +111,125 @@ ParseData.prototype.flattenTillSpec = function(data){
     return output;
 };
 
+/**
+ * ParseData._filter callback param
+ * @callback filterFuncCallback
+ *
+ * @param {String} filterItem - name of current filter from Array
+ */
+
+/**
+ * Filter placeholder function
+ *
+ * @param {Object} value - One item data, simple object without nesting
+ * @param {Number} inOut - 0 or 1, for filtering and filteringOut
+ * @param {Array} filterArr - Array with filtering params
+ * @param {filterFuncCallback} filterFunc - Function that return boolean with filter check status
+ *
+ * @returns {Boolean} Return boolean with filter result
+ */
+ParseData.prototype._filter = function(value, inOut, filterArr, filterFunc){
+    var passesFilter = true;
+
+    if (util.isArray(filterArr)) {
+        filterArr.map(function(filterItem){
+
+            if (filterFunc(filterItem)) passesFilter = false;
+
+        });
+    }
+
+    return passesFilter;
+};
+
+/**
+ * Filtering by fields
+ *
+ * @param {Object} value - One item data, simple object without nesting
+ * @param {Number} inOut - 0 or 1, for filtering and filteringOut
+ * @param {Array} filterArr - Array with filtering params
+ *
+ * @returns {Boolean} Return boolean with final filter result
+ */
 ParseData.prototype.filterFields = function(value, inOut, filterArr){
-    var def = inOut === 0;
-    var write = def;
-    var runCount = 0;
-
-    if (util.isArray(filterArr)) {
-        filterArr.map(function(item){
-
-            if (!value[item]) write = !def;
-
-            runCount++;
-        });
-    }
-
-    return write;
+    return this._filter(value, inOut, filterArr, function(filterItem){
+        return !!value[filterItem] === !!inOut;
+    });
 };
 
+/**
+ * Filtering by tags
+ *
+ * @param {Object} value - One item data, simple object without nesting
+ * @param {Number} inOut - 0 or 1, for filtering and filteringOut
+ * @param {Array} filterArr - Array with filtering params
+ *
+ * @returns {Boolean} Return boolean with final filter result
+ */
 ParseData.prototype.filterTags = function(value, inOut, filterArr){
-    var write = inOut === 0;
-
-    if (util.isArray(filterArr)) {
-        filterArr.map(function(item){
-
-//            if (write === (inOut !== 0)) {
-
-                if (util.isArray(value.cat)) {
-                    value.cat.map(function(tag){
-                        if (item !== tag) write = inOut !== 0;
-                    });
-                } else {
-                    write = inOut !== 0;
-                }
-
-//            }
-
-        });
-    }
-
-    return write;
+    return this._filter(value, inOut, filterArr, function(filterItem){
+        return (value.cat && value.cat.indexOf(filterItem) > -1) === !!inOut;
+    });
 };
 
-/*
- filterConf (Object) = {
-     filter: {},
-     filterOut: {}
- }
+/**
+ * Filtering by category
+ *
+ * @param {Object} value - One item data, simple object without nesting
+ * @param {String} key - Current key of looped object
+ * @param {Number} inOut - 0 or 1, for filtering and filteringOut
+ * @param {Array} filterArr - Array with filtering params
+ *
+ * @returns {Boolean} Return boolean with final filter result
+ */
+ParseData.prototype.filterCats = function(value, key, inOut, filterArr){
+    return this._filter(value, inOut, filterArr, function(filterItem){
+        return (key.lastIndexOf(filterItem, 0) === 0) === !!inOut;
+    });
+};
 
- filter/filterOut params = {
-     fields: [],
-     cats: [],
-     tags: []
- }
-*/
-ParseData.prototype.getFilteredData = function(filterConf, body){
+/**
+ * Filters given data by provided conf
+ *
+ * @param {Object} data - Data to filter
+ *
+ * @param {Object} filterConf - Filter configuration
+ *
+ * @param {Object} filterConf.filter - Check if exists
+ *      @param {Array} filterConf.filter.fields - Array with fields to filter
+ *      @param {Array} filterConf.filter.cats - Array with cats to filter
+ *      @param {Array} filterConf.filter.tags - Array with tags to filter
+ *
+ * @param {Object} filterConf.filterOut - Check if not exists
+ *      @param {Array} filterConf.filterOut.fields - Array with fields to filter
+ *      @param {Array} filterConf.filterOut.cats - Array with cats to filter
+ *      @param {Array} filterConf.filterOut.tags - Array with tags to filter
+ *
+ * @returns {Object} Returns object with filtered data
+ */
+ParseData.prototype.getFilteredData = function(data, filterConf){
     var _this = this;
-    var data = this.getAll(body);
     var output = {};
 
     Object.keys(data).forEach(function (key) {
         var value = data[key];
-        var write = true;
         var filterFields = true;
         var filterOutFields = true;
+        var filterTags = true;
+        var filterOutTags = true;
+        var filterCats = true;
+        var filterOutCats = true;
+
+        if (filterConf.filter && filterConf.filter.cats) {
+            filterCats = _this.filterCats(value, key, 0, filterConf.filter.cats);
+        }
+        if (filterConf.filterOut && filterConf.filterOut.cats) {
+            filterOutCats = _this.filterCats(value, key, 1, filterConf.filterOut.cats);
+        }
+
+        var rightCat = filterCats && filterOutCats;
+        if (!rightCat) return;
+
 
         // Filtering by existing and not empty fields
         if (filterConf.filter && filterConf.filter.fields) {
@@ -157,14 +240,14 @@ ParseData.prototype.getFilteredData = function(filterConf, body){
         }
 
         // Filtering by tags
-//        if (filterConf.filter && filterConf.filter.tags) {
-//            write = _this.filterTags(value, 0, filterConf.filter.tags);
-//        }
-//        if (filterConf.filterOut && filterConf.filterOut.tags) {
-//            write = _this.filterTags(value, 1, filterConf.filterOut.tags);
-//        }
+        if (filterConf.filter && filterConf.filter.tags) {
+            filterTags = _this.filterTags(value, 0, filterConf.filter.tags);
+        }
+        if (filterConf.filterOut && filterConf.filterOut.tags) {
+            filterOutTags = _this.filterTags(value, 1, filterConf.filterOut.tags);
+        }
 
-        write = filterFields && filterOutFields;
+        var write = filterFields && filterOutFields && filterTags && filterOutTags;
 
         if (!write) return;
         output[key] = value;
@@ -173,6 +256,13 @@ ParseData.prototype.getFilteredData = function(filterConf, body){
     return output;
 };
 
+/**
+ * Get item by ID
+ *
+ * @param {Object} body - Request body
+ *
+ * @returns {Boolean|Boolean} Return single object by requested ID
+ */
 ParseData.prototype.getByID = function(body){
     var target = body.id;
     var data = this.getAll(body);
@@ -181,7 +271,7 @@ ParseData.prototype.getByID = function(body){
     if (targetData) {
         return data[target];
     } else {
-        return false
+        return false;
     }
 };
 

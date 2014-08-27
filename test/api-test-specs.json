@@ -1,32 +1,44 @@
 {
     "base": {
         "base": {
-            "css": {},
             "specFile": {
                 "url": "/base/base",
                 "lastmod": "12.8.2014",
                 "lastmodSec": 1407856231000,
                 "fileName": "index.html",
-                "thumbnail": true,
+                "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
                 "title": "Мелкие стандарты",
                 "cat": [
-                    "html"
+                    "html",
+                    "tag"
                 ],
                 "info": "Страница с описанием небольших стартов, которые не доросли до своей спеки."
             }
         },
         "button": {
-            "css": {},
             "specFile": {
                 "url": "/base/button",
                 "lastmod": "12.8.2014",
                 "lastmodSec": 1407856231000,
                 "fileName": "index.html",
-                "thumbnail": false,
+                "thumbnail": true,
+                "cat": [
+                    "some"
+                ],
                 "keywords": "base, standard",
                 "author": "Evgeny Khoroshilov",
                 "title": "Мелкие стандарты"
+            }
+        }
+    },
+    "project": {
+        "project-spec": {
+            "specFile": {
+                "url": "/project/project-spec",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html"
             }
         }
     },

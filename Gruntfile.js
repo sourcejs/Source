@@ -100,6 +100,15 @@ module.exports = function(grunt) {
             }
         },
 
+        jsdoc: {
+            core: {
+                src: ['core/**/*.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
+        },
+
         watch: {
             css: {
                 files: [

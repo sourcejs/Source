@@ -35,6 +35,8 @@ Will return all specs except those, which have `info` field.
 
 ### Filter params
 
+Both `filter` and `filterOut` could have this params:
+
 ```
 {
     cats: [],
@@ -45,7 +47,7 @@ Will return all specs except those, which have `info` field.
 
 ## HTML
 
-Get all, or filtered specs HTML
+Get all, or specific Spec HTML
 
 ```
 /api/specs/html
@@ -59,18 +61,30 @@ Get all, or filtered specs HTML
 
 * id (string) - return only one item with ID
 
-## Categories
 
-Get categories list or specific category contents
+## TODO:Categories
+
+Get categories list
 
 ```
 /api/cats
 ```
 
-### Params
+## TODO:Tags
+
+Get tags list
 
 ```
-?[id]
+/api/tags
 ```
 
-* id (string) - return category contents
+## Testing
+
+For testing api, stub data is used:
+
+```
+test/api-test-html.json
+test/api-test-specs.json
+```
+
+To activate test data switch pass `test: true` param to API request.

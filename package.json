@@ -36,6 +36,7 @@
     "less-middleware": "~0.1.12",
     "assert": "~1.1.1",
     "should": "~4.0.4",
-    "supertest": "~0.13.0"
+    "supertest": "~0.13.0",
+    "grunt-jsdoc": "~0.5.7"
   }
 }

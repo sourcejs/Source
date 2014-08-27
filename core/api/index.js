@@ -40,7 +40,7 @@ router.route('/specs')
                 }
 
             } else if (reqFilter || reqFilterOut) {
-                var dataFiltered = parseSpecs.getFilteredData({
+                var dataFiltered = parseSpecs.getFilteredData(parseSpecs.getAll(body), {
                     filter: reqFilter,
                     filterOut: reqFilterOut
                 }, body);
