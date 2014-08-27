@@ -54,14 +54,17 @@ exports.process = function (req, res, next) {
             template = getTemplate("spec.ejs");
         }
 
+        // if the following fields are not set, set them to defaults
+        info.title = info.title ? info.title : "New spec";
+        info.author = info.author ? info.author : "Anonymous";
+        info.keywords = info.keywords ? info.keywords : "";
+
         // final data object for the template
         var templateJSON = {
             content : data,
             header  : headerFooterHTML.header,
             footer  : headerFooterHTML.footer,
-            title   : info.title ? info.title : "New spec",
-            author  : info.author ? info.author : "Anonymous",
-            keywords: info.keywords ? info.keywords : ""
+            info    : info
         };
 
         // render page and send it as response
