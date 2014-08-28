@@ -10,7 +10,7 @@ var
     phantom = require('phantomjs'),
     unflatten = require('./unflat'),
     childProcess = require('child_process'),
-    pages_tree = require('../../user/data/pages_tree.json'),
+    pages_tree = require('data/pages_tree.json'), //TODO: must be updated automatically
     pagesParser = require('./pagesParser'),
     exec = childProcess.exec,
 

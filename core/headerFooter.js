@@ -1,7 +1,7 @@
-var fs = require('fs'),
-    path = require('path'),
-    pathToApp = path.dirname(require.main.filename),
-    ejs = require('ejs');
+var fs = require('fs');
+var path = require('path');
+var pathToApp = path.dirname(require.main.filename);
+var ejs = require('ejs');
 
 exports.getHeaderAndFooter = function () {
     var defaultTemplatePath = pathToApp + "/assets/templates/",

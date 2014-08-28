@@ -106,6 +106,15 @@ module.exports = function(grunt) {
                 options: {
                     destination: 'jsdoc/core'
                 }
+            },
+            assets: {
+                src: [
+                    'assets/js/**/*.js',
+                    '!assets/js/lib/**/*.js'
+                ],
+                options: {
+                    destination: 'jsdoc/assets'
+                }
             }
         },
 

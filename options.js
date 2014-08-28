@@ -4,23 +4,16 @@ module.exports = {
 
     // Restart app after changing core options
     core : {
+        api: {
+            specsData: 'core/api/data/pages_tree.json',
+            htmlData: 'core/api/data/html.json',
+            specsTestData: 'test/data/api-test-specs.json',
+            htmlTestData: 'test/data/api-test-html.json'
+        },
         common: {
             pathToUser: 'user',
             port: 8080,
             infoFile: 'info.json'
-        },
-        fileTree: {
-            includedDirs: ['docs'],
-            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
-            fileMask: ['index.html', 'index.src'],
-            cron: false,
-            cronProd: true,
-            cronRepeatTime: 60000,
-            outputFile: 'data/pages_tree.json'
-        },
-        specDependenciesTree: {
-            enabled: false,
-            outputFile: 'data/spec_dependencies_tree.json'
         },
         less: {
             compress: false

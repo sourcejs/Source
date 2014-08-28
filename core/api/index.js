@@ -2,11 +2,23 @@ var express = require('express');
 var path = require('path');
 var parseData = require("./parseData");
 var pathToApp = path.dirname(require.main.filename);
+var deepExtend = require('deep-extend');
+
+var config = {
+    statusCodes: {
+        OK: 200,
+        notFound: 404,
+        error: 500
+    }
+};
+// Overwriting base options
+deepExtend(config, global.opts.core.api);
+
 
 var getSpecs = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
-    var reqID = body.id;
+    var reqID = body.id || req.query.id;
     var reqFilter = body.filter;
     var reqFilterOut = body.filterOut;
     var parsedData = parseObj;
@@ -15,9 +27,9 @@ var getSpecs = function (req, res, parseObj) {
         var dataByID = parsedData.getByID(reqID);
 
         if (dataByID && typeof dataByID === 'object') {
-            res.status(200).json(dataByID);
+            res.status(config.statusCodes.OK).json(dataByID);
         } else {
-            res.status(404).json({
+            res.status(config.statusCodes.notFound).json({
                 message: "id not found"
             });
         }
@@ -29,9 +41,9 @@ var getSpecs = function (req, res, parseObj) {
         });
 
         if (dataFiltered && typeof dataFiltered === 'object') {
-            res.status(200).json(dataFiltered);
+            res.status(config.statusCodes.OK).json(dataFiltered);
         } else {
-            res.status(404).json({
+            res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
         }
@@ -39,9 +51,9 @@ var getSpecs = function (req, res, parseObj) {
         data = parsedData.getAll();
 
         if (data) {
-            res.status(200).json(data);
+            res.status(config.statusCodes.OK).json(data);
         } else {
-            res.status(404).json({
+            res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
         }
@@ -51,16 +63,16 @@ var getSpecs = function (req, res, parseObj) {
 var getHTML = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
-    var reqID = body.id;
+    var reqID = body.id || req.query.id;
     var parsedData = parseObj;
 
     if (reqID) {
         var dataByID = parsedData.getByID(reqID);
 
         if (dataByID && typeof dataByID === 'object') {
-            res.status(200).json(dataByID);
+            res.status(config.statusCodes.OK).json(dataByID);
         } else {
-            res.status(404).json({
+            res.status(config.statusCodes.notFound).json({
                 message: "id not found"
             });
         }
@@ -69,9 +81,9 @@ var getHTML = function (req, res, parseObj) {
         data = parsedData.getAll();
 
         if (data) {
-            res.status(200).json(data);
+            res.status(config.statusCodes.OK).json(data);
         } else {
-            res.status(404).json({
+            res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
         }
@@ -83,12 +95,12 @@ var apiRouter = express.Router();
 
 var parseHTML = new parseData({
     scope: 'html',
-    path: path.join(pathToApp, '/html.json')
+    path: path.join(pathToApp, config.htmlData)
 });
 
 var parseSpecs = new parseData({
     scope: 'specs',
-    path: path.join(global.app.get('user'), 'data/pages_tree.json')
+    path: path.join(pathToApp, config.specsData)
 });
 
 apiRouter.use(function(req, res, next) {
@@ -101,13 +113,26 @@ apiRouter.get('/', function(req, res) {
 	res.json({ message: 'Hello API' });
 });
 
+apiRouter.route('/specs/raw')
+    .get(function (req, res) {
+        var data = parseSpecs.getRaw();
+
+        if (data) {
+            res.status(config.statusCodes.OK).json(data);
+        } else {
+            res.status(config.statusCodes.notFound).json({
+                message: "data not found"
+            });
+        }
+    });
+
 apiRouter.route('/specs')
-    .post(function (req, res) {
+    .get(function (req, res) {
         getSpecs(req, res, parseSpecs)
     });
 
 apiRouter.route('/specs/html')
-    .post(function (req, res) {
+    .get(function (req, res) {
         getHTML(req, res, parseHTML)
     });
 
@@ -120,12 +145,12 @@ var apiTestRouter = express.Router();
 
 var parseSpecsTest = new parseData({
     scope: 'specs',
-    path: path.join(pathToApp, 'test', 'api-test-specs.json')
+    path: path.join(pathToApp, config.specsTestData)
 });
 
 var parseHTMLTest = new parseData({
     scope: 'html',
-    path: path.join(pathToApp, 'test', 'api-test-html.json')
+    path: path.join(pathToApp, config.htmlTestData)
 });
 
 apiTestRouter.use(function(req, res, next) {
@@ -139,12 +164,12 @@ apiTestRouter.get('/', function(req, res) {
 });
 
 apiTestRouter.route('/specs')
-    .post(function (req, res) {
+    .get(function (req, res) {
         getSpecs(req, res, parseSpecsTest)
     });
 
 apiTestRouter.route('/specs/html')
-    .post(function (req, res) {
+    .get(function (req, res) {
         getHTML(req, res, parseHTMLTest)
     });
 

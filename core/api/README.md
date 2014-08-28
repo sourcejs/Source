@@ -5,6 +5,7 @@
 Get all, or filtered specs
 
 ```
+GET
 /api/specs
 ```
 
@@ -14,20 +15,20 @@ Get all, or filtered specs
 ?[id|filter|filterOut],[filter|filterOut]
 ```
 
-* id (string) - return only one item with ID
-* filter (obj) - return list of items by filter (filter something that we want to see)
-* filterOut (obj) - return list of items by filter (filter something that we DON'T want to see)
+* id (string, JSON or param) - return only one item with ID
+* filter (obj, JSON only) - return list of items by filter (filter something that we want to see)
+* filterOut (obj, JSON only) - return list of items by filter (filter something that we DON'T want to see)
 
 ### Examples
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"filter":{"fields":["info"]}}' http://localhost:8080/api/specs
+curl -H "Content-Type: application/json" -X GET -d '{"filter":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
 
 Will return all specs that has `info` field.
 
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"filterOut":{"fields":["info"]}}' http://localhost:8080/api/specs
+curl -H "Content-Type: application/json" -X GET -d '{"filterOut":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
 
 Will return all specs except those, which have `info` field.
@@ -45,11 +46,21 @@ Both `filter` and `filterOut` could have this params:
 }
 ```
 
+## Specs raw
+
+Get all, or filtered specs
+
+```
+GET
+/api/specs/raw
+```
+
 ## HTML
 
 Get all, or specific Spec HTML
 
 ```
+GET
 /api/specs/html
 ```
 
@@ -59,7 +70,7 @@ Get all, or specific Spec HTML
 ?[id]
 ```
 
-* id (string) - return only one item with ID
+* id (string, JSON or param) - return only one item with ID
 
 
 ## TODO:Categories
@@ -67,6 +78,7 @@ Get all, or specific Spec HTML
 Get categories list
 
 ```
+GET
 /api/cats
 ```
 
@@ -75,6 +87,7 @@ Get categories list
 Get tags list
 
 ```
+GET
 /api/tags
 ```
 
@@ -83,8 +96,14 @@ Get tags list
 For testing api, stub data is used:
 
 ```
-test/api-test-html.json
-test/api-test-specs.json
+test/data/api-test-html.json
+test/data/api-test-specs.json
 ```
 
-To activate test data switch pass `test: true` param to API request.
+And requests are prefixed with `-test`:
+
+```
+/api-test/specs
+/api-test/specs/html
+...
+```

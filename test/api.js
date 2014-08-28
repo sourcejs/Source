@@ -10,7 +10,7 @@ global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 var parseSpecs = new parseData({
     scope: 'specs',
-    path: path.join(pathToMasterApp, global.opts.core.common.pathToUser, 'data/pages_tree.json')
+    path: global.opts.core.api.specsData
 });
 
 describe('Internal API tests', function () {
@@ -40,7 +40,7 @@ describe('Routing', function () {
             var body = {
             };
             request(url)
-                .post('/api/specs')
+                .get('/api/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -60,7 +60,7 @@ describe('Routing', function () {
             var body = {
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -78,7 +78,7 @@ describe('Routing', function () {
                 id: 'base-test/base'
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -96,7 +96,7 @@ describe('Routing', function () {
             var body = {
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -119,7 +119,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -141,7 +141,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -163,7 +163,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -185,7 +185,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -210,7 +210,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -235,7 +235,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -260,7 +260,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -283,7 +283,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -306,7 +306,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -332,7 +332,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -357,7 +357,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -380,7 +380,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -403,7 +403,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api-test/specs')
+                .get('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -425,7 +425,7 @@ describe('Routing', function () {
                 test: true
             };
             request(url)
-                .post('/api-test/specs/html')
+                .get('/api-test/specs/html')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -444,7 +444,7 @@ describe('Routing', function () {
                 id: 'base-test/btn'
             };
             request(url)
-                .post('/api-test/specs/html')
+                .get('/api-test/specs/html')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {

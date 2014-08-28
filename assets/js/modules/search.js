@@ -4,9 +4,6 @@
 *
 * */
 
-//Getting always new version of navigation JSON
-var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
-
 define([
     'jquery',
     'sourceModules/module',

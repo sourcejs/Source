@@ -7,25 +7,27 @@
 *
 * */
 
-//Getting always new version of navigation JSON
-var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
-
 define([
     'jquery',
     'sourceModules/module',
-    fileTreeJson], function ($, module, data) {
+    'text!/api/specs/raw'], function ($, module, data) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
     }
 
-
-    /* наследуем от Module */
     ParseFileTree.prototype = module.createInstance();
     ParseFileTree.prototype.constructor = ParseFileTree;
 
-    //getSpecificCat = a || [a,b] - Get only listed category, categories
-    //getCatInfo = bool - Turn on cat info parsing
+    /**
+     * Abstract pages tree parser
+     *
+     * @params {String} getSpecificCat - Category name
+     * @params {Boolean} getCatInfo - Get category info or not
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.parsePages = function (getSpecificCat, getCatInfo) {
         var _this = this,
             json = _this.json,
@@ -40,7 +42,7 @@ define([
                 if (typeof targetSubCatObj === 'object') {
 
                     //Need to collect only spec pages objects
-                    if ( _this.checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && _this.checkCat(currentCat, getSpecificCat, toCheckCat) ) {
+                    if ( checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && checkCat(currentCat, getSpecificCat, toCheckCat) ) {
                         //Checking if object is already there
                         if (typeof fileTree[currentSubCat] != 'object') {
                             fileTree[currentCat + '/' + currentSubCat] = targetSubCatObj;
@@ -64,7 +66,7 @@ define([
                                     var isSingle = false;
                                     if (getSpecificCat.indexOf('specFile') === -1) {
                                         for (innerCat in returnedTreeObj) {
-                                            if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, getCatInfo) ) {
+                                            if ( checkCatInfo(returnedTreeObj[innerCat], innerCat, getCatInfo) ) {
                                                 if (innerCat == 'specFile' && (!excludeRootDocument)) {
                                                     fileTree[innerCat] = {};
                                                     fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
@@ -98,7 +100,7 @@ define([
                                         returnedTreeObj = currentCatObj;
 
                                     for (var i = 0; i < getSpecificCatArr.length; i++) {
-                                        if (_this.checkCat(currentCheckCat, getSpecificCatArr[i])) {
+                                        if (checkCat(currentCheckCat, getSpecificCatArr[i])) {
                                             currentCheckCat = getSpecificCatArr[i+1];
                                         } else {
                                             success = false;
@@ -113,7 +115,7 @@ define([
                                     }
                                 }
 
-                        } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
+                        } else if (checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
 
                             //Except other cats in specific cat search mode
@@ -153,7 +155,7 @@ define([
 
     };
 
-    ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
+    var checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
         if (targetSubCatObj) {
 
             //If cat info needed
@@ -166,7 +168,7 @@ define([
         }
     };
 
-    ParseFileTree.prototype.checkCat = function (currentCat, getSpecificCat, toCheckCat) {
+    var checkCat = function (currentCat, getSpecificCat, toCheckCat) {
         var getSpecificCat = getSpecificCat,
             currentCat = currentCat,
             toCheckCat = toCheckCat;
@@ -211,10 +213,24 @@ define([
         }
     };
 
+    /**
+     * Get raw file tree JSON
+     *
+     * @returns {Object} Return raw file tree JSON
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getParsedJSON = function() {
     	return this.json;
     };
 
+    /**
+     * Get flat file tree with all specs
+     *
+     * @returns {Object} Return flat file tree
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
         var fileTree = this.parsePages(),
@@ -225,7 +241,7 @@ define([
 			for (folder in tree) {
 
 				if (typeof tree[folder] === 'object') {
-					if ( !_this.checkCatInfo(tree[folder]) ) {
+					if ( !checkCatInfo(tree[folder]) ) {
 
                         // Don't add specs without a title (or info.json)
                         if (tree['specFile'].title) {
@@ -244,11 +260,27 @@ define([
         return fileFlat;
     };
 
+    /**
+     * Get specific cat pages without category info
+     *
+     * @params {String} getSpecificCat - Category name
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getCatPages = function (getSpecificCat) {
         //Get cat pages
         return this.parsePages(getSpecificCat);
     };
 
+    /**
+     * Get specific cat pages with category
+     *
+     * @params {String} getSpecificCat - Category name
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
         //Get cat pages with cat info
         return this.parsePages(getSpecificCat, true);
