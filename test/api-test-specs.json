@@ -1,5 +1,5 @@
 {
-    "base": {
+    "base-test": {
         "base": {
             "specFile": {
                 "url": "/base/base",
@@ -32,7 +32,7 @@
             }
         }
     },
-    "project": {
+    "project-test": {
         "project-spec": {
             "specFile": {
                 "url": "/project/project-spec",

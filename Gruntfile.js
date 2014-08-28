@@ -104,7 +104,7 @@ module.exports = function(grunt) {
             core: {
                 src: ['core/**/*.js'],
                 options: {
-                    destination: 'doc'
+                    destination: 'jsdoc/core'
                 }
             }
         },

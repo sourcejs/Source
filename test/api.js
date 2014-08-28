@@ -1,14 +1,43 @@
 var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
+var path = require('path');
+
+var pathToMasterApp = path.resolve('./');
+var parseData = require(path.join(pathToMasterApp, 'core/api/parseData'));
+var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
+global.opts = loadOptions(path.resolve(pathToMasterApp));
+
+var parseSpecs = new parseData({
+    scope: 'specs',
+    path: path.join(pathToMasterApp, global.opts.core.common.pathToUser, 'data/pages_tree.json')
+});
+
+describe('Internal API tests', function () {
+    describe('Check parseData:specs', function () {
+        it('should return list of specs', function (done) {
+            var data = parseSpecs.getAll();
+
+            data.should.have.property('docs/base');
+            done();
+        });
+
+        it('should return spec by ID', function (done) {
+            var data = parseSpecs.getByID('docs/base');
+
+            data.should.have.property('url');
+            done();
+        });
+    });
+});
+
 
 describe('Routing', function () {
     var url = 'http://localhost:8080';
 
-    describe('Specs', function () {
+    describe('Check real API data available', function () {
         it('should return list of specs', function (done) {
             var body = {
-                test: true
             };
             request(url)
                 .post('/api/specs')
@@ -20,17 +49,36 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
+                    res.body.should.have.property('docs/base');
+                    done();
+                });
+        });
+    });
+
+    describe('Specs', function () {
+        it('should return list of specs', function (done) {
+            var body = {
+            };
+            request(url)
+                .post('/api-test/specs')
+                .expect(200)
+                .send(body)
+                .end(function (err, res) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    res.should.be.json;
+                    res.body.should.have.property('base-test/base');
                     done();
                 });
         });
         it('should return spec by ID', function (done) {
             var body = {
-                test: true,
-                id: 'base/base'
+                id: 'base-test/base'
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -46,10 +94,9 @@ describe('Routing', function () {
         });
         it('should not have cat info', function (done) {
             var body = {
-                test: true
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -67,13 +114,12 @@ describe('Routing', function () {
     describe('Specs Filter', function () {
         it('should return only specs WITH info field', function (done) {
             var body = {
-                test: true,
                 filter: {
                     fields:["info"]
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -82,20 +128,20 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
         it('should return only specs WITH keywords, info, and title field', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     fields:["keywords","info","title"]
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -104,8 +150,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.not.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.not.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -117,7 +163,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -126,8 +172,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/button');
-                    res.body.should.not.have.property('base/base');
+                    res.body.should.have.property('base-test/button');
+                    res.body.should.not.have.property('base-test/base');
                     done();
                 });
         });
@@ -139,7 +185,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -148,8 +194,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.not.have.property('base/button');
-                    res.body.should.not.have.property('base/base');
+                    res.body.should.not.have.property('base-test/button');
+                    res.body.should.not.have.property('base-test/base');
                     done();
                 });
         });
@@ -164,7 +210,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -173,8 +219,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -189,7 +235,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -198,8 +244,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -214,7 +260,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -223,8 +269,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -237,7 +283,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -246,8 +292,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -260,7 +306,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -269,8 +315,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.not.have.property('base/base');
-                    res.body.should.have.property('base/button');
+                    res.body.should.not.have.property('base-test/base');
+                    res.body.should.have.property('base-test/button');
                     done();
                 });
         });
@@ -286,7 +332,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -295,8 +341,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/base');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('base-test/base');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -307,11 +353,11 @@ describe('Routing', function () {
             var body = {
                 test: true,
                 filter: {
-                    cats:["project"]
+                    cats:["project-test"]
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -320,8 +366,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('project/project-spec');
-                    res.body.should.not.have.property('base/button');
+                    res.body.should.have.property('project-test/project-spec');
+                    res.body.should.not.have.property('base-test/button');
                     done();
                 });
         });
@@ -334,7 +380,7 @@ describe('Routing', function () {
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -343,8 +389,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.not.have.property('project/project-spec');
-                    res.body.should.have.property('base/button');
+                    res.body.should.not.have.property('project-test/project-spec');
+                    res.body.should.have.property('base-test/button');
                     done();
                 });
         });
@@ -353,11 +399,11 @@ describe('Routing', function () {
             var body = {
                 test: true,
                 filterOut: {
-                    cats:["project"]
+                    cats:["project-test"]
                 }
             };
             request(url)
-                .post('/api/specs')
+                .post('/api-test/specs')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -366,8 +412,8 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.not.have.property('project/project-spec');
-                    res.body.should.have.property('base/button');
+                    res.body.should.not.have.property('project-test/project-spec');
+                    res.body.should.have.property('base-test/button');
                     done();
                 });
         });
@@ -379,7 +425,7 @@ describe('Routing', function () {
                 test: true
             };
             request(url)
-                .post('/api/specs/html')
+                .post('/api-test/specs/html')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -388,17 +434,17 @@ describe('Routing', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base/btn');
+                    res.body.should.have.property('base-test/btn');
                     done();
                 });
         });
         it('should return HTML by ID', function (done) {
             var body = {
-                test: true,
-                id: 'base/btn'
+
+                id: 'base-test/btn'
             };
             request(url)
-                .post('/api/specs/html')
+                .post('/api-test/specs/html')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {

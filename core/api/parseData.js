@@ -1,74 +1,61 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
-var pathToApp = path.dirname(require.main.filename);
-
 
 /**
  * ParseData Constructor
  *
+ * @class ParseData
  * @constructor
- * @param {string} scope - Setting data scope (specs/html)
+ * @param {Object} config
+ * @param {String} config.scope - data scope (specs/html)
+ * @param {String} config.path - path do data
  */
-function ParseData(scope) {
+function ParseData(config) {
     this.data = {};
-    this.scope = scope;
-
-    if (scope === 'html') {
-        this.dataPath = path.join(pathToApp, '/html.json');
-    } else if (scope === 'specs') {
-        this.dataPath = path.join(global.app.get('user'), 'data/pages_tree.json');
-    } else {
-        console.warn('Scope not defined in ParseData');
-    }
+    this.scope = config.scope;
+    this.dataPath = config.path;
 }
 
-/** Check if data file exists. */
-ParseData.prototype.dataEsixts = function(){
-    return fs.existsSync(this.dataPath);
-};
+/**
+ * Update data
+ */
+ParseData.prototype.updateData = function(){
+    try {
+        this.data = JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
+    } catch(e){
+        console.warn('Api data of ' + this.scope + ' does not exist, please fix it.');
+        console.warn('Error: ' + e);
+        return false;
+    }
 
+    this.flattenTillSpec();
+
+    if (this.scope === 'specs') {
+        this.removeCatalogueDescription();
+    }
+
+    return true;
+};
 
 /**
  * Removing catalogue description objects
  *
- * @param {Object} data - Data object wil all specs/html
+ * @param {Object} [data] - Data object wil all specs/html
+ *
+ * @returns {Object} Return data without catalogue description
  */
 ParseData.prototype.removeCatalogueDescription = function(data){
     var output = {};
+    var _data = data || this.data;
 
-    Object.keys(data).forEach(function (key) {
-        var value = data[key];
+    Object.keys(_data).forEach(function (key) {
+        var value = _data[key];
 
-        if (value.role === 'navigation') return;
+        if (value['role'] === 'navigation') return;
 
         output[key] = value;
     });
-
-    return output;
-};
-
-/**
- * Get all data
- *
- * @param {Object} body - Request body with params
- *
- * @returns {Object} Flat data object with all itmes
- */
-ParseData.prototype.getAll = function(body){
-    var output = {};
-    var testData = path.join(pathToApp, 'test', 'api-test-' + this.scope + '.json');
-    var pathToData = body.test ? testData : this.dataPath;
-
-    if (body.test || this.dataEsixts()) {
-        output = JSON.parse(fs.readFileSync(pathToData, 'utf8'));
-    }
-
-    output = this.flattenTillSpec(output);
-
-    if (this.scope === 'specs') {
-        output = this.removeCatalogueDescription(output);
-    }
 
     this.data = output;
     return output;
@@ -77,46 +64,45 @@ ParseData.prototype.getAll = function(body){
 /**
  * Flatten given data
  *
- * @param {Object} data - Data object wil all specs/html
+ * @param {Object} [data] - Data object wil all specs/html
  *
  * @returns {Object} Return flattened data
  */
 ParseData.prototype.flattenTillSpec = function(data){
     var delimiter = '/';
     var output = {};
+    var _data = data || this.data;
 
     var step = function(object, prev) {
         Object.keys(object).forEach(function (key) {
             var value = object[key];
-            var type = Object.prototype.toString.call(value);
-            var isobject = (
-                    type === "[object Object]" ||
-                    type === "[object Array]"
-                    );
 
             var isSpecFile = key === 'specFile';
 
             var keyAppend = isSpecFile ? '' : delimiter + key;
             var newKey = prev ? prev + keyAppend : key;
 
-            if (isobject && !isSpecFile) {
+            if (typeof value === 'object' && !isSpecFile) {
                 return step(value, newKey)
             }
 
             output[newKey] = value;
         })
     };
-    step(data);
+    step(_data);
 
+    this.data = output;
     return output;
 };
 
 /**
- * ParseData._filter callback param
- * @callback filterFuncCallback
+ * Get all data
  *
- * @param {String} filterItem - name of current filter from Array
+ * @returns {Object|Boolean} Return flat all data object with all items or false boolean
  */
+ParseData.prototype.getAll = function(){
+    return this.updateData() ? this.data : false;
+};
 
 /**
  * Filter placeholder function
@@ -124,7 +110,8 @@ ParseData.prototype.flattenTillSpec = function(data){
  * @param {Object} value - One item data, simple object without nesting
  * @param {Number} inOut - 0 or 1, for filtering and filteringOut
  * @param {Array} filterArr - Array with filtering params
- * @param {filterFuncCallback} filterFunc - Function that return boolean with filter check status
+ * @param {Function} filterFunc - callback function
+ *      example: filterFunc(filterItem) — accepts data item key for param
  *
  * @returns {Boolean} Return boolean with filter result
  */
@@ -191,8 +178,6 @@ ParseData.prototype.filterCats = function(value, key, inOut, filterArr){
 /**
  * Filters given data by provided conf
  *
- * @param {Object} data - Data to filter
- *
  * @param {Object} filterConf - Filter configuration
  *
  * @param {Object} filterConf.filter - Check if exists
@@ -205,74 +190,62 @@ ParseData.prototype.filterCats = function(value, key, inOut, filterArr){
  *      @param {Array} filterConf.filterOut.cats - Array with cats to filter
  *      @param {Array} filterConf.filterOut.tags - Array with tags to filter
  *
- * @returns {Object} Returns object with filtered data
+ * @param {Object} [data] - Data to filter
+ *
+ * @returns {Object|Boolean} Returns object with filtered data or false boolean
  */
-ParseData.prototype.getFilteredData = function(data, filterConf){
+ParseData.prototype.getFilteredData = function(filterConf, data){
     var _this = this;
+    var _data = {};
+    var dataExists = true;
     var output = {};
 
-    Object.keys(data).forEach(function (key) {
-        var value = data[key];
-        var filterFields = true;
-        var filterOutFields = true;
-        var filterTags = true;
-        var filterOutTags = true;
-        var filterCats = true;
-        var filterOutCats = true;
+    if (data) {
+        _data = data;
+    } else {
+        _data = this.data;
+        dataExists = this.updateData();
+    }
 
-        if (filterConf.filter && filterConf.filter.cats) {
-            filterCats = _this.filterCats(value, key, 0, filterConf.filter.cats);
-        }
-        if (filterConf.filterOut && filterConf.filterOut.cats) {
-            filterOutCats = _this.filterCats(value, key, 1, filterConf.filterOut.cats);
-        }
+    if (dataExists) {
+        Object.keys(_data).forEach(function (key) {
+            var value = _data[key];
+            var filterObj = filterConf.filter;
+            var filterOutObj = filterConf.filterOut;
 
-        var rightCat = filterCats && filterOutCats;
-        if (!rightCat) return;
+            // Filtering categories out
+            if (filterObj && filterObj.cats && !_this.filterCats(value, key, 0, filterObj.cats)) return;
+            if (filterOutObj && filterOutObj.cats && !_this.filterCats(value, key, 1, filterOutObj.cats)) return;
 
+            // Filtering by existing and not empty fields
+            if (filterObj && filterObj.fields && !_this.filterFields(value, 0, filterObj.fields)) return;
+            if (filterOutObj && filterOutObj.fields && !_this.filterFields(value, 1, filterOutObj.fields)) return;
 
-        // Filtering by existing and not empty fields
-        if (filterConf.filter && filterConf.filter.fields) {
-            filterFields = _this.filterFields(value, 0, filterConf.filter.fields);
-        }
-        if (filterConf.filterOut && filterConf.filterOut.fields) {
-            filterOutFields = _this.filterFields(value, 1, filterConf.filterOut.fields);
-        }
+            // Filtering by tags
+            if (filterObj && filterObj.tags && !_this.filterTags(value, 0, filterObj.tags)) return;
+            if (filterOutObj && filterOutObj.tags && !_this.filterTags(value, 1, filterOutObj.tags)) return;
 
-        // Filtering by tags
-        if (filterConf.filter && filterConf.filter.tags) {
-            filterTags = _this.filterTags(value, 0, filterConf.filter.tags);
-        }
-        if (filterConf.filterOut && filterConf.filterOut.tags) {
-            filterOutTags = _this.filterTags(value, 1, filterConf.filterOut.tags);
-        }
+            output[key] = value;
+        });
 
-        var write = filterFields && filterOutFields && filterTags && filterOutTags;
-
-        if (!write) return;
-        output[key] = value;
-    });
-
-    return output;
+        return output;
+    } else {
+        return false;
+    }
 };
 
 /**
  * Get item by ID
  *
- * @param {Object} body - Request body
+ * @param {String} id - Request body
  *
- * @returns {Boolean|Boolean} Return single object by requested ID
+ * @returns {Object|Boolean} Return single object by requested ID or false boolean
  */
-ParseData.prototype.getByID = function(body){
-    var target = body.id;
-    var data = this.getAll(body);
-    var targetData = data[target];
+ParseData.prototype.getByID = function(id){
+    var dataExists = this.updateData();
+    var targetData = this.data[id];
 
-    if (targetData) {
-        return data[target];
-    } else {
-        return false;
-    }
+    return dataExists && targetData ? targetData : false;
 };
 
 module.exports = ParseData;

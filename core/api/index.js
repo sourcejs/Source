@@ -1,95 +1,151 @@
 var express = require('express');
-var router = express.Router();
-var fs = require('fs');
 var path = require('path');
 var parseData = require("./parseData");
 var pathToApp = path.dirname(require.main.filename);
 
-var parseHTML = new parseData('html');
-var parseSpecs = new parseData('specs');
+var getSpecs = function (req, res, parseObj) {
+    var data = {};
+    var body = req.body;
+    var reqID = body.id;
+    var reqFilter = body.filter;
+    var reqFilterOut = body.filterOut;
+    var parsedData = parseObj;
 
-// Api header config
-router.use(function(req, res, next) {
+    if (reqID) {
+        var dataByID = parsedData.getByID(reqID);
+
+        if (dataByID && typeof dataByID === 'object') {
+            res.status(200).json(dataByID);
+        } else {
+            res.status(404).json({
+                message: "id not found"
+            });
+        }
+
+    } else if (reqFilter || reqFilterOut) {
+        var dataFiltered = parsedData.getFilteredData({
+            filter: reqFilter,
+            filterOut: reqFilterOut
+        });
+
+        if (dataFiltered && typeof dataFiltered === 'object') {
+            res.status(200).json(dataFiltered);
+        } else {
+            res.status(404).json({
+                message: "data not found"
+            });
+        }
+    } else {
+        data = parsedData.getAll();
+
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({
+                message: "data not found"
+            });
+        }
+    }
+};
+
+var getHTML = function (req, res, parseObj) {
+    var data = {};
+    var body = req.body;
+    var reqID = body.id;
+    var parsedData = parseObj;
+
+    if (reqID) {
+        var dataByID = parsedData.getByID(reqID);
+
+        if (dataByID && typeof dataByID === 'object') {
+            res.status(200).json(dataByID);
+        } else {
+            res.status(404).json({
+                message: "id not found"
+            });
+        }
+
+    } else {
+        data = parsedData.getAll();
+
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({
+                message: "data not found"
+            });
+        }
+    }
+};
+
+// Main API router
+var apiRouter = express.Router();
+
+var parseHTML = new parseData({
+    scope: 'html',
+    path: path.join(pathToApp, '/html.json')
+});
+
+var parseSpecs = new parseData({
+    scope: 'specs',
+    path: path.join(global.app.get('user'), 'data/pages_tree.json')
+});
+
+apiRouter.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
 
-router.get('/', function(req, res) {
+apiRouter.get('/', function(req, res) {
 	res.json({ message: 'Hello API' });
 });
 
-router.route('/specs')
-    .post(function(req, res) {
-        var data = {};
-        var body = req.body;
-        var reqID = body.id;
-        var reqFilter = body.filter;
-        var reqFilterOut = body.filterOut;
+apiRouter.route('/specs')
+    .post(function (req, res) {
+        getSpecs(req, res, parseSpecs)
+    });
 
-        if (parseSpecs.dataEsixts()) {
-            if (reqID) {
-                var dataByID = parseSpecs.getByID(body);
+apiRouter.route('/specs/html')
+    .post(function (req, res) {
+        getHTML(req, res, parseHTML)
+    });
 
-                if (dataByID && typeof dataByID === 'object') {
-                    res.status(200).jsonp(dataByID);
-                } else {
-                    res.status(404).jsonp({
-                        message: "id not found"
-                    });
-                }
+app.use('/api', apiRouter);
 
-            } else if (reqFilter || reqFilterOut) {
-                var dataFiltered = parseSpecs.getFilteredData(parseSpecs.getAll(body), {
-                    filter: reqFilter,
-                    filterOut: reqFilterOut
-                }, body);
 
-                if (dataFiltered && typeof dataFiltered === 'object') {
-                    res.status(200).jsonp(dataFiltered);
-                }
-            } else {
-                data = parseSpecs.getAll(body);
 
-                res.status(200).jsonp(data);
-            }
-        } else {
-            res.status(404).jsonp({
-                message: "pages_tree.json not found"
-            });
-        }
-	});
+// Test API router
+var apiTestRouter = express.Router();
 
-router.route('/specs/html')
-    .post(function(req, res) {
-        var data = {};
-        var body = req.body;
-        var reqID = body.id;
+var parseSpecsTest = new parseData({
+    scope: 'specs',
+    path: path.join(pathToApp, 'test', 'api-test-specs.json')
+});
 
-        if (parseHTML.dataEsixts()) {
+var parseHTMLTest = new parseData({
+    scope: 'html',
+    path: path.join(pathToApp, 'test', 'api-test-html.json')
+});
 
-            if (reqID) {
-                var dataByID = parseHTML.getByID(body);
+apiTestRouter.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+});
 
-                if (dataByID && typeof dataByID === 'object') {
-                    res.status(200).jsonp(dataByID);
-                } else {
-                    res.status(404).jsonp({
-                        message: "id not found"
-                    });
-                }
+apiTestRouter.get('/', function(req, res) {
+	res.json({ message: 'API Testig env' });
+});
 
-            } else {
-                data = parseHTML.getAll(body);
+apiTestRouter.route('/specs')
+    .post(function (req, res) {
+        getSpecs(req, res, parseSpecsTest)
+    });
 
-                res.status(200).jsonp(data);
-            }
+apiTestRouter.route('/specs/html')
+    .post(function (req, res) {
+        getHTML(req, res, parseHTMLTest)
+    });
 
-        } else {
-            res.status(500).jsonp({
-                message: "HTML data not found"
-            });
-        }
-	});
-
-app.use('/api', router);
+app.use('/api-test', apiTestRouter);
