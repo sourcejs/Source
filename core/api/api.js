@@ -34,7 +34,10 @@ var parseSpecs = new parseData({
 
 var specs = parseSpecs.getFilteredData({
     filter: {
-        cats:["mob/base"]
+        cats: ["base"]
+    },
+    filterOut: {
+        tags: ['html']
     }
 }, true);
 
@@ -70,7 +73,7 @@ function handler(error, stdout, stderr, spec, n, callback) {
     var path = spec && spec.split('/');
     var file = path.join('-');
 
-    fs.writeFile('log/output-'+ file +'.txt', stdout, function(err){
+    fs.writeFile(__dirname + '/log/output-'+ file +'.txt', stdout, function(err){
         if (err) console.log('Log write error', err);
     });
 

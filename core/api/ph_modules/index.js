@@ -85,7 +85,7 @@ page.onCallback = function (data) {
                 }
                 else {
                     return JSON.stringify([{
-                        "error": "Ошибка в парсинге спецификации.",
+                        "error": "Spec page parsig error.",
                         "url": url
                     }]);
 
@@ -219,7 +219,7 @@ page.onCallback = function (data) {
         );
         phantom.exit();
     }
-}
+};
 
 page.onError = function(msg, trace) {
 //    console.log('--- error: '+ url +' ---\nph_modules/output.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function + '\n--- /error ---');
@@ -235,7 +235,7 @@ page.onError = function(msg, trace) {
 //        "line": trace[0].line,
 //        "function": trace[0].function
 //    }));
-}
+};
 
 
 // TODO: check list below
