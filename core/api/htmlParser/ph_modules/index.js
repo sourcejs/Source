@@ -12,7 +12,7 @@ var url = system.args[1],
 page.onResourceReceived = function(response) {
     if (response.id == 1 && response.status == 404 || response.status == 500) {
         console.log(JSON.stringify({
-                "error": "Ошибка "+ response.status,
+                "error": "Network error status "+ response.status,
                 "url": url
             })
         );
@@ -85,7 +85,7 @@ page.onCallback = function (data) {
                 }
                 else {
                     return JSON.stringify([{
-                        "error": "Spec page parsig error.",
+                        "error": "Spec page parsing error.",
                         "url": url
                     }]);
 
