@@ -4,30 +4,46 @@
  * Sourcejs spec parser, using phantomjs
  */
 
-var
-    path = require('path'),
-    fs = require('fs'),
-    phantom = require('phantomjs'),
-    unflatten = require('./unflat'),
-    childProcess = require('child_process'),
-    pages_tree = require('data/pages_tree.json'), //TODO: must be updated automatically
-    pagesParser = require('./pagesParser'),
-    exec = childProcess.exec,
+var path = require('path');
+var fs = require('fs');
+var phantom = require('phantomjs');
+var unflatten = require('./unflat');
+var childProcess = require('child_process');
+var exec = childProcess.exec;
 
-    ph_path = phantom.path,
-    url = 'http://127.0.0.1:8080',
-    html = {},
-    unflatten_html,
-    specs
-    ;
+var ph_path = phantom.path;
+var url = 'http://127.0.0.1:8080';
+var html = {};
+var unflatten_html;
 
-var params = {
-    obj: pages_tree,
-    filter: ['mob'],
-    flag: 'specFile'
+//temp
+global.MODE = process.env.NODE_ENV || 'development';
+
+
+var config = {
+    pathToSpecs: './data/pages_tree.json'
 };
+// Overwriting base options
+//deepExtend(config, global.opts.core.htmlParser);
 
-specs = pagesParser(params);
+var parseData = require('./parseData.js');
+var parseSpecs = new parseData({
+    scope: 'specs',
+    path: require.resolve(config.pathToSpecs)
+});
+
+var specs = parseSpecs.getFilteredData({
+    filter: {
+        cats:["mob/base"]
+    }
+}, true);
+
+
+// Preparing data for specs iteration
+specs = specs.map(function(item){
+    return item.url.substring(1);
+});
+
 var specLength = specs.length,// specs.length
     doneCounter = 0;
 
@@ -54,23 +70,32 @@ function handler(error, stdout, stderr, spec, n, callback) {
     var path = spec && spec.split('/');
     var file = path.join('-');
 
+    fs.writeFile('log/output-'+ file +'.txt', stdout, function(err){
+        if (err) console.log('Log write error', err);
+    });
 
-    fs.writeFile('log/output-'+ file +'.txt', stdout);
-    if (path == 'mob/base') return;
     html[spec] = JSON.parse(stdout);
 
 console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
 
     doneCounter++;
     if (doneCounter == specLength) {
-        fs.writeFile('html.json', JSON.stringify(html));
-        console.log('-- All specs were written.');
-//        console.log(html);
-        unflatten_html =  unflatten(html, { delimiter: '/', overwrite: 'root' });
-        console.log('-- All specs were saved.');
+        var JSONformat = null;
 
-        // After all specs were both written in file and saved in memory.
-        callback();
+        if (global.MODE === 'development') {
+            JSONformat = 4;
+        }
+
+        fs.writeFile('html.json', JSON.stringify(html, null, JSONformat), function (err) {
+            if (err) throw err;
+
+            console.log('-- All specs were written.');
+            unflatten_html =  unflatten(html, { delimiter: '/', overwrite: 'root' });
+            console.log('-- All specs were saved.');
+
+            // After all specs were both written in file and saved in memory.
+            callback();
+        });
     }
 }
 
