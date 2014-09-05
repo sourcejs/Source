@@ -13,7 +13,8 @@ module.exports = {
         common: {
             pathToUser: 'user',
             port: 8080,
-            infoFile: 'info.json'
+            infoFile: 'info.json',
+            extensions: ["src", "jade", "haml"]
         },
         less: {
             compress: false
