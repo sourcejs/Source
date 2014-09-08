@@ -9,8 +9,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/base",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -20,15 +20,16 @@
                     "html"
                 ],
                 "info": "\n            Страница с описанием небольших стартов, которые не доросли до своей спеки.\n        "
-            }
+            },
+            "temp": {}
         },
         "add-stub": {
             "css": {},
             "i": {},
             "specFile": {
                 "url": "/base/add-stub",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "6.9.2014",
+                "lastmodSec": 1409988589000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -41,44 +42,12 @@
             },
             "templates": {}
         },
-        "amodal": {
-            "css": {},
-            "specFile": {
-                "url": "/base/amodal",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
-                "fileName": "index.html",
-                "thumbnail": true,
-                "author": "Juris Pukitis",
-                "title": "Старое модальное окно",
-                "keywords": "modal, модальное окно",
-                "info": "\n            <p>Прототип нового модального окна на css + js</p>\n            <p><a href=\"#777\" onclick=\"return false\" class=\"open-amodal1\">Открыть модальное окно</a></p>\n        ",
-                "cat": [
-                    "hidden"
-                ]
-            },
-            "v2": {
-                "css": {},
-                "specFile": {
-                    "url": "/base/amodal/v2",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
-                    "fileName": "index.html",
-                    "thumbnail": false,
-                    "title": "Экспериментариная версия попапа (не доделана)",
-                    "info": "\n            Экспериментариная версия попапа (не доделана).\n",
-                    "cat": [
-                        "hidden"
-                    ]
-                }
-            }
-        },
         "animations": {
             "css": {},
             "specFile": {
                 "url": "/base/animations",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "21.2.2014",
+                "lastmodSec": 1392972015000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -95,8 +64,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/btn",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -112,8 +81,8 @@
         "caption": {
             "specFile": {
                 "url": "/base/caption",
-                "lastmod": "11.7.2014",
-                "lastmodSec": 1405073250000,
+                "lastmod": "14.7.2014",
+                "lastmodSec": 1405352438000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -127,8 +96,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/cardList",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "22.8.2014",
+                "lastmodSec": 1408706649000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -143,8 +112,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/chain",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -161,8 +130,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/collages",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "22.8.2014",
+                "lastmodSec": 1408706649000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -174,8 +143,8 @@
         "compactProfile": {
             "specFile": {
                 "url": "/base/compactProfile",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "7.2.2014",
+                "lastmodSec": 1391791118000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -191,8 +160,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/controls",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov, Evgeny Khoroshilov",
@@ -207,8 +176,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/conversation",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -218,12 +187,13 @@
                 "className": "conversation"
             }
         },
+        "cthumb": {},
         "data-with-image": {
             "css": {},
             "specFile": {
                 "url": "/base/data-with-image",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -233,13 +203,14 @@
                 "cat": [
                     "html"
                 ]
-            }
+            },
+            "temp": {}
         },
         "delete-stub": {
             "specFile": {
                 "url": "/base/delete-stub",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -256,8 +227,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/df-list",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -275,7 +246,7 @@
             "specFile": {
                 "url": "/base/emoji",
                 "lastmod": "16.7.2014",
-                "lastmodSec": 1405497631000,
+                "lastmodSec": 1405509565000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Alexey Ostrovsky, Dennis Przendzinski",
@@ -288,8 +259,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/faders",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -306,8 +277,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/feed",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -323,8 +294,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/form-actions",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -341,8 +312,8 @@
             "calendar": {
                 "specFile": {
                     "url": "/base/forms/calendar",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -354,8 +325,8 @@
             "captcha": {
                 "specFile": {
                     "url": "/base/forms/captcha",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386232000,
+                    "lastmod": "1.7.2014",
+                    "lastmodSec": 1404227877000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -367,8 +338,8 @@
             "contenteditable": {
                 "specFile": {
                     "url": "/base/forms/contenteditable",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386234000,
+                    "lastmod": "4.7.2014",
+                    "lastmodSec": 1404460417000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -381,8 +352,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/base/forms/counters",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "27.6.2014",
+                    "lastmodSec": 1403855933000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Gennady Tsarinny",
@@ -398,8 +369,8 @@
             "errors": {
                 "specFile": {
                     "url": "/base/forms/errors",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386232000,
+                    "lastmod": "2.7.2014",
+                    "lastmodSec": 1404289637000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -411,8 +382,8 @@
             "forms-example": {
                 "specFile": {
                     "url": "/base/forms/forms-example",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386232000,
+                    "lastmod": "1.7.2014",
+                    "lastmodSec": 1404227877000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -424,20 +395,21 @@
             "i": {},
             "specFile": {
                 "url": "/base/forms",
-                "lastmod": "8.7.2014",
-                "lastmodSec": 1404813053000,
+                "lastmod": "7.7.2014",
+                "lastmodSec": 1404763878000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Roman Alekseev",
                 "title": "Формы",
                 "keywords": "формы, form, новый формы, new forms",
-                "info": "Каталог документации по формам"
+                "info": "Каталог документации по формам",
+                "role": "navigation"
             },
             "inline-elements": {
                 "specFile": {
                     "url": "/base/forms/inline-elements",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -449,8 +421,8 @@
             "irc": {
                 "specFile": {
                     "url": "/base/forms/irc",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -462,8 +434,8 @@
             "isl": {
                 "specFile": {
                     "url": "/base/forms/isl",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -475,8 +447,8 @@
             "it": {
                 "specFile": {
                     "url": "/base/forms/it",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -489,8 +461,8 @@
             "placeholder": {
                 "specFile": {
                     "url": "/base/forms/placeholder",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -502,8 +474,8 @@
             "promo-fields": {
                 "specFile": {
                     "url": "/base/forms/promo-fields",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386232000,
+                    "lastmod": "2.7.2014",
+                    "lastmodSec": 1404289637000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -512,12 +484,13 @@
                     "info": "Промо-поля, варианты использования."
                 }
             },
+            "temp": {},
             "templates": {},
             "type-file": {
                 "specFile": {
                     "url": "/base/forms/type-file",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "26.6.2014",
+                    "lastmodSec": 1403774772000,
                     "fileName": "index.src",
                     "thumbnail": true,
                     "author": "Roman Alekseev",
@@ -530,8 +503,8 @@
         "guides": {
             "specFile": {
                 "url": "/base/guides",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov, Gennady Tsarinny",
@@ -544,8 +517,8 @@
         "heading": {
             "specFile": {
                 "url": "/base/heading",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov, Gennady Tsarinny",
@@ -558,8 +531,8 @@
         "iblock": {
             "specFile": {
                 "url": "/base/iblock",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -572,8 +545,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/iblock-cloud",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -585,8 +558,8 @@
         "inav": {
             "specFile": {
                 "url": "/base/inav",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -600,8 +573,8 @@
         },
         "specFile": {
             "url": "/base",
-            "lastmod": "31.7.2014",
-            "lastmodSec": 1406807698000,
+            "lastmod": "5.8.2014",
+            "lastmodSec": 1407230567000,
             "fileName": "index.src",
             "thumbnail": false,
             "title": "Стандарты",
@@ -611,8 +584,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/layer",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -626,8 +599,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/marks",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "27.2.2014",
+                "lastmodSec": 1393505070000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -637,12 +610,13 @@
             },
             "templates": {}
         },
+        "media-status": {},
         "mf": {
             "i": {},
             "specFile": {
                 "url": "/base/mf",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -658,15 +632,18 @@
             "css": {},
             "specFile": {
                 "url": "/base/modal-new",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
                 "keywords": "modal, popup, new",
                 "title": "Модальное окно",
                 "info": "Перерождение табличного стандарта",
-                "category": "Лееры",
+                "category": [
+                    "Лееры",
+                    "lego-hide"
+                ],
                 "target": "1"
             },
             "js": {},
@@ -675,8 +652,8 @@
         "nav-sm": {
             "specFile": {
                 "url": "/base/nav-sm",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -691,8 +668,8 @@
         "nav-tab": {
             "specFile": {
                 "url": "/base/nav-tab",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -709,8 +686,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/notifications",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407851592000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -723,8 +700,8 @@
         "ok-msg": {
             "specFile": {
                 "url": "/base/ok-msg",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -738,8 +715,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/ovr-menu",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "24.3.2014",
+                "lastmodSec": 1395652643000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -752,8 +729,8 @@
         "photo": {
             "specFile": {
                 "url": "/base/photo",
-                "lastmod": "11.7.2014",
-                "lastmodSec": 1405073250000,
+                "lastmod": "14.7.2014",
+                "lastmodSec": 1405352438000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -766,8 +743,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/photo-crop",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "21.2.2014",
+                "lastmodSec": 1392998161000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -781,8 +758,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/portal-message",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -796,8 +773,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/portlets",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -810,8 +787,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/portlets-new",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -824,8 +801,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/progress",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Ivan Metelev",
@@ -837,8 +814,8 @@
         "rdk-test": {
             "specFile": {
                 "url": "/base/rdk-test",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145278000,
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -855,8 +832,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/reveal",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -872,8 +849,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/scroll-arrow",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny, Juris Pukitis",
@@ -886,8 +863,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/search",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -902,8 +879,8 @@
         "search-field--old": {
             "specFile": {
                 "url": "/base/search-field--old",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -915,8 +892,8 @@
         "selectable-card": {
             "specFile": {
                 "url": "/base/selectable-card",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "1.4.2014",
+                "lastmodSec": 1396364528000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -933,7 +910,7 @@
             "specFile": {
                 "url": "/base/selectable-single",
                 "lastmod": "5.8.2014",
-                "lastmodSec": 1407227219000,
+                "lastmodSec": 1407230567000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -949,8 +926,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/shadow",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -966,8 +943,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/show-more",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -979,8 +956,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/show-on-hover",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -997,8 +974,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/sm",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -1012,8 +989,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/src-link",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1029,7 +1006,7 @@
             "specFile": {
                 "url": "/base/sticky-plank",
                 "lastmod": "16.7.2014",
-                "lastmodSec": 1405497631000,
+                "lastmodSec": 1405509565000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1044,8 +1021,8 @@
         "stub": {
             "specFile": {
                 "url": "/base/stub",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov, Gennady Tsarinny",
@@ -1062,8 +1039,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/stub-service",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov, Juris Pukitis",
@@ -1076,8 +1053,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/suggest",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky, Evgeny Khoroshilov",
@@ -1091,8 +1068,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/tabs",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -1109,8 +1086,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/tag",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1124,8 +1101,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/tico",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "22.8.2014",
+                "lastmodSec": 1408706649000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -1135,14 +1112,15 @@
                 "cat": [
                     "html"
                 ]
-            }
+            },
+            "temp": {}
         },
         "tip": {
             "css": {},
             "specFile": {
                 "url": "/base/tip",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "26.3.2014",
+                "lastmodSec": 1395834756000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -1151,12 +1129,15 @@
             },
             "templates": {}
         },
+        "tips": {
+            "temp": {}
+        },
         "toggler": {
             "css": {},
             "specFile": {
                 "url": "/base/toggler",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1172,8 +1153,8 @@
         "u-menu": {
             "specFile": {
                 "url": "/base/u-menu",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -1188,8 +1169,8 @@
         "ucard": {
             "specFile": {
                 "url": "/base/ucard",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "7.2.2014",
+                "lastmodSec": 1391791118000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1205,8 +1186,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/ucard--new",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1223,8 +1204,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/ucard-b",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -1239,8 +1220,8 @@
         "ucard-mini": {
             "specFile": {
                 "url": "/base/ucard-mini",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "7.2.2014",
+                "lastmodSec": 1391791118000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -1256,7 +1237,7 @@
             "specFile": {
                 "url": "/base/ucard-v",
                 "lastmod": "23.7.2014",
-                "lastmodSec": 1406107827000,
+                "lastmodSec": 1406114833000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -1271,8 +1252,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/ugrid",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "22.8.2014",
+                "lastmodSec": 1408706649000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -1285,8 +1266,8 @@
             "css": {},
             "specFile": {
                 "url": "/base/ust",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Robert Haritonov",
@@ -1300,8 +1281,8 @@
             "i": {},
             "specFile": {
                 "url": "/base/vertical-align",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -1313,13 +1294,14 @@
                 ]
             }
         },
+        "widgets": {},
         "z-index": {
             "css": {},
             "i": {},
             "specFile": {
                 "url": "/base/z-index",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Dmitry Lapynow",
@@ -1333,8 +1315,149 @@
         }
     },
     "core": {
+        "css": {
+            "less": {}
+        },
+        "js": {
+            "lib": {}
+        },
         "routes": {},
         "views": {}
+    },
+    "docs": {
+        "base": {
+            "i": {},
+            "specFile": {
+                "url": "/docs/base",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Robert Haritonov",
+                "title": "Basic Engine Documentation"
+            }
+        },
+        "plugins": {
+            "bubbles": {},
+            "clarify": {},
+            "debugmode": {},
+            "debugmode-en": {}
+        },
+        "spec": {
+            "css": {},
+            "specFile": {
+                "url": "/docs/spec",
+                "lastmod": "7.9.2014",
+                "lastmodSec": 1410107793000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Robert Haritonov",
+                "keywords": "create spec, spec markup",
+                "title": "Spec Page Documentation"
+            }
+        },
+        "starting": {
+            "css": {},
+            "specFile": {
+                "url": "/docs/starting",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Spec author",
+                "title": "Starting Spec Page Template"
+            }
+        },
+        "api": {
+            "specFile": {
+                "url": "/docs/api",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "title": "[beta] API documentation",
+                "role": "navigation"
+            },
+            "load-events": {
+                "specFile": {
+                    "url": "/docs/api/load-events",
+                    "lastmod": "19.8.2014",
+                    "lastmodSec": 1408439418000,
+                    "fileName": "index.src",
+                    "thumbnail": false,
+                    "author": "Ivan Metelev",
+                    "title": "[ru] Spec load event"
+                }
+            }
+        },
+        "clarify": {
+            "specFile": {
+                "url": "/docs/clarify",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Dmitry Lapynov",
+                "title": "Clarify — for spec section testing"
+            },
+            "ru": {
+                "specFile": {
+                    "url": "/docs/clarify/ru",
+                    "lastmod": "19.8.2014",
+                    "lastmodSec": 1408439418000,
+                    "fileName": "index.src",
+                    "thumbnail": false,
+                    "author": "Dmitry Lapynov",
+                    "keywords": "source, clarify, plugin",
+                    "title": "Clarify (RU)"
+                }
+            }
+        },
+        "data": {},
+        "data-nav": {
+            "specFile": {
+                "url": "/docs/data-nav",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Ivan Metelev",
+                "title": "Autogenerated navigation"
+            }
+        },
+        "grunt": {
+            "specFile": {
+                "url": "/docs/grunt",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Robert Haritonov",
+                "title": "Build tasks with Grunt"
+            }
+        },
+        "specFile": {
+            "url": "/docs",
+            "lastmod": "19.8.2014",
+            "lastmodSec": 1408439418000,
+            "fileName": "index.src",
+            "thumbnail": false,
+            "title": "Documentation and Examples",
+            "role": "navigation",
+            "info": "Every SourceJS instance is packed with own docs catalog."
+        },
+        "info-json": {
+            "specFile": {
+                "url": "/docs/info-json",
+                "lastmod": "19.8.2014",
+                "lastmodSec": 1408439418000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Robert Haritonov",
+                "title": "Info.json - Spec Description",
+                "keywords": "info.json"
+            }
+        }
     },
     "exp": {
         "accessibility": {
@@ -1342,8 +1465,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/discuss",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1352,8 +1475,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/feed",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1362,8 +1485,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/forgetpass",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1372,8 +1495,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/friends",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1382,16 +1505,16 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/guests",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
             },
             "specFile": {
                 "url": "/exp/accessibility",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -1400,8 +1523,8 @@
                     "files": {},
                     "specFile": {
                         "url": "/exp/accessibility/login/login",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false
                     }
@@ -1410,8 +1533,8 @@
                     "files": {},
                     "specFile": {
                         "url": "/exp/accessibility/login/login_empty",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false
                     }
@@ -1420,8 +1543,8 @@
                     "files": {},
                     "specFile": {
                         "url": "/exp/accessibility/login/login_fail",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false
                     }
@@ -1431,8 +1554,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/main",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1442,8 +1565,8 @@
                     "files": {},
                     "specFile": {
                         "url": "/exp/accessibility/messages/all",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false
                     }
@@ -1451,8 +1574,8 @@
                 "single": {
                     "specFile": {
                         "url": "/exp/accessibility/messages/single",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false
                     },
@@ -1463,8 +1586,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/registration",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1473,8 +1596,8 @@
                 "files": {},
                 "specFile": {
                     "url": "/exp/accessibility/search",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -1484,12 +1607,23 @@
             "css": {},
             "specFile": {
                 "url": "/exp/cssg",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "6.1.2014",
+                "lastmodSec": 1389023875000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
             "js": {}
+        },
+        "filter-anim": {
+            "specFile": {
+                "url": "/exp/filter-anim",
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
+                "fileName": "index.src",
+                "thumbnail": false,
+                "author": "Evgeny Khoroshilov",
+                "title": "Анимация фильтра"
+            }
         },
         "font-icons": {
             "css": {},
@@ -1498,8 +1632,8 @@
             },
             "specFile": {
                 "url": "/exp/font-icons",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Alexey Ostrovsky",
@@ -1510,8 +1644,8 @@
             "i": {},
             "specFile": {
                 "url": "/exp/gif-overlay",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Эксперименты с gif"
@@ -1521,8 +1655,8 @@
             "i": {},
             "specFile": {
                 "url": "/exp/gif-test",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Тест .gif анимаций на нагрузгу CPU"
@@ -1530,8 +1664,8 @@
         },
         "specFile": {
             "url": "/exp",
-            "lastmod": "3.7.2014",
-            "lastmodSec": 1404386234000,
+            "lastmod": "4.7.2014",
+            "lastmodSec": 1404460418000,
             "fileName": "index.src",
             "thumbnail": false,
             "title": "Эксперименты",
@@ -1541,8 +1675,8 @@
         "list-scroll": {
             "specFile": {
                 "url": "/exp/list-scroll",
-                "lastmod": "3.7.2014",
-                "lastmodSec": 1404386234000,
+                "lastmod": "4.7.2014",
+                "lastmodSec": 1404460418000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
@@ -1552,8 +1686,8 @@
             "i": {},
             "specFile": {
                 "url": "/exp/mask-icons",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -1563,8 +1697,8 @@
         "tabindex": {
             "specFile": {
                 "url": "/exp/tabindex",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311882000,
+                "lastmod": "6.1.2014",
+                "lastmodSec": 1389023875000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Эксперимент с tabindex 0"
@@ -1574,8 +1708,8 @@
             "i": {},
             "specFile": {
                 "url": "/exp/test",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "22.8.2014",
+                "lastmodSec": 1408706649000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Alexey Ostrovsky",
@@ -1596,8 +1730,8 @@
     },
     "specFile": {
         "url": "",
-        "lastmod": "31.7.2014",
-        "lastmodSec": 1406793767000,
+        "lastmod": "5.8.2014",
+        "lastmodSec": 1407230567000,
         "fileName": "index.src",
         "thumbnail": false,
         "title": "OK Prototype",
@@ -1612,8 +1746,8 @@
                 },
                 "specFile": {
                     "url": "/mob/base/bubbles",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1626,8 +1760,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/mob/base/buttons",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis, Dmitry Lapynow ",
@@ -1640,8 +1774,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/mob/base/empty",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1654,8 +1788,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/mob/base/filter",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1670,8 +1804,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/base/fontico",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Robert Haritonov",
@@ -1680,10 +1814,11 @@
                 }
             },
             "grids": {
+                "i": {},
                 "specFile": {
                     "url": "/mob/base/grids",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "22.8.2014",
+                    "lastmodSec": 1408706652000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1695,26 +1830,30 @@
             "headers": {
                 "specFile": {
                     "url": "/mob/base/headers",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988588000,
                     "fileName": "index.html",
-                    "thumbnail": false
+                    "thumbnail": false,
+                    "author": "Dmitry Lapynov",
+                    "keywords": "mob, headers",
+                    "title": "Заголовки"
                 }
             },
             "specFile": {
                 "url": "/mob/base",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
-                "title": "Мобильная версия: базовые стандарты"
+                "title": "Мобильная версия: базовые стандарты",
+                "role": "navigation"
             },
             "lists": {
                 "i": {},
                 "specFile": {
                     "url": "/mob/base/lists",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "7.9.2014",
+                    "lastmodSec": 1410107746000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1729,8 +1868,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/base/notifications",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1742,8 +1881,8 @@
             "tico-mob": {
                 "specFile": {
                     "url": "/mob/base/tico-mob",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1755,8 +1894,8 @@
         "exp": {
             "specFile": {
                 "url": "/mob/exp",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Мобильная версия: эксперименты"
@@ -1765,8 +1904,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/exp/svg",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1778,8 +1917,8 @@
         },
         "specFile": {
             "url": "/mob",
-            "lastmod": "31.7.2014",
-            "lastmodSec": 1406807698000,
+            "lastmod": "5.9.2014",
+            "lastmodSec": 1409934187000,
             "fileName": "index.src",
             "thumbnail": false,
             "title": "Мобильная версия",
@@ -1791,8 +1930,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/action-bar",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1805,8 +1944,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/advert",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1821,8 +1960,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/gifts",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1836,8 +1975,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/gifts-bar",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1849,8 +1988,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/mob/project/history",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1861,8 +2000,8 @@
             },
             "specFile": {
                 "url": "/mob/project",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Мобильная версия: проекты"
@@ -1876,12 +2015,13 @@
                             "20": {},
                             "40": {}
                         }
-                    }
+                    },
+                    "msg": {}
                 },
                 "specFile": {
                     "url": "/mob/project/messages",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409989742000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1896,8 +2036,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/music",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1910,8 +2050,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/notifications",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1924,8 +2064,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/recovery-pass",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1937,8 +2077,8 @@
             "search": {
                 "specFile": {
                     "url": "/mob/project/search",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1951,8 +2091,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/sidebar",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -1964,8 +2104,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/mob/project/toolbar",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "",
@@ -1978,8 +2118,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/project/user-profile",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -1994,8 +2134,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/easter",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "30.4.2014",
+                    "lastmodSec": 1398853624000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -2008,8 +2148,8 @@
                     "i": {},
                     "specFile": {
                         "url": "/mob/promo/easter/mob",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311882000,
+                        "lastmod": "30.4.2014",
+                        "lastmodSec": 1398853624000,
                         "fileName": "index.html",
                         "thumbnail": false
                     },
@@ -2020,8 +2160,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/fruits",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2031,8 +2171,8 @@
             },
             "specFile": {
                 "url": "/mob/promo",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Мобильная версия: промо-страницы"
@@ -2041,8 +2181,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/kisses",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "17.6.2014",
+                    "lastmodSec": 1403003191000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2057,8 +2197,8 @@
                 },
                 "specFile": {
                     "url": "/mob/promo/leafs",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2070,8 +2210,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/march",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "13.3.2014",
+                    "lastmodSec": 1394725738000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2084,8 +2224,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/native",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2100,7 +2240,7 @@
                 "specFile": {
                     "url": "/mob/promo/presents",
                     "lastmod": "24.7.2014",
-                    "lastmodSec": 1406209788000,
+                    "lastmodSec": 1406201796000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2115,7 +2255,7 @@
                     "specFile": {
                         "url": "/mob/promo/presents/v2",
                         "lastmod": "24.7.2014",
-                        "lastmodSec": 1406209788000,
+                        "lastmodSec": 1406201796000,
                         "fileName": "index.html",
                         "thumbnail": false,
                         "title": "Живой подарок"
@@ -2126,8 +2266,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/schmetterlinge",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "16.6.2014",
+                    "lastmodSec": 1402936669000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2149,7 +2289,7 @@
                     "specFile": {
                         "url": "/mob/promo/school/app",
                         "lastmod": "30.7.2014",
-                        "lastmodSec": 1406726381000,
+                        "lastmodSec": 1406719651000,
                         "fileName": "index.html",
                         "thumbnail": false
                     }
@@ -2162,8 +2302,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/smiles",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2175,8 +2315,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/snowing",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynov",
@@ -2189,8 +2329,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/summer",
-                    "lastmod": "21.7.2014",
-                    "lastmodSec": 1405943530000,
+                    "lastmod": "18.7.2014",
+                    "lastmodSec": 1405679259000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2202,8 +2342,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/mob/promo/tulps",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311882000,
+                    "lastmod": "30.4.2014",
+                    "lastmodSec": 1398853624000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Dmitry Lapynow",
@@ -2213,11 +2353,20 @@
             }
         },
         "test": {
+            "focusing": {
+                "specFile": {
+                    "url": "/mob/test/focusing",
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230042000,
+                    "fileName": "index.html",
+                    "thumbnail": false
+                }
+            },
             "parse": {
                 "specFile": {
                     "url": "/mob/test/parse",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "6.9.2014",
+                    "lastmodSec": 1409988387000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -2232,8 +2381,8 @@
             },
             "specFile": {
                 "url": "/project/404",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -2241,13 +2390,14 @@
                 "info": "Страница которой нет."
             }
         },
+        "about": {},
         "achievement": {
             "css": {},
             "i": {},
             "specFile": {
                 "url": "/project/achievement",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2260,8 +2410,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/adv",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov, Daniil Mishcherin",
@@ -2278,8 +2428,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/adv-group",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Gennady Tsarinny",
@@ -2314,8 +2464,8 @@
                 },
                 "specFile": {
                     "url": "/project/anonym_new/html",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "6.1.2014",
+                    "lastmodSec": 1389023875000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -2330,8 +2480,8 @@
                     },
                     "specFile": {
                         "url": "/project/anonym_new/html/test",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311881000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false,
                         "author": "Juris Pukitis",
@@ -2342,8 +2492,8 @@
             },
             "specFile": {
                 "url": "/project/anonym_new",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis, Gennady Tsarinny",
@@ -2356,8 +2506,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/api",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2369,8 +2519,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/api-forms",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -2384,8 +2534,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/api-game-stat",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -2399,8 +2549,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/api-perm-list",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynow",
@@ -2413,8 +2563,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/api-promo",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2426,8 +2576,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/blocked",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -2436,14 +2586,15 @@
             }
         },
         "bug-rep": {
+            "css": {},
             "html": {
                 "bug-rep_compress": {
                     "css": {},
                     "i": {},
                     "specFile": {
                         "url": "/project/bug-rep/html/bug-rep_compress",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311881000,
+                        "lastmod": "24.12.2013",
+                        "lastmodSec": 1387895569000,
                         "fileName": "index.html",
                         "thumbnail": false,
                         "title": "Нация тестирует"
@@ -2454,8 +2605,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/bug-rep/html",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Нация тестирует"
@@ -2464,8 +2615,8 @@
             },
             "specFile": {
                 "url": "/project/bug-rep",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2477,8 +2628,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/change-avatar",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -2490,8 +2641,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/change-info",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Смена информации на портале",
@@ -2505,8 +2656,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/change-pass",
-                "lastmod": "17.7.2014",
-                "lastmodSec": 1405597860000,
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "title": "Смена пароля",
@@ -2519,8 +2670,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/check-phone",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -2530,8 +2681,8 @@
         "comments": {
             "specFile": {
                 "url": "/project/comments",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -2543,8 +2694,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/covers",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -2555,8 +2706,8 @@
             "srv": {
                 "specFile": {
                     "url": "/project/covers/srv",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145232000,
+                    "lastmod": "11.8.2014",
+                    "lastmodSec": 1407773458000,
                     "fileName": "index.src",
                     "thumbnail": false
                 },
@@ -2566,8 +2717,8 @@
         "dsc-cancel": {
             "specFile": {
                 "url": "/project/dsc-cancel",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynow",
@@ -2583,8 +2734,8 @@
             },
             "specFile": {
                 "url": "/project/dwh",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "21.2.2014",
+                "lastmodSec": 1392972015000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2597,8 +2748,8 @@
         "email": {
             "specFile": {
                 "url": "/project/email",
-                "lastmod": "16.7.2014",
-                "lastmodSec": 1405497631000,
+                "lastmod": "14.7.2014",
+                "lastmodSec": 1405352438000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
@@ -2608,8 +2759,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/ext-auth",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2622,8 +2773,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/ext-auth/mobile",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895569000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -2635,8 +2786,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/ext-auth/tv",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "6.1.2014",
+                    "lastmodSec": 1389023875000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -2648,8 +2799,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/faq",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -2662,8 +2813,8 @@
         "faq--old": {
             "specFile": {
                 "url": "/project/faq--old",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -2673,12 +2824,28 @@
             }
         },
         "feed_new": {
+            "filter": {
+                "css": {},
+                "specFile": {
+                    "url": "/project/feed_new/filter",
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
+                    "fileName": "index.src",
+                    "thumbnail": false,
+                    "author": "Evgeny Khoroshilov",
+                    "keywords": "feed nav, колбаса, фильтр ленты, kolbasa",
+                    "title": "Feed 2.0 :  Колбаса",
+                    "info": "Фильтр ленты по друзьям и группам",
+                    "category": "",
+                    "target": null
+                }
+            },
             "gifts": {
                 "css": {},
                 "specFile": {
                     "url": "/project/feed_new/gifts",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -2694,8 +2861,8 @@
             },
             "specFile": {
                 "url": "/project/feed_new",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -2708,8 +2875,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/feed_new/mediatopic",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -2721,11 +2888,27 @@
                 },
                 "templates": {}
             },
+            "photo-contest": {
+                "css": {},
+                "specFile": {
+                    "url": "/project/feed_new/photo-contest",
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
+                    "fileName": "index.src",
+                    "thumbnail": false,
+                    "author": "Gennady Tsarinny",
+                    "keywords": "new feed, photo-contest, фотоконкурс",
+                    "title": "Feed 2.0 : Фотоконкурс",
+                    "info": "События фотоконкурса в ленте",
+                    "category": "",
+                    "target": null
+                }
+            },
             "portlets": {
                 "specFile": {
                     "url": "/project/feed_new/portlets",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -2740,8 +2923,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/feed_new/post",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Dennis Przendzinski",
@@ -2757,8 +2940,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/feed_new/promo",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -2773,8 +2956,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/feed_new/widget",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -2791,8 +2974,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/feedback",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "24.12.2013",
+                "lastmodSec": 1387895569000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Форма фидбэка",
@@ -2805,8 +2988,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/footer",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -2821,8 +3004,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/forms",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -2841,12 +3024,13 @@
             },
             "scripts": {}
         },
+        "friends": {},
         "friends-layer": {
             "css": {},
             "specFile": {
                 "url": "/project/friends-layer",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "7.5.2014",
+                "lastmodSec": 1399473610000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -2860,8 +3044,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/friends-online",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -2874,8 +3058,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/games",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -2887,8 +3071,8 @@
             "gift": {
                 "specFile": {
                     "url": "/project/gifts/gift",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2901,8 +3085,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/gifts/gift-birthday-portlet",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2915,8 +3099,8 @@
             "gift-chain": {
                 "specFile": {
                     "url": "/project/gifts/gift-chain",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2928,8 +3112,8 @@
             "gift-info": {
                 "specFile": {
                     "url": "/project/gifts/gift-info",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2941,8 +3125,8 @@
             "gift-moderation": {
                 "specFile": {
                     "url": "/project/gifts/gift-moderation",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2954,8 +3138,8 @@
             "gift-of-the-day": {
                 "specFile": {
                     "url": "/project/gifts/gift-of-the-day",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2968,8 +3152,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/gifts/gift-showcase",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniel Mishcherin",
@@ -2980,8 +3164,8 @@
             },
             "specFile": {
                 "url": "/project/gifts",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Daniil Mishcherin",
@@ -2996,8 +3180,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/global-search",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -3009,8 +3193,8 @@
             "add-stub": {
                 "specFile": {
                     "url": "/project/groups/add-stub",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3025,8 +3209,8 @@
             "blocking": {
                 "specFile": {
                     "url": "/project/groups/blocking",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3041,8 +3225,8 @@
             "creation": {
                 "specFile": {
                     "url": "/project/groups/creation",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3058,8 +3242,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/groups",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -3073,8 +3257,8 @@
             "new-elements": {
                 "specFile": {
                     "url": "/project/groups/new-elements",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3089,8 +3273,8 @@
             "promo-blocks": {
                 "specFile": {
                     "url": "/project/groups/promo-blocks",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3107,8 +3291,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/groups/stats",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Gennady Tsarinny",
@@ -3119,7 +3303,8 @@
                     "category": "Списки",
                     "target": 1
                 }
-            }
+            },
+            "temp": {}
         },
         "hight_performance_parallax": {
             "css": {},
@@ -3127,7 +3312,7 @@
             "specFile": {
                 "url": "/project/hight_performance_parallax",
                 "lastmod": "16.7.2014",
-                "lastmodSec": 1405497631000,
+                "lastmodSec": 1405509565000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
@@ -3136,8 +3321,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/history",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov, Gennady Tsarinny",
@@ -3151,8 +3336,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/holidays",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -3165,8 +3350,8 @@
         },
         "specFile": {
             "url": "/project",
-            "lastmod": "31.7.2014",
-            "lastmodSec": 1406807698000,
+            "lastmod": "5.8.2014",
+            "lastmodSec": 1407230567000,
             "fileName": "index.src",
             "thumbnail": false,
             "title": "Проекты",
@@ -3176,8 +3361,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/interests",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Интересы",
@@ -3189,8 +3374,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/internet",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -3200,8 +3385,8 @@
         "lcTc": {
             "specFile": {
                 "url": "/project/lcTc",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "19.2.2014",
+                "lastmodSec": 1392805526000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -3218,8 +3403,8 @@
             "people": {
                 "specFile": {
                     "url": "/project/lists/people",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": true,
                     "author": "Dennis Przendzinski",
@@ -3234,8 +3419,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/lost-login",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -3243,13 +3428,14 @@
                 "title": "Утерянные логины"
             }
         },
+        "mail_popup": {},
         "marks": {
             "css": {},
             "i": {},
             "specFile": {
                 "url": "/project/marks",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -3259,8 +3445,8 @@
         "mctc": {
             "specFile": {
                 "url": "/project/mctc",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Gennady Tsarinny",
@@ -3274,8 +3460,8 @@
         "media-block": {
             "specFile": {
                 "url": "/project/media-block",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3285,8 +3471,8 @@
             "media-block_app": {
                 "specFile": {
                     "url": "/project/media-block/media-block_app",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3298,8 +3484,8 @@
             "media-block_link": {
                 "specFile": {
                     "url": "/project/media-block/media-block_link",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3311,8 +3497,8 @@
             "media-block_music": {
                 "specFile": {
                     "url": "/project/media-block/media-block_music",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3324,8 +3510,8 @@
             "media-block_photo": {
                 "specFile": {
                     "url": "/project/media-block/media-block_photo",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3337,8 +3523,8 @@
             "media-block_poll": {
                 "specFile": {
                     "url": "/project/media-block/media-block_poll",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3350,8 +3536,8 @@
             "media-block_share": {
                 "specFile": {
                     "url": "/project/media-block/media-block_share",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3363,8 +3549,8 @@
             "media-block_text": {
                 "specFile": {
                     "url": "/project/media-block/media-block_text",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3376,8 +3562,8 @@
             "media-block_video": {
                 "specFile": {
                     "url": "/project/media-block/media-block_video",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -3391,8 +3577,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/media-feed",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3407,8 +3593,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/media-layer",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3422,8 +3608,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/media-layer--old",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3436,8 +3622,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/media-layer-topic",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3450,8 +3636,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/media-post",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3464,8 +3650,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/media-status",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3481,8 +3667,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/multichat/add-user",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Добавить пользавателся в чат"
@@ -3491,8 +3677,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/multichat",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -3506,8 +3692,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/multichat-new/add-user",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Добавить пользавателся в чат"
@@ -3517,8 +3703,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/multichat-new",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "19.6.2014",
+                "lastmodSec": 1403194820000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Juris Pukitis, Dennis Przendzinski",
@@ -3532,8 +3718,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/multimedia-layer",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov, Gennady Tsarinny, Ivan Metelev",
@@ -3552,8 +3738,8 @@
             },
             "specFile": {
                 "url": "/project/music",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Ivan Metelev, Alexey Ostrovsky",
@@ -3563,8 +3749,8 @@
             "mus_dropdown": {
                 "specFile": {
                     "url": "/project/music/mus_dropdown",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Ivan Metelev",
@@ -3576,8 +3762,8 @@
             "mus_stub": {
                 "specFile": {
                     "url": "/project/music/mus_stub",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Ivan Metelev",
@@ -3589,8 +3775,8 @@
             "music-edit-track": {
                 "specFile": {
                     "url": "/project/music/music-edit-track",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Ivan Metelev",
@@ -3603,8 +3789,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/music/music-feed_v1",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3616,8 +3802,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/music/music-feed_v2",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky, Ivan Metelev",
@@ -3629,8 +3815,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/music/music-player",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3642,8 +3828,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/music/music-presents",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Ivan Metelev",
@@ -3655,8 +3841,8 @@
             "music-radio": {
                 "specFile": {
                     "url": "/project/music/music-radio",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3668,8 +3854,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/music/music-sidebar",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3681,8 +3867,8 @@
             "music-tabs": {
                 "specFile": {
                     "url": "/project/music/music-tabs",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3694,8 +3880,8 @@
             "music-tracks": {
                 "specFile": {
                     "url": "/project/music/music-tracks",
-                    "lastmod": "1.8.2014",
-                    "lastmodSec": 1406885052000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "author": "Anton Korochinsky, Alexey Ostrovsky",
@@ -3706,8 +3892,8 @@
             "music-upload": {
                 "specFile": {
                     "url": "/project/music/music-upload",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Ivan Metelev",
@@ -3719,8 +3905,8 @@
             "test": {
                 "specFile": {
                     "url": "/project/music/test",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "6.1.2014",
+                    "lastmodSec": 1389023875000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Музыка"
@@ -3732,8 +3918,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/newuser",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -3746,8 +3932,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/notifications",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Alexey Ostrovsky",
@@ -3760,8 +3946,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/notifications-new/layer",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "22.8.2014",
+                    "lastmodSec": 1408706650000,
                     "fileName": "index.src",
                     "thumbnail": false,
                     "title": "Редизайн нотификаций 2014"
@@ -3773,8 +3959,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/now-online",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -3787,8 +3973,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/oauth",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -3801,8 +3987,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/old-browsers",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynov",
@@ -3815,8 +4001,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/paging",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -3830,8 +4016,8 @@
                     "i": {},
                     "specFile": {
                         "url": "/project/pf/9may/mob",
-                        "lastmod": "2.7.2014",
-                        "lastmodSec": 1404311881000,
+                        "lastmod": "6.1.2014",
+                        "lastmodSec": 1389023875000,
                         "fileName": "index.html",
                         "thumbnail": false,
                         "title": "ПРОМО"
@@ -3843,8 +4029,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/pf/after",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -3858,8 +4044,8 @@
             },
             "specFile": {
                 "url": "/project/pf",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis",
@@ -3871,8 +4057,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/pf/mob",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -3885,8 +4071,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/pf/promo",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -3898,8 +4084,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/pf/promo-mob",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895570000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "День семьи"
@@ -3910,8 +4096,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/pf/test-task",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311881000,
+                    "lastmod": "6.1.2014",
+                    "lastmodSec": 1389023875000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Competition"
@@ -3924,8 +4110,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/photo",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -3933,15 +4119,16 @@
                 "category": "Списки",
                 "target": 1,
                 "keywords": "photos, фотографии"
-            }
+            },
+            "photobar": {}
         },
         "photo-contest": {
             "css": {},
             "i": {},
             "specFile": {
                 "url": "/project/photo-contest",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Alexey Ostrovsky",
@@ -3953,8 +4140,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/photo-grid",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "10.3.2014",
+                "lastmodSec": 1394467802000,
                 "fileName": "index.src",
                 "thumbnail": true,
                 "author": "Robert Haritonov, Evgeny Khoroshilov, Dennis Przendzinski",
@@ -3969,8 +4156,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/photo-layer",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "10.3.2014",
+                "lastmodSec": 1394467802000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -3983,8 +4170,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/photo-layer-v2",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Dennis Przendzinski",
@@ -3999,8 +4186,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/photo-uploaded-page",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311881000,
+                "lastmod": "11.6.2014",
+                "lastmodSec": 1402477076000,
                 "fileName": "index.src",
                 "thumbnail": false,
                 "author": "Dennis Przendzinski",
@@ -4011,13 +4198,14 @@
             "templates": {}
         },
         "pms": {
+            "css": {},
             "html": {
                 "css": {},
                 "i": {},
                 "specFile": {
                     "url": "/project/pms/html",
-                    "lastmod": "30.7.2014",
-                    "lastmodSec": 1406726386000,
+                    "lastmod": "5.8.2014",
+                    "lastmodSec": 1407230567000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -4027,8 +4215,8 @@
             },
             "specFile": {
                 "url": "/project/pms",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4040,8 +4228,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/poll",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov, Alexey Ostrovsky",
@@ -4052,8 +4240,8 @@
             "buttons": {
                 "specFile": {
                     "url": "/project/posting-form/buttons",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4065,8 +4253,8 @@
             "company": {
                 "specFile": {
                     "url": "/project/posting-form/company",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4078,8 +4266,8 @@
             "controls": {
                 "specFile": {
                     "url": "/project/posting-form/controls",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4091,8 +4279,8 @@
             "creation": {
                 "specFile": {
                     "url": "/project/posting-form/creation",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4104,8 +4292,8 @@
             "cross-posting": {
                 "specFile": {
                     "url": "/project/posting-form/cross-posting",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": true,
                     "author": "Evgeny Khoroshilov",
@@ -4119,8 +4307,8 @@
             "delayed": {
                 "specFile": {
                     "url": "/project/posting-form/delayed",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4132,8 +4320,8 @@
             "errors": {
                 "specFile": {
                     "url": "/project/posting-form/errors",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4145,8 +4333,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/posting-form",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4156,8 +4344,8 @@
             "info-bubble": {
                 "specFile": {
                     "url": "/project/posting-form/info-bubble",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4171,8 +4359,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/posting-form/map",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4185,8 +4373,8 @@
             "mentions": {
                 "specFile": {
                     "url": "/project/posting-form/mentions",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4198,8 +4386,8 @@
             "states": {
                 "specFile": {
                     "url": "/project/posting-form/states",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4212,8 +4400,8 @@
             "with-button": {
                 "specFile": {
                     "url": "/project/posting-form/with-button",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4227,8 +4415,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/present",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Подарочки",
@@ -4240,8 +4428,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/present_v2",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "title": "Подарочки",
@@ -4259,8 +4447,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/presents",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4271,8 +4459,8 @@
             "srv": {
                 "specFile": {
                     "url": "/project/presents/srv",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -4283,8 +4471,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/presents-in-group",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Gennady Tsarinny",
@@ -4297,8 +4485,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/proff-sett",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4310,8 +4498,8 @@
             "camomile": {
                 "specFile": {
                     "url": "/project/promo/camomile",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4322,8 +4510,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/promo/dedmoroz",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4335,8 +4523,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/fir-tree",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -4350,8 +4538,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/fruit2014",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniil Mishcherin",
@@ -4364,8 +4552,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/promo/goldfish",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Исполни желания ПРОМО",
@@ -4375,8 +4563,8 @@
             },
             "specFile": {
                 "url": "/project/promo",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Промо",
@@ -4388,8 +4576,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/insects",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -4401,8 +4589,8 @@
             "karim-login": {
                 "specFile": {
                     "url": "/project/promo/karim-login",
-                    "lastmod": "3.7.2014",
-                    "lastmodSec": 1404386232000,
+                    "lastmod": "1.7.2014",
+                    "lastmodSec": 1404227877000,
                     "fileName": "index.html",
                     "thumbnail": false
                 },
@@ -4415,8 +4603,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/kiss",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniil Mishcherin",
@@ -4430,8 +4618,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/leafs",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -4445,8 +4633,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/march8",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Juris Pukitis",
@@ -4458,8 +4646,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/promo/mensday",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4470,8 +4658,8 @@
                 "css": {},
                 "specFile": {
                     "url": "/project/promo/ny2013",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4484,8 +4672,8 @@
                 "img": {},
                 "specFile": {
                     "url": "/project/promo/prolanding",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311880000,
+                    "lastmod": "20.5.2014",
+                    "lastmodSec": 1400572381000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Промо реклама в ОК",
@@ -4503,13 +4691,28 @@
                     }
                 }
             },
+            "school2014": {
+                "css": {},
+                "i": {},
+                "specFile": {
+                    "url": "/project/promo/school2014",
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
+                    "fileName": "index.html",
+                    "thumbnail": false,
+                    "author": "Daniil Mishcherin",
+                    "keywords": "Школа 2014",
+                    "title": "Школа 2014",
+                    "info": "Школа 2014"
+                }
+            },
             "snowballs2014": {
                 "css": {},
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/snowballs2014",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Снежки-2014",
@@ -4522,8 +4725,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/promo/summerflowers2014",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Daniil Mishcherin",
@@ -4542,8 +4745,8 @@
                 },
                 "specFile": {
                     "url": "/project/promo/wishes2013",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Промо-желания",
@@ -4557,8 +4760,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/recommend",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Evgeny Khoroshilov",
@@ -4573,8 +4776,8 @@
         "recovery-pass": {
             "specFile": {
                 "url": "/project/recovery-pass",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Восстановление доступа",
@@ -4586,8 +4789,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/reg",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -4598,8 +4801,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/relations",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4611,8 +4814,8 @@
         "rules": {
             "specFile": {
                 "url": "/project/rules",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4622,8 +4825,8 @@
         "search-suggest": {
             "specFile": {
                 "url": "/project/search-suggest",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Ivan Metelev",
@@ -4635,8 +4838,8 @@
         "service-off": {
             "specFile": {
                 "url": "/project/service-off",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "24.12.2013",
+                "lastmodSec": 1387895570000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Заглушка неработающего сайта",
@@ -4648,8 +4851,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/settings",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Robert Haritonov",
@@ -4660,8 +4863,8 @@
             "css": {},
             "specFile": {
                 "url": "/project/share",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4685,8 +4888,8 @@
             },
             "specFile": {
                 "url": "/project/shops",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4700,8 +4903,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/shops-info",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4714,8 +4917,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/sliders",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynow",
@@ -4729,8 +4932,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/smiles",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Dmitry Lapynow",
@@ -4742,8 +4945,8 @@
         "stub-browsers": {
             "specFile": {
                 "url": "/project/stub-browsers",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov, Juris Pukitis",
@@ -4756,8 +4959,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/support",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4765,6 +4968,9 @@
             }
         },
         "tomcat": {
+            "css": {
+                "ok": {}
+            },
             "html": {
                 "css": {
                     "ok": {}
@@ -4773,8 +4979,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/tomcat/html",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311880000,
+                    "lastmod": "6.1.2014",
+                    "lastmodSec": 1389023875000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "title": "Ошибка tomcat"
@@ -4783,8 +4989,8 @@
             },
             "specFile": {
                 "url": "/project/tomcat",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4796,8 +5002,8 @@
             "toolbar": {
                 "specFile": {
                     "url": "/project/toolbar/toolbar",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Robert Haritonov",
@@ -4816,8 +5022,8 @@
                 },
                 "specFile": {
                     "url": "/project/toolbar/toolbar.old",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Robert Haritonov",
@@ -4831,8 +5037,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/ufeed",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": true,
                 "author": "Juris Pukitis, Robert Haritonov",
@@ -4849,8 +5055,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/video/cards",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": false,
                     "author": "Evgeny Khoroshilov",
@@ -4864,8 +5070,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/video/channel",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": true,
                     "author": "Gennady Tsarinny",
@@ -4879,8 +5085,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/video",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
@@ -4891,8 +5097,8 @@
             "layer": {
                 "specFile": {
                     "url": "/project/video/layer",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "5.9.2014",
+                    "lastmodSec": 1409934187000,
                     "fileName": "index.html",
                     "thumbnail": true,
                     "author": "Evgeny Khoroshilov",
@@ -4908,8 +5114,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/project/video/popup",
-                    "lastmod": "27.8.2014",
-                    "lastmodSec": 1409145240000,
+                    "lastmod": "15.8.2014",
+                    "lastmodSec": 1408107359000,
                     "fileName": "index.html",
                     "thumbnail": true,
                     "author": "Evgeny Khoroshilov, Gennady Tsarinny",
@@ -4919,14 +5125,18 @@
                     "className": "vp"
                 }
             },
+            "temp": {},
             "templates": {}
+        },
+        "video-layer": {
+            "temp": {}
         },
         "webstub": {
             "i": {},
             "specFile": {
                 "url": "/project/webstub",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "24.12.2013",
+                "lastmodSec": 1387895570000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4938,8 +5148,8 @@
             "i": {},
             "specFile": {
                 "url": "/project/widget",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "author": "Juris Pukitis",
@@ -4951,7 +5161,8 @@
             "local": {
                 "css": {},
                 "js": {}
-            }
+            },
+            "temp": {}
         },
         "wiki-dev-page": {
             "OkInsidePage": {
@@ -4979,15 +5190,41 @@
             "i": {},
             "specFile": {
                 "url": "/proto/dashboard",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "27.2.2014",
+                "lastmodSec": 1393505070000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Dashboard",
                 "author": "Gennady Tsarinny",
                 "keywords": "dashboard, corp, jira"
             },
-            "js": {}
+            "js": {},
+            "node_modules": {
+                "autoprefixer-stylus": {
+                    "node_modules": {
+                        ".bin": {},
+                        "autoprefixer": {
+                            "bin": {},
+                            "data": {},
+                            "lib": {
+                                "autoprefixer": {
+                                    "hacks": {}
+                                }
+                            },
+                            "node_modules": {
+                                "css-parse": {},
+                                "css-stringify": {
+                                    "lib": {}
+                                }
+                            },
+                            "updaters": {}
+                        }
+                    },
+                    "test": {
+                        "basic": {}
+                    }
+                }
+            }
         },
         "discus": {
             "css": {},
@@ -4998,8 +5235,8 @@
             },
             "specFile": {
                 "url": "/proto/discus",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5012,8 +5249,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/easter2014",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "22.4.2014",
+                "lastmodSec": 1398158307000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5022,8 +5259,8 @@
                 "i": {},
                 "specFile": {
                     "url": "/proto/easter2014/mob",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311880000,
+                    "lastmod": "14.4.2014",
+                    "lastmodSec": 1397473515000,
                     "fileName": "index.html",
                     "thumbnail": false
                 },
@@ -5033,16 +5270,16 @@
         "flash-mode": {
             "specFile": {
                 "url": "/proto/flash-mode",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "27.5.2014",
+                "lastmodSec": 1401205871000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
         },
         "specFile": {
             "url": "/proto",
-            "lastmod": "3.7.2014",
-            "lastmodSec": 1404386234000,
+            "lastmod": "4.7.2014",
+            "lastmodSec": 1404460418000,
             "fileName": "index.src",
             "thumbnail": false,
             "title": "Прототипы",
@@ -5057,8 +5294,8 @@
             },
             "specFile": {
                 "url": "/proto/mainpage",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5071,8 +5308,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
@@ -5084,8 +5321,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-alt",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014, альтернатива"
@@ -5097,8 +5334,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-v3",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
@@ -5110,8 +5347,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-v4",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
@@ -5123,8 +5360,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-v6",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
@@ -5136,8 +5373,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-v7",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
@@ -5149,14 +5386,15 @@
             "i": {},
             "specFile": {
                 "url": "/proto/notifications-v8",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Редизайн нотификаций 2014"
             },
             "js": {}
         },
+        "ok-mob": {},
         "okfilm": {
             "css": {},
             "group": {
@@ -5167,8 +5405,8 @@
             },
             "specFile": {
                 "url": "/proto/okfilm",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5182,8 +5420,8 @@
                 },
                 "specFile": {
                     "url": "/proto/okfilm/mob",
-                    "lastmod": "2.7.2014",
-                    "lastmodSec": 1404311880000,
+                    "lastmod": "24.12.2013",
+                    "lastmodSec": 1387895570000,
                     "fileName": "index.html",
                     "thumbnail": false
                 }
@@ -5202,8 +5440,8 @@
             },
             "specFile": {
                 "url": "/proto/olimp2014",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "19.2.2014",
+                "lastmodSec": 1392805526000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5215,8 +5453,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/photo-layer-light",
-                "lastmod": "30.7.2014",
-                "lastmodSec": 1406726386000,
+                "lastmod": "5.8.2014",
+                "lastmodSec": 1407230567000,
                 "fileName": "index.html",
                 "thumbnail": false
             },
@@ -5227,8 +5465,8 @@
             "i": {},
             "specFile": {
                 "url": "/proto/photo-layer-new",
-                "lastmod": "8.8.2014",
-                "lastmodSec": 1407502069000,
+                "lastmod": "11.8.2014",
+                "lastmodSec": 1407773458000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
@@ -5240,8 +5478,8 @@
             },
             "specFile": {
                 "url": "/proto/space-race",
-                "lastmod": "2.7.2014",
-                "lastmodSec": 1404311880000,
+                "lastmod": "29.5.2014",
+                "lastmodSec": 1401370568000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Space Race",
@@ -5252,14 +5490,674 @@
         },
         "x-cat": {}
     },
+    "res": {
+        "adv": {},
+        "batch": {
+            "css": {
+                "aprofile": {},
+                "avatar": {},
+                "core": {},
+                "login": {},
+                "login-album": {},
+                "login-default": {},
+                "login-movie": {},
+                "login-newyear": {},
+                "login-olympic": {},
+                "main": {},
+                "mobile": {},
+                "p404": {},
+                "sprite": {
+                    "base": {},
+                    "custom": {
+                        "widget": {
+                            "promo": {}
+                        }
+                    },
+                    "project": {
+                        "music": {
+                            "project": {}
+                        },
+                        "old": {},
+                        "video": {
+                            "project": {}
+                        }
+                    }
+                },
+                "themes": {},
+                "tv": {},
+                "widget": {}
+            },
+            "js": {
+                "anonym": {},
+                "api": {},
+                "appedit": {},
+                "bottom": {},
+                "classic": {},
+                "disc": {},
+                "easyxdm": {},
+                "faq": {},
+                "gifts": {},
+                "jcrop": {},
+                "jqplugins": {},
+                "jqui": {},
+                "loader": {},
+                "login": {},
+                "mailru": {},
+                "mtlayer": {},
+                "nativehooks": {},
+                "photos": {},
+                "promo": {},
+                "search": {},
+                "textarea": {},
+                "video": {}
+            }
+        },
+        "connect": {},
+        "css": {
+            "base": {},
+            "cosmetic": {},
+            "custom": {
+                "mobile": {},
+                "tv": {},
+                "widget": {
+                    "promo": {}
+                }
+            },
+            "prod": {
+                "aprofile": {},
+                "core": {},
+                "login": {},
+                "main": {},
+                "mobile": {},
+                "tv": {},
+                "videoembed": {},
+                "widget": {}
+            },
+            "project": {
+                "lib": {},
+                "login": {},
+                "music": {
+                    "project": {}
+                },
+                "old": {},
+                "smiles": {},
+                "video": {}
+            }
+        },
+        "default": {
+            "Images": {
+                "adv": {
+                    "new": {}
+                },
+                "anim": {},
+                "anonym": {},
+                "api": {
+                    "form": {},
+                    "img": {},
+                    "img-dev": {},
+                    "oauth": {},
+                    "toolbar": {}
+                },
+                "brand": {},
+                "browsers": {},
+                "errors": {},
+                "gifts": {},
+                "groups": {},
+                "holiday": {},
+                "icons": {
+                    "10": {
+                        "n": {}
+                    },
+                    "12": {
+                        "i": {},
+                        "n": {}
+                    },
+                    "16": {},
+                    "i": {},
+                    "n": {}
+                },
+                "interests": {
+                    "promo": {}
+                },
+                "jobs": {},
+                "lang": {},
+                "marks": {},
+                "migration": {},
+                "mobile": {
+                    "demo": {}
+                },
+                "newfeed": {},
+                "olimp": {},
+                "payments": {
+                    "old": {}
+                },
+                "payservices": {},
+                "redesign": {
+                    "iconButton": {},
+                    "icons": {
+                        "gif": {},
+                        "shortcutMenu": {}
+                    },
+                    "marks": {},
+                    "messages": {},
+                    "modal": {
+                        "marks": {}
+                    },
+                    "navMenu": {},
+                    "newToolbar": {},
+                    "photoFrames": {},
+                    "sprite": {},
+                    "stub": {},
+                    "toolbar": {
+                        "discussions": {}
+                    }
+                },
+                "richtext": {},
+                "rounded": {
+                    "gif": {},
+                    "modal": {}
+                },
+                "share": {
+                    "providers": {}
+                },
+                "topPanel": {
+                    "20090508": {}
+                },
+                "video": {
+                    "ie6": {}
+                }
+            },
+            "docs": {
+                "odkl": {}
+            },
+            "flash": {
+                "music": {},
+                "phone": {},
+                "promo": {
+                    "bestfriend": {}
+                },
+                "uploader-light": {},
+                "video": {}
+            },
+            "js": {
+                "tv": {
+                    "lg": {
+                        "keyboard": {
+                            "image": {},
+                            "lang": {}
+                        }
+                    }
+                }
+            },
+            "sound": {}
+        },
+        "font": {
+            "anonym": {}
+        },
+        "html": {},
+        "i": {
+            "anim": {
+                "stub": {}
+            },
+            "anonym": {
+                "fun": {
+                    "default": {},
+                    "wide": {}
+                },
+                "okru": {
+                    "v1": {},
+                    "v2": {},
+                    "v3": {}
+                }
+            },
+            "bg": {
+                "buttons": {},
+                "fader": {},
+                "fill": {},
+                "grad": {},
+                "progress": {},
+                "shadow": {}
+            },
+            "bubbles": {},
+            "comments": {},
+            "custom": {
+                "mobile": {},
+                "tv": {},
+                "widget": {
+                    "promo": {
+                        "leaves": {},
+                        "march8_2014": {},
+                        "olimp2014": {},
+                        "school2014": {},
+                        "wishlist": {
+                            "background": {},
+                            "content": {},
+                            "controls": {},
+                            "gift": {}
+                        }
+                    }
+                }
+            },
+            "emoji": {
+                "20": {},
+                "40": {},
+                "56": {},
+                "112": {},
+                "ok": {
+                    "20": {},
+                    "40": {}
+                }
+            },
+            "exp": {
+                "anim": {}
+            },
+            "ic": {
+                "8": {
+                    "n": {}
+                },
+                "10": {
+                    "i": {},
+                    "n": {}
+                },
+                "12": {
+                    "i": {},
+                    "n": {}
+                },
+                "18": {
+                    "n": {}
+                },
+                "50": {
+                    "n": {}
+                },
+                "i": {},
+                "ie9": {},
+                "marks": {
+                    "6": {},
+                    "19": {
+                        "disabled": {}
+                    },
+                    "27": {
+                        "disabled": {}
+                    },
+                    "41": {},
+                    "new": {}
+                },
+                "n": {},
+                "p": {},
+                "placeholders": {}
+            },
+            "layout": {},
+            "logo": {},
+            "mm-layer": {
+                "custom": {},
+                "ic": {}
+            },
+            "music": {
+                "bg": {
+                    "back": {},
+                    "submenu": {}
+                },
+                "faders": {},
+                "grad": {},
+                "ic": {
+                    "ic10": {},
+                    "ic12": {},
+                    "ic14": {},
+                    "ic16": {},
+                    "ic20": {},
+                    "u_search": {}
+                },
+                "loader": {},
+                "promo": {},
+                "radio": {},
+                "stub": {},
+                "toolbar": {
+                    "player": {},
+                    "portal-toolbar": {
+                        "old": {}
+                    },
+                    "slider": {}
+                },
+                "track": {
+                    "dark": {},
+                    "light": {}
+                },
+                "welcome": {}
+            },
+            "mycom": {},
+            "overlays": {
+                "april1": {},
+                "ice": {},
+                "kiss": {},
+                "leaves": {},
+                "march8": {},
+                "march8_2014": {},
+                "snowballs": {},
+                "splat": {},
+                "stars": {},
+                "tulips": {
+                    "19x19": {},
+                    "22x22": {},
+                    "40x40": {},
+                    "60x60": {},
+                    "70x70": {},
+                    "80x80": {},
+                    "86x88_hover": {}
+                }
+            },
+            "p": {
+                "achievement": {
+                    "achiev": {},
+                    "achiev_x128": {},
+                    "achiev_x70": {}
+                },
+                "anonym": {},
+                "apps": {},
+                "auctions": {},
+                "bookmarks": {},
+                "change-avatar": {},
+                "city": {
+                    "50": {},
+                    "128": {}
+                },
+                "covers": {},
+                "disc_messages": {},
+                "discus": {},
+                "faq": {},
+                "feed": {},
+                "gift-front": {},
+                "group": {},
+                "gs": {},
+                "holidays": {},
+                "mail": {},
+                "media-layer": {},
+                "mr-toolbar": {},
+                "music": {
+                    "gift": {}
+                },
+                "newuser": {},
+                "ntf": {},
+                "online-fr": {},
+                "p404": {},
+                "paging": {},
+                "photo": {},
+                "photo-layer": {},
+                "posting-form": {
+                    "map": {}
+                },
+                "settings": {},
+                "shops": {},
+                "toolbar": {
+                    "click": {},
+                    "decor": {},
+                    "old": {},
+                    "promo": {}
+                },
+                "win8tiles": {}
+            },
+            "photo-contest": {},
+            "pro": {
+                "camomile": {},
+                "dedmoroz": {},
+                "easter2014": {},
+                "friendshipday": {},
+                "granny": {},
+                "international": {},
+                "leaves": {},
+                "march8": {},
+                "mensday": {},
+                "mob": {
+                    "8march": {}
+                },
+                "newuser": {},
+                "okgift": {},
+                "sber": {},
+                "stars": {},
+                "valentine": {},
+                "victoryday": {},
+                "wishlist": {}
+            },
+            "sm": {},
+            "sprt": {
+                "checkbox-icon": {},
+                "edit_x10": {},
+                "faq-icons": {},
+                "feed": {},
+                "holidaysPlaceholder-gift": {},
+                "ic_photo-page": {},
+                "layer-arw": {},
+                "main-page": {},
+                "marks-standart": {},
+                "media-layer-new": {},
+                "media-status": {},
+                "mm-layer": {},
+                "mm-layer_my": {},
+                "mm-layer_stub": {},
+                "mml-checkbox": {},
+                "mml-menu": {},
+                "music": {},
+                "music_fill": {},
+                "music_portal": {},
+                "music_search": {},
+                "my-marks": {},
+                "okfilm_spr": {},
+                "pf-places": {},
+                "pin-icon": {},
+                "present": {},
+                "search-suggest-icons": {},
+                "smiles-sprite": {},
+                "tag-icon": {},
+                "ust-play": {},
+                "ust_music_redesign": {},
+                "video-layer": {},
+                "video-popup": {},
+                "video-popup_arr": {},
+                "video-popup_arr-bg": {}
+            },
+            "stub": {},
+            "video": {
+                "channel": {},
+                "layer": {
+                    "head": {},
+                    "ic": {}
+                },
+                "popup": {
+                    "ic": {}
+                },
+                "stub": {},
+                "upload": {
+                    "ic": {}
+                }
+            }
+        },
+        "js": {
+            "app": {
+                "discussions": {},
+                "music": {},
+                "postingForm": {},
+                "suggest": {},
+                "utils": {}
+            },
+            "lib": {},
+            "prod": {},
+            "textarea": {}
+        },
+        "share": {},
+        "test": {}
+    },
+    "res-mob": {
+        "WEB-INF": {},
+        "batch": {
+            "css": {
+                "block": {},
+                "sprite": {}
+            },
+            "img": {},
+            "js": {
+                "alf": {},
+                "apps": {},
+                "audio": {},
+                "block": {},
+                "common": {},
+                "feedback": {},
+                "form": {},
+                "head": {},
+                "music": {},
+                "native": {},
+                "notification": {},
+                "ok": {},
+                "photo": {},
+                "pngfix": {},
+                "script": {},
+                "scroll": {},
+                "video": {}
+            }
+        },
+        "css": {},
+        "default": {
+            "js": {},
+            "versions": {}
+        },
+        "i": {
+            "sprt": {}
+        },
+        "img": {
+            "_old": {
+                "sb": {},
+                "sml": {}
+            },
+            "_original": {},
+            "adv": {},
+            "andr": {},
+            "bb": {},
+            "brnd": {},
+            "btn": {},
+            "chamomile": {},
+            "emoji": {},
+            "emoji-exp": {},
+            "emoji-exp@2x": {},
+            "emoji@2x": {},
+            "flags": {},
+            "friendshipday": {},
+            "ic_22": {},
+            "iph": {},
+            "menu": {},
+            "music": {},
+            "nav": {},
+            "nokia": {
+                "ovi": {}
+            },
+            "overlays": {
+                "april1": {
+                    "avs": {}
+                },
+                "ftbavs": {},
+                "ice": {
+                    "avs": {}
+                },
+                "kiss": {
+                    "avs": {}
+                },
+                "leaves": {
+                    "avs": {}
+                },
+                "march8": {
+                    "avs": {}
+                },
+                "march8_2014": {
+                    "avs": {}
+                },
+                "snowballs": {},
+                "splat": {
+                    "avs": {}
+                },
+                "stars": {
+                    "avs": {},
+                    "large": {
+                        "avs": {}
+                    }
+                },
+                "tulips": {
+                    "40x40": {},
+                    "60x60": {},
+                    "70x70": {},
+                    "avs": {
+                        "x40": {},
+                        "x60": {}
+                    }
+                }
+            },
+            "pay2": {},
+            "places": {},
+            "prm": {
+                "native": {}
+            },
+            "sm": {
+                "tmp": {}
+            },
+            "smileday": {},
+            "smiles": {
+                "sm": {}
+            },
+            "sml3": {},
+            "stb2": {},
+            "t": {
+                "_old": {}
+            },
+            "tb": {
+                "promo": {}
+            },
+            "victoryday": {},
+            "wp7": {}
+        },
+        "js": {
+            "alf": {},
+            "common": {},
+            "head": {},
+            "modules": {
+                "shims": {}
+            }
+        },
+        "music": {},
+        "sm": {},
+        "windowsmobile": {}
+    },
+    "templates": {
+        "block": {},
+        "compactprofile": {},
+        "deletestub": {},
+        "discussions": {
+            "complaint": {}
+        },
+        "faq": {},
+        "holidays": {},
+        "layout": {},
+        "mob": {
+            "notifications": {},
+            "promo": {
+                "easter": {}
+            },
+            "toolbar": {}
+        },
+        "standard": {
+            "card": {},
+            "form": {},
+            "grid": {},
+            "guide": {},
+            "selection": {},
+            "tabs": {},
+            "tips": {}
+        }
+    },
+    "test": {},
     "tools": {
         "graphics": {
             "core": {},
             "css": {},
             "specFile": {
                 "url": "/tools/graphics",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false
             }
@@ -5269,8 +6167,8 @@
             "i": {},
             "specFile": {
                 "url": "/tools/styles",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "5.9.2014",
+                "lastmodSec": 1409934187000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Cтили",
@@ -5283,8 +6181,8 @@
             "css": {},
             "specFile": {
                 "url": "/tools/team",
-                "lastmod": "27.8.2014",
-                "lastmodSec": 1409145240000,
+                "lastmod": "15.8.2014",
+                "lastmodSec": 1408107359000,
                 "fileName": "index.html",
                 "thumbnail": false,
                 "title": "Команда",
@@ -5299,135 +6197,6 @@
                 "smoothness": {
                     "images": {}
                 }
-            }
-        }
-    },
-    "docs": {
-        "api": {
-            "specFile": {
-                "url": "/docs/api",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "title": "[beta] API documentation",
-                "role": "navigation"
-            },
-            "load-events": {
-                "specFile": {
-                    "url": "/docs/api/load-events",
-                    "lastmod": "28.8.2014",
-                    "lastmodSec": 1409213910000,
-                    "fileName": "index.src",
-                    "thumbnail": false,
-                    "author": "Ivan Metelev",
-                    "title": "[ru] Spec load event"
-                }
-            }
-        },
-        "base": {
-            "i": {},
-            "specFile": {
-                "url": "/docs/base",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Robert Haritonov",
-                "title": "Basic Engine Documentation"
-            }
-        },
-        "clarify": {
-            "specFile": {
-                "url": "/docs/clarify",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Dmitry Lapynov",
-                "title": "Clarify — for spec section testing"
-            },
-            "ru": {
-                "specFile": {
-                    "url": "/docs/clarify/ru",
-                    "lastmod": "28.8.2014",
-                    "lastmodSec": 1409213910000,
-                    "fileName": "index.src",
-                    "thumbnail": false,
-                    "author": "Dmitry Lapynov",
-                    "keywords": "source, clarify, plugin",
-                    "title": "Clarify (RU)"
-                }
-            }
-        },
-        "data": {},
-        "data-nav": {
-            "specFile": {
-                "url": "/docs/data-nav",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Ivan Metelev",
-                "title": "Autogenerated navigation"
-            }
-        },
-        "grunt": {
-            "specFile": {
-                "url": "/docs/grunt",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Robert Haritonov",
-                "title": "Build tasks with Grunt"
-            }
-        },
-        "specFile": {
-            "url": "/docs",
-            "lastmod": "28.8.2014",
-            "lastmodSec": 1409213910000,
-            "fileName": "index.src",
-            "thumbnail": false,
-            "title": "Documentation and Examples",
-            "role": "navigation",
-            "info": "Every SourceJS instance is packed with own docs catalog."
-        },
-        "info-json": {
-            "specFile": {
-                "url": "/docs/info-json",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Robert Haritonov",
-                "title": "Info.json - Spec Description",
-                "keywords": "info.json"
-            }
-        },
-        "spec": {
-            "css": {},
-            "specFile": {
-                "url": "/docs/spec",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Robert Haritonov",
-                "keywords": "create spec, spec markup",
-                "title": "Spec Page Documentation"
-            }
-        },
-        "starting": {
-            "css": {},
-            "specFile": {
-                "url": "/docs/starting",
-                "lastmod": "28.8.2014",
-                "lastmodSec": 1409213910000,
-                "fileName": "index.src",
-                "thumbnail": false,
-                "author": "Spec author",
-                "title": "Starting Spec Page Template"
             }
         }
     }

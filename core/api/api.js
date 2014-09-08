@@ -76,8 +76,9 @@ console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
 
 console.log('-- file ends.');
 
-// from old Clarify:
-// TODO: check list below
+
+
+// TODO: check list below (moved from from Clarify)
 // [done] beatify HTML output
 // [done] create JSON with data from <HEAD>
 // [done] parse several blocks in same page with one request

@@ -207,13 +207,13 @@ page.onCallback = function (data) {
 
         }, url);
 
-        // make reponse in {{ ... }} to parse only relevant part
+        // make response in {{ ... }} to parse only relevant part
         console.log(code);
         phantom.exit();
 
     } else {
         console.log(JSON.stringify({
-                "error": "No callback recieved",
+                "error": "No callback received",
                 "url": url
             })
         );
@@ -229,7 +229,7 @@ page.onError = function(msg, trace) {
     fs.write('ph_modules/log/output_'+ file +'.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function);
 
 //    console.log(JSON.stringify({
-//        "error": "Error onpage",
+//        "error": "Error on page",
 //        "message": msg,
 //        "file": trace[0],
 //        "line": trace[0].line,
