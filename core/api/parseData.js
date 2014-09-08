@@ -209,19 +209,23 @@ ParseData.prototype.filterCats = function(value, key, inOut, filterArr) {
  *
  * @param {Object} [data] - Data to filter
  *
- * @returns {Object} Returns object with filtered data or false boolean
+ * @returns {Object} Returns object with filtered data or undefined
  */
-ParseData.prototype.getFilteredData = function(filterConf, data) {
+ParseData.prototype.getFilteredData = function(filterConf, array, data) {
     var _this = this;
     var _data = {};
     var dataExists = true;
     var output = {};
 
+    if (array) {
+        output = [];
+    }
+
     if (data) {
         _data = data;
     } else {
-        _data = this.data;
         dataExists = this.updateData();
+        _data = this.data;
     }
 
     if (dataExists) {
@@ -242,7 +246,11 @@ ParseData.prototype.getFilteredData = function(filterConf, data) {
             if (filterObj && filterObj.tags && !_this.filterTags(value, false, filterObj.tags)) return;
             if (filterOutObj && filterOutObj.tags && !_this.filterTags(value, true, filterOutObj.tags)) return;
 
-            output[key] = value;
+            if (array) {
+                output.push(value);
+            } else {
+                output[key] = value;
+            }
         });
 
         return output;

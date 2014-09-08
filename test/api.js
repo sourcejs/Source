@@ -157,7 +157,7 @@ describe('Routing', function () {
         });
         it('should return only specs WITHOUT info', function (done) {
             var body = {
-                test: true,
+
                 filterOut: {
                     fields:["info"]
                 }
@@ -179,7 +179,7 @@ describe('Routing', function () {
         });
         it('should return only specs WITHOUT url, info and cat', function (done) {
             var body = {
-                test: true,
+
                 filterOut: {
                     fields:["url","info","cat"]
                 }
@@ -201,7 +201,7 @@ describe('Routing', function () {
         });
         it('should return only specs WITH info and WITHOUT keywords', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     fields:["info"]
                 },
@@ -226,7 +226,7 @@ describe('Routing', function () {
         });
         it('should return only specs WITH info and cat but WITHOUT keywords and thumbnail', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     fields:["info","cat"]
                 },
@@ -254,7 +254,7 @@ describe('Routing', function () {
     describe('Specs Filter Tags', function () {
         it('should return only specs WITH "html" tag', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     tags:["html"]
                 }
@@ -277,7 +277,7 @@ describe('Routing', function () {
 
         it('should return only specs WITH "html" and "tag" tags', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     tags:["html","tag"]
                 }
@@ -300,7 +300,7 @@ describe('Routing', function () {
 
         it('should return only specs WITHOUT "html" and "tag" tags', function (done) {
             var body = {
-                test: true,
+
                 filterOut: {
                     tags:["html","tag"]
                 }
@@ -323,7 +323,7 @@ describe('Routing', function () {
 
         it('should return only specs WITH "html" and WITHOUT "some" tags', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     tags:["html"]
                 },
@@ -351,7 +351,7 @@ describe('Routing', function () {
     describe('Specs Filter Cats', function () {
         it('should return only project cat specs', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     cats:["project-test"]
                 }
@@ -374,7 +374,7 @@ describe('Routing', function () {
 
         it('should return only base cat specs', function (done) {
             var body = {
-                test: true,
+
                 filter: {
                     cats:["base"]
                 }
@@ -397,7 +397,7 @@ describe('Routing', function () {
 
         it('should return all except project specs', function (done) {
             var body = {
-                test: true,
+
                 filterOut: {
                     cats:["project-test"]
                 }
