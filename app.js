@@ -8,7 +8,7 @@ var express = require('express');
 var colors = require('colors');
 var fs = require('fs');
 var deepExtend = require('deep-extend');
-var headerFooter = require('./core/headerFooter.js');
+var headerFooter = require('./core/headerFooter');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
@@ -21,9 +21,15 @@ global.app.set('views', __dirname + '/core/views');
 global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
 
 global.MODE = process.env.NODE_ENV || 'development';
+
+global.pathToApp = __dirname;
+
+var logger = require('./core/logger');
+var log = logger.log;
+global.log = log;
 /* /Globals */
 
-
+require('./core/api/htmlParser');
 
 /* App config */
 
@@ -121,7 +127,7 @@ try {
     /* User additional functionality */
     require(global.app.get('user') + "/core/app.js");
 } catch(e){
-    console.log("User plugins require error:", e);
+    log.warn("User plugins require error:", e);
 }
 /* /Includes */
 
@@ -151,7 +157,7 @@ global.app.use(function(req, res, next){
 
 /* Error handling */
 var logErrors = function(err, req, res, next) {
-    console.error(("Error: " + err.stack).red);
+    log.error(("Error: " + err.stack).red);
     next(err);
 };
 
@@ -183,13 +189,7 @@ if (!module.parent) {
     }
 
     global.app.listen(port);
-
     var portString = port.toString();
 
-    var d = new Date(),
-        dateArr = [d.getHours(), d.getMinutes(), d.getSeconds()],
-        dateArr = dateArr.map(function (el) { return (el > 9)? el : '0'+ el; }),
-        dateString = dateArr.join(':').red;
-
-    console.log(dateString + ' [SOURCE] lauched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    log.info('[SOURCEJS] lauched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
 }

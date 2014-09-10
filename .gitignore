@@ -5,7 +5,7 @@ node_modules
 
 # Generated data for API
 /core/api/data
-/core/api/log
+/log
 
 # Generated JSdoc
 /jsdoc
