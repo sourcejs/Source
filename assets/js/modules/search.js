@@ -52,7 +52,7 @@ Search.prototype.prepareAutoCompleteData = function() {
     this.data = [];
 
     var sort = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortDirection": "forward", "sortType": "sortByAlph"};
-    var pagesData = parseFileTree.getCatalog("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
+    var pagesData = parseFileTree.getSortedCatalogsArray("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
 
 
     for (var page in pagesData) {
@@ -97,7 +97,7 @@ Search.prototype.wrapSearchResults = function(results) {
     $.map(results, function(item) {
         var specItem = parseFileTree.getCatAll(item.data).specFile;
         specItem.title = item.value;
-        list.append(globalNav.createNavTreeItem(specItem));
+        list.append(globalNav.renderNavTreeItem(specItem));
     });
     return list;
 };

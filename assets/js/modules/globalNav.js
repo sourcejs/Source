@@ -12,6 +12,10 @@ define([
     "sourceLib/lodash"
     ], function($, module, utils, parseFileTree, _) {
 
+    /**
+     * @Object defaults. It represents preseted options to initialize
+     * navigation module. Can be overrided by options.moduleOptions.globalNav.
+     */
     var defaults = {
         "filterEnabled": true,
         "showPreviews": false,
@@ -48,6 +52,12 @@ define([
         }
     };
 
+    /**
+     * @constructor GlobalNav
+     * 
+     * @function GlobalNav. Module constructor.
+     * It implements module initialization.
+     */
     function GlobalNav() {
         var _this = this;
         this.options.modulesOptions.globalNav = $.extend(true, defaults,
@@ -62,6 +72,10 @@ define([
     GlobalNav.prototype = module.createInstance();
     GlobalNav.prototype.constructor = GlobalNav;
 
+    /**
+     * @Object templates. Contains basic navigation templates.
+     * It uses lo-dash template function.
+     */
     GlobalNav.prototype.templates = {
         "catalogList": _.template([
             '<ul class="<%= classes.catalogList %>">',
@@ -104,30 +118,55 @@ define([
         ].join(""))
     };
 
+    /**
+     * @method init. This method implements initial module definition.
+     */
     GlobalNav.prototype.init = function () {
         var navOptions = this.options.modulesOptions.globalNav;
         this.catalog = $("." + navOptions.classes.catalog);
-        this.drawNavigation();
+        this.renderNavigation();
 
         if (this.options.modulesOptions.globalNav.filterEnabled) {
             this.initCatalogFilter();
         }
     };
 
-    // Filtering by specified catalogue
+    /**
+     * @private
+     * @method skipSpec. Filtering by specified catalogue
+     *
+     * @param [String] navListCat catalogue type
+     * @param [Object] obj - object to filter
+     *
+     * @returns [Boolean] true if spec shoud be skipped.
+     */
     var skipSpec = function(navListCat, obj) {
         // obj["cat"] is an array; if cat has needed value
-        var inArray = !!obj["cat"] && obj["cat"].indexOf(navListCat) > -1;
+        var inArray = !!obj["tag"] && obj["tag"].indexOf(navListCat) > -1;
         // without-cat mode, showing all specs without cat field in info.json defined or
-        var isWithoutCat = navListCat === "without-cat" && (!obj["cat"] || obj["cat"].length === 0);
+        var isWithoutCat = navListCat === "without-tag" && (!obj["tag"] || obj["tag"].length === 0);
         return !inArray && !isWithoutCat;
     };
 
-    // Filtering hidden specs
+    /**
+     * @private
+     * @method isHidden. It helps to filter hidden specs.
+     *
+     * @param [Object] obj - spec to check.
+     *
+     * @returns [Boolean] true if spec is hidden.
+     */
     var isHidden = function(obj) {
-        return !!obj["cat"] && !!~obj["cat"].indexOf("hidden");
+        return !!obj["tag"] && !!~obj["tag"].indexOf("hidden");
     };
 
+    /**
+     * @method initCatalog - initialize catalog DomElement
+     *
+     * @param [Object] catalog - Catalog DomElement
+     * @param [Object] catalogMeta - additional catalog information.
+     * @param [Boolean] specifCatAndDirDefined - boolean flag, which defines if some cat and dir are defined
+     */
     GlobalNav.prototype.initCatalog = function(catalog, catalogMeta, specifCatAndDirDefined) {
         var config = this.options.modulesOptions.globalNav;
         var classes = config.classes;
@@ -140,20 +179,24 @@ define([
 
             if (catalogMeta && !isHeaderAdded) {
                 catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
-            }
-            if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
-                sourceCatalog
+            } else if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+                catalog
                     .children("." + classes.catalogListTitle)
                     .first()
-                    .after(this.templates.catalogInfo({"classes": classes, "catalogMeta": catalogMeta}));
+                    .after(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
             }
         } else {
             console.log(this.options.modulesOptions.globalNav.labels.noCatalogInfo);
         }
     };
 
-    // Drawing navigation and page info in each catalog defined on page
-    GlobalNav.prototype.drawNavigation = function (sortType, sortDirection) {
+    /**
+     * @method renderNavigation. Drawing navigation and page info in each catalog defined on page.
+     *
+     * @param [String] sortType - type of sorting
+     * @param [String] sortDirection - ASC || DESC
+     */
+    GlobalNav.prototype.renderNavigation = function (sortType, sortDirection) {
         var _this = this;
         var navOptions = this.options.modulesOptions.globalNav;
         var classes = navOptions.classes;
@@ -164,7 +207,7 @@ define([
         this.catalog.each(function () {
             var catalog = $(this);
             var navListDir = catalog.attr("data-nav");
-            var navListCat = catalog.attr("data-cat");
+            var navListCat = catalog.attr("data-tag");
             // Catalog has no data about category
             var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
             _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
@@ -175,16 +218,22 @@ define([
                 return;
             }
 
-            var targetData = parseFileTree.getCatalog(navListDir, _this.getSortCondition(sortType, sortDirection));
+            var targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
             _this.renderNavigationList(catalog, targetData);
         });
     };
 
+    /**
+     * @method renderNavigationList. It draws navigation list into catalog.
+     *
+     * @param [Object] catalog - DomElement to fill
+     * @param [Object] data - content
+     */
     GlobalNav.prototype.renderNavigationList = function(catalog, data) {
         var navOptions = this.options.modulesOptions.globalNav;
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
-        var navListCat = catalog.attr("data-cat");
+        var navListCat = catalog.attr("data-tag");
 
         var filter = function(spec) {
             var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
@@ -203,6 +252,15 @@ define([
         }
     };
 
+    /**
+     * @methor getNavigationItemsList. It creates the list of navigation items.
+     *
+     * @param [Array] specifications - list of items to create nav items.
+     * @param [String] catalogUrl - URL to catalog
+     * @param [function] isValid - callback to check if spec is valid.
+     *
+     * @returns [Object] document fragment which contains list of navItems.
+     */
     GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
         // temporary container to hold navigation items.
         var navigationItemsList = document.createDocumentFragment();
@@ -219,7 +277,7 @@ define([
             if (!isValid(spec)) {
                 continue;
             }
-            navigationItemsList.appendChild(this.createNavTreeItem(spec).get(0));
+            navigationItemsList.appendChild(this.renderNavTreeItem(spec).get(0));
         }
 
         // Go to cat page link
@@ -237,35 +295,48 @@ define([
         return navigationItemsList;
     };
 
-    GlobalNav.prototype.createNavTreeItem = function(target) {
-        if (!target) return;
+    /**
+     * @method renderNavTreeItem. Returns single navigation tree item. It uses item template for it.
+     *
+     * @param [Object] itemData - data of single list item.
+     *
+     * @returns [Object] result - rendering result
+     */
+    GlobalNav.prototype.renderNavTreeItem = function(itemData) {
+        if (!itemData) return;
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
-        var author = target.author
-            ? " | " + navConfig.author + ": " + target.author
+        var author = itemData.author
+            ? " | " + navConfig.author + ": " + itemData.author
             : "";
 
         // fixing relative path due to server settings
-        var targetUrl = target.url.charAt(0) === "/" ? target.url : "/" + target.url;
-        var imageUrl = targetUrl + "/" + navConfig.thumbnailName;
-        if (!this.createNavTreeItem.template) {
-            this.createNavTreeItem.template = this.templates.navigationListItem(navConfig);
+        var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
+        var imageUrl = itemData.thumbnail ? "/" + itemData.thumbnail : undefined;
+        if (!this.renderNavTreeItem.template) {
+            this.renderNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }
-        var result = $(this.createNavTreeItem.template).clone(true);
-        result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", targetUrl);
-        result.find("." + classes.catalogListImage)
-            .attr("src", imageUrl)
-            .error(function(e) {
-                $(this).remove();
-            });
-        result.find("." + classes.catalogListTitle).html(target.title);
-        result.find("." + classes.catalogListDate).html(target.lastmod + author);
-        if(parseInt(target.bubbles)) {
-            result.find("." + classes.catalogListBubbles).html(target.bubbles);
+        var result = $(this.renderNavTreeItem.template).clone(true);
+        result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", itemDataUrl);
+        if (imageUrl) {
+            result.find("." + classes.catalogListImage)
+                .attr("src", imageUrl)
+                .error(function(e) {
+                    $(this).remove();
+                });
+        }
+        result.find("." + classes.catalogListTitle).html(itemData.title);
+        result.find("." + classes.catalogListDate).html(itemData.lastmod + author);
+        if(parseInt(itemData.bubbles)) {
+            result.find("." + classes.catalogListBubbles).html(itemData.bubbles);
         }
         return result;
     };
 
+    /**
+     * @method initCatalogFilter - function that initializes filters.
+     * Rendering is also calls from it.
+     */
     GlobalNav.prototype.initCatalogFilter = function() {
         var classes = this.options.modulesOptions.globalNav.classes;
         var $subhead = $("." + classes.sourceSubhead);
@@ -275,17 +346,26 @@ define([
         this.renderFilters($subhead);
     };
 
+    /**
+     * @method renderFilters. It renders filters layout.
+     *
+     * @param [Object] filtersTarget - dom element which is going to be
+     * container for rendering.
+     */
     GlobalNav.prototype.renderFilters = function(filtersTarget) {
         var classes = this.options.modulesOptions.globalNav.classes;
         if (!filtersTarget.find("." + classes.catalogFilter).length) {
             filtersTarget.prepend(this.templates.catalogFilter({"classes": classes}));
         }
-        this.drawSortFilters();
-        this.drawPreviewsToggler();
+        this.renderSortFilters();
+        this.renderPreviewsToggler();
 
     };
 
-    GlobalNav.prototype.drawPreviewsToggler = function() {
+    /**
+     * @method renderPreviewsToggler. It draws preview toggler.
+     */
+    GlobalNav.prototype.renderPreviewsToggler = function() {
         var classes = this.options.modulesOptions.globalNav.classes;
         var labels = this.options.modulesOptions.globalNav.labels;
         var showPreviews = this.options.modulesOptions.globalNav.previews;
@@ -319,7 +399,10 @@ define([
         });
     };
 
-    GlobalNav.prototype.drawSortFilters = function() {
+    /**
+     * @method renderSortFilters. It draws Sort Filters layout.
+     */
+    GlobalNav.prototype.renderSortFilters = function() {
         var defaultSort = this.options.modulesOptions.globalNav.sortType;
         var $filterWrapper = $("." + this.options.modulesOptions.globalNav.classes.catalogFilter);
         var enabledFilter = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortType":defaultSort,"sortDirection":"forward"};
@@ -352,13 +435,21 @@ define([
             enabledFilter.sortType = sortType;
             enabledFilter.sortDirection = sortDirection;
             localStorage.setItem("source_enabledFilter", JSON.stringify(enabledFilter));
-            _this.drawNavigation(sortType, sortDirection)
+            _this.renderNavigation(sortType, sortDirection)
         }
         $(document).on("click", ".source_sort-list_a", function() {
             updateView($(this));
         });
     };
 
+    /**
+     * @method getSortCondition. It defines current sorting property and order.
+     *
+     * @param [String] type - on of predefined sort types.
+     * @param [String] direction - ASC or DESC sort odrer
+     *
+     * @returns [Function] sortingCallback - function to sort items.
+     */
     GlobalNav.prototype.getSortCondition = function(type, direction) {
         var multiplexer = direction === "forward" ? 1 : -1;
         if (type === "sortByAlph") {

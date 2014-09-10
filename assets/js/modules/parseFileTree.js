@@ -255,7 +255,6 @@ define([
         return this.parsePages(getSpecificCat, true);
     };
 
-    //TODO: it should be refactored asap.
     var getCurrCatalogSpec = function(navListDir, targetCatalog) {
         var catObj;
         if (!!targetCatalog[navListDir + '/specFile']) {
@@ -274,7 +273,7 @@ define([
         return getCurrCatalogSpec(catalogName, specsHash);
     };
 
-    ParseFileTree.prototype.getCatalog = function(catalogName, sortingCallback) {
+    ParseFileTree.prototype.getSortedCatalogsArray = function(catalogName, sortingCallback) {
         if (catalogName === undefined) return;
         var specsHash = catalogName.length
             ? this.parsePages(catalogName, true)
