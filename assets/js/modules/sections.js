@@ -11,6 +11,8 @@ define([
     "sourceModules/module"
     ], function ($, module) {
 
+    'use strict';
+
     function Sections() {
         var _this = this;
 
@@ -69,14 +71,14 @@ define([
     /* если нет ID, добавляем */
     Sections.prototype.setSectionId = function (section, id) {
         var newID = id;
-        if (section.attr('id') != undefined) {
+        if (section.attr('id') !== undefined) {
             newID = section.attr('id');
         } else {
             section.attr('id', newID);
 
             section.children('h3').each(function(index) {
-            	$(this).attr('id', newID + '_' + (index+1));
-            })
+                $(this).attr('id', newID + '_' + (index+1));
+            });
         }
 
         return newID;

@@ -1,4 +1,7 @@
 define(["source/load-options"], function(options) {
+
+    'use strict';
+
     function Css (url) {
         this.url = url;
 

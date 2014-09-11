@@ -3,6 +3,8 @@ define([
 	'sourceModules/utils'
 	], function (module, u) {
 
+    'use strict';
+
     function ModuleLoader() {
         this.loadModules('modules');
         this.loadModules('plugins');
@@ -40,11 +42,13 @@ define([
         }
 
         if (typeof optionsBase[typeEnabled] !== 'undefined'){
-            for(var item in optionsBase[typeEnabled]){
-                var targetObj = optionsBase[typeEnabled][item];
+            for(var item in optionsBase[typeEnabled]) {
+                if (optionsBase[typeEnabled].hasOwnProperty(item)) {
+                    var targetObj = optionsBase[typeEnabled][item];
 
-                if (targetObj){
-                    require([path + item]);
+                    if (targetObj){
+                        require([path + item]);
+                    }
                 }
             }
         }

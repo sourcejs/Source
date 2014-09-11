@@ -12,12 +12,10 @@ define([
     'sourceModules/module'
     ], function (module) {
 
-	function navHighlight() {
+	var NavHighlight = function() {
 
-		var _this = this;
-
-		navHighlight.prototype = module.createInstance();
-		navHighlight.prototype.constructor = navHighlight;
+		NavHighlight.prototype = module.createInstance();
+		NavHighlight.prototype.constructor = NavHighlight;
 
 		// basic utils
 		var utils = (function() {
@@ -50,7 +48,7 @@ define([
 					}
 				},
 				closest: function(elem, cls) { //console.log(elem, cls);
-					if (elem.tagName == 'html') return false;
+					if (elem.tagName === 'html') return false;
 
 					var elemParent = elem.parentNode;
 					if (!utils.hasClass(elem, cls)) {
@@ -59,9 +57,9 @@ define([
 
 					return elem;
 				}
-			}
+			};
 
-		})()
+		})();
 
 		var sourceHeaders = [],
 			navHeaders,
@@ -73,7 +71,7 @@ define([
 		var fullFilename = document.location.href.split('/').pop().split('.');
 
 		//update extension and filename only if there is one in URL
-		if( !(fullFilename.length === 1) ) {
+		if(fullFilename.length !== 1) {
 			extension = /\w+/.exec(fullFilename[1]);
 			filename = fullFilename[0];
 		}
@@ -101,7 +99,7 @@ define([
 			// catch section which is closed for top window border
 			for (var i=0; i < headersLength; i++) {
 
-				if ((sourceHeaders[i].tagName == 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
+				if ((sourceHeaders[i].tagName === 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
 					continue;
 				}
 
@@ -136,11 +134,11 @@ define([
 
 				currentHeader = closestHeader;
 			}
-		}
+		};
 
 		// watch navmenu render
 		var checkNavInterval,
-			h2Nodes, h3Nodes,
+			h2Nodes,
 			bodyNode = document.querySelector('body'),
 			checkOnNav = function checkOnNav() {
 
@@ -168,17 +166,17 @@ define([
 
 				window.onscroll = function() {
 					watchSectionTop();
-				}
+				};
 
 				return;
 			}
-		}
+		};
 
 		checkNavInterval = setInterval(checkOnNav, 1000);
-	}
+	};
 
-	return new navHighlight();
-})
+	return new NavHighlight();
+});
 
 
 

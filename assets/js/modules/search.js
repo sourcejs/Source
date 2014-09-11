@@ -4,9 +4,6 @@
 *
 * */
 
-//Getting always new version of navigation JSON
-var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
-
 define([
     'jquery',
     'sourceModules/module',
@@ -15,7 +12,9 @@ define([
     'sourceModules/parseFileTree',
     'sourceModules/globalNav',
     'sourceModules/headerFooter'
-], function ($, module, autocomplete, modalBox, parseFileTree, globalNav) {
+], function ($, module, autocomplete, ModalBox, parseFileTree, globalNav) {
+
+'use strict';
 
 var Search = function() {
     this.header = $('.source_header');
@@ -44,7 +43,7 @@ Search.prototype = module.createInstance();
 Search.prototype.constructor = Search;
 
 Search.prototype.prepareAutoCompleteData = function() {
-    var autocomleteDataItem = function (value, data) {
+    var AutocomleteDataItem = function (value, data) {
         this.value = value;
         this.data = data;
     };
@@ -54,30 +53,31 @@ Search.prototype.prepareAutoCompleteData = function() {
     var pagesData = parseFileTree.getAllPages();
 
     for (var page in pagesData) {
-        var targetPage = pagesData[page]['specFile'];
+        if (pagesData.hasOwnProperty(page)) {
+            var targetPage = pagesData[page]['specFile'];
 
-        var keywords = targetPage.keywords;
-        var keywordsPageName = page; //get cat name
-        var prepareKeywords = '';
-        var rootFolder = page.split('/');
-        var autocompleteValue = targetPage.title;
-        var pclass = targetPage.pclass;
-        var searchOptions = this.options.modulesOptions.search;
-        var json = parseFileTree.getParsedJSON();
+            var keywords = targetPage.keywords;
+            var keywordsPageName = page; //get cat name
+            var prepareKeywords = '';
+            var rootFolder = page.split('/');
+            var autocompleteValue = targetPage.title;
+            var searchOptions = this.options.modulesOptions.search;
+            var json = parseFileTree.getParsedJSON();
 
 
-        var isRootSpecExists = json[rootFolder[ 1 ]] && json[rootFolder[ 1 ]]['specFile'];
+            var isRootSpecExists = json[rootFolder[ 1 ]] && json[rootFolder[ 1 ]]['specFile'];
 
-        if (isRootSpecExists  && searchOptions.replacePathBySectionName) {
-            keywordsPageName = json[rootFolder[1]]['specFile'].title
-                + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
+            if (isRootSpecExists && searchOptions.replacePathBySectionName) {
+                keywordsPageName = json[rootFolder[1]]['specFile'].title
+                    + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
+            }
+            if (keywords && keywords !== '') {
+                prepareKeywords += ', ' + keywords;
+            }
+
+            autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
+            this.data[this.data.length] = new AutocomleteDataItem(autocompleteValue, targetPage.url);
         }
-        if (keywords && keywords != '') {
-            prepareKeywords += ', ' + keywords;
-        }
-
-        autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
-        this.data[this.data.length] = new autocomleteDataItem(autocompleteValue, targetPage.url);
     }
 };
 
@@ -112,7 +112,7 @@ Search.prototype.activateAutocomplete = function() {
             "showAllButtonText": searchOptions.labels.showAllButtonText
         },
         "showAll": function (suggestions) {
-            (new modalBox({
+            (new ModalBox({
                 "appendTo": ".source_main"
             }, {
                 "title": searchOptions.labels.searchResults,

@@ -1,44 +1,47 @@
 //In separate module, to trace script ready state
 define([
-	"jquery",
+    "jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",
     "sourceModules/sectionFolding"
     ], function($, utils, loadEvents) {
+
+    'use strict';
+
     var navHash = utils.parseNavHash(),
-	    $sections = $('.source_section'),
-	    $navigation = $('.source_nav'),
-	    $mainContainer = $('.source_main'),
-	    $body = $('body');
+        $sections = $('.source_section'),
+        $navigation = $('.source_nav'),
+        $mainContainer = $('.source_main'),
+        $body = $('body');
 
-	// Show hidden sections and navigation
-	function showSections() {
-		$sections.addClass('__loaded');
-		$navigation.addClass('__loaded');
-		$mainContainer.removeClass('__loading');
-		$body.removeClass('__loading');
-	}
+    // Show hidden sections and navigation
+    function showSections() {
+        $sections.addClass('__loaded');
+        $navigation.addClass('__loaded');
+        $mainContainer.removeClass('__loading');
+        $body.removeClass('__loading');
+    }
 
-	$mainContainer.addClass('__loading');
-	$body.addClass('__loading');
+    $mainContainer.addClass('__loading');
+    $body.addClass('__loading');
 
-	loadEvents.init(function() {
-		showSections();
+    loadEvents.init(function() {
+        showSections();
 
-		// Chrome scroll bug
-		if ($('html').hasClass('webkit')) {
+        // Chrome scroll bug
+        if ($('html').hasClass('webkit')) {
 
-			var t = setInterval(function() {
-				if (window.pageYOffset != 0) {
-					clearInterval(t);
-				}
+            var t = setInterval(function() {
+                if (window.pageYOffset !== 0) {
+                    clearInterval(t);
+                }
 
-				window.scrollTo(0, 1);
-				utils.scrollToSection(navHash);
-			}, 100)
-		} else {
-			utils.scrollToSection(navHash);
-		}
-	});
+                window.scrollTo(0, 1);
+                utils.scrollToSection(navHash);
+            }, 100);
+        } else {
+            utils.scrollToSection(navHash);
+        }
+    });
 
 });

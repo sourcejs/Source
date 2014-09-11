@@ -11,6 +11,8 @@ define([
     "sourceModules/codeSource"
     ], function(options) {
 
+    'use strict';
+
     var EXAMPLE_CLASS = options.exampleSectionClass,
         L_EXAMPLE_CLASS = $('.'+EXAMPLE_CLASS);
 
@@ -18,16 +20,17 @@ define([
     $.fn.trimSpaces = function () {
         $(this).each(function () {
             var elem = $(this);
+            var regex = new RegExp("\xa0");
             if (elem.children().length) {
                 elem.contents()
                         .filter(function () {
-                            return this.nodeType === 3 && !/\S/.test(this.nodeValue)
+                            return this.nodeType === 3 && !/\S/.test(this.nodeValue);
                         })
                         .filter(function () {
-                            return !/\xa0/.test(this.nodeValue)
+                            return !regex.test(this.nodeValue);
                         }).remove().end()
                         .filter(function () {
-                            return  /\xa0/.test(this.nodeValue)
+                            return  regex.test(this.nodeValue);
                         }).replaceWith('&nbsp;');
                 elem.children().trimSpaces();
             }

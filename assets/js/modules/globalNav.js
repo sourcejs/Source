@@ -11,6 +11,8 @@ define([
     'sourceModules/parseFileTree'
     ], function($, module, utils, parseFileTree) {
 
+    'use strict';
+
     function GlobalNav() {
         var _this = this;
 
@@ -81,18 +83,15 @@ define([
             CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
             CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES,
 
-            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            SOURCE_SUBHEAD = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
-
             RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL,
-            RES_AUTHOR = this.options.modulesOptions.globalNav.RES_AUTHOR,
             RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR,
             RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG,
             RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO,
 
             pageLimit = this.options.modulesOptions.globalNav.pageLimit;
             sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
-            ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
+        
+        var ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         //TODO: refactor this module and write tests
         L_CATALOG.each(function () {
@@ -133,50 +132,52 @@ define([
                 return response;
             };
 
-            if ( (navListDir !== undefined) && (navListDir != '') ) { //Catalog has data about category
+            var L_CATALOG_LIST;
+
+            if ( (navListDir !== undefined) && (navListDir !== '') ) { //Catalog has data about category
 
                 var targetCat = parseFileTree.getCatAll(navListDir),
-                	catObj;
+                    catObj;
 
-				if (targetCat === undefined) return;
+                if (targetCat === undefined) return;
 
-				if ( !sourceCat.find('.source_catalog_list').length ) {
-					sourceCat.append('<ul class="source_catalog_list"><img src="/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
-				}
+                if ( !sourceCat.find('.source_catalog_list').length ) {
+                    sourceCat.append('<ul class="source_catalog_list"><img src="/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
+                }
 
                 //Looking for catalogue info
-				if (typeof targetCat[ navListDir + '/specFile' ] === 'object') {
-					catObj = targetCat[ navListDir + '/specFile' ];
-				} else if ( typeof targetCat[ 'specFile' ] === 'object' ) {
-					if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
-						catObj = targetCat[ 'specFile' ][ 'specFile' ];
-					} else {
-						catObj = targetCat[ 'specFile' ];
-					}
-				}
+                if (typeof targetCat[ navListDir + '/specFile' ] === 'object') {
+                    catObj = targetCat[ navListDir + '/specFile' ];
+                } else if ( typeof targetCat[ 'specFile' ] === 'object' ) {
+                    if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
+                        catObj = targetCat[ 'specFile' ][ 'specFile' ];
+                    } else {
+                        catObj = targetCat[ 'specFile' ];
+                    }
+                }
 
-				if (typeof catObj === 'object' && !specifCatAndDirDefined) {
+                if (typeof catObj === 'object' && !specifCatAndDirDefined) {
 
-					if (  (catObj.title !== undefined) && (!sourceCat.find('.source_catalog_title').length)) {
-						sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>')
-					}
+                    if (  (catObj.title !== undefined) && (!sourceCat.find('.source_catalog_title').length)) {
+                        sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>');
+                    }
 
-					if ( (!sourceCat.find('.source_catalog_tx').length) && (catObj.info !== undefined) && ( $.trim(catObj.info) !== '' )) {
-						sourceCat
-							.children('.source_catalog_title')
-							.first()
-								.after('<div class="source_catalog_tx">' + catObj.info + '</div>')
-					}
+                    if ( (!sourceCat.find('.source_catalog_tx').length) && (catObj.info !== undefined) && ( $.trim(catObj.info) !== '' )) {
+                        sourceCat
+                            .children('.source_catalog_title')
+                            .first()
+                                .after('<div class="source_catalog_tx">' + catObj.info + '</div>');
+                    }
 
-				} else {
-					console.log(RES_NO_CATALOG_INFO);
-				}
+                } else {
+                    console.log(RES_NO_CATALOG_INFO);
+                }
 
-				var L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
-
+                L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
+                var targetCatArray;
                 // cast Object to Array of objects
                 if (typeof targetCat === 'object'){
-                    var targetCatArray = $.map(targetCat, function(k, v) {
+                    targetCatArray = $.map(targetCat, function(k, v) {
                         if(typeof k['specFile'] === 'object') {
                             return [k];
                         }
@@ -184,19 +185,19 @@ define([
 
                     // sort
                     targetCatArray.sort(function(a, b){
-                    	if (sortType == 'sortByDate') {
-                    		return _this.sortByDate(a, b)
-                    	} else if (sortType == 'sortByAlpha') {
-                    		return _this.sortByAlpha(a, b);
-                    	} else {
-							return _this.sortByDate(a, b)
-									|| _this.sortByAlpha(a, b);
-                    	}
+                        if (sortType === 'sortByDate') {
+                            return _this.sortByDate(a, b);
+                        } else if (sortType === 'sortByAlpha') {
+                            return _this.sortByAlpha(a, b);
+                        } else {
+                            return _this.sortByDate(a, b)
+                                    || _this.sortByAlpha(a, b);
+                        }
                     });
                 }
 
                 //Collecting nav tree
-                if (L_CATALOG_LIST.length === 1 && targetCatArray != undefined) {
+                if (L_CATALOG_LIST.length === 1 && targetCatArray) {
 
                     var navTreeHTML = '',
                         authorName = '';
@@ -229,7 +230,7 @@ define([
                                 '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
 
                         // TODO: move to plugins
-                        if(parseInt(target.bubbles)) {
+                        if(parseInt(target.bubbles, 10)) {
                             navTreeHTML +=
                             '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
                         }
@@ -249,12 +250,12 @@ define([
 
                         //Ignore page list
                         if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
-                        	continue;
+                            continue;
                         }
 
                         //Undefined title
                         if (targetPage === undefined || targetPage.title === undefined) {
-                        	continue;
+                            continue;
                         }
 
                         //Skip spec if we're filtering it by specific cat
@@ -286,10 +287,10 @@ define([
 
             } else {
 
-            	if (navListDir !== undefined) {
-					//Display error
-					L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
-            	}
+                if (navListDir !== undefined) {
+                    //Display error
+                    L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
+                }
             }
 
         });
@@ -327,7 +328,7 @@ define([
             });
         result.find("." + navConfig.CATALOG_LIST_A_TX).html(target.title);
         result.find("." + navConfig.CATALOG_LIST_DATE).html(target.lastmod + author);
-        if(parseInt(target.bubbles)) {
+        if(parseInt(target.bubbles, 10)) {
             result.find("." + navConfig.CATALOG_LIST_BUBBLES).html(target.bubbles);
         }
 
@@ -363,7 +364,7 @@ define([
             $catalog = $('.' + CATALOG),
             $filter = $('.' + CATALOG_FILTER);
 
-        if (initPreviewValue == 'true') { // initPreviewValue is string, not boolean
+        if (initPreviewValue === 'true') { // initPreviewValue is string, not boolean
             $catalog.addClass('__show-preview');
             $filter.append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
         } else {
@@ -377,7 +378,7 @@ define([
             var $this = $(this),
                 previewText;
 
-            if (showPreviews == 'true') { // string
+            if (showPreviews === 'true') { // string
                 previewText = 'Показать превьюшки';
                 localStorage.setItem('source_showPreviews' , false);
             } else {
@@ -402,10 +403,10 @@ define([
     };
 
     GlobalNav.prototype.sortByDate = function (a, b) {
-        a = parseInt(a['specFile'].lastmodSec);
-        b = parseInt(b['specFile'].lastmodSec);
+        a = parseInt(a['specFile'].lastmodSec, 10);
+        b = parseInt(b['specFile'].lastmodSec, 10);
 
-        if(a == b) return 0;
+        if(a === b) return 0;
         else {
             return (a > b) ? -1 : 1;
         }
@@ -417,7 +418,7 @@ define([
         a = a['specFile'].title.replace(/(^\s+|\s+$)/g,'');
         b = b['specFile'].title.replace(/(^\s+|\s+$)/g,'');
 
-        if(a == b) return 0;
+        if(a === b) return 0;
         else {
             return (a > b) ? 1 : -1;
         }
@@ -443,7 +444,7 @@ define([
         var $activeFilter = $('#' + enabledFilter.sortType);
         $activeFilter.parent().addClass('__active');
 
-        if (enabledFilter.sortDirection == 'forward') {
+        if (enabledFilter.sortDirection === 'forward') {
             $activeFilter.parent().addClass('__forward');
         }
 
@@ -476,7 +477,7 @@ define([
             updateEnabledStatusObject(sortType, sortDirection);
             updateLocalStorage(enabledFilter);
             _this.sortByChild(sortType, sortDirection);
-        }
+        };
 
         $(document).on('click', '#sortByAlph', function() {
             updateView($(this));
@@ -493,26 +494,26 @@ define([
         $list.each(function() {
             var $list_i = $(this).children('.source_catalog_list_i');
 
-            if (sortType == "sortByAlph") {
+            if (sortType === "sortByAlph") {
 
                 $list_i.sort(function(a, b) {
                     a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
                     b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
 
-                    if (sortDirection == 'backward') {
+                    if (sortDirection === 'backward') {
                         return (a < b) ? 1 : (a > b) ? -1 : 0;
                     }
 
                     return (a < b) ? -1 : (a > b) ? 1 : 0;
                 });
 
-            } else if (sortType == "sortByDate") {
+            } else if (sortType === "sortByDate") {
 
                 $list_i.sort(function(a, b) {
-                    a = parseInt( a.getAttribute('data-date') );
-                    b = parseInt( b.getAttribute('data-date') );
+                    a = parseInt(a.getAttribute('data-date'), 10);
+                    b = parseInt(b.getAttribute('data-date'), 10);
 
-                    if (sortDirection == 'backward') {
+                    if (sortDirection === 'backward') {
                         return (a < b) ? -1 : (a > b) ? 1 : 0;
                     }
 

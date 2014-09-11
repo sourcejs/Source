@@ -3,6 +3,8 @@ define([
     "sourceModules/browser"
     ], function(options) {
 
+    'use strict';
+
     var
         SECTION_CLASS = options.SECTION_CLASS,
             L_SECTION_CLASS = $('.'+SECTION_CLASS),
@@ -16,7 +18,7 @@ define([
     L_SECTION_CLASS.find('>h3').wrapInner('<span></span>');
 
     //IE layout fix
-    if ($.browser.msie && parseInt($.browser.version) < 8) {
+    if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
         //After demo section clear
         $('<div class="source_clear"></div>').insertAfter('.source_section > .source_example');
     }

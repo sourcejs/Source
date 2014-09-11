@@ -9,6 +9,8 @@ define([
     'sourceModules/module'
     ], function ($, module) {
 
+    'use strict';
+
     function Utils() {}
 
     /* наследуем от Module */
@@ -86,14 +88,14 @@ define([
     };
 
 	Utils.prototype.isArray = function(arr) {
-		return Object.prototype.toString.call(arr) == '[object Array]';
+		return Object.prototype.toString.call(arr) === '[object Array]';
 	};
 
     Utils.prototype.unifySpecPath = function(url) {
-        if (url.slice(-10) == "index.html") url = url.slice(0, -10);
-        if (url.slice(-9) == "index.src") url = url.slice(0, -9);
-        if (url.charAt(0) != "/") url = "/" + url;
-        if (url.charAt(url.length - 1) == "/") url = url.slice(0, -1);
+        if (url.slice(-10) === "index.html") url = url.slice(0, -10);
+        if (url.slice(-9) === "index.src") url = url.slice(0, -9);
+        if (url.charAt(0) !== "/") url = "/" + url;
+        if (url.charAt(url.length - 1) === "/") url = url.slice(0, -1);
 
         return url;
     };

@@ -3,19 +3,17 @@ define([
     //, other modules
     ], function(options) {
 
-    var
-            // general options
-            o = $.extend({}, {
-                postponedInit : true
-                ,postponedTo : 1000
-                ,assetAttrClone : 'clone'
-                ,assetAttrCopy : 'copy'
-                ,assetAttrPaste : 'paste'
-            }, options.modulesOptions.specAssets)
+    'use strict';
 
-            // for the copy-paste asset
-            ,Copies = {}
-    ;
+    var o = $.extend({}, {
+        postponedInit : true,
+        postponedTo : 1000,
+        assetAttrClone : 'clone',
+        assetAttrCopy : 'copy',
+        assetAttrPaste : 'paste'
+    }, options.modulesOptions.specAssets),
+    // for the copy-paste asset
+    Copies = {};
 
     $.fn.assetCloner = function(){
         var _this = $(this);
