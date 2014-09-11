@@ -1,9 +1,10 @@
+'use strict';
+
 var fs = require('fs');
 var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
 var sourceRoot = global.opts.core.common.pathToUser;
-var rootLength = global.opts.core.common.pathToUser.length;
 
 // add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
 var excludedDirs = global.opts.core.fileTree.excludedDirs;
@@ -61,13 +62,13 @@ var fileTree = function(dir) {
     //on first call we add includedDirs
     if (dir === sourceRoot){
         includedDirs.map(function(includedDir){
-            dirContent.push(includedDir)
+            dirContent.push(includedDir);
         });
     }
 
     dirContent.forEach(function(pathToFile) {
         // Path is excluded
-        if (excludes.test(dir)) {return}
+        if (excludes.test(dir)) {return;}
 
         var targetFile = path.basename(pathToFile);
         var urlToFile = pathToFile;
@@ -91,14 +92,14 @@ var fileTree = function(dir) {
 
         } else if (isSpec(targetFile)) {
             var page = {};
-
+            var urlForJson;
             // If starts with root
             if (urlFromHostRoot.lastIndexOf(sourceRoot, 0) === 0) {
                 // Clean of from path
-                var urlForJson = urlFromHostRoot.replace(sourceRoot, '');
+                urlForJson = urlFromHostRoot.replace(sourceRoot, '');
             } else {
                 // Making path absolute
-                var urlForJson = '/' + urlFromHostRoot;
+                urlForJson = '/' + urlFromHostRoot;
             }
 
             //Removing filename from path
@@ -131,12 +132,12 @@ var fileTree = function(dir) {
 
 
 // function for write json file
-var GlobalWrite = function() {
+var globalWrite = function() {
     var outputFile = global.app.get('user') + "/" + global.opts.core.fileTree.outputFile;
     var outputPath = path.dirname(outputFile);
 
     if (!fs.existsSync(outputPath)) {
-        fs.mkdirSync(outputPath)
+        fs.mkdirSync(outputPath);
     }
 
     fs.writeFile(outputFile, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
@@ -151,12 +152,12 @@ var GlobalWrite = function() {
 
 
 // run function on server start
-GlobalWrite();
+globalWrite();
 
 // setcron
 if (CRON || (global.MODE === 'production' && CRON_PROD)) {
     setInterval(function(){
-        GlobalWrite();
+        globalWrite();
     }, CRON_REPEAT_TIME);
 }
 
@@ -166,7 +167,7 @@ module.exports.scan = function () {
     if (NOT_EXEC) {
         NOT_EXEC = false;
         setTimeout(function(){
-            GlobalWrite();
+            globalWrite();
         },5000);
     }
 };

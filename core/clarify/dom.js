@@ -1,12 +1,13 @@
 // All data collection methods
 
+'use strict';
+
 module.exports = {
 
 	// collect data from <head>
 	getHeadData: function (doc) {
 
-		var
-			headTag = doc.head,
+		var headTag = doc.head,
 			links = headTag.getElementsByTagName('link'),
 			linksArr = [],
 			scripts = headTag.getElementsByTagName('script'),
@@ -16,17 +17,18 @@ module.exports = {
 
 		// stylesheets
 		var i = 0;
+		var el;
 		while(i < links.length) {
-			var el = links[i];
+			el = links[i];
 
-			if(el.rel == 'stylesheet' || el.type == 'text/css') linksArr.push(el.outerHTML);
+			if(el.rel === 'stylesheet' || el.type === 'text/css') linksArr.push(el.outerHTML);
 			++i;
 		}
 
 		// scripts
-		var i = 0;
+		i = 0;
 		while(i < scripts.length) {
-			var el = scripts[i];
+			el = scripts[i];
 
 			if( el.dataset && el.dataset['nonclarify'] ) {
 				++i;
@@ -42,18 +44,17 @@ module.exports = {
 
 	// .source_examples code
 	getSource: function (doc, id, wrap) {
-		var
-			sources = doc.getElementsByClassName('source_example'),
+		var sources = doc.getElementsByClassName('source_example'),
 			idArr = JSON.parse('['+ id +']'),
-			html = '',
-            wrap = (wrap === true || wrap === 'true')? true : false;
+			html = '';
+		wrap = (wrap === true || wrap === 'true')? true : false;
 
-		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el) } );
+		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el); } );
 
 		var i = 0;
 		while(i < idArr.length) {
-            if (wrap) html += (sources[idArr[i]].outerHTML);
-            else html += (sources[idArr[i]].innerHTML);
+			if (wrap) html += (sources[idArr[i]].outerHTML);
+			else html += (sources[idArr[i]].innerHTML);
 			++i;
 		}
 
@@ -62,7 +63,7 @@ module.exports = {
 			"length": sources.length,
 			"id": id,
 			"idSum": idArr.length
-		}
+		};
 	},
 
 	// collect meta-data
@@ -76,7 +77,7 @@ module.exports = {
 			"author": (author)? author.content : "",
 			"keywords": (keywords)? keywords.content : "",
 			"description": (description)? description.content : ""
-		}
+		};
 	}
 
-}
+};

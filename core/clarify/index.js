@@ -1,3 +1,5 @@
+'use strict';
+
 // modules
 var
 	fs = require('fs'),
@@ -78,15 +80,17 @@ module.exports = function reply(req, res, next) {
 
 // executes ph.js by phantomjs in new child process
                     exec(params, function (err, stdout, stderr) {
-                    if (err) res.end('Exec report error:\n ' + err);
-                        else {
+                        if (err) {
+                            res.end('Exec report error:\n ' + err);
+                        } else {
+                            var html;
                             try {
-                                var html = JSON.parse(stdout);
+                                html = JSON.parse(stdout);
                             } catch(e) {
                                 html = 'Parsing error: ' + e;
                             }
 // PhantomJS output
-        console.log(html);
+                            console.log(html);
 // template render function
                             reqHandler(res, html);
                         }

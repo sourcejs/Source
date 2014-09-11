@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs'),
     path = require('path'),
     pathToApp = path.dirname(require.main.filename),

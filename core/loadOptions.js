@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(basePath){
     var path = require('path');
     var pathToApp = basePath || path.dirname(require.main.filename);
@@ -8,7 +10,7 @@ module.exports = function(basePath){
         return require(module);
     };
     var coreSettings = requireUncached(path.join(pathToApp,'options'));
-    var pathToUser = path.join(pathToApp, coreSettings.core.common.pathToUser)
+    var pathToUser = path.join(pathToApp, coreSettings.core.common.pathToUser);
 
     // Using specific path to specs parsing, because we don't have global.opts yet
     // TODO: check case when path to user folder is redefined

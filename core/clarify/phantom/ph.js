@@ -1,7 +1,7 @@
-var
-	page = require('webpage').create(),
-	system = require('system'),
-	dom = require('../dom');
+'use strict';
+
+var page = require('webpage').create(),
+	system = require('system');
 
 // arguments from node exec task
 var url = system.args[1],
@@ -11,7 +11,7 @@ var url = system.args[1],
 page.open(url);
 
 page.onLoadFinished = function (msg) {
-	if (msg != 'success') console.log('Server is not responding.');
+	if (msg !== 'success') console.log('Server is not responding.');
 	else {
         //TODO: create and check callback from templater
         setTimeout(function() {
@@ -21,8 +21,7 @@ page.onLoadFinished = function (msg) {
 
                 // collect style tag data and links to styles
                 function getHeadData() {
-                    var
-                        headTag = document.head,
+                    var headTag = document.head,
                         links = headTag.getElementsByTagName('link'),
                         linksArr = [],
                         scripts = headTag.getElementsByTagName('script'),
@@ -32,17 +31,18 @@ page.onLoadFinished = function (msg) {
 
                     // links to styles
                     var i = 0;
+                    var el;
                     while(i < links.length) {
-                        var el = links[i];
+                        el = links[i];
 
-                        if(el.rel == 'stylesheet' || el.type == 'text/css') linksArr.push(el.outerHTML);
+                        if(el.rel === 'stylesheet' || el.type === 'text/css') linksArr.push(el.outerHTML);
                         ++i;
                     }
 
                     // head scripts
-                    var i = 0;
+                    i = 0;
                     while(i < scripts.length) {
-                        var el = scripts[i];
+                        el = scripts[i];
 
                         if( el.dataset['nonclarify'] ) {
                             ++i;
@@ -59,13 +59,12 @@ page.onLoadFinished = function (msg) {
 
                 // collect source_example code w/wo wrapper
                 function getSource(id, wrap) {
-                    var
-                        sources = document.getElementsByClassName('source_example'),
+                    var sources = document.getElementsByClassName('source_example'),
                         idArr = JSON.parse('['+ id +']'),
-                        html = '',
-                        wrap = (wrap === true || wrap === 'true')? true : false;
+                        html = '';
+                    wrap = (wrap === true || wrap === 'true') ? true : false;
 
-                    idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el) });
+                    idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el); });
 
                     var i = 0;
                     while(i < idArr.length) {
@@ -78,8 +77,8 @@ page.onLoadFinished = function (msg) {
                         "content": html,
                         "length": sources.length,
                         "id": id,
-                        "idSum": idArr.length,
-                    }
+                        "idSum": idArr.length
+                    };
                 }
 
                 // collect meta-data
@@ -93,7 +92,7 @@ page.onLoadFinished = function (msg) {
                         "author": (author)? author.content : "",
                         "keywords": (keywords)? keywords.content : "",
                         "description": (description)? description.content : ""
-                    }
+                    };
                 }
 
 
@@ -117,10 +116,10 @@ page.onLoadFinished = function (msg) {
         console.log(JSON.stringify(code, null, 1));
         }, 450);
 	}
-
+    /* global phantom */
     setTimeout(function(){
 		phantom.exit();
-    }, 450)
+    }, 450);
 };
 
 // error handler & logger: helps to avoid error stream within a common log
