@@ -124,7 +124,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/js/**/*.js'
                 ],
-                tasks: ['resolve-js-bundles'],
+                tasks: ['jshint', 'resolve-js-bundles'],
                 options: {
                     nospawn: true
                 }
