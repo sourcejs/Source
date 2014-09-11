@@ -34,8 +34,8 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             modules: ["assets/js/modules/**/*.js"],
-            libs: ["assets/js/libs/**/*.js"]
-            //core: ["core/**/*.js"]
+            libs: ["assets/js/libs/**/*.js"],
+            core: ["core/**/*.js", "!core/routes/*.js"]
         },
         copy: {
             js: {
