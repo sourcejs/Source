@@ -33,8 +33,8 @@ module.exports = function(grunt) {
                 jshintrc: ".jshintrc"
             },
             gruntfile: ["Gruntfile.js"],
-            modules: ["assets/js/modules/**/*.js"]//,
-            //libs: ["assets/js/libs/**/*.js"],
+            modules: ["assets/js/modules/**/*.js"],
+            libs: ["assets/js/libs/**/*.js"]
             //core: ["core/**/*.js"]
         },
         copy: {
