@@ -20,5 +20,5 @@
 	"browser": true,
 	"scripturl": true,
 	"jquery": true,
-    "predef": [ "define" ]
+	"predef": [ "define" ]
 }
