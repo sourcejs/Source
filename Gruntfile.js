@@ -198,7 +198,7 @@ module.exports = function(grunt) {
     * */
     // Regular development update task
     grunt.registerTask('update', [
-        'jshint',
+        'jshint:modules',
         'clean-build:dev',
         'resolve-js-bundles',
         'less:main',

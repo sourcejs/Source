@@ -43,7 +43,7 @@ module.exports = {
             sections: true,
             globalNav: true,
             search: true,
-            NavHighlight: true
+            navHighlight: true
         },
 
         modulesOptions : {
@@ -82,7 +82,7 @@ module.exports = {
                 specAssets: true,
                 globalNav: true,
                 search: true,
-                NavHighlight: true
+                navHighlight: true
             },
             pluginsEnabled: {},
             npmPluginsEnabled: {}
