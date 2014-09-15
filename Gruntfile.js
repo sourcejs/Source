@@ -124,7 +124,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/js/**/*.js'
                 ],
-                tasks: ['jshint', 'resolve-js-bundles'],
+                tasks: ['jshint:modules', 'resolve-js-bundles'],
                 options: {
                     nospawn: true
                 }
@@ -198,13 +198,12 @@ module.exports = function(grunt) {
     * */
     // Regular development update task
     grunt.registerTask('update', [
-        'jshint:modules',
         'clean-build:dev',
         'resolve-js-bundles',
         'less:main',
         'last-dev'
     ]);
-    grunt.registerTask('default', ['update']);
+    grunt.registerTask('default', ['jshint', 'update']);
 
     // Prod build, path to minified resources is routed by nodejs server
     grunt.registerTask('build', [
