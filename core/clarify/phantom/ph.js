@@ -1,12 +1,12 @@
 'use strict';
 
-var page = require('webpage').create(),
-	system = require('system');
+var page = require('webpage').create();
+var system = require('system');
 
 // arguments from node exec task
-var url = system.args[1],
-	id = system.args[2],
-    wrap = system.args[3];
+var url = system.args[1];
+var id = system.args[2];
+var wrap = system.args[3];
 
 page.open(url);
 
@@ -21,13 +21,13 @@ page.onLoadFinished = function (msg) {
 
                 // collect style tag data and links to styles
                 function getHeadData() {
-                    var headTag = document.head,
-                        links = headTag.getElementsByTagName('link'),
-                        linksArr = [],
-                        scripts = headTag.getElementsByTagName('script'),
-                        scriptsArr = [],
-                        styleTag = headTag.getElementsByTagName('style')[0],
-                        styleTagHtml = (styleTag)? styleTag.outerHTML : "";
+                    var headTag = document.head;
+                    var links = headTag.getElementsByTagName('link');
+                    var linksArr = [];
+                    var scripts = headTag.getElementsByTagName('script');
+                    var scriptsArr = [];
+                    var styleTag = headTag.getElementsByTagName('style')[0];
+                    var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
                     // links to styles
                     var i = 0;
@@ -59,9 +59,9 @@ page.onLoadFinished = function (msg) {
 
                 // collect source_example code w/wo wrapper
                 function getSource(id, wrap) {
-                    var sources = document.getElementsByClassName('source_example'),
-                        idArr = JSON.parse('['+ id +']'),
-                        html = '';
+                    var sources = document.getElementsByClassName('source_example');
+                    var idArr = JSON.parse('['+ id +']');
+                    var html = '';
                     wrap = (wrap === true || wrap === 'true') ? true : false;
 
                     idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el); });
@@ -83,10 +83,10 @@ page.onLoadFinished = function (msg) {
 
                 // collect meta-data
                 function getMeta() {
-                    var doc = window.document,
-                        author = doc.getElementsByName('author')[0],
-                        keywords = doc.getElementsByName('keywords')[0],
-                        description = doc.getElementsByName('description')[0];
+                    var doc = window.document;
+                    var author = doc.getElementsByName('author')[0];
+                    var keywords = doc.getElementsByName('keywords')[0];
+                    var description = doc.getElementsByName('description')[0];
 
                     return {
                         "author": (author)? author.content : "",
