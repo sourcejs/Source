@@ -29,10 +29,10 @@ define([
     //getSpecificCat = a || [a,b] - Get only listed category, categories
     //getCatInfo = bool - Turn on cat info parsing
     ParseFileTree.prototype.parsePages = function (getSpecificCat, getCatInfo) {
-        var _this = this,
-            json = _this.json,
-            fileTree = {},
-            totalTree = {};
+        var _this = this;
+        var json = _this.json;
+        var fileTree = {};
+        var totalTree = {};
 
         var searchCat = function(currentCatObj, currentCat, toCheckCat) {
 
@@ -81,8 +81,8 @@ define([
                         var returnedTreeObj;
                         // complex/paths/handles/here
                         if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
-                                var getSpecificCatArr = getSpecificCat.split('/'),
-                                    success = true;
+                                var getSpecificCatArr = getSpecificCat.split('/');
+                                var success = true;
 
                                 if (getSpecificCatArr[ getSpecificCatArr.length-1 ] === '') {
                                     getSpecificCatArr.pop();
@@ -220,9 +220,9 @@ define([
 
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
-        var fileTree = this.parsePages(),
-            fileFlat = {},
-            _this = this;
+        var fileTree = this.parsePages();
+        var fileFlat = {};
+        var _this = this;
 
         var lookForIndexOrGoDeeper = function(tree) {
             for (var folder in tree) {

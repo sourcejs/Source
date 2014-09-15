@@ -51,8 +51,8 @@ var isSpec = function(file) {
 
 
 var fileTree = function(dir) {
-    var outputJSON = {},
-        dirContent = fs.readdirSync(dir);
+    var outputJSON = {};
+    var dirContent = fs.readdirSync(dir);
 
     // Adding paths to files in array
     for (var i=0; dirContent.length > i ;i++) {

@@ -61,12 +61,12 @@ define([
 
 		})();
 
-		var sourceHeaders = [],
-			navHeaders,
-			currentHeader = -1,
-			filename = '',
-			extension = '',
-			hashThreshold = 300;
+		var sourceHeaders = [];
+		var navHeaders;
+		var currentHeader = -1;
+		var filename = '';
+		var extension = '';
+		var hashThreshold = 300;
 
 		var fullFilename = document.location.href.split('/').pop().split('.');
 
@@ -79,10 +79,10 @@ define([
 		// watch headers position
 		var watchSectionTop = function () {
 
-			var headersLength = sourceHeaders.length,
-				minDistance = Number.MAX_VALUE,
-				closestHeader = -1,
-				fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
+			var headersLength = sourceHeaders.length;
+			var minDistance = Number.MAX_VALUE;
+			var closestHeader = -1;
+			var fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
 
 			if ((document.body.scrollTop || document.documentElement.scrollTop) < hashThreshold) {
 
@@ -116,8 +116,8 @@ define([
 
 				utils.addClass(navHeaders[closestHeader], '__active');
 
-				var parent = utils.closest(navHeaders[closestHeader], 'source_main_nav_li'),
-					hashFromLink = navHeaders[closestHeader].getAttribute('href');
+				var parent = utils.closest(navHeaders[closestHeader], 'source_main_nav_li');
+				var hashFromLink = navHeaders[closestHeader].getAttribute('href');
 
 				if (!!parent && parent) {
 					utils.addClass(parent, '__active');
@@ -137,10 +137,10 @@ define([
 		};
 
 		// watch navmenu render
-		var checkNavInterval,
-			h2Nodes,
-			bodyNode = document.querySelector('body'),
-			checkOnNav = function checkOnNav() {
+		var checkNavInterval;
+		var h2Nodes;
+		var bodyNode = document.querySelector('body');
+		var checkOnNav = function checkOnNav() {
 
 			if ((document.querySelector('.source_section') !== null) &&
 				(document.querySelector('.source_main_nav_a') !== null)) {

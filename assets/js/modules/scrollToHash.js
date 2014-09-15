@@ -8,11 +8,11 @@ define([
 
     'use strict';
 
-    var navHash = utils.parseNavHash(),
-        $sections = $('.source_section'),
-        $navigation = $('.source_nav'),
-        $mainContainer = $('.source_main'),
-        $body = $('body');
+    var navHash = utils.parseNavHash();
+    var $sections = $('.source_section');
+    var $navigation = $('.source_nav');
+    var $mainContainer = $('.source_main');
+    var $body = $('body');
 
     // Show hidden sections and navigation
     function showSections() {

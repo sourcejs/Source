@@ -7,13 +7,13 @@ module.exports = {
 	// collect data from <head>
 	getHeadData: function (doc) {
 
-		var headTag = doc.head,
-			links = headTag.getElementsByTagName('link'),
-			linksArr = [],
-			scripts = headTag.getElementsByTagName('script'),
-			scriptsArr = [],
-			styleTag = headTag.getElementsByTagName('style')[0],
-			styleTagHtml = (styleTag)? styleTag.outerHTML : "";
+		var headTag = doc.head;
+		var links = headTag.getElementsByTagName('link');
+		var linksArr = [];
+		var scripts = headTag.getElementsByTagName('script');
+		var scriptsArr = [];
+		var styleTag = headTag.getElementsByTagName('style')[0];
+		var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
 		// stylesheets
 		var i = 0;
@@ -44,9 +44,9 @@ module.exports = {
 
 	// .source_examples code
 	getSource: function (doc, id, wrap) {
-		var sources = doc.getElementsByClassName('source_example'),
-			idArr = JSON.parse('['+ id +']'),
-			html = '';
+		var sources = doc.getElementsByClassName('source_example');
+		var idArr = JSON.parse('['+ id +']');
+		var html = '';
 		wrap = (wrap === true || wrap === 'true')? true : false;
 
 		idArr.forEach( function (el, i, arr) { arr.splice(i, 1, --el); } );
@@ -68,10 +68,9 @@ module.exports = {
 
 	// collect meta-data
 	getMeta: function (doc) {
-		var
-			author = doc.getElementsByName('author')[0],
-			keywords = doc.getElementsByName('keywords')[0],
-			description = doc.getElementsByName('description')[0];
+		var author = doc.getElementsByName('author')[0];
+		var keywords = doc.getElementsByName('keywords')[0];
+		var description = doc.getElementsByName('description')[0];
 
 		return {
 			"author": (author)? author.content : "",

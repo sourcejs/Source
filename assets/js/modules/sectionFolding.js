@@ -21,10 +21,9 @@ define([
 
         //TODO: move to utils
             // Bulletproof localStorage check
-            var
-                    storage,
-                    fail,
-                    uid;
+            var storage;
+            var fail;
+            var uid;
             try {
                 uid = new Date();
                 (storage = window.localStorage).setItem(uid, uid);
@@ -34,14 +33,13 @@ define([
             } catch (e) {
             }
             //TODO: /move to utils
-
-            var SECTION_CLASS = options.SECTION_CLASS,
-                L_SECTION_CLASS = $('.'+SECTION_CLASS),
-                OPEN_SECTION_CLASS = 'source_section__open',
-                sectionsOnPage = L_SECTION_CLASS,
-                specName = utils.getSpecName(), //Определяем название спеки
-                clientConfig = {},
-                RES_HIDE_SECTIONS = 'Hide all sections';
+            var SECTION_CLASS = options.SECTION_CLASS;
+            var L_SECTION_CLASS = $('.'+SECTION_CLASS);
+            var OPEN_SECTION_CLASS = 'source_section__open';
+            var sectionsOnPage = L_SECTION_CLASS;
+            var specName = utils.getSpecName(); //Определяем название спеки
+            var clientConfig = {};
+            var RES_HIDE_SECTIONS = 'Hide all sections';
 
         if (storage) {
             //Check if localstorage has required data
@@ -95,8 +93,8 @@ define([
             }
             t.addClass(OPEN_SECTION_CLASS);
 
-            var sectionID = t.attr('id'),
-                isRendered = false;
+            var sectionID = t.attr('id');
+            var isRendered = false;
 
             closedSections["section" + sectionID] = false;
 
@@ -118,11 +116,8 @@ define([
 
                             for (var arr in templater.PostponedTemplates[sectionID]) {
                                 if (templater.PostponedTemplates[sectionID].hasOwnProperty(arr)) {
-                                    var a = templater.PostponedTemplates[sectionID][arr][0],
-                                        b = templater.PostponedTemplates[sectionID][arr][1],
-                                        c = templater.PostponedTemplates[sectionID][arr][2];
-
-                                    templater.insertTemplate(a, b, c);
+                                    var values = templater.PostponedTemplates[sectionID][arr];
+                                    templater.insertTemplate(values[0], values[1], values[2]);
                                 }
                             }
 
@@ -153,8 +148,8 @@ define([
         var sectionsCount = sectionsOnPage.length;
 
         for (var i = 0; i < sectionsCount; i++) {
-            var t = $(sectionsOnPage[i]),
-                    tID = t.attr('id');
+            var t = $(sectionsOnPage[i]);
+            var tID = t.attr('id');
 
             //Check from local storage config
             if (closedSections["section" + tID]) {
@@ -174,16 +169,14 @@ define([
 
         //To open sections on from inner navigation
         var openOnNavigation = function() {
-            var
-                navHash = utils.parseNavHash();
+            var navHash = utils.parseNavHash();
 
             openSpoiler($(navHash));
 
             //Close other closed by default sections
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var
-                    t = $(sectionsOnPage[i]),
-                    tID = t.attr('id');
+                var t = $(sectionsOnPage[i]);
+                var tID = t.attr('id');
 
                 if (t.attr('data-def-stat') === 'closed' && navHash !== '#' + tID) {
                     closeSpoiler(t);
@@ -198,7 +191,6 @@ define([
         //If supports history API
         if (window.history && history.pushState && !$.browser.msie)  {
             window.addEventListener('popstate', function (event) {
-
                 openOnNavigation();
             });
         } else {
@@ -243,13 +235,11 @@ define([
 
         innerNavigation.addMenuItem(RES_HIDE_SECTIONS, function(){
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var t = $(sectionsOnPage[i]);
-                closeSpoiler(t, true);
+                closeSpoiler($(sectionsOnPage[i]), true);
             }
         }, function(){
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var t = $(sectionsOnPage[i]);
-                openSpoiler(t, true);
+                openSpoiler($(sectionsOnPage[i]), true);
             }
         });
 

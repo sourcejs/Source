@@ -16,9 +16,9 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 	LoadEvents.prototype.init = function( callback ) {
 
 		callback = callback || function () {};
-		var evt,
-			complete = false,
-			debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
+		var evt;
+		var complete = false;
+		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
 		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined)) {
 			if (debug && utils.isDevelopmentMode()) {
@@ -67,12 +67,12 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 				return;
 			}
 
-			var	pluginsSection = window.source.loadEvents,
-				defaultPluginTimeout = 700;
+			var	pluginsSection = window.source.loadEvents;
+			var defaultPluginTimeout = 700;
 
 			function checkPlugins() {
-				var now = new Date().getTime(),
-					pluginFinish = 0;
+				var now = new Date().getTime();
+				var pluginFinish = 0;
 
 				var onFinishEvent = function() {
 					if (debug && utils.isDevelopmentMode()) {

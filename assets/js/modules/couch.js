@@ -31,12 +31,12 @@ define([
 
     //Preparing remote storage object, and create it if its not ready
     Couch.prototype.prepareRemote = function (dbname, doc, id) {
-        var _this = this,
-            dfd = new $.Deferred(),
+        var _this = this;
+        var dfd = new $.Deferred();
 
-            dbName = dbname,
-            storedData = doc,
-            specID = id;
+        var dbName = dbname;
+        var storedData = doc;
+        var specID = id;
 
         storedData['_id'] = specID;
 
@@ -73,11 +73,11 @@ define([
      */
 
     Couch.prototype.updateRemote = function (dbname, actualData, dataToUpdate, deffered) {
-        var _this = this,
+        var _this = this;
 
-            dbName = dbname,
-            dataToStore = actualData,
-            updateData = dataToUpdate;
+        var dbName = dbname;
+        var dataToStore = actualData;
+        var updateData = dataToUpdate;
 
         var db = $.couch.db(dbName);
         var dfd = typeof deffered !== 'object' ? new $.Deferred() : deffered;

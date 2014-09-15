@@ -67,43 +67,43 @@ define([
 
     //Drawing navigation and page info in each catalog defined on page
     GlobalNav.prototype.drawNavigation = function (sortType) {
-        var _this = this,
-            L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG),
-            CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST,
-            CATALOG_LIST_I = this.options.modulesOptions.globalNav.CATALOG_LIST_I,
-                CATALOG_LIST_I_PREVIEW_NAME = this.options.modulesOptions.globalNav.CATALOG_LIST_I_PREVIEW_NAME,
+        var _this = this;
+        var L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG);
+        var CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST;
+        var CATALOG_LIST_I = this.options.modulesOptions.globalNav.CATALOG_LIST_I;
+        var CATALOG_LIST_I_PREVIEW_NAME = this.options.modulesOptions.globalNav.CATALOG_LIST_I_PREVIEW_NAME;
 
-            CATALOG_LIST_ALL = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL,
-                CATALOG_LIST_ALL_A = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL_A,
+        var CATALOG_LIST_ALL = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL;
+        var CATALOG_LIST_ALL_A = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL_A;
 
-            CATALOG_LIST_A = this.options.modulesOptions.globalNav.CATALOG_LIST_A,
-                CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG,
-                CATALOG_LIST_A_TX = this.options.modulesOptions.globalNav.CATALOG_LIST_A_TX,
+        var CATALOG_LIST_A = this.options.modulesOptions.globalNav.CATALOG_LIST_A;
+        var CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG;
+        var CATALOG_LIST_A_TX = this.options.modulesOptions.globalNav.CATALOG_LIST_A_TX;
 
-            CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE,
-            CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES,
+        var CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE;
+        var CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES;
 
-            RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL,
-            RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR,
-            RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG,
-            RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO,
+        var RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL;
+        var RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR;
+        var RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG;
+        var RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO;
 
-            pageLimit = this.options.modulesOptions.globalNav.pageLimit;
+        var pageLimit = this.options.modulesOptions.globalNav.pageLimit;
             sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
         
         var ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
 
         //TODO: refactor this module and write tests
         L_CATALOG.each(function () {
-            var sourceCat = $(this),
-                navListDir = sourceCat.attr('data-nav'),
-                navListCat = sourceCat.attr('data-cat'),
-                specifCatAndDirDefined = typeof navListDir !== 'undefined' && typeof navListCat !== 'undefined';
+            var sourceCat = $(this);
+            var navListDir = sourceCat.attr('data-nav');
+            var navListCat = sourceCat.attr('data-cat');
+            var specifCatAndDirDefined = typeof navListDir !== 'undefined' && typeof navListCat !== 'undefined';
 
             //Filtering by specified catalogue
             var skipSpec = function(currentObj){
-                var obj = currentObj,
-                    response = true; // skip by default
+                var obj = currentObj;
+                var response = true; // skip by default
 
                 //obj['cat'] is an array
                 //if cat has needed value
@@ -121,8 +121,8 @@ define([
 
             //Filtering hidden specs
             var isHidden = function(currentObj){
-                var obj = currentObj,
-                    response = false; // skip by default
+                var obj = currentObj;
+                var response = false; // skip by default
 
                 //obj['cat'] is an array
                 if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf("hidden") > -1 ) {
@@ -136,8 +136,8 @@ define([
 
             if ( (navListDir !== undefined) && (navListDir !== '') ) { //Catalog has data about category
 
-                var targetCat = parseFileTree.getCatAll(navListDir),
-                    catObj;
+                var targetCat = parseFileTree.getCatAll(navListDir);
+                var catObj;
 
                 if (targetCat === undefined) return;
 
@@ -199,8 +199,8 @@ define([
                 //Collecting nav tree
                 if (L_CATALOG_LIST.length === 1 && targetCatArray) {
 
-                    var navTreeHTML = '',
-                        authorName = '';
+                    var navTreeHTML = '';
+                    var authorName = '';
 
                     //Building navigation HTML
                     var addNavPosition = function (target) {
@@ -223,21 +223,18 @@ define([
 
 
                         navTreeHTML += '' +
-                                '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
-                                '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
-                                previewPicture +
-                                '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                                '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
+                            '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
+                            '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
+                            previewPicture +
+                            '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
+                            '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
 
                         // TODO: move to plugins
                         if(parseInt(target.bubbles, 10)) {
-                            navTreeHTML +=
-                            '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
+                            navTreeHTML += '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
                         }
 
-                        navTreeHTML +=
-                                '</a>' +
-                                '</li>';
+                        navTreeHTML += '</a></li>';
 
                     };
 
@@ -336,13 +333,13 @@ define([
     };
 
     GlobalNav.prototype.initCatalogFilter = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD,
-            CATALOG_CLASS = this.options.modulesOptions.globalNav.CATALOG;
+        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER;
+        var SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD;
+        var CATALOG_CLASS = this.options.modulesOptions.globalNav.CATALOG;
 
-        var $subhead = $('.' + SOURCE_SUBHEAD_CLASS),
-            $filter = $('.' + CATALOG_FILTER_CLASS),
-            $catalog = $('.' + CATALOG_CLASS);
+        var $subhead = $('.' + SOURCE_SUBHEAD_CLASS);
+        var $filter = $('.' + CATALOG_FILTER_CLASS);
+        var $catalog = $('.' + CATALOG_CLASS);
 
         if (!$subhead.length || !$catalog.length) return;
 
@@ -355,14 +352,14 @@ define([
     };
 
     GlobalNav.prototype.drawToggler = function() {
-        var CATALOG = this.options.modulesOptions.globalNav.CATALOG,
-            CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER,
-            CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            showPreviews = this.options.modulesOptions.globalNav.previews,
+        var CATALOG = this.options.modulesOptions.globalNav.CATALOG;
+        var CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
+        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER;
+        var showPreviews = this.options.modulesOptions.globalNav.previews;
 
-            initPreviewValue = localStorage.getItem( 'source_showPreviews') || showPreviews,
-            $catalog = $('.' + CATALOG),
-            $filter = $('.' + CATALOG_FILTER);
+        var initPreviewValue = localStorage.getItem( 'source_showPreviews') || showPreviews;
+        var $catalog = $('.' + CATALOG);
+        var $filter = $('.' + CATALOG_FILTER);
 
         if (initPreviewValue === 'true') { // initPreviewValue is string, not boolean
             $catalog.addClass('__show-preview');
@@ -425,19 +422,19 @@ define([
     };
 
     GlobalNav.prototype.drawSortFilters = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER,
-            defaultSort = this.options.modulesOptions.globalNav.sortType,
+        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER;
+        var defaultSort = this.options.modulesOptions.globalNav.sortType;
 
-            $filterWrapper = $('.' + CATALOG_FILTER_CLASS),
-            enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":defaultSort,"sortDirection":"forward"},
+        var $filterWrapper = $('.' + CATALOG_FILTER_CLASS);
+        var enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":defaultSort,"sortDirection":"forward"};
 
-            nav = '<ul class="source_sort-list">' +
+        var nav = '<ul class="source_sort-list">' +
                 '<li class="source_sort-list_li">Sort by&nbsp;</li>' +
                 '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>' +
                 '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>' +
                 '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>' +
-                '</ul>',
-            _this = this;
+            '</ul>';
+        var _this = this;
 
         $filterWrapper.append(nav);
 

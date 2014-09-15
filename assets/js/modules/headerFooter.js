@@ -27,8 +27,8 @@ define(["source/load-options"], function(options) {
                 $('.source_header').replaceWith(data.responseText);
             };
 
-            var headerFile = 'header.inc.html',
-                footerFile = 'footer.inc.html';
+            var headerFile = 'header.inc.html';
+            var footerFile = 'footer.inc.html';
 
             $.ajax({
                 url:"/assets/templates/"+headerFile,

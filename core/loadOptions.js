@@ -14,8 +14,8 @@ module.exports = function(basePath){
 
     // Using specific path to specs parsing, because we don't have global.opts yet
     // TODO: check case when path to user folder is redefined
-    var userSettingsFile = path.join(pathToUser, 'options.js'),
-        userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
+    var userSettingsFile = path.join(pathToUser, 'options.js');
+    var userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
 
     var prepareClientNpmPlugins = function() {
         var pathToModules = path.join(pathToUser, 'node_modules');

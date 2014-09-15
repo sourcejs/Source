@@ -21,32 +21,30 @@ define([
 
     if (!($.browser.msie && parseInt($.browser.version, 10) < 9)) { // and if not ie < 9
         $(document).ready(function() {
-            var
+            var SourceCode = 'source_source-code';
+            var SourceCodeShow = SourceCode + '__show';
+            var SourceCodeMin = SourceCode + '__min';
+            var SourceCodeStatic = SourceCode + '__static';
 
-                SourceCode = 'source_source-code',
-                SourceCodeShow = SourceCode + '__show',
-                SourceCodeMin = SourceCode + '__min',
-                SourceCodeStatic = SourceCode + '__static',
+            var SourceCodeCnt = 'source_source-code_cnt';
 
-                SourceCodeCnt = 'source_source-code_cnt',
+            var SourceCodeToggle = 'source_source-code_toggle';
+            var SourceCodeToggleCSS = SourceCodeToggle + '__css';
+            var SourceCodeToggleHTML = SourceCodeToggle + '__html';
+            var SourceCodeToggleJS = SourceCodeToggle + '__js';
 
-                SourceCodeToggle = 'source_source-code_toggle',
-                SourceCodeToggleCSS = SourceCodeToggle + '__css',
-                SourceCodeToggleHTML = SourceCodeToggle + '__html',
-                SourceCodeToggleJS = SourceCodeToggle + '__js',
+            var SourceCodeToggleAll = 'source_source-code_toggle-all';
+            var SourceCodeToggleAllHide = SourceCodeToggleAll + '__hide';
 
-                SourceCodeToggleAll = 'source_source-code_toggle-all',
-                SourceCodeToggleAllHide = SourceCodeToggleAll + '__hide',
+            var RES_HIDE_CODE = 'Hide';
+            var RES_SHOW_CODE = 'Show';
+            var RES_CODE = 'code';
+            var RES_TOGGLER_SHOW_CODE = 'Show source';
 
-                RES_HIDE_CODE = 'Hide',
-                RES_SHOW_CODE = 'Show',
-                RES_CODE = 'code',
-                RES_TOGGLER_SHOW_CODE = 'Show source',
+            var urlConfig = 'sc';
 
-                urlConfig = 'sc',
-
-                prepared = false,
-                onlyStatic = true;
+            var prepared = false;
+            var onlyStatic = true;
 
 
             //Add HTML source code container before each example without it
@@ -63,8 +61,8 @@ define([
                 // temporary solution while code:brush is still used, later this section will be removed
                 $('.source_section').find('code[class*="brush"]').each(function () {
 
-                    var _this = $(this),
-                        formatClass = 'src-';
+                    var _this = $(this);
+                    var formatClass = 'src-';
 
                     if (_this.hasClass('css')) {
                         formatClass += 'css';
@@ -124,9 +122,9 @@ define([
                 new Css('/source/assets/js/lib/prism/prism.css');
                 var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
-                    var _this = $(this),
-                        parent = _this.parent(),
-                        langClass='';
+                    var _this = $(this);
+                    var parent = _this.parent();
+                    var langClass='';
                     if (!parent.hasClass('src-json')) {
                         if (parent.hasClass('src-css')) {
                             langClass = SourceCodeToggleCSS;

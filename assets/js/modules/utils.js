@@ -18,17 +18,12 @@ define([
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
-        var
-            urlHash = window.location.hash,
-            urlHashSplit = urlHash.split(this.options.modulesOptions.innerNavigation.hashSymb);
-
-        return urlHashSplit[0];
+        return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
     };
 
     Utils.prototype.scrollToSection = function (sectionID) { //sectionID = '#id'
-        var
-            new_position = $(sectionID).offset(),
-            new_position_padding = 60; //Header heights
+        var new_position = $(sectionID).offset();
+        var new_position_padding = 60; //Header heights
 
         if (new_position) {
 
@@ -39,8 +34,8 @@ define([
     };
 
     Utils.prototype.getSpecName = function() {
-        var specName,
-            pageUrl = window.location.pathname;
+        var specName;
+        var pageUrl = window.location.pathname;
 
         var pageUrlSplit = pageUrl.split("/"); //Разбивает на массив
         specName = pageUrlSplit[pageUrlSplit.length - 2]; //Берет последнюю часть урла

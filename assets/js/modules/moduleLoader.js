@@ -16,9 +16,9 @@ define([
     ModuleLoader.prototype.constructor = ModuleLoader;
 
     ModuleLoader.prototype.loadModules = function(type){
-        var path,
-            typeEnabled,
-            optionsBase = this.options;
+        var path;
+        var typeEnabled;
+        var optionsBase = this.options;
 
         // Override options with exceptions
         var isNav = $('meta[name=source-page-role]').attr('content') === 'navigation';
