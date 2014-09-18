@@ -226,7 +226,7 @@ page.onError = function(msg, trace) {
 
     var file = url.split('/').join('-');
 
-    fs.write('ph_modules/log/output_'+ file +'.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function);
+    fs.write(__dirname + '/ph_modules/log/output_'+ file +'.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function);
 
 //    console.log(JSON.stringify({
 //        "error": "Error onpage",

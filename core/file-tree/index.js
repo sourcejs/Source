@@ -136,7 +136,7 @@ var fileTree = function (dir) {
 
 
 // function for write json file
-var GlobalWrite = function () {
+var GlobalWrite = function (callback) {
     var outputFile = config.outputFile;
     var outputPath = path.dirname(outputFile);
 
@@ -151,11 +151,15 @@ var GlobalWrite = function () {
             console.log("Pages tree JSON saved to " + outputFile);
             flagNotExec = true;
         }
+
+        if (typeof callback === 'function') callback(err);
     });
 };
 
 // Run function on server start
-GlobalWrite();
+GlobalWrite(function(){
+    require(path.join(pathToApp, 'core/api/htmlParser'));
+});
 
 // Running GlobalWrite by cron
 if (config.cron || (global.MODE === 'production' && config.cronProd)) {

@@ -138,7 +138,7 @@ ParseData.prototype._filter = function(filterArr, filterFunc){
     if (util.isArray(filterArr)) {
         filterArr.map(function(filterItem) {
 
-            if (filterFunc(filterItem)) passesFilter = false;
+            if (!filterFunc(filterItem)) passesFilter = false;
 
         });
     }
@@ -172,7 +172,11 @@ ParseData.prototype.filterFields = function(value, inOut, filterArr) {
  */
 ParseData.prototype.filterTags = function(value, inOut, filterArr) {
     return this._filter(filterArr, function(filterItem) {
-        return (value.cat && value.cat.indexOf(filterItem) > -1) === inOut;
+        if(!util.isArray(value.cat)) {
+            return false === inOut;
+        } else {
+            return (value.cat.indexOf(filterItem) > -1) === inOut;
+        }
     });
 };
 
@@ -235,16 +239,20 @@ ParseData.prototype.getFilteredData = function(filterConf, array, data) {
             var filterOutObj = filterConf.filterOut;
 
             // Filtering categories out
-            if (filterObj && filterObj.cats && !_this.filterCats(value, key, false, filterObj.cats)) return;
-            if (filterOutObj && filterOutObj.cats && !_this.filterCats(value, key, true, filterOutObj.cats)) return;
+            if (filterObj && filterObj.cats && !_this.filterCats(value, key, true, filterObj.cats)) return;
+            if (filterOutObj && filterOutObj.cats && !_this.filterCats(value, key, false, filterOutObj.cats)) return;
 
             // Filtering by existing and not empty fields
-            if (filterObj && filterObj.fields && !_this.filterFields(value, false, filterObj.fields)) return;
-            if (filterOutObj && filterOutObj.fields && !_this.filterFields(value, true, filterOutObj.fields)) return;
+            if (filterObj && filterObj.fields && !_this.filterFields(value, true, filterObj.fields)) return;
+            if (filterOutObj && filterOutObj.fields && !_this.filterFields(value, false, filterOutObj.fields)) return;
 
             // Filtering by tags
-            if (filterObj && filterObj.tags && !_this.filterTags(value, false, filterObj.tags)) return;
-            if (filterOutObj && filterOutObj.tags && !_this.filterTags(value, true, filterOutObj.tags)) return;
+            if (filterObj && filterObj.tags && !_this.filterTags(value, true, filterObj.tags)) return;
+            if (filterOutObj && filterOutObj.tags && !_this.filterTags(value, false, filterOutObj.tags)) {
+                if ( !(filterObj && filterObj.forceTags && _this.filterTags(value, true, filterObj.forceTags)) )  {
+                    return;
+                }
+            };
 
             if (array) {
                 output.push(value);

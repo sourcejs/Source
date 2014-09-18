@@ -6,10 +6,10 @@ var unflatten = require('./unflat');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
 var log = logger.log;
-var exec = childProcess.exec;
 
 var config = {
     errorLimit: 2,
+    asyncPhantomCallLimit: 5,
     pathToSpecs: '../data/pages_tree.json'
 };
 // Overwriting base options
@@ -59,7 +59,8 @@ var getSpecsList = function() {
 
     var specs = parseSpecs.getFilteredData({
         filter: {
-            cats: ['base']
+            cats: ['base'],
+            forceTags: ['lego']
         },
         filterOut: {
             tags: ['html','lego-hide']
@@ -76,6 +77,7 @@ var getSpecsList = function() {
 };
 
 var processSpecs = function(specs){
+    var specsLeft = specs.slice(0);
     var ph_path = phantom.path;
     var html = {};
     var errorCounter = {};
@@ -83,13 +85,15 @@ var processSpecs = function(specs){
     var doneCounter = 0;
     var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/htmlParser/ph_modules/index.js');
 
-    async.mapLimit(specs, 5, function (spec, next) {
-        var n = specs.indexOf(spec);
+    apiLog.trace('Processing ' + specLength + ' specs.')
+
+    async.mapLimit(specs, config.asyncPhantomCallLimit, function (spec, next) {
+        var n = specs.indexOf(spec) + 1;
 
         apiLog.trace('Starts...' + n, spec);
 
         function callback() {
-            apiLog.info('-- All specs were processed.')
+            apiLog.debug('All specs were processed.')
         }
 
         childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
@@ -98,7 +102,7 @@ var processSpecs = function(specs){
         });
     });
 
-    var handler = function(error, stdout, stderr, spec, n, callback) {
+    var handler = function(error, stdout, stderr, spec, callback) {
         if (error) {
             if (typeof errorCounter[spec] !== 'number') {
                  errorCounter[spec] = 0;
@@ -108,26 +112,25 @@ var processSpecs = function(specs){
 
             // If limit is not reached, try again
             if (errorCounter[spec] <= config.errorLimit) {
-                apiLog.warn('Rerun', spec);
+                apiLog.debug('Rerun', spec);
 
                 childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-                    handler(error, stdout, stderr, spec, n, callback);
+                    handler(error, stdout, stderr, spec, callback);
                 });
                 return;
             }
 
             apiLog.error('Exec error on spec ' + spec + ': '+ error);
-            apiLog.error(JSON.stringify({
+            apiLog.debug('Error info: ', JSON.stringify({
                 spec: spec,
                 error: error,
                 stdount: stdout,
                 stderr: stderr
             }));
         } else {
-            apiLog.debug(JSON.stringify({
+            apiLog.debug('Spec done: ', JSON.stringify({
                 spec: spec,
                 error: error,
-                stdount: stdout,
                 stderr: stderr
             }));
 
@@ -135,9 +138,16 @@ var processSpecs = function(specs){
             html[spec+'/specFile/contents'] = JSON.parse(stdout);
         }
 
-        apiLog.info((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
+        apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
+
+        // Logging specs queen
+        specsLeft.splice(specsLeft.indexOf(spec), 1);
+        if (specsLeft.length < 5 && specsLeft.length !== 0) {
+            apiLog.trace('Specs queen', specsLeft);
+        }
 
         doneCounter++;
+
         if (doneCounter == specLength) {
             var unflatten_html;
             var JSONformat = null;
@@ -152,10 +162,10 @@ var processSpecs = function(specs){
             fs.writeFile(path.join(global.pathToApp, global.opts.core.api.htmlData), JSON.stringify(unflatten_html, null, JSONformat), function (err) {
                 if (err) throw err;
 
-                apiLog.info('-- All specs were saved.');
+                apiLog.info('API successfully updated.');
 
                 // After all specs were both written in file and saved in memory.
-                callback();
+                if (typeof callback === 'function') callback();
             });
         }
     }

@@ -13,9 +13,18 @@ var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
 
+
 /* Globals */
 global.app = express();
 global.opts = loadOptions();
+
+// Arguments parse */
+commander
+    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
+    .parse(process.argv);
+
+global.commander = commander;
 
 global.app.set('views', __dirname + '/core/views');
 global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
@@ -29,14 +38,8 @@ var log = logger.log;
 global.log = log;
 /* /Globals */
 
-require('./core/api/htmlParser');
 
 /* App config */
-
-// Args
-commander
-  .option('-p, --port [number]', 'Server port (default: '+global.opts.core.common.port+')', global.opts.core.common.port)
-  .parse(process.argv);
 
 // Optimization
 global.app.use(require('compression')());

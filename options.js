@@ -12,6 +12,8 @@ module.exports = {
         },
         common: {
             pathToUser: 'user',
+            defaultLogLevel: 'INFO',
+            defaultProdLogLevel: 'ERROR',
             port: 8080,
             infoFile: 'info.json',
             extensions: ["src", "jade", "haml"]

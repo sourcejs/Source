@@ -11,7 +11,7 @@ var config =  {
         "appenders": [
             {
                 "type": "logLevelFilter",
-                "level": global.MODE === 'production' ? 'ERROR' : 'INFO',
+                "level": global.commander.log || (global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel),
                 "appender": {
                     "type": "console"
                 }
