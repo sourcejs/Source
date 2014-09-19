@@ -3,14 +3,21 @@ var fs = require('fs-extra');
 var async = require('async');
 var phantom = require('phantomjs');
 var unflatten = require('./unflat');
+var deepExtend = require('deep-extend');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
 var log = logger.log;
 
+var flagNotExec = true;
+
 var config = {
+    enabled: true,
+    cron: false,
+    cronProd: true,
     errorLimit: 2,
+    cronRepeatTime: 600000,
     asyncPhantomCallLimit: 5,
-    pathToSpecs: '../data/pages_tree.json'
+    pathToSpecs: path.join(global.pathToApp, global.opts.core.api.specsData)
 };
 // Overwriting base options
 if (global.opts.core.htmlParser) deepExtend(config, global.opts.core.htmlParser);
@@ -59,14 +66,12 @@ var getSpecsList = function() {
 
     var specs = parseSpecs.getFilteredData({
         filter: {
-            cats: ['base'],
-            forceTags: ['lego']
+            cats: ['base']
         },
         filterOut: {
-            tags: ['html','lego-hide']
+            tags: ['parse-problems']
         }
     }, true);
-
 
     // Preparing data for specs iteration
     specs = specs.map(function(item){
@@ -76,33 +81,65 @@ var getSpecsList = function() {
     return specs;
 };
 
-var processSpecs = function(specs){
-    var specsLeft = specs.slice(0);
-    var ph_path = phantom.path;
-    var html = {};
-    var errorCounter = {};
-    var specLength = specs.length;
-    var doneCounter = 0;
-    var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/htmlParser/ph_modules/index.js');
+var writeDataFile = function(data, extend, callback){
+    var JSONformat = null;
 
-    apiLog.trace('Processing ' + specLength + ' specs.')
+    if (global.MODE === 'development') {
+        JSONformat = 4;
+    }
 
-    async.mapLimit(specs, config.asyncPhantomCallLimit, function (spec, next) {
-        var n = specs.indexOf(spec) + 1;
+    if (extend) {
+        //TODO: add queen, for waiting till previos processing stops working before we update with extend
 
-        apiLog.trace('Starts...' + n, spec);
-
-        function callback() {
-            apiLog.debug('All specs were processed.')
+        try {
+            var prevData = fs.readJsonFileSync(path.join(global.pathToApp, global.opts.core.api.htmlData));
+            data = deepExtend(prevData, data);
+        } catch (e) {
+            apiLog.warn('writeDataFile extend failed: ', e);
         }
+    }
 
-        childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-            handler(error, stdout, stderr, spec, n, callback);
-            next();
-        });
+    //TODO: Dmitry, add more data fields according to hmtl-stub.json
+    fs.writeFile(path.join(global.pathToApp, global.opts.core.api.htmlData), JSON.stringify(data, null, JSONformat), function (err) {
+        if (err) throw err;
+
+        apiLog.debug('htmlParser data been written.');
+
+        // After all specs were both written in file and saved in memory.
+        if (typeof callback === 'function') callback();
     });
+};
 
-    var handler = function(error, stdout, stderr, spec, callback) {
+var processSpecs = function(specs){
+    if (flagNotExec) {
+        var specsLeft = specs.slice(0);
+        var ph_path = phantom.path;
+        var outputHTML = {};
+        var errorCounter = {};
+        var specLength = specs.length;
+        var doneCounter = 0;
+        var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/htmlParser/ph_modules/index.js');
+
+        flagNotExec = false;
+
+        apiLog.trace('Processing ' + specLength + ' specs.')
+
+        async.mapLimit(specs, config.asyncPhantomCallLimit, function (spec, next) {
+            var n = specs.indexOf(spec) + 1;
+            var callback = function() {
+                apiLog.info('HTML API successfully updated.')
+                flagNotExec = true;
+            };
+
+            apiLog.trace('Starts...' + n, spec);
+
+            childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
+                handler(error, stdout, stderr, spec, callback);
+                next();
+            });
+        });
+
+        var handler = function(error, stdout, stderr, spec, callback) {
         if (error) {
             if (typeof errorCounter[spec] !== 'number') {
                  errorCounter[spec] = 0;
@@ -135,7 +172,7 @@ var processSpecs = function(specs){
             }));
 
             // Writing contents to common obj
-            html[spec+'/specFile/contents'] = JSON.parse(stdout);
+            outputHTML[spec+'/specFile/contents'] = JSON.parse(stdout);
         }
 
         apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
@@ -149,26 +186,28 @@ var processSpecs = function(specs){
         doneCounter++;
 
         if (doneCounter == specLength) {
-            var unflatten_html;
-            var JSONformat = null;
-
-            if (global.MODE === 'development') {
-                JSONformat = 4;
-            }
-
-            unflatten_html =  unflatten(html, { delimiter: '/', overwrite: 'root' });
-
-            //TODO: Dmitry, add more data fields according to hmtl-stub.json
-            fs.writeFile(path.join(global.pathToApp, global.opts.core.api.htmlData), JSON.stringify(unflatten_html, null, JSONformat), function (err) {
-                if (err) throw err;
-
-                apiLog.info('API successfully updated.');
-
-                // After all specs were both written in file and saved in memory.
-                if (typeof callback === 'function') callback();
-            });
+            var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
+            writeDataFile(outputData, false, callback);
         }
+    }
     }
 };
 
-processSpecs(getSpecsList());
+// Running processSpecs by cron
+if (config.enabled && (config.cron || (global.MODE === 'production' && config.cronProd))) {
+    setInterval(function () {
+        processSpecs(getSpecsList());
+    }, config.cronRepeatTime);
+}
+
+module.exports = {
+    processSpecs: function (specsList) {
+        var _specsList = specsList || getSpecsList();
+
+        processSpecs(_specsList);
+    },
+
+    writeDataFile: function(data, extend, callback) {
+        writeDataFile(data, extend, callback);
+    }
+};

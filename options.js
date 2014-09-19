@@ -10,6 +10,9 @@ module.exports = {
             specsTestData: 'test/data/api-test-specs.json',
             htmlTestData: 'test/data/api-test-html.json'
         },
+        htmlParser: {
+            enabled: false
+        },
         common: {
             pathToUser: 'user',
             defaultLogLevel: 'INFO',

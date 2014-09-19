@@ -211,9 +211,10 @@ ParseData.prototype.filterCats = function(value, key, inOut, filterArr) {
  *      @param {Array} filterConf.filterOut.cats - Array with cats to filter
  *      @param {Array} filterConf.filterOut.tags - Array with tags to filter
  *
+ * @param {Boolean} [array] - Set true, if you want to get array as resposne
  * @param {Object} [data] - Data to filter
  *
- * @returns {Object} Returns object with filtered data or undefined
+ * @returns {Object} Returns object or array with filtered data or undefined
  */
 ParseData.prototype.getFilteredData = function(filterConf, array, data) {
     var _this = this;

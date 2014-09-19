@@ -2,8 +2,9 @@ var fs = require('fs');
 var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
+var htmlParser = require(path.join(global.pathToApp, 'core/api/htmlParser'));;
+
 var globalOpts = global.opts.core;
-var pathToApp = path.dirname(require.main.filename);
 
 var flagNotExec = true;
 var config = {
@@ -16,7 +17,7 @@ var config = {
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
-    outputFile: path.join(pathToApp,'core/api/data/pages_tree.json'),
+    outputFile: path.join(global.pathToApp,'core/api/data/pages_tree.json'),
     sourceRoot: globalOpts.common.pathToUser,
 
     // Files from parser get info
@@ -137,28 +138,32 @@ var fileTree = function (dir) {
 
 // function for write json file
 var GlobalWrite = function (callback) {
-    var outputFile = config.outputFile;
-    var outputPath = path.dirname(outputFile);
+    if (flagNotExec) {
+        var outputFile = config.outputFile;
+        var outputPath = path.dirname(outputFile);
 
-    if (!fs.existsSync(outputPath)) {
-        fs.mkdirSync(outputPath)
-    }
+        flagNotExec = false;
 
-    fs.writeFile(outputFile, JSON.stringify(fileTree(config.sourceRoot), null, 4), function (err) {
-        if (err) {
-            console.log('Error writing file tree: ', err);
-        } else {
-            console.log("Pages tree JSON saved to " + outputFile);
-            flagNotExec = true;
+        if (!fs.existsSync(outputPath)) {
+            fs.mkdirSync(outputPath)
         }
 
-        if (typeof callback === 'function') callback(err);
-    });
+        fs.writeFile(outputFile, JSON.stringify(fileTree(config.sourceRoot), null, 4), function (err) {
+            if (err) {
+                console.log('Error writing file tree: ', err);
+            } else {
+                console.log("Pages tree JSON saved to " + outputFile);
+                flagNotExec = true;
+            }
+
+            if (typeof callback === 'function') callback(err);
+        });
+    }
 };
 
 // Run function on server start
 GlobalWrite(function(){
-    require(path.join(pathToApp, 'core/api/htmlParser'));
+    if (global.opts.core.htmlParser.enabled) htmlParser.processSpecs();
 });
 
 // Running GlobalWrite by cron
@@ -171,10 +176,5 @@ if (config.cron || (global.MODE === 'production' && config.cronProd)) {
 // run task from server homepage
 module.exports.scan = function () {
     // flag for waiting script end and only then can be run again
-    if (flagNotExec) {
-        flagNotExec = false;
-        setTimeout(function () {
-            GlobalWrite();
-        }, 5000);
-    }
+    GlobalWrite();
 };

@@ -8,7 +8,6 @@ var express = require('express');
 var colors = require('colors');
 var fs = require('fs');
 var deepExtend = require('deep-extend');
-var headerFooter = require('./core/headerFooter');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
@@ -33,6 +32,7 @@ global.MODE = process.env.NODE_ENV || 'development';
 
 global.pathToApp = __dirname;
 
+// Default logger
 var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
@@ -137,6 +137,7 @@ try {
 
 
 /* Serving content */
+var headerFooter = require('./core/headerFooter');
 
 // Static content
 global.app.use(express.static(global.app.get('user')));
@@ -194,5 +195,5 @@ if (!module.parent) {
     global.app.listen(port);
     var portString = port.toString();
 
-    log.info('[SOURCEJS] lauched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    log.info('[SOURCEJS] launched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
 }
