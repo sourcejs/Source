@@ -115,12 +115,12 @@ page.onLoadFinished = function (msg) {
 
             }, {id: id, wrap: wrap});
         console.log(JSON.stringify(code, null, 1));
-        }, 250);
+        }, 450);
 	}
 
     setTimeout(function(){
 		phantom.exit();
-    }, 250)
+    }, 450)
 };
 
 // error handler & logger: helps to avoid error stream within a common log
