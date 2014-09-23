@@ -15,7 +15,7 @@ define([
     "sourceLib/codeFormat",
     "sourceModules/innerNavigation",
     "sourceLib/prism/prism"
-], function($, options, utils, Css, browser, codeFormat, innerNavigation, Prism) {
+], function($, options, utils, Css, browser, codeFormat, innerNavigation) {
 
 'use strict';
 
