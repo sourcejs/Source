@@ -55,8 +55,8 @@
 /* Extras
 -------------------------------------------------- */
 
-@cleaningClasses: '.source_example, .source_clean';
-@notCleaningClasses: ~':not(.source_example):not(.source_clean)'; // TODO: generate automatically
+@cleaningClasses: ~'.source_example, .source_clean';
+@notCleaningClasses: ~':not(.source_example):not(.source_clean):not(.dataTables_wrapper):not(.source_status-controls):not(.source_catalog):not(.source_source-code_cnt)'; // TODO: generate automatically
 
 /* /Extras */
 
@@ -78,19 +78,22 @@
     .source_section > *@{notCleaningClasses} > @{selector},
     .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
-    .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector}
+    .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_info > @{selector},
     .source_info > *@{notCleaningClasses} > @{selector},
     .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
-    .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector}
+    .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_doc > @{selector},
     .source_doc > *@{notCleaningClasses} > @{selector},
     .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_deps > @{selector},
     .source_deps > *@{notCleaningClasses} > @{selector},
     .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
-    .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector}{
+    .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector} {
         & when (@reset = true) {
             .reset();
         }
@@ -98,5 +101,16 @@
         }
     }
 
+.source-section-reset(@selector, @rules, @reset: true) {
+    .source_section > @{selector}@{notCleaningClasses},
+    .source_section > div@{notCleaningClasses} > @{selector},
+    .source_section > p@{notCleaningClasses} > @{selector},
+    .source_section > section@{notCleaningClasses} > @{selector} {
+        & when (@reset = true) {
+            .reset();
+            }
+        @rules();
+        }
+    }
 /* /Variables
 ---------------------------------------------------------------------------------- */

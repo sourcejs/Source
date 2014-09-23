@@ -123,11 +123,14 @@ module.exports = function(grunt) {
 
         autoprefixer: {
             options: {
-                cascade: false
+                cascade: false,
+                browsers: ['last 2 version']
             },
-            single_file: {
-                src: 'build/assets/css/defaults.css',
-                dest: 'build/assets/css/defaults.css'
+            main: {
+                expand: true,
+                flatten: true,
+                src: 'build/assets/css/*.css',
+                dest: 'build/assets/css/'
             }
         }
     });

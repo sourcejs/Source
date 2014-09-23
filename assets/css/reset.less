@@ -18,6 +18,7 @@
     content: none;
     border-collapse: collapse;
     border-spacing: 0;
+    box-sizing: border-box;
     }
 
 
@@ -78,11 +79,11 @@
     margin: 10px 0;
     });
 .source-only(ul,{});
+.source-only(ol,{});
 .source-only(li,{
     line-height: 1.5;
     list-style: disc inside;
     });
-.source-only(ol,{});
 .source-only(h1,{});
 .source-only(h2,{});
 .source-only(h3,{});
@@ -90,6 +91,7 @@
 .source-only(h5,{});
 .source-only(h6,{});
 .source-only(span,{});
+.source-only(label,{});
 .source-only(q,{});
 .source-only(blockquote,{});
 .source-only(strong,{});
@@ -104,18 +106,49 @@
 body {
     margin: 0;
     padding: 0;
+    }
+
+.source_container {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     }
-.source_section > div {
+
+.source_container * {
+    box-sizing: border-box;
+    }
+
+.source_example *, .source_clean * {
+    box-sizing: content-box;
+    }
+
+.source_container a {
+    background: transparent;
+    box-shadow: none;
+    font-size: 14px;
     line-height: 1.5;
     }
-.source_section > p {
-    line-height: 1.5;
+
+.source_container a:hover,
+.source_container a:active {
+    outline: 0;
     }
-.source_section > ol > li {
+
+.source-section-reset(div, {
+    line-height: 1.5
+    });
+
+.source-section-reset(p, {
+    line-height: 1.5;
+    margin: 10px 0;
+    });
+
+.source-section-reset(ul, {});
+.source-section-reset(ol, {});
+
+.source_container ol > li {
     list-style-type: decimal !important;
     }
+
 /* /Spec page resets */
 
 /* /Reset
