@@ -227,8 +227,11 @@ define([
 				if (typeof tree[folder] === 'object') {
 					if ( !_this.checkCatInfo(tree[folder]) ) {
 
-                        var fullPath = tree['specFile'].url;
-                        fileFlat[fullPath] = tree;
+                        // Don't add specs without a title (or info.json)
+                        if (tree['specFile'].title) {
+                            var fullPath = tree['specFile'].url;
+                            fileFlat[fullPath] = tree;
+                        }
 
 					} else {
 						lookForIndexOrGoDeeper( tree[folder] );

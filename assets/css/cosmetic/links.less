@@ -1,5 +1,40 @@
 /* Links
 ---------------------------------------------------------------------------------- */
+
+// common link mixin
+.source-link(@color, @hover, @active : lighten(@hover, 10%)) {
+    color: @color;
+
+    &:link,
+    &:visited {
+        text-decoration: none;
+        }
+
+    &:hover {
+        color: @hover;
+        text-decoration: underline;
+        }
+
+    &:active {
+        color: @active;
+        }
+
+    &:focus {
+        outline: 2px solid @color-primary;
+        outline-offset: 2px;
+        }
+    }
+
+// primary link / action link
+.source-a_a {
+    .source-link(@color-primary, lighten(@color-primary, 10%));
+    }
+
+// secondary link / object link
+.source-a_o {
+    .source-link(@color-secondary, lighten(@color-secondary, 10%));
+    }
+
 /* TODO: rename classes */
 .source_a_hl, /* Higlight link */
 .source_a_o { /* Regular link */
@@ -27,6 +62,7 @@
 	&:visited {
 	  	color: lighten(@black, 40%);
 	  	text-decoration: none;
+        line-height: 1.5;
 		}
 
     &:hover {

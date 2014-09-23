@@ -1,8 +1,6 @@
 /* Navigation
 ---------------------------------------------------------------------------------- */
 
-@source_main_nav--width: 280px;
-@source_main_nav--top: 185px;
 .source_main_nav {
     margin-top: 40px;
 
@@ -102,7 +100,14 @@
 .source_main_nav_a {
 	overflow: hidden;
 	text-overflow: ellipsis;
+    text-decoration: none;
 	padding: 0 21px;
+    color: #4792D2;
+
+    &:hover {
+        color: #1c76c2;
+        text-decoration: underline;
+        }
 	}
 	.source_main_nav_li2 .source_main_nav_a {
 		padding: 0 37px;
@@ -116,6 +121,10 @@
 	position: relative;
 	line-height: 24px;
 	}
+
+    .source_main_nav_ac_tx {
+        line-height: 24px;
+        }
 
 /* /Navigation
 ---------------------------------------------------------------------------------- */

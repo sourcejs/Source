@@ -1,15 +1,15 @@
 /* Variables
 ---------------------------------------------------------------------------------- */
-
 @max-width: 1400px;
+
 
 /* Media
 -------------------------------------------------- */
-
 //Mobile first
 @media_min-step-m: ~'all and (min-width: 990px)';
 @media_min-step-l: ~'all and (min-width: 1400px)';
 /* /Media */
+
 
 /* Layout
 -------------------------------------------------- */
@@ -20,14 +20,97 @@
 @layout_spec--inner-margin-right: 33.6%;
 /* /Layout */
 
+
+/* Navigation
+-------------------------------------------------- */
+@source_main_nav--width: 280px;
+@source_main_nav--top: 185px;
+/* /Navigation */
+
+
 /* Colors
 -------------------------------------------------- */
-@blue: #4593D5;
-@blue__hover: #7EB6D9;
-@green: #1b9b19;
-@black: #333;
-@gray: #999;
-/* /Color */
+// primary
+@color-primary : #4593D5;
+@blue : @color-primary;
 
+@color-highlight : #7EB6D9;
+@blue__hover: @color-highlight;
+
+// secondary
+@color-secondary : #1b9b19;
+@green: @color-secondary;
+
+// main
+@color-main : #333;
+@black: @color-main;
+
+// aux
+@color-aux : #999;
+@gray: @color-aux;
+
+/* /Colors */
+
+
+/* Extras
+-------------------------------------------------- */
+
+@cleaningClasses: ~'.source_example, .source_clean';
+@notCleaningClasses: ~':not(.source_example):not(.source_clean):not(.dataTables_wrapper):not(.source_status-controls):not(.source_catalog):not(.source_source-code_cnt)'; // TODO: generate automatically
+
+/* /Extras */
+
+/* /Variables
+---------------------------------------------------------------------------------- */
+
+/* Mixins and functions
+---------------------------------------------------------------------------------- */
+
+/**
+ * Mixin for applying styles everywhere except .source_example
+ *
+ * @Params: @selector - String (div, a, etc)
+ *          @rules - css properties ({border: 1px; color: red;})
+ *          @reset - Boolean enable of disable reset (enabled by default) [true | false]
+ */
+.source-only(@selector, @rules, @reset: true) {
+    .source_section > *@{notCleaningClasses} > @{selector},
+    .source_section > *@{notCleaningClasses} > @{selector},
+    .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_info > @{selector},
+    .source_info > *@{notCleaningClasses} > @{selector},
+    .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_doc > @{selector},
+    .source_doc > *@{notCleaningClasses} > @{selector},
+    .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_deps > @{selector},
+    .source_deps > *@{notCleaningClasses} > @{selector},
+    .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector} {
+        & when (@reset = true) {
+            .reset();
+        }
+        @rules();
+        }
+    }
+
+.source-section-reset(@selector, @rules, @reset: true) {
+    .source_section > @{selector}@{notCleaningClasses},
+    .source_section > div@{notCleaningClasses} > @{selector},
+    .source_section > p@{notCleaningClasses} > @{selector},
+    .source_section > section@{notCleaningClasses} > @{selector} {
+        & when (@reset = true) {
+            .reset();
+            }
+        @rules();
+        }
+    }
 /* /Variables
 ---------------------------------------------------------------------------------- */

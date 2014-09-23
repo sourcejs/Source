@@ -15,6 +15,7 @@
 * Repeat your project body styles to .source_example
 *
 */
+.source_clean,
 .source_example {
 	/* Duplicated Bootstrap body styles */
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

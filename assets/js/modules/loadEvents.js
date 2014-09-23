@@ -64,7 +64,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 			}
 
 			var	pluginsSection = window.source.loadEvents,
-				defaultPluginTimeout = 1000;
+				defaultPluginTimeout = 700;
 
 			function checkPlugins() {
 				var now = new Date().getTime(),
@@ -160,8 +160,10 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 					}, 100);
 					return;
 				}
+				setTimeout(function () {
+					generateSuccessEvent('allPluginsFinish');
+				}, defaultPluginTimeout)
 
-				generateSuccessEvent('allPluginsFinish');
 				return;
 			}
 

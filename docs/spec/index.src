@@ -8,7 +8,7 @@
 
     <p>You can add info blocks to spec pages by adding <code>.source_info</code> to a div:</p>
 
-    <p>Specs are generated directly from the <span class="source_hl">/public</span> folder in Source's <a href="/docs/base#2">file structure</a>. To create a new spec page like this one, make a copy of the <a href="/docs/starting">starting template</a> folder in <span class="source_hl">/public/docs</span>.</p>
+    <p>Specs are generated directly from the <span class="source_hl">/user</span> folder in Source's <a href="/docs/base#2">file structure</a>. To create a new spec page like this one, make a copy of the <a href="/docs/starting">starting template</a> folder in <span class="source_hl">/user/docs</span>.</p>
 
 </div>
 
@@ -18,10 +18,16 @@
     <p>It is highly recommended that you read the HTML source of this document.</p>
 </div>
 
+<div class="source_doc">
+
+    <p>Some related useful information you can wrap with <code>.source_doc</code></p>
+
+</div>
+
 <p><a class="source_a_d" href="#777">Links can be highlighted as link to design specification by adding <code>.source_a_d</code> as a class on the link</a></p>
 <p><a class="source_a_s" href="#777">Links can be highlighted as link to other specification by adding <code>.source_a_s</code> as a class on the link</a></p>
 
-<p><code>Highlighting</code> can be achieved by either wrapping text in &lt;code&gt; tags, or by using the <code>.source_hl</code> class.</p>
+<p>Highlighting can be achieved by either wrapping text in <code>&lt;code&gt;</code> tags, or by using the <span class="source_hl">.source_hl class</span>.</p>
 
 <section class="source_section">
     <h2>Spec Section Heading</h2>
