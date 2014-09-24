@@ -1,7 +1,4 @@
-//var html = require('./html.json');
-
-
-function unflatten(target, opts) {
+module.exports = function(target, opts) {
     opts = opts || {};
 
     var delimiter = opts.delimiter || '.',
@@ -45,11 +42,4 @@ function unflatten(target, opts) {
     });
 
     return result
-}
-
-//delete html['mob/base'];
-//var unflat = unflatten(html, {delimiter: '/'});
-//console.log(unflat);
-
-
-module.exports = unflatten;
+};

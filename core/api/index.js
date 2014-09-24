@@ -3,6 +3,8 @@ var path = require('path');
 var parseData = require("./parseData");
 var pathToApp = path.dirname(require.main.filename);
 var deepExtend = require('deep-extend');
+var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
+var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 
 var config = {
     statusCodes: {
@@ -14,7 +16,20 @@ var config = {
 // Overwriting base options
 deepExtend(config, global.opts.core.api);
 
+var specsDataPath = path.join(pathToApp, config.specsData);
+var htmlDataPath = path.join(pathToApp, config.htmlData);
+var specsDataTestPath = path.join(pathToApp, config.specsTestData);
+var htmlDataTestPath = path.join(pathToApp, config.htmlTestData);
 
+/**
+ * getSpecs REST api processor
+ *
+ * @param {Object} req - express request
+ * @param {Object} res - express response
+ * @param {Object} parseObj - initiated parseData instance
+ *
+ * Writes result to res object
+ */
 var getSpecs = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
@@ -60,6 +75,15 @@ var getSpecs = function (req, res, parseObj) {
     }
 };
 
+/**
+ * getHTML REST api processor
+ *
+ * @param {Object} req - express request
+ * @param {Object} res - express response
+ * @param {Object} parseObj - initiated parseData instance
+ *
+ * Writes result to res object
+ */
 var getHTML = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
@@ -90,17 +114,75 @@ var getHTML = function (req, res, parseObj) {
     }
 };
 
-// Main API router
+/**
+ * postHTML REST api processor
+ *
+ * @param {Object} req - express request
+ * @param {Object} req.body.data - data to write
+ * @param {Boolean} req.body.unflatten - set true, to unflat tree from 'base/spec'
+ *
+ * @param {Object} res - express response
+ * @param {String} dataPath - custom data storage path
+ *
+ * Writes result to res object
+ */
+var postHTML = function (req, res, dataPath) {
+    var body = req.body;
+    var data = body.data;
+    var dataUnflatten = body.unflatten;
+
+    if (dataUnflatten) {
+        data = unflatten(data, { delimiter: '/', overwrite: 'root' });
+    }
+
+    parseHTML.writeDataFile(data, true, dataPath, function(err, finalData){
+        if (err || !finalData) {
+            res.status(config.statusCodes.error).json({
+                message: err
+            });
+        } else {
+            res.status(config.statusCodes.OK).json(finalData);
+        }
+    });
+};
+
+/**
+ * postHTML DELETE api processor
+ *
+ * @param {Object} req - express request
+ * @param {Object} req.body.path - data path for deletion
+ *
+ * @param {Object} res - express response
+ * @param {String} dataPath - custom data storage path
+ *
+ * Writes result to res object
+ */
+var deleteHTML = function (req, res, dataPath) {
+    var body = req.body;
+    var deletePath = body.path;
+
+    parseHTML.deleteFromDataFile(dataPath, deletePath, function(err, finalData){
+        if (err || !finalData) {
+            res.status(config.statusCodes.error).json({
+                message: err
+            });
+        } else {
+            res.status(config.statusCodes.OK).json(finalData);
+        }
+    });
+};
+
+/* Main API router */
 var apiRouter = express.Router();
 
-var parseHTML = new parseData({
+var parseHTMLData = new parseData({
     scope: 'html',
-    path: path.join(pathToApp, config.htmlData)
+    path: htmlDataPath
 });
 
 var parseSpecs = new parseData({
     scope: 'specs',
-    path: path.join(pathToApp, config.specsData)
+    path: specsDataPath
 });
 
 apiRouter.use(function(req, res, next) {
@@ -133,24 +215,32 @@ apiRouter.route('/specs')
 
 apiRouter.route('/specs/html')
     .get(function (req, res) {
-        getHTML(req, res, parseHTML)
+        getHTML(req, res, parseHTMLData)
+    })
+    .post(function (req, res) {
+        postHTML(req, res, htmlDataPath);
+    })
+    .delete(function (req, res) {
+        deleteHTML(req, res, htmlDataPath);
     });
 
+// Activating router
 app.use('/api', apiRouter);
+/* Main API router */
 
 
 
-// Test API router
+/* Test API router */
 var apiTestRouter = express.Router();
 
 var parseSpecsTest = new parseData({
     scope: 'specs',
-    path: path.join(pathToApp, config.specsTestData)
+    path: specsDataTestPath
 });
 
-var parseHTMLTest = new parseData({
+var parseHTMLDataTest = new parseData({
     scope: 'html',
-    path: path.join(pathToApp, config.htmlTestData)
+    path: htmlDataTestPath
 });
 
 apiTestRouter.use(function(req, res, next) {
@@ -170,7 +260,15 @@ apiTestRouter.route('/specs')
 
 apiTestRouter.route('/specs/html')
     .get(function (req, res) {
-        getHTML(req, res, parseHTMLTest)
+        getHTML(req, res, parseHTMLDataTest)
+    })
+    .post(function (req, res) {
+        postHTML(req, res, htmlDataTestPath);
+    })
+    .delete(function (req, res) {
+        deleteHTML(req, res, htmlDataTestPath);
     });
 
+// Activating router
 app.use('/api-test', apiTestRouter);
+/* /Test API router */

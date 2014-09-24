@@ -69,7 +69,7 @@ var prepareLogDir = function(dir){
         fs.mkdirpSync(path.join(logRootDir, dir));
     } catch (e) {
         if (e.code != 'EEXIST') {
-            console.error("Could not set up log directory, error was: ", e);
+            console.error("Could not set up log directory, error: ", e);
         }
     }
 };

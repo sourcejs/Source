@@ -32,7 +32,7 @@ describe('Internal API tests', function () {
 });
 
 
-describe('Routing', function () {
+describe('API test /api/specs', function () {
     var url = 'http://localhost:8080';
 
     describe('Check real API data available', function () {
@@ -55,7 +55,7 @@ describe('Routing', function () {
         });
     });
 
-    describe('Specs', function () {
+    describe('GET /api/specs', function () {
         it('should return list of specs', function (done) {
             var body = {
             };
@@ -111,7 +111,7 @@ describe('Routing', function () {
         });
     });
 
-    describe('Specs Filter', function () {
+    describe('GET /api/specs with fields filter', function () {
         it('should return only specs WITH info field', function (done) {
             var body = {
                 filter: {
@@ -251,7 +251,7 @@ describe('Routing', function () {
         });
     });
 
-    describe('Specs Filter Tags', function () {
+    describe('GET /api/specs with tag filter', function () {
         it('should return only specs WITH "html" tag', function (done) {
             var body = {
 
@@ -348,7 +348,7 @@ describe('Routing', function () {
         });
     });
 
-    describe('Specs Filter Cats', function () {
+    describe('GET /api/specs with cats filter', function () {
         it('should return only project cat specs', function (done) {
             var body = {
 
@@ -414,46 +414,6 @@ describe('Routing', function () {
                     res.should.be.json;
                     res.body.should.not.have.property('project-test/project-spec');
                     res.body.should.have.property('base-test/button');
-                    done();
-                });
-        });
-    });
-
-    describe('HTML', function () {
-        it('should return list of html', function (done) {
-            var body = {
-                test: true
-            };
-            request(url)
-                .get('/api-test/specs/html')
-                .expect(200)
-                .send(body)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    res.should.be.json;
-                    res.body.should.have.property('base-test/btn');
-                    done();
-                });
-        });
-        it('should return HTML by ID', function (done) {
-            var body = {
-
-                id: 'base-test/btn'
-            };
-            request(url)
-                .get('/api-test/specs/html')
-                .expect(200)
-                .send(body)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    res.should.be.json;
-                    res.body.should.have.property('contents');
                     done();
                 });
         });

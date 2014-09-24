@@ -1,8 +1,8 @@
-var fs = require('fs');
+var fs = require('fs-extra');
 var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
-var htmlParser = require(path.join(global.pathToApp, 'core/api/htmlParser'));;
+var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
 
 var globalOpts = global.opts.core;
 
@@ -137,15 +137,22 @@ var fileTree = function (dir) {
 
 
 // function for write json file
-var GlobalWrite = function (callback) {
+var writeDataFile = function (callback) {
     if (flagNotExec) {
         var outputFile = config.outputFile;
         var outputPath = path.dirname(outputFile);
 
         flagNotExec = false;
 
-        if (!fs.existsSync(outputPath)) {
-            fs.mkdirSync(outputPath)
+        // Preparing path for data write
+        try {
+            fs.mkdirpSync(outputPath);
+        } catch (e) {
+            if (e.code != 'EEXIST') {
+                global.log.warn("Could not set up data directory for Pages Tree, error: ", e);
+
+                if (typeof callback === 'function') callback(e);
+            }
         }
 
         fs.writeFile(outputFile, JSON.stringify(fileTree(config.sourceRoot), null, 4), function (err) {
@@ -162,19 +169,19 @@ var GlobalWrite = function (callback) {
 };
 
 // Run function on server start
-GlobalWrite(function(){
-    if (global.opts.core.htmlParser.enabled) htmlParser.processSpecs();
+writeDataFile(function(){
+    if (global.opts.core.parseHTML.onStart) parseHTML.processSpecs();
 });
 
-// Running GlobalWrite by cron
+// Running writeDataFile by cron
 if (config.cron || (global.MODE === 'production' && config.cronProd)) {
     setInterval(function () {
-        GlobalWrite();
+        writeDataFile();
     }, config.cronRepeatTime);
 }
 
 // run task from server homepage
 module.exports.scan = function () {
     // flag for waiting script end and only then can be run again
-    GlobalWrite();
+    writeDataFile();
 };
