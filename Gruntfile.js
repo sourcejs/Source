@@ -177,6 +177,7 @@ module.exports = function(grunt) {
                 grunt.template.process(grunt.file.read(pathToFile), {
                     delimiters: 'customBundleDelimiter',
                     data: {
+                        // npmPluginsEnabled object is filled from loadOptions.js
                         npmPluginsEnabled: JSON.stringify(gruntOpts.assets.npmPluginsEnabled, null, 4)
                     }
                 })
