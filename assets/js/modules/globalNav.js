@@ -179,11 +179,12 @@ define([
 
             if (catalogMeta && !isHeaderAdded) {
                 catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
-            } else if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+            }
+            if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
                 catalog
                     .children("." + classes.catalogListTitle)
                     .first()
-                    .after(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
+                    .after(this.templates.catalogMeta({"classes": classes, "catalogMeta": catalogMeta}));
             }
         } else {
             console.log(this.options.modulesOptions.globalNav.labels.noCatalogInfo);
