@@ -165,7 +165,7 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
  * @param {String} removePath - path to object for removal
  * @param {Function} callback - callback function on file write
  */
-var deleteFromDataFile = module.exports.deleteFromDataFile = function(dataPath, removePath, callback) {
+module.exports.deleteFromDataFile = function(dataPath, removePath, callback) {
     var data;
     var pathSplit = removePath.split('/');
 

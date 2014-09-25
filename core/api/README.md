@@ -2,6 +2,8 @@
 
 ## Specs
 
+### GET
+
 Get all, or filtered specs
 
 ```
@@ -9,17 +11,19 @@ GET
 /api/specs
 ```
 
-### Params
+#### Params
+
+Params must be passed as JSON. List of possible params:
 
 ```
-?[id|filter|filterOut],[filter|filterOut]
+[id|filter|filterOut],[filter|filterOut]
 ```
 
-* id (string, JSON or param) - return only one item with ID
-* filter (obj, JSON only) - return list of items by filter (filter something that we want to see)
-* filterOut (obj, JSON only) - return list of items by filter (filter something that we DON'T want to see)
+* `id` (string, JSON or param) - return only one item with ID
+* `filter` (obj, JSON only) - return list of items by filter (filter something that we want to see)
+* `filterOut` (obj, JSON only) - return list of items by filter (filter something that we DON'T want to see)
 
-### Examples
+#### Examples
 
 ```
 curl -H "Content-Type: application/json" -X GET -d '{"filter":{"fields":["info"]}}' http://localhost:8080/api/specs
@@ -34,7 +38,7 @@ curl -H "Content-Type: application/json" -X GET -d '{"filterOut":{"fields":["inf
 Will return all specs except those, which have `info` field.
 
 
-### Filter params
+#### Filter params
 
 Both `filter` and `filterOut` could have this params:
 
@@ -46,9 +50,19 @@ Both `filter` and `filterOut` could have this params:
 }
 ```
 
+And another custom param for `filter`:
+
+```
+{
+    forceTags: []
+}
+```
+
+`forceTags` has priority over `filterOut.tags`.
+
 ## Specs raw
 
-Get all, or filtered specs
+Get all raw spec list in nested object.
 
 ```
 GET
@@ -57,6 +71,8 @@ GET
 
 ## HTML
 
+### GET
+
 Get all, or specific Spec HTML
 
 ```
@@ -64,14 +80,50 @@ GET
 /api/specs/html
 ```
 
-### Params
+#### Params
+
+Available params:
 
 ```
-?[id]
+[id]
 ```
 
-* id (string, JSON or param) - return only one item with ID
+* `id` (string, JSON or param) - return only one item with ID
 
+### POST
+
+```
+POST
+/api/specs/html
+```
+
+#### Params
+
+Params must be passed as JSON. List of possible params:
+
+```
+[data],[data, unflatten]
+```
+
+* `data` (object) — data to post, will be extended on current data
+* `unflatten` (boolean) — set true, to unflatten object from `some/spec` before extending on current data
+
+### DELETE
+
+```
+DELETE
+/api/specs/html
+```
+
+#### Params
+
+Params must be passed as JSON. List of possible params:
+
+```
+[path]
+```
+
+* `path` (string) — flat path to object (`some/spec`), that will be deleted from current data
 
 ## TODO:Categories
 
