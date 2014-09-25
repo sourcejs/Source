@@ -128,9 +128,9 @@ module.exports = function(grunt) {
             },
             main: {
                 expand: true,
-                flatten: true,
-                src: 'build/assets/css/*.css',
-                dest: 'build/assets/css/'
+                dest: 'build',
+                cwd: 'build',
+                src: ['**/*.css']
             }
         }
     });

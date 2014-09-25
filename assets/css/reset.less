@@ -19,8 +19,8 @@
     border-collapse: collapse;
     border-spacing: 0;
     box-sizing: border-box;
+    box-shadow: none;
     }
-
 
 /* Fonts
 -------------------------------------------------- */
@@ -66,6 +66,7 @@
 .source-only(a,{
     color: #4792D2;
     text-decoration: none;
+    font-size: 14px;
     line-height: 1.5;
 
     &:hover {
@@ -75,12 +76,15 @@
     });
 .source-only(div,{});
 .source-only(p,{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
     line-height: 1.5;
-    margin: 10px 0;
+    margin: 15px 0;
     });
 .source-only(ul,{});
 .source-only(ol,{});
 .source-only(li,{
+    font-size: 14px;
     line-height: 1.5;
     list-style: disc inside;
     });
@@ -108,29 +112,19 @@ body {
     padding: 0;
     }
 
-.source_container {
+.source_main > div@{notCleaningClasses},
+.source_main > p@{notCleaningClasses},
+.source_main > section@{notCleaningClasses}{
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    }
-
-.source_container * {
-    box-sizing: border-box;
-    }
-
-.source_example *, .source_clean * {
-    box-sizing: content-box;
-    }
-
-.source_container a {
-    background: transparent;
-    box-shadow: none;
     font-size: 14px;
     line-height: 1.5;
     }
 
-.source_container a:hover,
-.source_container a:active {
-    outline: 0;
+.source_header a,
+.source_footer a,
+.source_main_nav a,
+.source_main > p > a{
+    .reset();
     }
 
 .source-section-reset(div, {
@@ -138,16 +132,38 @@ body {
     });
 
 .source-section-reset(p, {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
     line-height: 1.5;
-    margin: 10px 0;
+    margin: 15px 0;
     });
 
-.source-section-reset(ul, {});
-.source-section-reset(ol, {});
+.source-section-reset(a, {
+    color: #4792D2;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.5;
 
-.source_container ol > li {
+    &:hover {
+        color: #1c76c2;
+        text-decoration: underline;
+        }
+    });
+
+.source-section-reset(ul, {
+    margin: 15px 0 15px 5px;
+    });
+.source-section-reset(ol, {
+    margin: 15px 0 15px 5px;
+    });
+
+.source-section-reset(~'ol > li', {
     list-style-type: decimal !important;
-    }
+    });
+
+//a {
+//    box-shadow: 1px 1px 1px red;
+//    }
 
 /* /Spec page resets */
 
