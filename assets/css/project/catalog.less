@@ -10,12 +10,16 @@
 .source_catalog {
     position: relative;
 
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+
     &_h2,
     h2 {
-        font-size: 22px;
-        color: #333;
-        margin: 20px 0 5px 0;
-        font-weight: normal;
+        font-size: 22px !important;
+        color: #333 !important;
+        margin: 20px 0 5px 0 !important;
+        font-weight: normal !important;
         }
 
     &.__show-preview {
@@ -30,8 +34,11 @@
     }
 
 .source_catalog_title {
+    line-height: 1.5;
+
     a {
         text-decoration: underline;
+        font-size: inherit;
 
         &:hover {
             color: @blue;
@@ -48,16 +55,24 @@
     }
 
 .source_catalog_tx {
-	min-height: 36px; /* 2 lines */
-	margin: 0 0 20px;
+	margin: 0 0 10px !important;
 
-    color: #999;
-    font-size: 13px;
+    color: #999 !important;
+    font-size: 13px !important;
+
+    &.__2l { /* 2 line */
+        min-height: 36px;
+        }
 
     p {
 		margin: 0 0 10px;
 		}
 	}
+
+.source_subhead .source_catalog_tx {
+    margin: 0 0 10px !important;
+    min-height: 0;
+    }
 
 .source_catalog_list {
 	list-style: none;
@@ -67,7 +82,7 @@
 
 .source_catalog_list_i {
 	width: 30%;
-	margin-right: 3%;
+	margin-right: 3% !important;
 	display: inline-block;
 	vertical-align: top;
 	}
@@ -79,7 +94,7 @@
 @media (min-width: 1200px) {
     .source_catalog_list_i {
         width: 22%;
-        margin-right: 3%;
+        margin-right: 3% !important;
         }
     }
 
@@ -103,7 +118,7 @@
 
 	a&:hover { //tag for weight
         text-decoration: none;
-        background-color: @blue__hover;
+        background-color: @blue__hover !important;
         color: #fff;
         border-radius: 5px;
 
@@ -137,6 +152,7 @@
 .source_catalog_footer {
 	color: @gray;
 	font-size: 11px;
+    line-height: 1.5;
 	text-decoration: none !important;
 	}
 
@@ -169,6 +185,7 @@
 
 .source_sort-list_li {
     display: inline-block;
+    line-height: 1.5;
 
     font-size: 13px;
     }

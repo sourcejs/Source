@@ -105,7 +105,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/css/**/*.less'
                 ],
-                tasks: ['less'],
+                tasks: ['less', 'autoprefixer'],
                 options: {
                     nospawn: true
                 }
@@ -120,6 +120,19 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        autoprefixer: {
+            options: {
+                cascade: false,
+                browsers: ['last 2 version']
+            },
+            main: {
+                expand: true,
+                dest: 'build',
+                cwd: 'build',
+                src: ['**/*.css']
+            }
+        }
     });
 
 
@@ -192,6 +205,7 @@ module.exports = function(grunt) {
         'clean-build:dev',
         'resolve-js-bundles',
         'less:main',
+        'autoprefixer',
         'last-dev'
     ]);
     grunt.registerTask('default', ['update']);
@@ -201,6 +215,7 @@ module.exports = function(grunt) {
         'clean-build:prod',
 
         'less:main',
+        'autoprefixer',
         'newer:cssmin:build',
         'newer:cssmin:user',
         'resolve-js-bundles',
