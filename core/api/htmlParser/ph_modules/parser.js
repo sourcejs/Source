@@ -1,3 +1,9 @@
+/**
+ * Independent parser module,
+ * cant be used on native html document.
+ */
+
+
 HTMLCollection.prototype.toArray = function toArray() {
     return [].slice.call(this);
 };

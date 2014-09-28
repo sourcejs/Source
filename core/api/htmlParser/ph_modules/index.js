@@ -89,7 +89,6 @@ page.onCallback = function (data) {
                         "url": url
                     }]);
 
-//console.log('--! setTimeout');
                     setTimeout(getSections, 200);
                 }
             }
@@ -163,7 +162,6 @@ page.onCallback = function (data) {
 
                     if (elem) elem = elem.nextElementSibling;
                 }
-
             }
 
 // HELPERS
@@ -196,10 +194,8 @@ page.onCallback = function (data) {
             }
 
             function isCode(tag, cls) {
-                return (tag == 'SECTION' && cls.match(RegExp('\\b'+ config.code + '\\b')))? 'CODE' : false;
+                return (cls.match(RegExp('\\b'+ config.code + '\\b')))? 'CODE' : false;
             }
-
-
 
             /* Start parser */
             return getSections();

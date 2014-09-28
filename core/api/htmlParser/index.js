@@ -1,9 +1,3 @@
-/**
- * Created by dmitrylapynov on 09/08/14.
- *
- * Sourcejs spec parser, using phantomjs
- */
-
 var path = require('path');
 var fs = require('fs-extra');
 var phantom = require('phantomjs');
@@ -63,11 +57,14 @@ specs.map(function (elem, n) {
         console.log('-- All specs were processed.')
     }
 
+    spawnPhantom(elem, n, callback);
+});
+
+function spawnPhantom(elem, n, callback) {
     childProcess.exec(ph_path + " ph_modules/index.js " + elem, function (error, stdout, stderr) {
         handler(error, stdout, stderr, elem, n, callback);
     });
-});
-
+}
 
 function handler(error, stdout, stderr, spec, n, callback) {
     var specPath = spec && spec.split('/');
@@ -84,7 +81,7 @@ function handler(error, stdout, stderr, spec, n, callback) {
             stderr: stderr
         };
 
-        var writeFile = function(){
+        var writeFile = function() {
             fs.writeFile(path.join(logPath, 'output-'+ file +'.json'), JSON.stringify(data, null, 4), function(err){
                 if (err) console.log('Log write error', err);
             });
@@ -116,11 +113,10 @@ function handler(error, stdout, stderr, spec, n, callback) {
 
         // If limit is not reached, try again
         if (currentErrorCounter <= config.errorLimit) {
-            console.log('Rerun', spec);
+            console.log('Rerun', spec, 'by error: ', error);
 
-            childProcess.exec(ph_path + " ph_modules/index.js " + spec, function (error, stdout, stderr) {
-                handler(error, stdout, stderr, spec, n, callback);
-            });
+            spawnPhantom(elem, n, callback);s
+
             return;
         }
 
@@ -131,7 +127,7 @@ function handler(error, stdout, stderr, spec, n, callback) {
     }
 
     // Then unflattened
-    html[spec+'/specFile/contents'] = JSON.parse(stdout);
+    html[spec +'/specFile/contents'] = JSON.parse(stdout);
 
     console.log((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
 
@@ -145,7 +141,7 @@ function handler(error, stdout, stderr, spec, n, callback) {
 
         unflatten_html =  unflatten(html, { delimiter: '/', overwrite: 'root' });
 
-        //TODO: Dmitry, add more data filesd according to hmtl-stub.json
+        //TODO: Dmitry, add more data fileds according to hmtl-stub.json
         fs.writeFile('../data/html.json', JSON.stringify(unflatten_html, null, JSONformat), function (err) {
             if (err) throw err;
 
@@ -156,6 +152,7 @@ function handler(error, stdout, stderr, spec, n, callback) {
         });
     }
 }
+
 
 // from old Clarify:
 // TODO: check list below
