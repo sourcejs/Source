@@ -45,7 +45,6 @@ define([
             "linkToAllSpecs": "Все",
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
-            "noCatalogInfo" : "Specified catalog does not have data about it",
             "loading": "Загрузка...",
             "hidePreview": "Скрыть превьюшки",
             "showPreview": "Показать превьюшки"
@@ -173,21 +172,20 @@ define([
         if (catalog.find("." + classes.catalogList).length === 0) {
             catalog.append(this.templates.catalogList(config));
         }
-        if (!specifCatAndDirDefined && catalogMeta) {
-            var isHeaderAdded = catalog.find("." + classes.catalogListTitle).length !== 0;
-            var isInfoAdded = catalog.find("." + classes.catalogText).length !== 0;
+        if (specifCatAndDirDefined || !catalogMeta) {
+            return;
+        }
+        var isHeaderAdded = catalog.find("." + classes.catalogListTitle).length !== 0;
+        var isInfoAdded = catalog.find("." + classes.catalogText).length !== 0;
 
-            if (catalogMeta && !isHeaderAdded) {
-                catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
-            }
-            if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
-                catalog
-                    .children("." + classes.catalogListTitle)
-                    .first()
-                    .after(this.templates.catalogMeta({"classes": classes, "catalogMeta": catalogMeta}));
-            }
-        } else {
-            console.log(this.options.modulesOptions.globalNav.labels.noCatalogInfo);
+        if (catalogMeta && !isHeaderAdded) {
+            catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
+        }
+        if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+            catalog
+                .children("." + classes.catalogListTitle)
+                .first()
+                .after(this.templates.catalogMeta({"classes": classes, "catalogMeta": catalogMeta}));
         }
     };
 
