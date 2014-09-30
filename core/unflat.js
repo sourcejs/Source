@@ -1,4 +1,4 @@
-module.exports = function(target, opts) {
+function unflatten(target, opts) {
     opts = opts || {};
 
     var delimiter = opts.delimiter || '.',
@@ -42,4 +42,6 @@ module.exports = function(target, opts) {
     });
 
     return result
-};
+}
+
+module.exports = unflatten;
