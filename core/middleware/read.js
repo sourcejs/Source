@@ -13,11 +13,11 @@ var handleRequest = function(req, res, next) {
     req.specData = {};
 
     // get the physical path of a requested file
-    var physicalPath = global.app.get('user') + req.url;
+    var physicalPath = global.app.get('user') + req.path;
 
     // TODO: move to config with array of exclusions
-    if (req.url.lastIndexOf('/docs/', 0) === 0) {
-        physicalPath = pathToApp + req.url;
+    if (req.path.lastIndexOf('/docs/', 0) === 0) {
+        physicalPath = pathToApp + req.path;
     }
 
     var directory = path.dirname(physicalPath); // get the dir of a requested file
@@ -72,7 +72,7 @@ var handleRequest = function(req, res, next) {
     }
     // if directory is requested
     else if (extension == "") {
-        var requestedDir = req.url;
+        var requestedDir = req.path;
 
         // append trailing slash
         if (requestedDir.slice(-1) != '/') {
@@ -85,7 +85,9 @@ var handleRequest = function(req, res, next) {
             var fileName = "index." + supportedExtensions[j];
 
             if (fs.existsSync(physicalPath + fileName)) {
-                req.url = requestedDir + fileName;
+                var urlParams = req.url.split('?')[1];
+                var paramsString = urlParams ? '?' + urlParams : '';
+                req.url = requestedDir + fileName + paramsString;
 
                 // recursive call
                 handleRequest(req, res, next);
@@ -123,9 +125,12 @@ exports.process = function (req, res, next) {
  * @param {function} next - The callback function
  * */
 exports.handleIndex = function (req, res, next) {
-    if (req.url.slice(-9) === 'index.src') {
-        res.redirect(301, req.url.slice(0, -9));
+    if (req.path.slice(-9) === 'index.src') {
+        // Keeping params on redirect
+        var urlParams = req.url.split('?')[1];
+        var paramsSting = urlParams ? '?' + urlParams : '';
+        res.redirect(301, req.path.slice(0, -9) + paramsSting);
+    } else {
+        next();
     }
-
-    next();
 };
