@@ -13,7 +13,7 @@ var handleRequest = function(req, res, next) {
     req.specData = {};
 
     // get the physical path of a requested file
-    var physicalPath = global.app.get('user') + req.url;
+    var physicalPath = global.app.get('user') + req.path;
 
     // TODO: move to config with array of exclusions
     if (req.url.lastIndexOf('/docs/', 0) === 0) {
@@ -72,7 +72,7 @@ var handleRequest = function(req, res, next) {
     }
     // if directory is requested
     else if (extension == "") {
-        var requestedDir = req.url;
+        var requestedDir = req.path;
 
         // append trailing slash
         if (requestedDir.slice(-1) != '/') {
