@@ -1,8 +1,8 @@
 {
     "base-test": {
-        "btn": {
+        "button": {
             "specFile": {
-                "id": "/base/btn",
+                "id": "base-test/button",
                 "css": "",
                 "js": "",
                 "contents": [
@@ -30,7 +30,7 @@
         },
         "nav-sm": {
             "specFile": {
-                "id": "/base/nav-sm",
+                "id": "base-test/nav-sm",
                 "css": "",
                 "js": "",
                 "contents": [

@@ -8,7 +8,7 @@ var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
 var log = logger.log;
 
-var flagNotExec = true;
+var processFlagNotExec = true;
 
 var config = {
     // Run all specs HTML parser on app start
@@ -94,11 +94,50 @@ var getSpecsList = function() {
 /**
  * Write gathered HTML data to file system
  *
- * @param {Object} data - data object with specs list, that will be stringified and written to FS
- * @param {Boolean} extend - set true, to merge incoming data object with last written data
- * @param {String} dataPath - custom data storage path
+ * @param {Object} prevData - data to check more priority specs from
+ * @param {Object} data - data that will be merged onto prevData and will be processed with this func
  *
- * @param {Function} callback - callback function on file write
+ * @returns {Object} Returns processed data, with removed low-priority specs
+ */
+var excludeLowOverridings = function(prevData, data) {
+    var flattenTillSpec = require(path.join(global.pathToApp,'core/api/flattenTillSpec'));
+    var checkObj = flattenTillSpec(prevData);
+
+    var processData = function(obj, currentNesting){
+        Object.keys(obj).forEach(function(key){
+            var nesting = currentNesting ? currentNesting + '/' + key : key;
+
+            if (obj[key].toString() === '[object Object]') {
+
+                if (!obj[key].specFile) {
+                    // Go deeper
+                    obj[key] = processData(obj[key], nesting);
+                } else {
+                    // Check prevData on force flag
+                    var checkHigherPrioritySpec = !!(checkObj[nesting] && checkObj[nesting].forcedSave);
+
+                    if (checkHigherPrioritySpec && !obj[key].specFile.forcedSave) {
+                        // Delete low priority override
+                        delete obj[key];
+                    }
+                }
+            }
+        });
+
+        return obj;
+    };
+
+    return processData(data);
+};
+
+/**
+ * Write gathered HTML data to file system
+ *
+ * @param {Object} data - data object with specs list, that will be stringified and written to FS
+ * @param {Boolean} [extend] - set true, to merge incoming data object with last written data
+ * @param {String} [dataPath] - custom data storage path
+ *
+ * @param {Function} [callback] - callback function on file write
  * @param {Object} callback.err - Passes error if it exists
  * @param {Object} callback.outputData - Passes output data to callback
  */
@@ -118,9 +157,14 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             try {
                 prevData = fs.readJsonFileSync(dataStoragePath);
             } catch (e) {
-                apiLog.debug('Extending from empty object, as we do not have initial data', e);
+                apiLog.debug('Extending from empty object, as we do not have initial data');
+                apiLog.trace('Reading initial data erro: ', e);
             }
 
+            // Exclude from data all low-priority overridings
+            data = excludeLowOverridings(prevData, data);
+
+            // Extend final data
             data = deepExtend(prevData, data);
         }
 
@@ -162,52 +206,53 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
  * Delete object from HTML data storage
  *
  * @param {String} dataPath - path to data object
- * @param {String} removePath - path to object for removal
- * @param {Function} callback - callback function on file write
+ * @param {String} removeID - object ID for removal
+ * @param {Function} [callback] - callback function on file write
  */
-module.exports.deleteFromDataFile = function(dataPath, removePath, callback) {
-    var data;
-    var pathSplit = removePath.split('/');
+module.exports.deleteFromDataFile = function(dataPath, removeID, callback) {
+    if (removeID) {
+        var data;
+        var pathSplit = removeID.split('/');
 
-    try {
-        data = fs.readJsonFileSync(dataPath);
-    } catch (e) {}
+        try {
+            data = fs.readJsonFileSync(dataPath);
+        } catch (e) {}
 
-    if (data) {
-        var processPath = function(pathArr, obj){
-            var pathArrQueue = pathArr.slice(0); // Arr copy
-            var currentItem = pathArrQueue.shift();
+        if (data) {
+            var processPath = function(pathArr, obj){
+                var pathArrQueue = pathArr.slice(0); // Arr copy
+                var currentItem = pathArrQueue.shift();
 
-            if (currentItem !== '' && obj[currentItem]) {
-                if (pathArrQueue.length === 0) {
-                    delete obj[currentItem];
+                if (currentItem !== '' && obj[currentItem]) {
+                    if (pathArrQueue.length === 0) {
+                        delete obj[currentItem];
+                    }
+
+                    if (pathArrQueue.length !== 0 && obj[currentItem].toString() === '[object Object]') {
+                        obj[currentItem] = processPath(pathArrQueue, obj[currentItem]);
+                    }
                 }
 
-                if (pathArrQueue.length !== 0 && obj[currentItem].toString() === '[object Object]') {
-                    obj[currentItem] = processPath(pathArrQueue, obj[currentItem]);
+                return obj;
+            };
+
+            var processedData = processPath(pathSplit, data);
+
+            writeDataFile(processedData, false, dataPath, function(err, finalData){
+                if (err || !finalData) {
+                    if (typeof callback === 'function') callback(err, null);
+                } else {
+                    if (typeof callback === 'function') callback(null, finalData);
                 }
-            }
+            });
+        } else {
+            var errorMsg = 'No initial HTML data to delete from';
 
-            return obj;
-        };
-
-        var processedData = processPath(pathSplit, data);
-
-        console.log('processedData',processedData);
-
-
-        writeDataFile(processedData, false, dataPath, function(err, finalData){
-            if (err || !finalData) {
-                if (typeof callback === 'function') callback(err, null);
-            } else {
-                if (typeof callback === 'function') callback(null, finalData);
-            }
-        });
+            apiLog.warn(errorMsg, e);
+            if (typeof callback === 'function') callback(errorMsg, null);
+        }
     } else {
-        var errorMsg = 'No initial HTML data to delete from';
-
-        apiLog.warn(errorMsg, e);
-        if (typeof callback === 'function') callback(errorMsg, null);
+        if (typeof callback === 'function') callback('No ID provided', null);
     }
 };
 
@@ -216,11 +261,11 @@ module.exports.deleteFromDataFile = function(dataPath, removePath, callback) {
  *
  * @param {Array} specs - array with URL list, that will be passed to PhantomJS
  *
- * @param {Function} callback - callback function
+ * @param {Function} [callback] - callback function
  * @param {Object} callback.outputData - Passes output data to callback
  */
 var processSpecs = module.exports.processSpecs = function(specs, callback){
-    if (flagNotExec) {
+    if (processFlagNotExec) {
         apiLog.info('HTML API update started')
 
         var _specs = specs || getSpecsList();
@@ -232,17 +277,17 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
         var doneCounter = 0;
         var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/parseHTML/ph_modules/index.js');
 
-        flagNotExec = false;
+        processFlagNotExec = false;
 
-        apiLog.trace('Processing ' + specLength + ' specs.')
+        apiLog.trace('Processing ' + specLength + ' specs.');
 
         async.mapLimit(_specs, config.asyncPhantomCallLimit, function (spec, next) {
             var n = _specs.indexOf(spec) + 1;
 
             // Callback is passed to writeDataFile
             var callbackProxy = function() {
-                apiLog.info('HTML API successfully updated')
-                flagNotExec = true;
+                apiLog.info('HTML API successfully updated');
+                processFlagNotExec = true;
             };
 
             apiLog.trace('Starts...' + n, spec);
@@ -279,6 +324,17 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                     stderr: stderr
                 }));
             } else {
+                var parsedStdout = [];
+
+                try {
+                    parsedStdout = JSON.parse(stdout);
+                } catch(e) {
+                    apiLog.debug('HTML Parser stdout parse error: ', e);
+                    parsedStdout = {
+                        message: "Stdout parse error"
+                    }
+                }
+
                 apiLog.debug('Spec done: ', JSON.stringify({
                     spec: spec,
                     error: error,
@@ -286,7 +342,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                 }));
 
                 // Writing contents to common obj
-                outputHTML[spec+'/specFile/contents'] = JSON.parse(stdout);
+                outputHTML[spec+'/specFile/contents'] = parsedStdout;
             }
 
             apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
@@ -302,7 +358,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
             if (doneCounter == specLength) {
                 var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
 
-                writeDataFile(outputData, false, false, callbackProxy);
+                writeDataFile(outputData, true, false, callbackProxy);
                 if (typeof callback === 'function') callback(outputData);
             }
         }

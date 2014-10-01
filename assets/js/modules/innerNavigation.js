@@ -6,7 +6,8 @@ define([
     "sourceModules/sections",
     "sourceModules/headerFooter",
     "text!sourceTemplates/nav.inc.html",
-    "text!sourceTemplates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate,menuItemTemplate) {
+    "text!sourceTemplates/navActionItem.inc.html",
+    "text!sourceTemplates/navActionTumbler.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate, menuItemTemplate, menuItemTumblerTemplate) {
 
     function InnerNavigation() {
         var _this = this;
@@ -26,6 +27,7 @@ define([
         }, this.options.modulesOptions.innerNavigation);
 
         this.menuItemTemplate = $(menuItemTemplate);
+        this.menuItemTumblerTemplate = $(menuItemTumblerTemplate);
         this.container = $(navTemplate);
         $(".source_main h1").after(this.container);
 
@@ -39,12 +41,12 @@ define([
     InnerNavigation.prototype = module.createInstance();
     InnerNavigation.prototype.constructor = InnerNavigation;
 
-    //ID is optional
-    InnerNavigation.prototype.addMenuItem = function (text, onCallback, offCallback, id) {
-        var newItem = this.menuItemTemplate.clone();
+    //className is optional
+    InnerNavigation.prototype.addMenuItem = function (text, onCallback, offCallback, className) {
+        var newItem = this.menuItemTumblerTemplate.clone();
 
-        if (typeof id === 'string' && id !== '') {
-            newItem.addClass(id);
+        if (typeof className === 'string' && className !== '') {
+            newItem.addClass(className);
         }
 
         newItem.find(".source_slider_frame").click(function (e) {
@@ -64,6 +66,43 @@ define([
 
         newItem.find('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC_TX).text(text);
         $('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC).append(newItem);
+
+        // recalculate height after adding new action to menu
+        $(window).trigger('resize');
+    };
+
+    //className is optional
+    InnerNavigation.prototype.addMenuItemSimple = function (text, actionsArr, ctx, className) {
+        var newItem = this.menuItemTemplate.clone();
+
+        if (typeof className === 'string' && className !== '') {
+            newItem.addClass(id);
+        }
+
+        actionsArr.forEach(function(action, index){
+            var $link = $('<a class="source_main_nav_ac-simple" href="#7"></a>');
+
+            $link.text(action.name);
+
+            $link.on('click', function(e){
+                e.preventDefault();
+
+                if (ctx) {
+                    action.callback.apply(ctx);
+                } else {
+                    action.callback()
+                }
+            });
+
+            newItem.find('.source_main_nav_ac-list').append($link);
+
+            if (index !== actionsArr.length - 1){
+                newItem.find('.source_main_nav_ac-list').append(' / ');
+            }
+        });
+
+        newItem.find('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC_TX).text(text);
+        $('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC).prepend(newItem);
 
         // recalculate height after adding new action to menu
         $(window).trigger('resize');

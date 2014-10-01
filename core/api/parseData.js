@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
+var flattenTillSpec = require('./flattenTillSpec');
 
 /**
  * ParseData Constructor
@@ -31,7 +32,7 @@ ParseData.prototype.updateData = function(raw) {
         return false;
     }
 
-    this.flattenTillSpec();
+    this.data = flattenTillSpec(this.data);
 
     if (this.scope === 'specs') {
         this.removeCatalogueDescription();
@@ -58,40 +59,6 @@ ParseData.prototype.removeCatalogueDescription = function(data) {
 
         output[key] = value;
     });
-
-    this.data = output;
-    return output;
-};
-
-/**
- * Flatten given data
- *
- * @param {Object} [data] - Data object wil all specs/html
- *
- * @returns {Object} Return flattened data
- */
-ParseData.prototype.flattenTillSpec = function(data) {
-    var delimiter = '/';
-    var output = {};
-    var _data = data || this.data;
-
-    var step = function(object, prev) {
-        Object.keys(object).forEach(function (key) {
-            var value = object[key];
-
-            var isSpecFile = key === 'specFile';
-
-            var keyAppend = isSpecFile ? '' : delimiter + key;
-            var newKey = prev ? prev + keyAppend : key;
-
-            if (typeof value === 'object' && !isSpecFile) {
-                return step(value, newKey)
-            }
-
-            output[newKey] = value;
-        })
-    };
-    step(_data);
 
     this.data = output;
     return output;

@@ -159,9 +159,9 @@ var postHTML = function (req, res, dataPath) {
  */
 var deleteHTML = function (req, res, dataPath) {
     var body = req.body;
-    var deletePath = body.path;
+    var reqID = body.id || req.query.id;
 
-    parseHTML.deleteFromDataFile(dataPath, deletePath, function(err, finalData){
+    parseHTML.deleteFromDataFile(dataPath, reqID, function(err, finalData){
         if (err || !finalData) {
             res.status(config.statusCodes.error).json({
                 message: err

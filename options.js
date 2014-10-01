@@ -30,6 +30,7 @@ module.exports = {
     assets: {
         // Core modules
         modulesEnabled : {
+            htmlAPISync: true,
             headerFooter: true,
             specDecorations: true,
             codeSource: true,

@@ -117,13 +117,11 @@ DELETE
 
 #### Params
 
-Params must be passed as JSON. List of possible params:
-
 ```
-[path]
+[id]
 ```
 
-* `path` (string) — flat path to object (`some/spec`), that will be deleted from current data
+* `id` (string, JSON or param) — spec ID (`some/spec`), that will be deleted from current data
 
 ## TODO:Categories
 

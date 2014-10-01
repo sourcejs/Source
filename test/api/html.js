@@ -9,7 +9,6 @@ describe('API test /api/specs/html', function () {
     describe('GET /api/specs/html', function () {
         it('should return list of html', function (done) {
             var body = {
-                test: true
             };
             request(url)
                 .get('/api-test/specs/html')
@@ -21,14 +20,13 @@ describe('API test /api/specs/html', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('base-test/btn');
+                    res.body.should.have.property('base-test/button');
                     done();
                 });
         });
         it('should return HTML by ID', function (done) {
             var body = {
-
-                id: 'base-test/btn'
+                id: 'base-test/button'
             };
             request(url)
                 .get('/api-test/specs/html')
@@ -54,7 +52,7 @@ describe('API test /api/specs/html', function () {
                         "posted": {
                             "specFile": {
                                 "description": "This spec was posted through API",
-                                "id": "/base/posted",
+                                "id": "base-test/posted",
                                 "contents": [
                                     {
                                         "id": "1",
@@ -90,7 +88,7 @@ describe('API test /api/specs/html', function () {
     describe('DELETE /api/specs/html', function () {
         it('it should return object without "base-test/posted"', function (done) {
             var body = {
-                path: 'base-test/posted'
+                id: 'base-test/posted'
             };
             request(url)
                 .delete('/api-test/specs/html')
