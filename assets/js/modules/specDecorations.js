@@ -9,7 +9,7 @@ define([
     var L_SECTION_CLASS = $('.'+SECTION_CLASS);
     var SCROLLED_DOWN_MOD_CLASS = 'source__scrolled-down';
     //h3 decoration
-    L_SECTION_CLASS.find('>h3').wrapInner('<span></span>');
+    L_SECTION_CLASS.find('>h3').wrapInner('<span class="source_subsection_h"></span>');
 
     //IE layout fix
     if ($.browser.msie && parseInt($.browser.version, 10) < 8) {

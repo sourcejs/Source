@@ -5,49 +5,67 @@
 * */
 
 define([
-    'jquery',
-    'sourceModules/module',
-    'sourceModules/utils',
-    'sourceModules/parseFileTree'
-    ], function($, module, utils, parseFileTree) {
+    "jquery",
+    "sourceModules/module",
+    "sourceModules/utils",
+    "sourceModules/parseFileTree",
+    "sourceLib/lodash"
+    ], function($, module, utils, parseFileTree, _) {
+    "use strict";
+
+    /**
+     * @Object defaults. It represents preseted options to initialize
+     * navigation module. Can be overrided by options.moduleOptions.globalNav.
+     */
+    var defaults = {
+        "filterEnabled": true,
+        "showPreviews": false,
+        "sortType": "sortByDate",
+        "sortDirection":"forward",
+        "pageLimit": 999,
+        "ignorePages": [],
+        "thumbnailName": "thumbnail.png",
+        "classes": {
+            "catalog": "source_catalog",
+            "catalogList": "source_catalog_list",
+            "catalogListItem": "source_catalog_list_i",
+            "catalogListAll": "source_catalog_all",
+            "catalogLinkToAll": "source_a_bl",
+            "catalogImageThumbler": "source_catalog_image-tumbler",
+            "catalogListLink": "source_catalog_a source_a_g",
+            "catalogListImage": "source_catalog_img",
+            "catalogListTitle": "source_catalog_title",
+            "catalogListDate": "source_catalog_footer",
+            "catalogListBubbles": "source_bubble",
+            "catalogFilter" : "source_catalog-filter",
+            "sourceSubhead" : "source_subhead",
+            "catalogText": "source_catalog_tx",
+            "showPreview": "__show-preview"
+        },
+        "labels": {
+            "linkToAllSpecs": "Все",
+            "author" : "Author",
+            "noDataAttr" : "Data-nav attr not set",
+            "loading": "Загрузка...",
+            "hidePreview": "Скрыть превьюшки",
+            "showPreview": "Показать превьюшки"
+        }
+    };
 
     'use strict';
 
+    /**
+     * @constructor GlobalNav
+     * 
+     * @function GlobalNav. Module constructor.
+     * It implements module initialization.
+     */
     function GlobalNav() {
         var _this = this;
-
-        this.options.modulesOptions.globalNav = $.extend(true, {
-            filterEnabled: true,
-            showPreviews: false,
-            sortType: 'sortByDate',
-
-            CATALOG : 'source_catalog',
-            CATALOG_LIST : 'source_catalog_list',
-            CATALOG_LIST_I : 'source_catalog_list_i',
-                CATALOG_LIST_I_PREVIEW_NAME : 'thumbnail.png',
-            CATALOG_LIST_ALL : 'source_catalog_all',
-                CATALOG_LIST_ALL_A : 'source_a_bl',
-
-            CATALOG_IMG_TUMBLER: 'source_catalog_image-tumbler',
-
-            CATALOG_LIST_A : 'source_catalog_a source_a_g',
-            CATALOG_LIST_A_IMG : 'source_catalog_img',
-            CATALOG_LIST_A_TX : 'source_catalog_title',
-            CATALOG_LIST_DATE : 'source_catalog_footer',
-            CATALOG_LIST_BUBBLES : 'source_bubble',
-
-            CATALOG_FILTER : 'source_catalog-filter',
-            SOURCE_SUBHEAD : 'source_subhead',
-
-            RES_LINK_TO_ALL : 'All',
-            RES_AUTHOR : 'Author',
-            RES_NO_DATA_ATTR : 'Data-nav attr not set',
-            RES_NO_CATALOG : 'Specified catalog is empty or does not exist',
-            RES_NO_CATALOG_INFO : 'Specified catalog does not have data about it',
-
-            pageLimit : 999
-        }, this.options.modulesOptions.globalNav);
-
+        this.options.modulesOptions.globalNav = $.extend(true, defaults,
+            this.options.modulesOptions.globalNav,
+            JSON.parse(localStorage.getItem("source_enabledFilter")) || {}
+        );
         $(function(){
             _this.init();
         });
@@ -56,474 +74,408 @@ define([
     GlobalNav.prototype = module.createInstance();
     GlobalNav.prototype.constructor = GlobalNav;
 
-    GlobalNav.prototype.init = function () {
-        this.drawNavigation();
-        this.hideImgWithError();
+    /**
+     * @Object templates. Contains basic navigation templates.
+     * It uses lo-dash template function.
+     */
+    GlobalNav.prototype.templates = {
+        "catalogList": _.template([
+            '<ul class="<%= classes.catalogList %>">',
+                '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
+            '</ul>'
+        ].join("")),
 
-        if (this.options.modulesOptions.globalNav.filterEnabled){
+        "catalogHeader": _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
+
+        "catalogMeta": _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
+
+        "catalogLinkToAll": _.template([
+            '<li class="<%= classes.catalogListItem %> <%= classes.catalogListAll %>">',
+                '<a class="<%= classes.catalogLinkToAll %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
+            '</li>'
+        ].join("")),
+
+        "navigationListItem": _.template([
+            '<li class="<%= classes.catalogListItem %>">',
+                '<a class="<%= classes.catalogListLink %>" href="#">',
+                    '<img class="<%= classes.catalogListImage %>" />',
+                    '<span class="<%= classes.catalogListTitle %>"></span>',
+                    '<div class="<%= classes.catalogListDate %>"></div>',
+                    '<div class="<%= classes.catalogListBubbles %>"></div>',
+                '</a>',
+            '</li>'
+        ].join("")),
+
+        "catalogFilter": _.template('<div class="<%= classes.catalogFilter %>"></div>'),
+
+        "togglePreviewLink": _.template('<a class="<%= classes.catalogImageThumbler %>" href="#"><%= togglePreviewLabel %></a>'),
+
+        "sortList": _.template([
+            '<ul class="source_sort-list">',
+                '<li class="source_sort-list_li">Sort by&nbsp;</li>',
+                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>',
+                '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>',
+                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>',
+            '</ul>'
+        ].join(""))
+    };
+
+    /**
+     * @method init. This method implements initial module definition.
+     */
+    GlobalNav.prototype.init = function () {
+        var navOptions = this.options.modulesOptions.globalNav;
+        this.catalog = $("." + navOptions.classes.catalog);
+        this.renderNavigation();
+
+        if (this.options.modulesOptions.globalNav.filterEnabled) {
             this.initCatalogFilter();
         }
     };
 
-    //Drawing navigation and page info in each catalog defined on page
-    GlobalNav.prototype.drawNavigation = function (sortType) {
+    /**
+     * @private
+     * @method skipSpec. Filtering by specified catalogue
+     *
+     * @param [String] navListCat catalogue type
+     * @param [Object] obj - object to filter
+     *
+     * @returns [Boolean] true if spec shoud be skipped.
+     */
+    var skipSpec = function(navListCat, obj) {
+        // obj["cat"] is an array; if cat has needed value
+        var inArray = !!obj["tag"] && obj["tag"].indexOf(navListCat) > -1;
+        // without-cat mode, showing all specs without cat field in info.json defined or
+        var isWithoutCat = navListCat === "without-tag" && (!obj["tag"] || obj["tag"].length === 0);
+        return !inArray && !isWithoutCat;
+    };
+
+    /**
+     * @private
+     * @method isHidden. It helps to filter hidden specs.
+     *
+     * @param [Object] obj - spec to check.
+     *
+     * @returns [Boolean] true if spec is hidden.
+     */
+    var isHidden = function(obj) {
+        return !!obj["tag"] && !!~obj["tag"].indexOf("hidden");
+    };
+
+    /**
+     * @method initCatalog - initialize catalog DomElement
+     *
+     * @param [Object] catalog - Catalog DomElement
+     * @param [Object] catalogMeta - additional catalog information.
+     * @param [Boolean] specifCatAndDirDefined - boolean flag, which defines if some cat and dir are defined
+     */
+    GlobalNav.prototype.initCatalog = function(catalog, catalogMeta, specifCatAndDirDefined) {
+        var config = this.options.modulesOptions.globalNav;
+        var classes = config.classes;
+        if (catalog.find("." + classes.catalogList).length === 0) {
+            catalog.append(this.templates.catalogList(config));
+        }
+        if (specifCatAndDirDefined || !catalogMeta) {
+            return;
+        }
+        var isHeaderAdded = catalog.find("." + classes.catalogListTitle).length !== 0;
+        var isInfoAdded = catalog.find("." + classes.catalogText).length !== 0;
+
+        if (catalogMeta && !isHeaderAdded) {
+            catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
+        }
+        if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+            catalog
+                .children("." + classes.catalogListTitle)
+                .first()
+                .after(this.templates.catalogMeta({"classes": classes, "catalogMeta": catalogMeta}));
+        }
+    };
+
+    /**
+     * @method renderNavigation. Drawing navigation and page info in each catalog defined on page.
+     *
+     * @param [String] sortType - type of sorting
+     * @param [String] sortDirection - ASC || DESC
+     */
+    GlobalNav.prototype.renderNavigation = function (sortType, sortDirection) {
         var _this = this;
-        var L_CATALOG = $('.' + this.options.modulesOptions.globalNav.CATALOG);
-        var CATALOG_LIST = this.options.modulesOptions.globalNav.CATALOG_LIST;
-        var CATALOG_LIST_I = this.options.modulesOptions.globalNav.CATALOG_LIST_I;
-        var CATALOG_LIST_I_PREVIEW_NAME = this.options.modulesOptions.globalNav.CATALOG_LIST_I_PREVIEW_NAME;
-
-        var CATALOG_LIST_ALL = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL;
-        var CATALOG_LIST_ALL_A = this.options.modulesOptions.globalNav.CATALOG_LIST_ALL_A;
-
-        var CATALOG_LIST_A = this.options.modulesOptions.globalNav.CATALOG_LIST_A;
-        var CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG;
-        var CATALOG_LIST_A_TX = this.options.modulesOptions.globalNav.CATALOG_LIST_A_TX;
-
-        var CATALOG_LIST_DATE = this.options.modulesOptions.globalNav.CATALOG_LIST_DATE;
-        var CATALOG_LIST_BUBBLES = this.options.modulesOptions.globalNav.CATALOG_LIST_BUBBLES;
-
-        var RES_LINK_TO_ALL = this.options.modulesOptions.globalNav.RES_LINK_TO_ALL;
-        var RES_NO_DATA_ATTR = this.options.modulesOptions.globalNav.RES_NO_DATA_ATTR;
-        var RES_NO_CATALOG = this.options.modulesOptions.globalNav.RES_NO_CATALOG;
-        var RES_NO_CATALOG_INFO = this.options.modulesOptions.globalNav.RES_NO_CATALOG_INFO;
-
-        var pageLimit = this.options.modulesOptions.globalNav.pageLimit;
-            sortType = sortType || this.options.modulesOptions.globalNav.sortType || 'sortByDate';
+        var navOptions = this.options.modulesOptions.globalNav;
+        var classes = navOptions.classes;
+        var labels = navOptions.labels;
         
-        var ignorePages = this.options.modulesOptions.globalNav.ignorePages || [];
+        sortType = sortType || navOptions.sortType;
+        sortDirection = sortDirection || navOptions.sortDirection;
 
-        //TODO: refactor this module and write tests
-        L_CATALOG.each(function () {
-            var sourceCat = $(this);
-            var navListDir = sourceCat.attr('data-nav');
-            var navListCat = sourceCat.attr('data-cat');
-            var specifCatAndDirDefined = typeof navListDir !== 'undefined' && typeof navListCat !== 'undefined';
-
-            //Filtering by specified catalogue
-            var skipSpec = function(currentObj){
-                var obj = currentObj;
-                var response = true; // skip by default
-
-                //obj['cat'] is an array
-                //if cat has needed value
-                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf(navListCat) > -1) {
-                    response = false;
-
-                //without-cat mode, showing all specs without cat field in info.json defined or
-                } else if ( navListCat === 'without-cat' && (typeof obj['cat'] === 'undefined' || obj['cat'].length === 0) ) {
-
-                    response = false;
-                }
-
-                return response;
-            };
-
-            //Filtering hidden specs
-            var isHidden = function(currentObj){
-                var obj = currentObj;
-                var response = false; // skip by default
-
-                //obj['cat'] is an array
-                if (typeof obj['cat'] !== 'undefined' && obj['cat'].indexOf("hidden") > -1 ) {
-                    response = true;
-                }
-
-                return response;
-            };
-
-            var L_CATALOG_LIST;
-
-            if ( (navListDir !== undefined) && (navListDir !== '') ) { //Catalog has data about category
-
-                var targetCat = parseFileTree.getCatAll(navListDir);
-                var catObj;
-
-                if (targetCat === undefined) return;
-
-                if ( !sourceCat.find('.source_catalog_list').length ) {
-                    sourceCat.append('<ul class="source_catalog_list"><img src="/source/assets/i/process.gif" alt="Загрузка..."/></ul>');
-                }
-
-                //Looking for catalogue info
-                if (typeof targetCat[ navListDir + '/specFile' ] === 'object') {
-                    catObj = targetCat[ navListDir + '/specFile' ];
-                } else if ( typeof targetCat[ 'specFile' ] === 'object' ) {
-                    if (!!targetCat[ 'specFile' ][ 'specFile' ]) {
-                        catObj = targetCat[ 'specFile' ][ 'specFile' ];
-                    } else {
-                        catObj = targetCat[ 'specFile' ];
-                    }
-                }
-
-                if (typeof catObj === 'object' && !specifCatAndDirDefined) {
-
-                    if (  (catObj.title !== undefined) && (!sourceCat.find('.source_catalog_title').length)) {
-                        sourceCat.prepend('<h2 class="source_catalog_title">' + catObj.title + '</h2>');
-                    }
-
-                    if ( (!sourceCat.find('.source_catalog_tx').length) && (catObj.info !== undefined) && ( $.trim(catObj.info) !== '' )) {
-                        sourceCat
-                            .children('.source_catalog_title')
-                            .first()
-                                .after('<div class="source_catalog_tx">' + catObj.info + '</div>');
-                    }
-
-                } else {
-                    console.log(RES_NO_CATALOG_INFO);
-                }
-
-                L_CATALOG_LIST = sourceCat.find('.' + CATALOG_LIST);
-                var targetCatArray;
-                // cast Object to Array of objects
-                if (typeof targetCat === 'object'){
-                    targetCatArray = $.map(targetCat, function(k, v) {
-                        if(typeof k['specFile'] === 'object') {
-                            return [k];
-                        }
-                    });
-
-                    // sort
-                    targetCatArray.sort(function(a, b){
-                        if (sortType === 'sortByDate') {
-                            return _this.sortByDate(a, b);
-                        } else if (sortType === 'sortByAlpha') {
-                            return _this.sortByAlpha(a, b);
-                        } else {
-                            return _this.sortByDate(a, b)
-                                    || _this.sortByAlpha(a, b);
-                        }
-                    });
-                }
-
-                //Collecting nav tree
-                if (L_CATALOG_LIST.length === 1 && targetCatArray) {
-
-                    var navTreeHTML = '';
-                    var authorName = '';
-
-                    //Building navigation HTML
-                    var addNavPosition = function (target) {
-
-                        if (typeof target.author === 'undefined') {
-                            authorName = '';
-                        } else {
-                            authorName = target.author;
-                        }
-
-                        //fixing relative path due to server settings
-                        var targetUrl = target.url;
-                        if (targetUrl.charAt(0) !== '/')
-                            targetUrl = '/' + targetUrl;
-
-                        var previewPicture = '';
-                        if (target.thumbnail) {
-                            previewPicture = '<img class="' + CATALOG_LIST_A_IMG + '" src="' + targetUrl + '/' + CATALOG_LIST_I_PREVIEW_NAME + '" >';
-                        }
-
-
-                        navTreeHTML += '' +
-                            '<li class="' + CATALOG_LIST_I + '" data-title="' + target.title + '" data-date="' + target.lastmodSec + '">' +
-                            '<a class="' + CATALOG_LIST_A + '" href="' + targetUrl + '">' +
-                            previewPicture +
-                            '<span class="' + CATALOG_LIST_A_TX + '">' + target.title + '</span>' +
-                            '<div class="' + CATALOG_LIST_DATE + '">' + authorName + ' | ' + target.lastmod + '</div>';
-
-                        // TODO: move to plugins
-                        if(parseInt(target.bubbles, 10)) {
-                            navTreeHTML += '<div class="' + CATALOG_LIST_BUBBLES + '">' + target.bubbles + '</div>';
-                        }
-
-                        navTreeHTML += '</a></li>';
-
-                    };
-
-                    var navListItems = (pageLimit > targetCatArray.length)
-                            ? targetCatArray.length
-                            : pageLimit;
-
-                    for (var j = 0; j < navListItems; j++) {
-                        var targetPage = targetCatArray[j]['specFile'];
-
-                        //Ignore page list
-                        if ( $.inArray(targetPage.title, ignorePages) !== -1 ) {
-                            continue;
-                        }
-
-                        //Undefined title
-                        if (targetPage === undefined || targetPage.title === undefined) {
-                            continue;
-                        }
-
-                        //Skip spec if we're filtering it by specific cat
-                        if (specifCatAndDirDefined && skipSpec(targetCatArray[j]['specFile']) || isHidden(targetCatArray[j]['specFile']) ) {
-                            continue; //skip
-                        }
-
-                        addNavPosition(targetPage);
-                    }
-
-
-
-                    //Injecting nav tree
-                    L_CATALOG_LIST.html(navTreeHTML);
-
-                    //Go to cat page link
-                    if (targetCatArray.length > navListItems) {
-                        L_CATALOG_LIST.append(
-                            '<li class="' + CATALOG_LIST_I + ' ' + CATALOG_LIST_ALL + '">' +
-                                '<a class="' + CATALOG_LIST_ALL_A + '" href="' + navListDir + '">'+ RES_LINK_TO_ALL + ' ' + targetCatArray.length + '</a>' +
-                            '</li>');
-                    }
-
-                }
-
-                if (targetCat === undefined) {
-                    L_CATALOG_LIST.html(RES_NO_CATALOG);
-                }
-
-            } else {
-
-                if (navListDir !== undefined) {
-                    //Display error
-                    L_CATALOG_LIST.html(RES_NO_DATA_ATTR);
-                }
+        this.catalog.each(function () {
+            var catalog = $(this);
+            var navListDir = catalog.attr("data-nav");
+            var navListCat = catalog.attr("data-tag");
+            // Catalog has no data about category
+            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
+            _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
+            // TODO: check if its valid
+            if (navListDir && !navListDir.length) {
+                // Display error
+                catalog.find("." + classes.catalogList).html(labels.noDataAttr);
+                return;
             }
 
+            var targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
+            _this.renderNavigationList(catalog, targetData);
         });
     };
 
-    GlobalNav.prototype.createNavTreeItem = function(target) {
-        if (!target) return;
+    /**
+     * @method renderNavigationList. It draws navigation list into catalog.
+     *
+     * @param [Object] catalog - DomElement to fill
+     * @param [Object] data - content
+     */
+    GlobalNav.prototype.renderNavigationList = function(catalog, data) {
+        var navOptions = this.options.modulesOptions.globalNav;
+        var target = catalog.find("." + navOptions.classes.catalogList);
+        var navListDir = catalog.attr("data-nav");
+        var navListCat = catalog.attr("data-tag");
+
+        var filter = function(spec) {
+            var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
+            var isFiltered = !!navListDir && !!navListCat && skipSpec(navListCat, spec) || isHidden(spec);
+            return isInIgnoreList || isFiltered ? false : true;
+        };
+
+        if (!data || !data.length) {
+            target.empty();
+            return;
+        }
+
+        if(target && target.length === 1) {
+            var itemsDocFragment = this.getNavigationItemsList(data, navListDir, filter);
+            target.html(itemsDocFragment);
+        }
+    };
+
+    /**
+     * @methor getNavigationItemsList. It creates the list of navigation items.
+     *
+     * @param [Array] specifications - list of items to create nav items.
+     * @param [String] catalogUrl - URL to catalog
+     * @param [function] isValid - callback to check if spec is valid.
+     *
+     * @returns [Object] document fragment which contains list of navItems.
+     */
+    GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
+        // temporary container to hold navigation items.
+        var navigationItemsList = document.createDocumentFragment();
+        var navOptions = this.options.modulesOptions.globalNav;
+        var pageLimit = navOptions.pageLimit;
+        var classes = navOptions.classes;
+        var labels = navOptions.labels;
+        var lengthLimit = pageLimit > specifications.length
+            ? specifications.length
+            : pageLimit;
+
+        for (var j = 0; j < lengthLimit; j++) {
+            var spec = specifications[j]["specFile"];
+            if (!isValid(spec)) {
+                continue;
+            }
+            navigationItemsList.appendChild(this.renderNavTreeItem(spec).get(0));
+        }
+
+        // Go to cat page link
+        if (specifications.length > lengthLimit) {
+            navigationItemsList.appendChild(
+                $(this.templates.catalogLinkToAll({
+                    "classes": classes,
+                    "labels": labels,
+                    "url": catalogUrl,
+                    "length": specifications.length
+                })).get(0)
+            );
+        }
+
+        return navigationItemsList;
+    };
+
+    /**
+     * @method renderNavTreeItem. Returns single navigation tree item. It uses item template for it.
+     *
+     * @param [Object] itemData - data of single list item.
+     *
+     * @returns [Object] result - rendering result
+     */
+    GlobalNav.prototype.renderNavTreeItem = function(itemData) {
+        if (!itemData) return;
         var navConfig = this.options.modulesOptions.globalNav;
-        var author = target.author
-            ? " | " + navConfig.RES_AUTHOR + ": " + target.author
+        var classes = navConfig.classes;
+        var author = itemData.author
+            ? " | " + navConfig.author + ": " + itemData.author
             : "";
 
-        //fixing relative path due to server settings
-        var targetUrl = target.url.charAt(0) === '/' ? target.url : '/' + target.url;
-        var imageUrl = targetUrl + '/' + navConfig.CATALOG_LIST_I_PREVIEW_NAME;
-
-        if (!this.createNavTreeItem.template) {
-            this.createNavTreeItem.template = $([
-                '<li class="', navConfig.CATALOG_LIST_I, '">',
-                    '<a class="', navConfig.CATALOG_LIST_A, '" href="#">',
-                        '<img class="', navConfig.CATALOG_LIST_A_IMG,'" />',
-                        '<span class="', navConfig.CATALOG_LIST_A_TX,'"></span>',
-                        '<div class="', navConfig.CATALOG_LIST_DATE,'"></div>',
-                        '<div class="', navConfig.CATALOG_LIST_BUBBLES,'"></div>',
-                    '</a>',
-                '</li>'
-            ].join(''));
-        }
-        var result = this.createNavTreeItem.template.clone(true);
-        result.find("." + navConfig.CATALOG_LIST_A.split(' ').join('.')).attr("href", targetUrl);
-        result.find("." + navConfig.CATALOG_LIST_A_IMG)
-            .attr("src", imageUrl)
-            .error(function(e) {
-                $(this).css({"display": "none"});
-            });
-        result.find("." + navConfig.CATALOG_LIST_A_TX).html(target.title);
-        result.find("." + navConfig.CATALOG_LIST_DATE).html(target.lastmod + author);
-        if(parseInt(target.bubbles, 10)) {
-            result.find("." + navConfig.CATALOG_LIST_BUBBLES).html(target.bubbles);
+        // fixing relative path due to server settings
+        var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
+        var imageUrl = itemData.thumbnail ? "/" + itemData.thumbnail : undefined;
+        if (!this.renderNavTreeItem.template) {
+            this.renderNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }
 
+        var result = $(this.renderNavTreeItem.template).clone(true);
+        result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", itemDataUrl);
+        if (imageUrl) {
+            result.find("." + classes.catalogListImage)
+                .attr("src", imageUrl)
+                .error(function(e) {
+                    $(this).remove();
+                });
+        }
+        result.find("." + classes.catalogListTitle).html(itemData.title);
+        result.find("." + classes.catalogListDate).html(itemData.lastmod + author);
+        if(parseInt(itemData.bubbles, 10)) {
+            result.find("." + classes.catalogListBubbles).html(itemData.bubbles);
+        }
         return result;
     };
 
+    /**
+     * @method initCatalogFilter - function that initializes filters.
+     * Rendering is also calls from it.
+     */
     GlobalNav.prototype.initCatalogFilter = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER;
-        var SOURCE_SUBHEAD_CLASS = this.options.modulesOptions.globalNav.SOURCE_SUBHEAD;
-        var CATALOG_CLASS = this.options.modulesOptions.globalNav.CATALOG;
-
-        var $subhead = $('.' + SOURCE_SUBHEAD_CLASS);
-        var $filter = $('.' + CATALOG_FILTER_CLASS);
-        var $catalog = $('.' + CATALOG_CLASS);
-
+        var classes = this.options.modulesOptions.globalNav.classes;
+        var $subhead = $("." + classes.sourceSubhead);
+        var $catalog = $("." + classes.catalog);
         if (!$subhead.length || !$catalog.length) return;
 
-        if (!$filter.length) {
-            $subhead.prepend('<div class="' + CATALOG_FILTER_CLASS + '"></div>');
-        }
-
-        this.drawSortFilters();
-        this.drawToggler();
+        this.renderFilters($subhead);
     };
 
-    GlobalNav.prototype.drawToggler = function() {
-        var CATALOG = this.options.modulesOptions.globalNav.CATALOG;
-        var CATALOG_IMG_TUMBLER = this.options.modulesOptions.globalNav.CATALOG_IMG_TUMBLER;
-        var CATALOG_FILTER = this.options.modulesOptions.globalNav.CATALOG_FILTER;
+    /**
+     * @method renderFilters. It renders filters layout.
+     *
+     * @param [Object] filtersTarget - dom element which is going to be
+     * container for rendering.
+     */
+    GlobalNav.prototype.renderFilters = function(filtersTarget) {
+        var classes = this.options.modulesOptions.globalNav.classes;
+        if (!filtersTarget.find("." + classes.catalogFilter).length) {
+            filtersTarget.prepend(this.templates.catalogFilter({"classes": classes}));
+        }
+        this.renderSortFilters();
+        this.renderPreviewsToggler();
+
+    };
+
+    /**
+     * @method renderPreviewsToggler. It draws preview toggler.
+     */
+    GlobalNav.prototype.renderPreviewsToggler = function() {
+        var classes = this.options.modulesOptions.globalNav.classes;
+        var labels = this.options.modulesOptions.globalNav.labels;
         var showPreviews = this.options.modulesOptions.globalNav.previews;
+        var initPreviewValue = localStorage.getItem( "source_showPreviews") || showPreviews;
+        var $filter = $("." + classes.catalogFilter);
+        var catalog = this.catalog;
 
-        var initPreviewValue = localStorage.getItem( 'source_showPreviews') || showPreviews;
-        var $catalog = $('.' + CATALOG);
-        var $filter = $('.' + CATALOG_FILTER);
-
-        if (initPreviewValue === 'true') { // initPreviewValue is string, not boolean
-            $catalog.addClass('__show-preview');
-            $filter.append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Скрыть превьюшки</a>');
+        if (initPreviewValue === "true") { // initPreviewValue is string, not boolean
+            catalog.addClass(classes.showPreview);
+            $filter.append(this.templates.togglePreviewLink({"classes": classes, "togglePreviewLabel": labels.hidePreview}));
         } else {
-            $filter.append('<a class="' + CATALOG_IMG_TUMBLER + '" href="#">Показать превьюшки</a>');
+            $filter.append(this.templates.togglePreviewLink({"classes": classes, "togglePreviewLabel": labels.showPreview}));
         }
 
-        $(document).on('click', '.' + CATALOG_IMG_TUMBLER, function(e) {
+        $(document).on("click", "." + classes.catalogImageThumbler, function(e) {
             e.preventDefault();
-            var showPreviews = localStorage.getItem( 'source_showPreviews');
+            var showPreviews = localStorage.getItem( "source_showPreviews");
+            var $this = $(this);
+            var previewText;
 
-            var $this = $(this),
-                previewText;
-
-            if (showPreviews === 'true') { // string
-                previewText = 'Показать превьюшки';
-                localStorage.setItem('source_showPreviews' , false);
+            if (showPreviews === "true") { // string
+                previewText = labels.showPreview;
+                localStorage.setItem("source_showPreviews" , false);
             } else {
-                previewText = 'Скрыть превьюшки';
-                localStorage.setItem('source_showPreviews', true);
+                previewText = labels.hidePreview;
+                localStorage.setItem("source_showPreviews", true);
             }
 
             $this.text(previewText);
-            $catalog.toggleClass('__show-preview');
+            catalog.toggleClass(classes.showPreview);
         });
     };
 
-    GlobalNav.prototype.hideImgWithError = function(){
-        var CATALOG_LIST_A_IMG = this.options.modulesOptions.globalNav.CATALOG_LIST_A_IMG;
 
-        //check valid all img
-        $('.' + CATALOG_LIST_A_IMG).each(function(){
-            this.onerror = function(){
-                $(this).remove();
-            };
-        });
-    };
-
-    GlobalNav.prototype.sortByDate = function (a, b) {
-        a = parseInt(a['specFile'].lastmodSec, 10);
-        b = parseInt(b['specFile'].lastmodSec, 10);
-
-        if(a === b) return 0;
-        else {
-            return (a > b) ? -1 : 1;
-        }
-    };
-
-    GlobalNav.prototype.sortByAlpha = function (a, b) {
-        if (!a['specFile'].title || !b['specFile'].title) return 0;
-
-        a = a['specFile'].title.replace(/(^\s+|\s+$)/g,'');
-        b = b['specFile'].title.replace(/(^\s+|\s+$)/g,'');
-
-        if(a === b) return 0;
-        else {
-            return (a > b) ? 1 : -1;
-        }
-    };
-
-    GlobalNav.prototype.drawSortFilters = function() {
-        var CATALOG_FILTER_CLASS = this.options.modulesOptions.globalNav.CATALOG_FILTER;
+    /**
+     * @method renderSortFilters. It draws Sort Filters layout.
+     */
+    GlobalNav.prototype.renderSortFilters = function() {
         var defaultSort = this.options.modulesOptions.globalNav.sortType;
-
-        var $filterWrapper = $('.' + CATALOG_FILTER_CLASS);
-        var enabledFilter = JSON.parse(localStorage.getItem('source_enabledFilter')) || {"sortType":defaultSort,"sortDirection":"forward"};
-
-        var nav = '<ul class="source_sort-list">' +
-                '<li class="source_sort-list_li">Sort by&nbsp;</li>' +
-                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>' +
-                '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>' +
-                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>' +
-            '</ul>';
+        var $filterWrapper = $("." + this.options.modulesOptions.globalNav.classes.catalogFilter);
+        var enabledFilter = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortType":defaultSort,"sortDirection":"forward"};
+        var nav = this.templates.sortList();
         var _this = this;
 
         $filterWrapper.append(nav);
 
-        var $activeFilter = $('#' + enabledFilter.sortType);
-        $activeFilter.parent().addClass('__active');
+        var $activeFilter = $("#" + enabledFilter.sortType);
+        $activeFilter.parent().addClass("__active");
 
-        if (enabledFilter.sortDirection === 'forward') {
-            $activeFilter.parent().addClass('__forward');
+        if (enabledFilter.sortDirection === "forward") {
+            $activeFilter.parent().addClass("__forward");
         }
-
-        _this.sortByChild(enabledFilter.sortType, enabledFilter.sortDirection);
-
-        var updateLocalStorage = function(obj) {
-            localStorage.setItem('source_enabledFilter', JSON.stringify(obj));
-        };
-
-        var updateEnabledStatusObject = function(sortType, sortDirection) {
-            enabledFilter.sortType = sortType;
-            enabledFilter.sortDirection = sortDirection;
-        };
 
         var updateView = function(el) {
             var $this = el;
+            var sortType = $this.attr("id");
+            var sortDirection = "backward";
 
-            $('.source_sort-list_li').removeClass('__active');
+            $(".source_sort-list_li").removeClass("__active");
             $this.parent()
-                .addClass('__active')
-                .toggleClass('__forward');
+                .addClass("__active")
+                .toggleClass("__forward");
 
-            var sortType = $this.attr('id'),
-                sortDirection = 'backward';
-
-            if ( $this.parent().hasClass('__forward') ) {
-                sortDirection = 'forward';
+            if ( $this.parent().hasClass("__forward") ) {
+                sortDirection = "forward";
             }
 
-            updateEnabledStatusObject(sortType, sortDirection);
-            updateLocalStorage(enabledFilter);
-            _this.sortByChild(sortType, sortDirection);
+            enabledFilter.sortType = sortType;
+            enabledFilter.sortDirection = sortDirection;
+            localStorage.setItem("source_enabledFilter", JSON.stringify(enabledFilter));
+            _this.renderNavigation(sortType, sortDirection);
         };
 
-        $(document).on('click', '#sortByAlph', function() {
-            updateView($(this));
-        });
-
-        $(document).on('click', '#sortByDate', function() {
+        $(document).on("click", ".source_sort-list_a", function() {
             updateView($(this));
         });
     };
 
-    GlobalNav.prototype.sortByChild = function(sortType, sortDirection) {
-        var $list = $('.source_catalog_list');
+    /**
+     * @method getSortCondition. It defines current sorting property and order.
+     *
+     * @param [String] type - on of predefined sort types.
+     * @param [String] direction - ASC or DESC sort odrer
+     *
+     * @returns [Function] sortingCallback - function to sort items.
+     */
+    GlobalNav.prototype.getSortCondition = function(type, direction) {
+        var multiplexer = direction === "forward" ? 1 : -1;
+        if (type === "sortByAlph") {
+            return function sortByAlph(a, b) {
+                if (!a["specFile"].title || !b["specFile"].title) return 0;
+                a = a["specFile"].title.replace(/(^\s+|\s+$)/g, "");
+                b = b["specFile"].title.replace(/(^\s+|\s+$)/g, "");
 
-        $list.each(function() {
-            var $list_i = $(this).children('.source_catalog_list_i');
-
-            if (sortType === "sortByAlph") {
-
-                $list_i.sort(function(a, b) {
-                    a = a.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
-                    b = b.getAttribute('data-title').replace(/(^\s+|\s+$)/g,'');
-
-                    if (sortDirection === 'backward') {
-                        return (a < b) ? 1 : (a > b) ? -1 : 0;
-                    }
-
-                    return (a < b) ? -1 : (a > b) ? 1 : 0;
-                });
-
-            } else if (sortType === "sortByDate") {
-
-                $list_i.sort(function(a, b) {
-                    a = parseInt(a.getAttribute('data-date'), 10);
-                    b = parseInt(b.getAttribute('data-date'), 10);
-
-                    if (sortDirection === 'backward') {
-                        return (a < b) ? -1 : (a > b) ? 1 : 0;
-                    }
-
-                    return (a < b) ? 1 : (a > b) ? -1 : 0;
-                });
-
-            }
-
-            $(this).empty().append($list_i);
-        });
-
+                if (a === b) return 0;
+                return multiplexer * ((a > b) ? 1 : -1);
+            };
+        }
+        // type === "sortByDate", this is default one
+        return function sortByDate(a, b) {
+            a = parseInt(a["specFile"].lastmodSec, 10);
+            b = parseInt(b["specFile"].lastmodSec, 10);
+            if(a === b) return 0;
+            return multiplexer * ((a > b) ? -1 : 1);
+        };
     };
 
     return new GlobalNav();
-
 });

@@ -26,7 +26,8 @@ module.exports = function(basePath){
         if (fs.existsSync(pathToModules)) {
             var allModules = fs.readdirSync(pathToModules);
             allModules.map(function (module) {
-                if (module.lastIndexOf('sourcejs-', 0) === 0) {
+                // Check if module has right namespace AND assets/index.js file
+                if (module.lastIndexOf('sourcejs-', 0) === 0 && fs.existsSync(path.join(pathToModules, module, 'assets/index.js'))) {
                     clientNpmPlugins.assets.npmPluginsEnabled[module] = true;
                 }
             });

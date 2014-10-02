@@ -111,16 +111,16 @@ var fileTree = function(dir) {
             page.lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.') || '';
             page.lastmodSec = Date.parse(fileStats.mtime) || '';
             page.fileName = targetFile  || '';
-            page.thumbnail = false;
+            page.thumbnail;
 
             if (fs.existsSync(dir+'/'+infoFile)) {
                 var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+infoFile, "utf8"));
 
                 deepExtend(page, fileJSON);
             }
-
-            if (fs.existsSync(dir + '/thumbnail.png')) {
-                page.thumbnail = true;
+            var thmumbPath = dir + '/thumbnail.png';
+            if (fs.existsSync(thmumbPath)) {
+                page.thumbnail = thmumbPath.split('/').splice(1).join('/');
             }
 
             outputJSON['specFile'] = extend(page);

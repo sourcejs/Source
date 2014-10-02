@@ -50,7 +50,9 @@ Search.prototype.prepareAutoCompleteData = function() {
 
     this.data = [];
 
-    var pagesData = parseFileTree.getAllPages();
+    var sort = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortDirection": "forward", "sortType": "sortByAlph"};
+    var pagesData = parseFileTree.getSortedCatalogsArray("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
+
 
     for (var page in pagesData) {
         if (pagesData.hasOwnProperty(page)) {
@@ -84,9 +86,9 @@ Search.prototype.prepareAutoCompleteData = function() {
 Search.prototype.wrapSearchResults = function(results) {
     var modulesOptions = this.options.modulesOptions;
     var classes = [
-        modulesOptions.globalNav.CATALOG_LIST,
+        modulesOptions.globalNav.classes.catalogList,
         modulesOptions.search.classes.searchResult,
-        modulesOptions.globalNav.CATALOG
+        modulesOptions.globalNav.classes.catalog
     ];
     if (modulesOptions.globalNav.showPreviews) {
         classes.push("__show-preview");
@@ -95,7 +97,7 @@ Search.prototype.wrapSearchResults = function(results) {
     $.map(results, function(item) {
         var specItem = parseFileTree.getCatAll(item.data).specFile;
         specItem.title = item.value;
-        list.append(globalNav.createNavTreeItem(specItem));
+        list.append(globalNav.renderNavTreeItem(specItem));
     });
     return list;
 };

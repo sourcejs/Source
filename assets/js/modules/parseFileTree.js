@@ -13,7 +13,8 @@ var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
 define([
     'jquery',
     'sourceModules/module',
-    fileTreeJson], function ($, module, data) {
+    fileTreeJson
+], function ($, module, data) {
 
 'use strict';
 
@@ -255,6 +256,36 @@ define([
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
         //Get cat pages with cat info
         return this.parsePages(getSpecificCat, true);
+    };
+
+    var getCurrCatalogSpec = function(navListDir, targetCatalog) {
+        var catObj;
+        if (!!targetCatalog[navListDir + '/specFile']) {
+            catObj = targetCatalog[navListDir + '/specFile'];
+        } else if (!!targetCatalog[ 'specFile' ]) {
+            catObj = targetCatalog['specFile']['specFile']
+                ? targetCatalog['specFile']['specFile']
+                : targetCatalog['specFile'];
+        }
+        return catObj;
+    };
+
+    ParseFileTree.prototype.getCurrentCatalogSpec = function(catalogName) {
+        if (!catalogName) return;
+        var specsHash = this.parsePages(catalogName, true);
+        return getCurrCatalogSpec(catalogName, specsHash);
+    };
+
+    ParseFileTree.prototype.getSortedCatalogsArray = function(catalogName, sortingCallback) {
+        if (catalogName === undefined) return;
+        var specsHash = catalogName.length
+            ? this.parsePages(catalogName, true)
+            : this.getAllPages();
+        var result = $.map(specsHash, function(k, v) {
+            k['name'] = v;
+            return k['specFile'] ? [k] : undefined;
+        });
+        return result.sort(sortingCallback);
     };
 
     return new ParseFileTree();
