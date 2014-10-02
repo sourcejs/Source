@@ -1,12 +1,13 @@
+'use strict';
+
 // modules
-var
-	fs = require('fs'),
-	url = require('url'),
-	path = require('path'),
-	exec = require('child_process').exec,
-	jsdom = require('jsdom'),
-	dom = require('./dom'),
-	jady = require('./jady');
+var fs = require('fs');
+var url = require('url');
+var path = require('path');
+var exec = require('child_process').exec;
+var jsdom = require('jsdom');
+var dom = require('./dom');
+var jady = require('./jady');
 
 
 // custom vars & local dependencies
@@ -14,18 +15,17 @@ var publicPath = global.opts.core.common.pathToUser;
 
 
 module.exports = function reply(req, res, next) {
-	var
-		parsedUrl = url.parse(req.url, true),
-		urlPath = parsedUrl.pathname,
-		urlHost = req.headers.host,
-		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
+	var parsedUrl = url.parse(req.url, true);
+	var urlPath = parsedUrl.pathname;
+	var urlHost = req.headers.host;
+	var urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath;
 
-        q = parsedUrl.query,
-		tpl = q.get,
-		id = q.id,
-		wrap = q.wrap || true,
-        phantom = q.ph || false,
-        nojs = q.nojs || false;
+    var q = parsedUrl.query;
+	var tpl = q.get;
+	var id = q.id;
+	var wrap = q.wrap || true;
+    var phantom = q.ph || false;
+    var nojs = q.nojs || false;
 
 // check for current navigation position (navigation or file)
 	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
@@ -78,15 +78,17 @@ module.exports = function reply(req, res, next) {
 
 // executes ph.js by phantomjs in new child process
                     exec(params, function (err, stdout, stderr) {
-                    if (err) res.end('Exec report error:\n ' + err);
-                        else {
+                        if (err) {
+                            res.end('Exec report error:\n ' + err);
+                        } else {
+                            var html;
                             try {
-                                var html = JSON.parse(stdout);
+                                html = JSON.parse(stdout);
                             } catch(e) {
                                 html = 'Parsing error: ' + e;
                             }
 // PhantomJS output
-        console.log(html);
+                            console.log(html);
 // template render function
                             reqHandler(res, html);
                         }

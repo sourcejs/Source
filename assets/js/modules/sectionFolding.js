@@ -15,56 +15,31 @@ define([
     "sourceModules/innerNavigation"
     ], function($, options, utils, browser, sections, innerNavigation) {
 
+    'use strict';
+
     $(function(){
 
         //TODO: move to utils
             // Bulletproof localStorage check
-            var
-                    storage,
-                    fail,
-                    uid;
+            var storage;
+            var fail;
+            var uid;
             try {
-                uid = new Date;
+                uid = new Date();
                 (storage = window.localStorage).setItem(uid, uid);
-                fail = storage.getItem(uid) != uid;
+                fail = storage.getItem(uid) !== uid;
                 storage.removeItem(uid);
                 fail && (storage = false);
             } catch (e) {
             }
-
-            //is element rendered
-            var rendered = function (selector, handler) {
-                var c = 0;
-
-                var interval = setInterval(function () {
-                    var offset = $(selector).offset();
-
-                    if (offset.left > 0 || offset.top > 0) {
-                        clearInterval(interval);
-                        handler();
-                    }
-                    c++;
-                }, 500);
-            };
-        //TODO: /move to utils
-
-        var
-                CONTAINER_CLASS = options.containerClass,
-                    L_CONTAINER_CLASS = $('.'+CONTAINER_CLASS),
-
-                SECTION_CLASS = options.SECTION_CLASS,
-                    L_SECTION_CLASS = $('.'+SECTION_CLASS),
-
-                EXAMPLE_CLASS = options.exampleSectionClass,
-                    L_EXAMPLE_CLASS = $('.'+EXAMPLE_CLASS),
-
-                OPEN_SECTION_CLASS = 'source_section__open',
-
-                sectionsOnPage = L_SECTION_CLASS,
-                specName = utils.getSpecName(), //Определяем название спеки
-                clientConfig = {},
-
-                RES_HIDE_SECTIONS = 'Hide all sections';
+            //TODO: /move to utils
+            var SECTION_CLASS = options.SECTION_CLASS;
+            var L_SECTION_CLASS = $('.'+SECTION_CLASS);
+            var OPEN_SECTION_CLASS = 'source_section__open';
+            var sectionsOnPage = L_SECTION_CLASS;
+            var specName = utils.getSpecName(); //Определяем название спеки
+            var clientConfig = {};
+            var RES_HIDE_SECTIONS = 'Hide all sections';
 
         if (storage) {
             //Check if localstorage has required data
@@ -82,10 +57,10 @@ define([
         }
 
         //Preparing config
-        if (typeof clientConfig[specName] != 'object') {
+        if (typeof clientConfig[specName] !== 'object') {
             clientConfig[specName] = {};
             clientConfig[specName].closedSections = {};
-        } else if (typeof clientConfig[specName].closedSections != 'object') {
+        } else if (typeof clientConfig[specName].closedSections !== 'object') {
             clientConfig[specName].closedSections = {};
         }
 
@@ -113,13 +88,13 @@ define([
         };
 
         var openSpoiler = function (t, config) {
-        	if (t.is('h3')) {
-        		t = t.closest('.source_section');
-        	}
+            if (t.is('h3')) {
+                t = t.closest('.source_section');
+            }
             t.addClass(OPEN_SECTION_CLASS);
 
-            var sectionID = t.attr('id'),
-                isRendered = false;
+            var sectionID = t.attr('id');
+            var isRendered = false;
 
             closedSections["section" + sectionID] = false;
 
@@ -131,7 +106,7 @@ define([
             if (options.pluginsOptions.mustache) {
                 // Need to use absolute path to get same scope with requires from inline scripts
                 require(['/plugins/mustache/js/mustache.js'], function(templater){
-                    if (typeof templater.PostponedTemplates != 'undefined') {
+                    if (typeof templater.PostponedTemplates !== 'undefined') {
 
                         if (t.attr('data-rendered') === 'true') {
                             isRendered = true;
@@ -140,11 +115,10 @@ define([
                         if (!isRendered) {
 
                             for (var arr in templater.PostponedTemplates[sectionID]) {
-                                var a = templater.PostponedTemplates[sectionID][arr][0],
-                                    b = templater.PostponedTemplates[sectionID][arr][1],
-                                    c = templater.PostponedTemplates[sectionID][arr][2];
-
-                                templater.insertTemplate(a, b, c);
+                                if (templater.PostponedTemplates[sectionID].hasOwnProperty(arr)) {
+                                    var values = templater.PostponedTemplates[sectionID][arr];
+                                    templater.insertTemplate(values[0], values[1], values[2]);
+                                }
                             }
 
                             t.attr('data-rendered', 'true');
@@ -174,8 +148,8 @@ define([
         var sectionsCount = sectionsOnPage.length;
 
         for (var i = 0; i < sectionsCount; i++) {
-            var t = $(sectionsOnPage[i]),
-                    tID = t.attr('id');
+            var t = $(sectionsOnPage[i]);
+            var tID = t.attr('id');
 
             //Check from local storage config
             if (closedSections["section" + tID]) {
@@ -184,42 +158,39 @@ define([
 
             //Open all unclosed by confing spoilers and scroll to hash targeted section
             //For ie < 8 all sections closed by default
-            if (t.attr('data-def-stat') != 'closed' && !($.browser.msie && parseInt($.browser.version) < 8)) {
+            if (t.attr('data-def-stat') !== 'closed' && !($.browser.msie && parseInt($.browser.version, 10) < 8)) {
                openSpoiler(t);
             }
         }
 
-        if (navHash != '') {
+        if (navHash !== '') {
             openSpoiler($(navHash));
         }
 
         //To open sections on from inner navigation
         var openOnNavigation = function() {
-            var
-                navHash = utils.parseNavHash();
+            var navHash = utils.parseNavHash();
 
             openSpoiler($(navHash));
 
             //Close other closed by default sections
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var
-                    t = $(sectionsOnPage[i]),
-                    tID = t.attr('id');
+                var t = $(sectionsOnPage[i]);
+                var tID = t.attr('id');
 
-                if (t.attr('data-def-stat') === 'closed' && navHash != '#' + tID) {
+                if (t.attr('data-def-stat') === 'closed' && navHash !== '#' + tID) {
                     closeSpoiler(t);
                 }
             }
 
-            if (navHash != '') {
+            if (navHash !== '') {
                 utils.scrollToSection(navHash);
             }
-        }
+        };
 
         //If supports history API
         if (window.history && history.pushState && !$.browser.msie)  {
             window.addEventListener('popstate', function (event) {
-
                 openOnNavigation();
             });
         } else {
@@ -264,13 +235,11 @@ define([
 
         innerNavigation.addMenuItem(RES_HIDE_SECTIONS, function(){
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var t = $(sectionsOnPage[i]);
-                closeSpoiler(t, true);
+                closeSpoiler($(sectionsOnPage[i]), true);
             }
         }, function(){
             for (var i = 0; i < sectionsOnPage.length; i++) {
-                var t = $(sectionsOnPage[i]);
-                openSpoiler(t, true);
+                openSpoiler($(sectionsOnPage[i]), true);
             }
         });
 

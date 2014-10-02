@@ -1,17 +1,17 @@
-var
-	page = require('webpage').create(),
-	system = require('system'),
-	dom = require('../dom');
+'use strict';
+
+var page = require('webpage').create();
+var system = require('system');
 
 // arguments from node exec task
-var url = system.args[1],
-	id = system.args[2],
-    wrap = system.args[3];
+var url = system.args[1];
+var id = system.args[2];
+var wrap = system.args[3];
 
 page.open(url);
 
 page.onLoadFinished = function (msg) {
-	if (msg != 'success') console.log('Server is not responding.');
+	if (msg !== 'success') console.log('Server is not responding.');
 	else {
         //TODO: create and check callback from templater
         setTimeout(function() {
@@ -21,28 +21,28 @@ page.onLoadFinished = function (msg) {
 
                 // collect style tag data and links to styles
                 function getHeadData() {
-                    var
-                        headTag = document.head,
-                        links = headTag.getElementsByTagName('link'),
-                        linksArr = [],
-                        scripts = headTag.getElementsByTagName('script'),
-                        scriptsArr = [],
-                        styleTag = headTag.getElementsByTagName('style')[0],
-                        styleTagHtml = (styleTag)? styleTag.outerHTML : "";
+                    var headTag = document.head;
+                    var links = headTag.getElementsByTagName('link');
+                    var linksArr = [];
+                    var scripts = headTag.getElementsByTagName('script');
+                    var scriptsArr = [];
+                    var styleTag = headTag.getElementsByTagName('style')[0];
+                    var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
                     // links to styles
                     var i = 0;
+                    var el;
                     while(i < links.length) {
-                        var el = links[i];
+                        el = links[i];
 
-                        if(el.rel == 'stylesheet' || el.type == 'text/css') linksArr.push(el.outerHTML);
+                        if(el.rel === 'stylesheet' || el.type === 'text/css') linksArr.push(el.outerHTML);
                         ++i;
                     }
 
                     // head scripts
-                    var i = 0;
+                    i = 0;
                     while(i < scripts.length) {
-                        var el = scripts[i];
+                        el = scripts[i];
 
                         if( el.dataset['nonclarify'] ) {
                             ++i;
@@ -59,13 +59,12 @@ page.onLoadFinished = function (msg) {
 
                 // collect source_example code w/wo wrapper
                 function getSource(id, wrap) {
-                    var
-                        sources = document.getElementsByClassName('source_example'),
-                        idArr = JSON.parse('['+ id +']'),
-                        html = '',
-                        wrap = (wrap === true || wrap === 'true')? true : false;
+                    var sources = document.getElementsByClassName('source_example');
+                    var idArr = JSON.parse('['+ id +']');
+                    var html = '';
+                    wrap = (wrap === true || wrap === 'true') ? true : false;
 
-                    idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el) });
+                    idArr.forEach(function (el, i, arr) { arr.splice(i, 1, --el); });
 
                     var i = 0;
                     while(i < idArr.length) {
@@ -78,22 +77,22 @@ page.onLoadFinished = function (msg) {
                         "content": html,
                         "length": sources.length,
                         "id": id,
-                        "idSum": idArr.length,
-                    }
+                        "idSum": idArr.length
+                    };
                 }
 
                 // collect meta-data
                 function getMeta() {
-                    var doc = window.document,
-                        author = doc.getElementsByName('author')[0],
-                        keywords = doc.getElementsByName('keywords')[0],
-                        description = doc.getElementsByName('description')[0];
+                    var doc = window.document;
+                    var author = doc.getElementsByName('author')[0];
+                    var keywords = doc.getElementsByName('keywords')[0];
+                    var description = doc.getElementsByName('description')[0];
 
                     return {
                         "author": (author)? author.content : "",
                         "keywords": (keywords)? keywords.content : "",
                         "description": (description)? description.content : ""
-                    }
+                    };
                 }
 
 
@@ -117,10 +116,10 @@ page.onLoadFinished = function (msg) {
         console.log(JSON.stringify(code, null, 1));
         }, 450);
 	}
-
+    /* global phantom */
     setTimeout(function(){
 		phantom.exit();
-    }, 450)
+    }, 450);
 };
 
 // error handler & logger: helps to avoid error stream within a common log

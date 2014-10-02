@@ -3,20 +3,16 @@ define([
     "sourceModules/browser"
     ], function(options) {
 
-    var
-        SECTION_CLASS = options.SECTION_CLASS,
-            L_SECTION_CLASS = $('.'+SECTION_CLASS),
+    'use strict';
 
-//        EXAMPLE_CLASS = options.exampleSectionClass,
-//            L_EXAMPLE_CLASS = $('.'+EXAMPLE_CLASS),
-
-        SCROLLED_DOWN_MOD_CLASS = 'source__scrolled-down';
-
+    var SECTION_CLASS = options.SECTION_CLASS;
+    var L_SECTION_CLASS = $('.'+SECTION_CLASS);
+    var SCROLLED_DOWN_MOD_CLASS = 'source__scrolled-down';
     //h3 decoration
     L_SECTION_CLASS.find('>h3').wrapInner('<span class="source_subsection_h"></span>');
 
     //IE layout fix
-    if ($.browser.msie && parseInt($.browser.version) < 8) {
+    if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
         //After demo section clear
         $('<div class="source_clear"></div>').insertAfter('.source_section > .source_example');
     }

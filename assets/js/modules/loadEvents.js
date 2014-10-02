@@ -6,6 +6,8 @@
 
 define(["sourceModules/module", "sourceModules/utils"], function(module, utils) {
 
+    'use strict';
+
 	function LoadEvents() {}
 
 	LoadEvents.prototype = module.createInstance();
@@ -13,10 +15,10 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 	LoadEvents.prototype.init = function( callback ) {
 
-		var callback = callback || function () {},
-			evt,
-			complete = false,
-			debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
+		callback = callback || function () {};
+		var evt;
+		var complete = false;
+		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
 		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined)) {
 			if (debug && utils.isDevelopmentMode()) {
@@ -32,8 +34,10 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 		}
 
 		function checkPluginsDefinition() {
-			return ( (window.source !== undefined) && (window.source.loadEvents !== undefined) && (Object.keys(window.source.loadEvents).length) );
-		};
+			return (window.source !== undefined)
+				&& (window.source.loadEvents !== undefined)
+				&& (Object.keys(window.source.loadEvents).length);
+		}
 
 		function generateSuccessEvent(eventName) {
 			if (debug && utils.isDevelopmentMode()) {
@@ -63,14 +67,38 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 				return;
 			}
 
-			var	pluginsSection = window.source.loadEvents,
-				defaultPluginTimeout = 700;
+			var	pluginsSection = window.source.loadEvents;
+			var defaultPluginTimeout = 700;
 
 			function checkPlugins() {
-				var now = new Date().getTime(),
-					pluginFinish = 0;
+				var now = new Date().getTime();
+				var pluginFinish = 0;
 
+				var onFinishEvent = function() {
+					if (debug && utils.isDevelopmentMode()) {
+						console.log(plugin + ' drop finishEvent' );
+					}
+
+					pluginsSection[plugin].finish = true;
+					pluginsSection[plugin].timeExpected = now-1;
+				};
+
+				var onUpdateEvent = function() {
+					var tmpExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout, 10);
+
+					if (tmpExpected > pluginsSection[plugin].timeExpected) {
+						pluginsSection[plugin].timeExpected = tmpExpected;
+						if (debug && utils.isDevelopmentMode()) {
+							console.log(plugin + ' drop updateEvent and increase timeout to ' + pluginsSection[plugin].timeExpected );
+						}
+
+					}
+				};
+				/*jshint forin: false */
 				for (var plugin in pluginsSection) {
+					if (!pluginsSection.hasOwnProperty(plugin)) {
+						continue;
+					}
 					if (debug && utils.isDevelopmentMode()) {
 						console.log(plugin + ' checking... ');
 					}
@@ -87,33 +115,16 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 						if (pluginsSection[plugin].timeExpected === undefined) {
 
-							pluginsSection[plugin].timeExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout);
+							pluginsSection[plugin].timeExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout, 10);
 							if (debug && utils.isDevelopmentMode()) {
 								console.log(plugin + ' was registred and set timeout ' +  pluginsSection[plugin].timeExpected);
 							}
 
 							// When plugin finish his work, it send "finishEvent", which differs for each plugin
-							pluginsSection[plugin].finishEvent && document.addEventListener(pluginsSection[plugin].finishEvent, function() {
-								if (debug && utils.isDevelopmentMode()) {
-									console.log(plugin + ' drop finishEvent' );
-								}
-
-								pluginsSection[plugin].finish = true;
-								pluginsSection[plugin].timeExpected = now-1;
-							})
+							pluginsSection[plugin].finishEvent && document.addEventListener(pluginsSection[plugin].finishEvent, onFinishEvent);
 
 							// When plugin need to update work's timeout, it generate "updateEvent"
-							pluginsSection[plugin].updateEvent && document.addEventListener(pluginsSection[plugin].updateEvent, function() {
-								var tmpExpected = now + parseInt(pluginsSection[plugin].timeout || defaultPluginTimeout);
-
-								if (tmpExpected > pluginsSection[plugin].timeExpected) {
-									pluginsSection[plugin].timeExpected = tmpExpected;
-									if (debug && utils.isDevelopmentMode()) {
-										console.log(plugin + ' drop updateEvent and increase timeout to ' + pluginsSection[plugin].timeExpected );
-									}
-
-								}
-							})
+							pluginsSection[plugin].updateEvent && document.addEventListener(pluginsSection[plugin].updateEvent, onUpdateEvent);
 
 						// Plugin already was initialized
 						} else {
@@ -143,7 +154,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 								}
 							}
 
-							if ( pluginsSection[plugin].length == subPluginFinish) {
+							if ( pluginsSection[plugin].length === subPluginFinish) {
 								pluginsSection[plugin].finish = true;
 								generateSuccessEvent(plugin + ' GroupFinish');
 							}
@@ -154,7 +165,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 				// if there's more than 0 plugins and all of them get timeout, continue,
 				// otherwise make recursive call
-				if ( Object.keys(pluginsSection).length != pluginFinish ) {
+				if ( Object.keys(pluginsSection).length !== pluginFinish ) {
 					setTimeout(function() {
 						checkPlugins();
 					}, 100);
@@ -162,7 +173,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 				}
 				setTimeout(function () {
 					generateSuccessEvent('allPluginsFinish');
-				}, defaultPluginTimeout)
+				}, defaultPluginTimeout);
 
 				return;
 			}

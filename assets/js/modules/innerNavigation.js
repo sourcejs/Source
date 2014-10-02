@@ -6,7 +6,10 @@ define([
     "sourceModules/sections",
     "sourceModules/headerFooter",
     "text!sourceTemplates/nav.inc.html",
-    "text!sourceTemplates/navActionItem.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate,menuItemTemplate) {
+    "text!sourceTemplates/navActionItem.inc.html"],
+    function ($, module, utils, browser, sections, headerFooter, navTemplate,menuItemTemplate) {
+
+    'use strict';
 
     function InnerNavigation() {
         var _this = this;

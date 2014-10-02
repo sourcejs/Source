@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * In case if request contains rendered html, then send it as response and stop spec content post-processing.
  *

@@ -12,12 +12,10 @@ define([
     'sourceModules/module'
     ], function (module) {
 
-	function navHighlight() {
+	var NavHighlight = function() {
 
-		var _this = this;
-
-		navHighlight.prototype = module.createInstance();
-		navHighlight.prototype.constructor = navHighlight;
+		NavHighlight.prototype = module.createInstance();
+		NavHighlight.prototype.constructor = NavHighlight;
 
 		// basic utils
 		var utils = (function() {
@@ -50,7 +48,7 @@ define([
 					}
 				},
 				closest: function(elem, cls) { //console.log(elem, cls);
-					if (elem.tagName == 'html') return false;
+					if (elem.tagName === 'html') return false;
 
 					var elemParent = elem.parentNode;
 					if (!utils.hasClass(elem, cls)) {
@@ -59,21 +57,21 @@ define([
 
 					return elem;
 				}
-			}
+			};
 
-		})()
+		})();
 
-		var sourceHeaders = [],
-			navHeaders,
-			currentHeader = -1,
-			filename = '',
-			extension = '',
-			hashThreshold = 300;
+		var sourceHeaders = [];
+		var navHeaders;
+		var currentHeader = -1;
+		var filename = '';
+		var extension = '';
+		var hashThreshold = 300;
 
 		var fullFilename = document.location.href.split('/').pop().split('.');
 
 		//update extension and filename only if there is one in URL
-		if( !(fullFilename.length === 1) ) {
+		if(fullFilename.length !== 1) {
 			extension = /\w+/.exec(fullFilename[1]);
 			filename = fullFilename[0];
 		}
@@ -81,10 +79,10 @@ define([
 		// watch headers position
 		var watchSectionTop = function () {
 
-			var headersLength = sourceHeaders.length,
-				minDistance = Number.MAX_VALUE,
-				closestHeader = -1,
-				fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
+			var headersLength = sourceHeaders.length;
+			var minDistance = Number.MAX_VALUE;
+			var closestHeader = -1;
+			var fileNameInUrl = filename === '' ? '' : filename + '.' +  extension;
 
 			if ((document.body.scrollTop || document.documentElement.scrollTop) < hashThreshold) {
 
@@ -101,7 +99,7 @@ define([
 			// catch section which is closed for top window border
 			for (var i=0; i < headersLength; i++) {
 
-				if ((sourceHeaders[i].tagName == 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
+				if ((sourceHeaders[i].tagName === 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
 					continue;
 				}
 
@@ -118,8 +116,8 @@ define([
 
 				utils.addClass(navHeaders[closestHeader], '__active');
 
-				var parent = utils.closest(navHeaders[closestHeader], 'source_main_nav_li'),
-					hashFromLink = navHeaders[closestHeader].getAttribute('href');
+				var parent = utils.closest(navHeaders[closestHeader], 'source_main_nav_li');
+				var hashFromLink = navHeaders[closestHeader].getAttribute('href');
 
 				if (!!parent && parent) {
 					utils.addClass(parent, '__active');
@@ -136,13 +134,13 @@ define([
 
 				currentHeader = closestHeader;
 			}
-		}
+		};
 
 		// watch navmenu render
-		var checkNavInterval,
-			h2Nodes, h3Nodes,
-			bodyNode = document.querySelector('body'),
-			checkOnNav = function checkOnNav() {
+		var checkNavInterval;
+		var h2Nodes;
+		var bodyNode = document.querySelector('body');
+		var checkOnNav = function checkOnNav() {
 
 			if ((document.querySelector('.source_section') !== null) &&
 				(document.querySelector('.source_main_nav_a') !== null)) {
@@ -168,17 +166,17 @@ define([
 
 				window.onscroll = function() {
 					watchSectionTop();
-				}
+				};
 
 				return;
 			}
-		}
+		};
 
 		checkNavInterval = setInterval(checkOnNav, 1000);
-	}
+	};
 
-	return new navHighlight();
-})
+	return new NavHighlight();
+});
 
 
 

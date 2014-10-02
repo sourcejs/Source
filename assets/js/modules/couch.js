@@ -14,6 +14,8 @@ define([
     'sourceLib/jquery.couch'
     ], function ($, module, utils, couch) {
 
+'use strict';
+
     function Couch() {
         this.options.modulesOptions.couch = $.extend({
 
@@ -29,12 +31,12 @@ define([
 
     //Preparing remote storage object, and create it if its not ready
     Couch.prototype.prepareRemote = function (dbname, doc, id) {
-        var _this = this,
-            dfd = new $.Deferred(),
+        var _this = this;
+        var dfd = new $.Deferred();
 
-            dbName = dbname,
-            storedData = doc,
-            specID = id;
+        var dbName = dbname;
+        var storedData = doc;
+        var specID = id;
 
         storedData['_id'] = specID;
 
@@ -45,7 +47,7 @@ define([
                 dfd.resolve(data);
             },
             error: function(status) {
-                if (status = 404) {
+                if (status === 404) {
                     console.log('creating new node');
 
                      $.when( _this.updateRemote(dbName, storedData) ).then(
@@ -71,19 +73,14 @@ define([
      */
 
     Couch.prototype.updateRemote = function (dbname, actualData, dataToUpdate, deffered) {
-        var _this = this,
+        var _this = this;
 
-            dbName = dbname,
-            dataToStore = actualData,
-            updateData = dataToUpdate;
+        var dbName = dbname;
+        var dataToStore = actualData;
+        var updateData = dataToUpdate;
 
         var db = $.couch.db(dbName);
-
-        if (typeof deffered !== 'object') {
-            var dfd = new $.Deferred();
-        } else {
-            var dfd = deffered;
-        }
+        var dfd = typeof deffered !== 'object' ? new $.Deferred() : deffered;
 
         //If need to update
         if (typeof dataToUpdate === 'object') {

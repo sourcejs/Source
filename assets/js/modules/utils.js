@@ -9,6 +9,8 @@ define([
     'sourceModules/module'
     ], function ($, module) {
 
+    'use strict';
+
     function Utils() {}
 
     /* наследуем от Module */
@@ -16,17 +18,12 @@ define([
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
-        var
-            urlHash = window.location.hash,
-            urlHashSplit = urlHash.split(this.options.modulesOptions.innerNavigation.hashSymb);
-
-        return urlHashSplit[0];
+        return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
     };
 
     Utils.prototype.scrollToSection = function (sectionID) { //sectionID = '#id'
-        var
-            new_position = $(sectionID).offset(),
-            new_position_padding = 60; //Header heights
+        var new_position = $(sectionID).offset();
+        var new_position_padding = 60; //Header heights
 
         if (new_position) {
 
@@ -37,8 +34,8 @@ define([
     };
 
     Utils.prototype.getSpecName = function() {
-        var specName,
-            pageUrl = window.location.pathname;
+        var specName;
+        var pageUrl = window.location.pathname;
 
         var pageUrlSplit = pageUrl.split("/"); //Разбивает на массив
         specName = pageUrlSplit[pageUrlSplit.length - 2]; //Берет последнюю часть урла
@@ -86,14 +83,14 @@ define([
     };
 
 	Utils.prototype.isArray = function(arr) {
-		return Object.prototype.toString.call(arr) == '[object Array]';
+		return Object.prototype.toString.call(arr) === '[object Array]';
 	};
 
     Utils.prototype.unifySpecPath = function(url) {
-        if (url.slice(-10) == "index.html") url = url.slice(0, -10);
-        if (url.slice(-9) == "index.src") url = url.slice(0, -9);
-        if (url.charAt(0) != "/") url = "/" + url;
-        if (url.charAt(url.length - 1) == "/") url = url.slice(0, -1);
+        if (url.slice(-10) === "index.html") url = url.slice(0, -10);
+        if (url.slice(-9) === "index.src") url = url.slice(0, -9);
+        if (url.charAt(0) !== "/") url = "/" + url;
+        if (url.charAt(url.length - 1) === "/") url = url.slice(0, -1);
 
         return url;
     };

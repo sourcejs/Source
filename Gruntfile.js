@@ -1,3 +1,4 @@
+'use strict';
 var path = require('path');
 var loadOptions = require('./core/loadOptions');
 var pathToApp = path.resolve('./');
@@ -27,6 +28,16 @@ module.exports = function(grunt) {
             ]
         },
 
+        jshint: {
+            options: {
+                jshintrc: ".jshintrc"
+            },
+            gruntfile: ["Gruntfile.js"],
+            modules: ["assets/js/modules/**/*.js"],
+            libs: ["assets/js/libs/**/*.js"],
+            // routing files are added into exceptions to avoid adding extra rules for express framework
+            core: ["core/**/*.js", "!core/routes/*.js"]
+        },
         copy: {
             js: {
                 expand: true,
@@ -114,7 +125,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/js/**/*.js'
                 ],
-                tasks: ['resolve-js-bundles'],
+                tasks: ['jshint:modules', 'resolve-js-bundles'],
                 options: {
                     nospawn: true
                 }
@@ -148,7 +159,7 @@ module.exports = function(grunt) {
             (grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' || grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod')
             ) {
 
-            grunt.task.run('clean:build')
+            grunt.task.run('clean:build');
         } else {
             console.log('Skipping clean build dir');
         }
@@ -208,7 +219,7 @@ module.exports = function(grunt) {
         'autoprefixer',
         'last-dev'
     ]);
-    grunt.registerTask('default', ['update']);
+    grunt.registerTask('default', ['jshint', 'update']);
 
     // Prod build, path to minified resources is routed by nodejs server
     grunt.registerTask('build', [

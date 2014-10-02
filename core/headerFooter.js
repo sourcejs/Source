@@ -1,13 +1,15 @@
-var fs = require('fs'),
-    path = require('path'),
-    pathToApp = path.dirname(require.main.filename),
-    ejs = require('ejs');
+'use strict';
+
+var fs = require('fs');
+var path = require('path');
+var pathToApp = path.dirname(require.main.filename);
+var ejs = require('ejs');
 
 exports.getHeaderAndFooter = function () {
-    var defaultTemplatePath = pathToApp + "/assets/templates/",
-        userTemplatePath = global.app.get('user') + "/assets/templates/",
-        headerFile = "header.inc.html",
-        footerFile = "footer.inc.html";
+    var defaultTemplatePath = pathToApp + "/assets/templates/";
+    var userTemplatePath = global.app.get('user') + "/assets/templates/";
+    var headerFile = "header.inc.html";
+    var footerFile = "footer.inc.html";
 
     var data = {};
 

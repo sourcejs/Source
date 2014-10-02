@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 var path = require('path');
 var pathToApp = path.dirname(require.main.filename);
@@ -51,7 +53,7 @@ var handleRequest = function(req, res, next) {
                             }
 
                             // if requested file is one of supported filetypes, then write proper flag to request. f.e. req.specData.isJade; // true
-                            if (extension == supportedExtensions[extIndex]) {
+                            if (extension === supportedExtensions[extIndex]) {
                                 var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
                                 req.specData["is" + capitalizedExtension] = true;
                             }
@@ -71,11 +73,11 @@ var handleRequest = function(req, res, next) {
         });
     }
     // if directory is requested
-    else if (extension == "") {
+    else if (extension === "") {
         var requestedDir = req.path;
 
         // append trailing slash
-        if (requestedDir.slice(-1) != '/') {
+        if (requestedDir.slice(-1) !== '/') {
             requestedDir += '/';
         }
 
@@ -114,7 +116,7 @@ var handleRequest = function(req, res, next) {
  * @param {function} next - The callback function
  * */
 exports.process = function (req, res, next) {
-    handleRequest(req, res, next)
+    handleRequest(req, res, next);
 };
 
 /**

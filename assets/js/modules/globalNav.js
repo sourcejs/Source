@@ -11,6 +11,7 @@ define([
     "sourceModules/parseFileTree",
     "sourceLib/lodash"
     ], function($, module, utils, parseFileTree, _) {
+    "use strict";
 
     /**
      * @Object defaults. It represents preseted options to initialize
@@ -66,7 +67,7 @@ define([
         $(function(){
             _this.init();
         });
-    };
+    }
 
     GlobalNav.prototype = module.createInstance();
     GlobalNav.prototype.constructor = GlobalNav;
@@ -200,8 +201,9 @@ define([
         var navOptions = this.options.modulesOptions.globalNav;
         var classes = navOptions.classes;
         var labels = navOptions.labels;
-        var sortType = sortType || navOptions.sortType;
-        var sortDirection = sortDirection || navOptions.sortDirection;
+        
+        sortType = sortType || navOptions.sortType;
+        sortDirection = sortDirection || navOptions.sortDirection;
 
         this.catalog.each(function () {
             var catalog = $(this);
@@ -315,6 +317,7 @@ define([
         if (!this.renderNavTreeItem.template) {
             this.renderNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }
+
         var result = $(this.renderNavTreeItem.template).clone(true);
         result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", itemDataUrl);
         if (imageUrl) {
@@ -326,7 +329,7 @@ define([
         }
         result.find("." + classes.catalogListTitle).html(itemData.title);
         result.find("." + classes.catalogListDate).html(itemData.lastmod + author);
-        if(parseInt(itemData.bubbles)) {
+        if(parseInt(itemData.bubbles, 10)) {
             result.find("." + classes.catalogListBubbles).html(itemData.bubbles);
         }
         return result;
@@ -372,7 +375,7 @@ define([
         var $filter = $("." + classes.catalogFilter);
         var catalog = this.catalog;
 
-        if (initPreviewValue == "true") { // initPreviewValue is string, not boolean
+        if (initPreviewValue === "true") { // initPreviewValue is string, not boolean
             catalog.addClass(classes.showPreview);
             $filter.append(this.templates.togglePreviewLink({"classes": classes, "togglePreviewLabel": labels.hidePreview}));
         } else {
@@ -385,7 +388,7 @@ define([
             var $this = $(this);
             var previewText;
 
-            if (showPreviews == "true") { // string
+            if (showPreviews === "true") { // string
                 previewText = labels.showPreview;
                 localStorage.setItem("source_showPreviews" , false);
             } else {
@@ -397,6 +400,7 @@ define([
             catalog.toggleClass(classes.showPreview);
         });
     };
+
 
     /**
      * @method renderSortFilters. It draws Sort Filters layout.
@@ -413,7 +417,7 @@ define([
         var $activeFilter = $("#" + enabledFilter.sortType);
         $activeFilter.parent().addClass("__active");
 
-        if (enabledFilter.sortDirection == "forward") {
+        if (enabledFilter.sortDirection === "forward") {
             $activeFilter.parent().addClass("__forward");
         }
 
@@ -434,8 +438,9 @@ define([
             enabledFilter.sortType = sortType;
             enabledFilter.sortDirection = sortDirection;
             localStorage.setItem("source_enabledFilter", JSON.stringify(enabledFilter));
-            _this.renderNavigation(sortType, sortDirection)
-        }
+            _this.renderNavigation(sortType, sortDirection);
+        };
+
         $(document).on("click", ".source_sort-list_a", function() {
             updateView($(this));
         });
@@ -459,13 +464,12 @@ define([
 
                 if (a === b) return 0;
                 return multiplexer * ((a > b) ? 1 : -1);
-
             };
         }
         // type === "sortByDate", this is default one
         return function sortByDate(a, b) {
-            a = parseInt(a["specFile"].lastmodSec);
-            b = parseInt(b["specFile"].lastmodSec);
+            a = parseInt(a["specFile"].lastmodSec, 10);
+            b = parseInt(b["specFile"].lastmodSec, 10);
             if(a === b) return 0;
             return multiplexer * ((a > b) ? -1 : 1);
         };
