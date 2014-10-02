@@ -226,9 +226,8 @@ describe('API test /api/specs', function () {
         });
         it('should return only specs WITH info and cat but WITHOUT keywords and thumbnail', function (done) {
             var body = {
-
                 filter: {
-                    fields:["info","cat"]
+                    fields:["info","tag"]
                 },
                 filterOut: {
                     fields:["keywords"]
@@ -254,7 +253,6 @@ describe('API test /api/specs', function () {
     describe('GET /api/specs with tag filter', function () {
         it('should return only specs WITH "html" tag', function (done) {
             var body = {
-
                 filter: {
                     tags:["html"]
                 }

@@ -24,7 +24,7 @@ function ParseData(config) {
  *
  * @returns {Boolean} Return data status
  */
-ParseData.prototype.updateData = function(raw) {
+ParseData.prototype.updateData = function() {
     try {
         this.data = JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
     } catch(e) {
@@ -140,10 +140,10 @@ ParseData.prototype.filterFields = function(value, inOut, filterArr) {
  */
 ParseData.prototype.filterTags = function(value, inOut, filterArr) {
     return this._filter(filterArr, function(filterItem) {
-        if(!util.isArray(value.cat)) {
+        if(!util.isArray(value.tag)) {
             return false === inOut;
         } else {
-            return (value.cat.indexOf(filterItem) > -1) === inOut;
+            return (value.tag.indexOf(filterItem) > -1) === inOut;
         }
     });
 };

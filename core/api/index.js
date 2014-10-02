@@ -36,8 +36,8 @@ var getSpecs = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
     var reqID = body.id || req.query.id;
-    var reqFilter = body.filter;
-    var reqFilterOut = body.filterOut;
+    var reqFilter = body.filter || req.query.filter;
+    var reqFilterOut = body.filterOut || req.query.filterOut;
     var parsedData = parseObj;
 
     if (reqID) {
@@ -189,6 +189,7 @@ var parseSpecs = new parseData({
 
 apiRouter.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET");
     res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
@@ -248,6 +249,7 @@ var parseHTMLDataTest = new parseData({
 
 apiTestRouter.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET");
     res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });

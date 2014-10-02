@@ -9,7 +9,7 @@
                 "thumbnail": false,
                 "author": "Evgeny Khoroshilov",
                 "title": "Мелкие стандарты",
-                "cat": [
+                "tag": [
                     "html",
                     "tag"
                 ],
@@ -23,7 +23,7 @@
                 "lastmodSec": 1407856231000,
                 "fileName": "index.html",
                 "thumbnail": true,
-                "cat": [
+                "tag": [
                     "some"
                 ],
                 "keywords": "base, standard",
