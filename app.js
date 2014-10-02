@@ -82,10 +82,21 @@ global.app.use(function(req, res, next){
     next();
 });
 
-// *.src content
-var src = require("./core/middleware/src");
-global.app.use(src.handleIndex);
-global.app.use(src.process);
+// Middleware that loads spec content
+var read = require("./core/middleware/read");
+global.app.use(read.handleIndex);
+global.app.use(read.process);
+
+// Load user defined middleware, that processes spec content
+require("./core/middleware/userMiddleware.js");
+
+// Middleware that wraps spec with Source template
+var wrap = require("./core/middleware/wrap");
+global.app.use(wrap.process);
+
+// Middleware that sends final spec response
+var send = require("./core/middleware/send");
+global.app.use(send.process);
 
 /* /Middlewares */
 
@@ -103,7 +114,9 @@ try {
 
     /* User additional functionality */
     require(global.app.get('user') + "/core/app.js");
-} catch(e){}
+} catch(e){
+    console.log("User plugins require error:", e);
+}
 /* /Includes */
 
 
