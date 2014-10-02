@@ -52,8 +52,6 @@ define([
         }
     };
 
-    'use strict';
-
     /**
      * @constructor GlobalNav
      * 
