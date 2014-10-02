@@ -1,3 +1,5 @@
+'use strict';
+
 function unflatten(target, opts) {
     opts = opts || {};
 
@@ -5,7 +7,7 @@ function unflatten(target, opts) {
         result = {};
 
     if (Object.prototype.toString.call(target) !== '[object Object]') {
-        return target
+        return target;
     }
 
     // safely ensure that the key is
@@ -13,7 +15,7 @@ function unflatten(target, opts) {
     function getkey(key) {
         var parsedKey = Number(key);
 
-        return (isNaN(parsedKey) || key.indexOf('.') !== -1)? key : parsedKey
+        return (isNaN(parsedKey) || key.indexOf('.') !== -1)? key : parsedKey;
     }
 
     Object.keys(target).forEach(function(key) {
@@ -24,13 +26,13 @@ function unflatten(target, opts) {
 
         while (key2 !== undefined) {
             if (recipient[key1] === undefined) {
-                recipient[key1] = ( (typeof key2 === 'number' && !opts.object)? [] : {})
+                recipient[key1] = ( (typeof key2 === 'number' && !opts.object)? [] : {});
             }
 
             recipient = recipient[key1];
             if (split.length > 0) {
-                key1 = getkey(split.shift())
-                key2 = getkey(split[0])
+                key1 = getkey(split.shift());
+                key2 = getkey(split[0]);
             }
         }
 
@@ -41,7 +43,7 @@ function unflatten(target, opts) {
         else if (opts.overwrite) recipient[key1][opts.overwrite] = unflatten(target[key], opts);
     });
 
-    return result
+    return result;
 }
 
 module.exports = unflatten;

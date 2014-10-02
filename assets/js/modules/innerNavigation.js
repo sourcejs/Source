@@ -78,7 +78,7 @@ define([
         var newItem = this.menuItemTemplate.clone();
 
         if (typeof className === 'string' && className !== '') {
-            newItem.addClass(id);
+            newItem.addClass(className);
         }
 
         actionsArr.forEach(function(action, index){
@@ -92,7 +92,7 @@ define([
                 if (ctx) {
                     action.callback.apply(ctx);
                 } else {
-                    action.callback()
+                    action.callback();
                 }
             });
 

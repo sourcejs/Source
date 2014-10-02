@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var log4js = require('log4js');
 var deepExtend = require('deep-extend');
@@ -68,7 +70,7 @@ var prepareLogDir = function(dir){
     try {
         fs.mkdirpSync(path.join(logRootDir, dir));
     } catch (e) {
-        if (e.code != 'EEXIST') {
+        if (e.code !== 'EEXIST') {
             console.error("Could not set up log directory, error: ", e);
         }
     }

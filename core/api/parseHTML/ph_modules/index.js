@@ -1,3 +1,6 @@
+'use strict';
+
+/* global phantom: true */
 var page = require('webpage').create();
 var fs = require('fs');
 var system = require('system');
@@ -6,11 +9,11 @@ var system = require('system');
 //var test = require('./test');
 
 // arguments from node query
-var url = system.args[1],
-    id = system.args[2];
+var url = system.args[1];
+//var id = system.args[2];
 
 page.onResourceReceived = function(response) {
-    if (response.id == 1 && response.status == 404 || response.status == 500) {
+    if (response.id === 1 && response.status === 404 || response.status === 500) {
         console.log(JSON.stringify({
                 "error": "Network error status "+ response.status,
                 "url": url

@@ -43,10 +43,10 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
         function phantomHook(event) {
             console.log('PhantomJS hook: %s', event);
 
-            if (typeof window.callPhantom  == 'function') {
+            if (typeof window.callPhantom === 'function') {
                 window.callPhantom({message: event});
             }
-        };
+        }
 
 		function generateSuccessEvent(eventName) {
 			if (debug && utils.isDevelopmentMode()) {
@@ -186,7 +186,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 					generateSuccessEvent('allPluginsFinish');
                     phantomHook('allPluginsFinish');
 
-				}, defaultPluginTimeout)
+				}, defaultPluginTimeout);
 
 				return;
 			}

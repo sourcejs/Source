@@ -1,11 +1,13 @@
+'use strict';
+
 define([
-    "jquery",
-    "sourceModules/module"
+    'jquery',
+    'sourceModules/module'
 ], function($, module) {
 
     function Notification() {
         if ($('.source_ntf').length === 0) {
-            $('.source_container').append('<div class="source_ntf"></div>')
+            $('.source_container').append('<div class="source_ntf"></div>');
 
             this.$el = $('.source_ntf');
         }

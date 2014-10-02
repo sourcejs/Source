@@ -1,9 +1,12 @@
+'use strict';
+
 /**
  * Тестирование функций для фантома
  */
 
-var page = require('webpage').create(),
-    system = require('system');
+var page = require('webpage').create();
+var system = require('system');
+var phantom = require('phantomjs');
 
 //page.addCookie({
 //    "name": "source-mode",
@@ -14,7 +17,7 @@ var page = require('webpage').create(),
 
 page.open('http://me:8080/' + system.args[1], function (result) {
     if (result !== 'success') {
-        console.log('Cannot load page.')
+        console.log('Cannot load page.');
         phantom.exit();
     }
     else {
@@ -22,7 +25,7 @@ page.open('http://me:8080/' + system.args[1], function (result) {
 
         var code = page.evaluate(function () {
             var title = document.title;
-            if (title == '404') {
+            if (title === '404') {
                 return JSON.stringify({message: "Page not found"});
             }
 
@@ -45,7 +48,7 @@ page.onConsoleMessage = function(msg) {
 };
 
 page.onResourceReceived = function(response) {
-    if (response.id == 1 && response.status == 404 || response.status == 500) {
+    if (response.id === 1 && response.status === 404 || response.status === 500) {
         console.log('Loading error: ', response.status);
     }
 };

@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var path = require('path');
 var parseData = require("./parseData");
@@ -210,22 +212,23 @@ apiRouter.route('/specs/raw')
 
 apiRouter.route('/specs')
     .get(function (req, res) {
-        getSpecs(req, res, parseSpecs)
+        getSpecs(req, res, parseSpecs);
     });
 
 apiRouter.route('/specs/html')
     .get(function (req, res) {
-        getHTML(req, res, parseHTMLData)
+        getHTML(req, res, parseHTMLData);
     })
     .post(function (req, res) {
         postHTML(req, res, htmlDataPath);
     })
+    /* jshint es5:false */
     .delete(function (req, res) {
         deleteHTML(req, res, htmlDataPath);
     });
 
 // Activating router
-app.use('/api', apiRouter);
+global.app.use('/api', apiRouter);
 /* Main API router */
 
 
@@ -255,12 +258,12 @@ apiTestRouter.get('/', function(req, res) {
 
 apiTestRouter.route('/specs')
     .get(function (req, res) {
-        getSpecs(req, res, parseSpecsTest)
+        getSpecs(req, res, parseSpecsTest);
     });
 
 apiTestRouter.route('/specs/html')
     .get(function (req, res) {
-        getHTML(req, res, parseHTMLDataTest)
+        getHTML(req, res, parseHTMLDataTest);
     })
     .post(function (req, res) {
         postHTML(req, res, htmlDataTestPath);
@@ -270,5 +273,5 @@ apiTestRouter.route('/specs/html')
     });
 
 // Activating router
-app.use('/api-test', apiTestRouter);
+global.app.use('/api-test', apiTestRouter);
 /* /Test API router */

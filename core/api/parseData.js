@@ -1,5 +1,6 @@
+'use strict';
+
 var fs = require('fs');
-var path = require('path');
 var util = require('util');
 var flattenTillSpec = require('./flattenTillSpec');
 
@@ -124,7 +125,7 @@ ParseData.prototype._filter = function(filterArr, filterFunc){
  */
 ParseData.prototype.filterFields = function(value, inOut, filterArr) {
     return this._filter(filterArr, function(filterItem) {
-        return !!value[filterItem] === inOut;
+        return Boolean(value[filterItem]) === inOut;
     });
 };
 
@@ -159,7 +160,7 @@ ParseData.prototype.filterTags = function(value, inOut, filterArr) {
  */
 ParseData.prototype.filterCats = function(value, key, inOut, filterArr) {
     return this._filter(filterArr, function(filterItem) {
-        return !key.lastIndexOf(filterItem, 0) === inOut;
+        return Boolean(key.lastIndexOf(filterItem, 0)) !== inOut;
     });
 };
 
@@ -220,7 +221,7 @@ ParseData.prototype.getFilteredData = function(filterConf, array, data) {
                 if ( !(filterObj && filterObj.forceTags && _this.filterTags(value, true, filterObj.forceTags)) )  {
                     return;
                 }
-            };
+            }
 
             if (array) {
                 output.push(value);

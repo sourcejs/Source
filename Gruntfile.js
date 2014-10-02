@@ -38,6 +38,7 @@ module.exports = function(grunt) {
             // routing files are added into exceptions to avoid adding extra rules for express framework
             core: ["core/**/*.js", "!core/routes/*.js"]
         },
+
         copy: {
             js: {
                 expand: true,

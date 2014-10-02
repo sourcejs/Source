@@ -12,16 +12,18 @@
 define([
     'jquery',
     'sourceModules/module',
-    'text!/api/specs/raw'
-], function ($, module, data) {
+    'text!/api/specs/raw'], function ($, module, data) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
     }
 
+    /* наследуем от Module */
     ParseFileTree.prototype = module.createInstance();
     ParseFileTree.prototype.constructor = ParseFileTree;
 
+    //getSpecificCat = a || [a,b] - Get only listed category, categories
+    //getCatInfo = bool - Turn on cat info parsing
     /**
      * Abstract pages tree parser
      *
@@ -70,7 +72,7 @@ define([
                 if (typeof targetSubCatObj === 'object') {
 
                     //Need to collect only spec pages objects
-                    if ( checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && checkCat(currentCat, getSpecificCat, toCheckCat) ) {
+                    if ( _this.checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && _this.checkCat(currentCat, getSpecificCat, toCheckCat) ) {
                         //Checking if object is already there
                         if (typeof fileTree[currentSubCat] !== 'object') {
                             fileTree[currentCat + '/' + currentSubCat] = targetSubCatObj;
@@ -123,7 +125,7 @@ define([
                                     }
                                 }
 
-                        } else if (checkCat(currentCat, getSpecificCat, toCheckCat)) {
+                        } else if (_this.checkCat(currentCat, getSpecificCat, toCheckCat)) {
                             //Turn off cat checking in this process, to get all inner folders
 
                             //Except other cats in specific cat search mode
@@ -163,7 +165,7 @@ define([
 
     };
 
-    var checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
+    ParseFileTree.prototype.checkCatInfo = function (targetSubCatObj, currentSubCat, getCatInfo) {
         if (targetSubCatObj) {
 
             //If cat info needed

@@ -1,7 +1,8 @@
+'use strict';
+
 // modules
 var fs = require('fs');
 var url = require('url');
-var path = require('path'););
 
 module.exports = function reply(req, res, next) {
 
@@ -20,7 +21,7 @@ module.exports = function reply(req, res, next) {
         }
 
         var placeHolder = "<%clarifyBody%>";
-        if (tpl != undefined) {
+        if (tpl !== undefined) {
             try {
 
                 try {
@@ -58,7 +59,8 @@ module.exports = function reply(req, res, next) {
         var pathArr = pathStr.split("/");
         var htmlJSON = require("../../html.json");
 
-        for (var i = 0; i < pathArr.length; i++) {
+        var i;
+        for (i = 0; i < pathArr.length; i++) {
             var path = pathArr[i];
             htmlJSON = htmlJSON[path];
         }
@@ -66,7 +68,7 @@ module.exports = function reply(req, res, next) {
         var sections = htmlJSON.specFile.contents;
         var clientHTMLObj = {};
 
-        for (var i = 0; i < sections.length; i++) {
+        for (i = 0; i < sections.length; i++) {
             var sec = sections[i];
             if (sectionsID.indexOf(sec.id.toString())>-1) {
                 clientHTMLObj[sec.id] = sec.html;

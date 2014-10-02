@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Flatten given data
  *
@@ -20,11 +22,11 @@ module.exports = function(data) {
             var newKey = prev ? prev + keyAppend : key;
 
             if (typeof value === 'object' && !isSpecFile) {
-                return step(value, newKey)
+                return step(value, newKey);
             }
 
             output[newKey] = value;
-        })
+        });
     };
     step(_data);
 

@@ -67,7 +67,7 @@ var fileTree = function (dir) {
     //on first call we add includedDirs
     if (dir === config.sourceRoot) {
         config.includedDirs.map(function (includedDir) {
-            dirContent.push(includedDir)
+            dirContent.push(includedDir);
         });
     }
 
@@ -149,7 +149,7 @@ var writeDataFile = function (callback) {
         try {
             fs.mkdirpSync(outputPath);
         } catch (e) {
-            if (e.code != 'EEXIST') {
+            if (e.code !== 'EEXIST') {
                 global.log.warn("Could not set up data directory for Pages Tree, error: ", e);
 
                 if (typeof callback === 'function') callback(e);

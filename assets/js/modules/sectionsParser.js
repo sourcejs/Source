@@ -1,4 +1,7 @@
 function SourceGetSections() {
+    // Defining strict inside func, because PhantomJS stops evaluating this script if it's on top
+    'use strict';
+
     var config = {
             // include params from opt@argument first
             code: 'source_example',
@@ -17,7 +20,6 @@ function SourceGetSections() {
         root = false
         ;
 
-// add attemps limit
     function getSections() {
         sections = [].slice.call(document.getElementsByClassName(config.h2));
 
@@ -32,11 +34,8 @@ function SourceGetSections() {
         }
         else {
             return JSON.stringify([{
-                "error": "Spec page parsing error.",
-                "url": url
+                "error": "Spec page parsing error."
             }]);
-
-            setTimeout(getSections, 200);
         }
     }
 
@@ -52,8 +51,6 @@ function SourceGetSections() {
         if (section.next){
             elem = (elem)? elem.nextElementSibling : null;
         }
-
-//        console.log('Spec starts...#level', elem);
 
         // this.html = getHTML(elem); // @Array with code
         // this.ID = returnId();
@@ -82,11 +79,11 @@ function SourceGetSections() {
                 this.html.push(getHTML(elem));
             }
             else if (flag === 'H3') {
-                if (prevFlag == 'H4') {
+                if (prevFlag === 'H4') {
                     root = true;
                 }
 
-                if (prevFlag == 'H3' || prevFlag == 'H4') {
+                if (prevFlag === 'H3' || prevFlag === 'H4') {
                     prevFlag = null;
                     elem = elem.previousElementSibling;
                     break;
@@ -97,14 +94,14 @@ function SourceGetSections() {
                 this.nested.push(new Spec({header: getHeader(elem), next: true}));
             }
             else if (flag === 'H4') {
-                if (prevFlag == flag) {
+                if (prevFlag === flag) {
                     prevFlag = null;
                     elem = elem.previousElementSibling;
                     break;
                 }
                 _h4++;
                 prevFlag = flag;
-                this.nested.push(new Spec({header: getHeader(elem), next: true}))
+                this.nested.push(new Spec({header: getHeader(elem), next: true}));
             }
 
             if (elem) elem = elem.nextElementSibling;
@@ -112,9 +109,9 @@ function SourceGetSections() {
     }
 
 // HELPERS
-    function returnId() {
-        return [_h2, _h3, _h4].join('.');
-    }
+//    function returnId() {
+//        return [_h2, _h3, _h4].join('.');
+//    }
 
     function getHeader(elem) {
         return elem.innerText || 'API: cannot get header.';
@@ -129,19 +126,19 @@ function SourceGetSections() {
     }
 
     function isH2(tag, cls) {
-        return (tag == 'H2' && cls.match(RegExp('\\b'+ config.h2 + '\\b')))? 'H2' : false;
+        return (tag === 'H2' && cls.match(new RegExp('\\b'+ config.h2 + '\\b')))? 'H2' : false;
     }
 
-    function isH3(tag, cls) {
-        return (tag == 'H3')? 'H3' : false;
+    function isH3(tag) {
+        return (tag === 'H3')? 'H3' : false;
     }
 
-    function isH4(tag, cls) {
-        return (tag == 'H4')? 'H4': false;
+    function isH4(tag) {
+        return (tag === 'H4')? 'H4': false;
     }
 
     function isCode(tag, cls) {
-        return ((tag == 'SECTION' || tag == 'DIV') && cls.match(RegExp('\\b'+ config.code + '\\b')))? 'CODE' : false;
+        return ((tag === 'SECTION' || tag === 'DIV') && cls.match(new RegExp('\\b'+ config.code + '\\b')))? 'CODE' : false;
     }
 
     /* Start parser */
@@ -149,5 +146,7 @@ function SourceGetSections() {
 }
 
 SourceGetSections.prototype.get = function(){
+    'use strict';
+
     return this.output;
 };

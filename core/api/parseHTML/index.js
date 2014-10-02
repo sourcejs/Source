@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var fs = require('fs-extra');
 var async = require('async');
@@ -6,7 +8,6 @@ var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var deepExtend = require('deep-extend');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
-var log = logger.log;
 
 var processFlagNotExec = true;
 
@@ -68,8 +69,8 @@ var apiLog = (function(){
  * @returns {Array} Returns array with spec URLs
  */
 var getSpecsList = function() {
-    var parseData = require(path.join(global.pathToApp,'core/api/parseData'));
-    var parseSpecs = new parseData({
+    var ParseData = require(path.join(global.pathToApp,'core/api/parseData'));
+    var parseSpecs = new ParseData({
         scope: 'specs',
         path: require.resolve(config.pathToSpecs)
     });
@@ -172,7 +173,7 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
         try {
             fs.mkdirpSync(path.dirname(dataStoragePath));
         } catch (e) {
-            if (e.code != 'EEXIST') {
+            if (e.code !== 'EEXIST') {
                 apiLog.warn("Could not set up HTML data directory, error: ", e);
 
                 if (typeof callback === 'function') callback('ERROR: error creating data directory', null);
@@ -248,7 +249,7 @@ module.exports.deleteFromDataFile = function(dataPath, removeID, callback) {
         } else {
             var errorMsg = 'No initial HTML data to delete from';
 
-            apiLog.warn(errorMsg, e);
+            apiLog.warn(errorMsg);
             if (typeof callback === 'function') callback(errorMsg, null);
         }
     } else {
@@ -266,7 +267,7 @@ module.exports.deleteFromDataFile = function(dataPath, removeID, callback) {
  */
 var processSpecs = module.exports.processSpecs = function(specs, callback){
     if (processFlagNotExec) {
-        apiLog.info('HTML API update started')
+        apiLog.info('HTML API update started');
 
         var _specs = specs || getSpecsList();
         var specsLeft = _specs.slice(0);
@@ -332,7 +333,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                     apiLog.debug('HTML Parser stdout parse error: ', e);
                     parsedStdout = {
                         message: "Stdout parse error"
-                    }
+                    };
                 }
 
                 apiLog.debug('Spec done: ', JSON.stringify({
@@ -355,13 +356,13 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             doneCounter++;
 
-            if (doneCounter == specLength) {
+            if (doneCounter === specLength) {
                 var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
 
                 writeDataFile(outputData, true, false, callbackProxy);
                 if (typeof callback === 'function') callback(outputData);
             }
-        }
+        };
     }
 };
 
