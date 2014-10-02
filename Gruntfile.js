@@ -1,3 +1,4 @@
+'use strict';
 var path = require('path');
 var loadOptions = require('./core/loadOptions');
 var pathToApp = path.resolve('./');
@@ -27,6 +28,16 @@ module.exports = function(grunt) {
             ]
         },
 
+        jshint: {
+            options: {
+                jshintrc: ".jshintrc"
+            },
+            gruntfile: ["Gruntfile.js"],
+            modules: ["assets/js/modules/**/*.js"],
+            libs: ["assets/js/libs/**/*.js"],
+            // routing files are added into exceptions to avoid adding extra rules for express framework
+            core: ["core/**/*.js", "!core/routes/*.js"]
+        },
         copy: {
             js: {
                 expand: true,
@@ -123,7 +134,7 @@ module.exports = function(grunt) {
                 files: [
                     'assets/css/**/*.less'
                 ],
-                tasks: ['less'],
+                tasks: ['less', 'autoprefixer'],
                 options: {
                     nospawn: true
                 }
@@ -132,12 +143,25 @@ module.exports = function(grunt) {
                 files: [
                     'assets/js/**/*.js'
                 ],
-                tasks: ['resolve-js-bundles'],
+                tasks: ['jshint:modules', 'resolve-js-bundles'],
                 options: {
                     nospawn: true
                 }
             }
         },
+
+        autoprefixer: {
+            options: {
+                cascade: false,
+                browsers: ['last 2 version']
+            },
+            main: {
+                expand: true,
+                dest: 'build',
+                cwd: 'build',
+                src: ['**/*.css']
+            }
+        }
     });
 
 
@@ -153,7 +177,7 @@ module.exports = function(grunt) {
             (grunt.task.current.args[0] === 'prod' && grunt.file.read('build/last-run') === 'dev' || grunt.task.current.args[0] === 'dev' && grunt.file.read('build/last-run') === 'prod')
             ) {
 
-            grunt.task.run('clean:build')
+            grunt.task.run('clean:build');
         } else {
             console.log('Skipping clean build dir');
         }
@@ -182,6 +206,7 @@ module.exports = function(grunt) {
                 grunt.template.process(grunt.file.read(pathToFile), {
                     delimiters: 'customBundleDelimiter',
                     data: {
+                        // npmPluginsEnabled object is filled from loadOptions.js
                         npmPluginsEnabled: JSON.stringify(gruntOpts.assets.npmPluginsEnabled, null, 4)
                     }
                 })
@@ -209,15 +234,17 @@ module.exports = function(grunt) {
         'clean-build:dev',
         'resolve-js-bundles',
         'less:main',
+        'autoprefixer',
         'last-dev'
     ]);
-    grunt.registerTask('default', ['update']);
+    grunt.registerTask('default', ['jshint', 'update']);
 
     // Prod build, path to minified resources is routed by nodejs server
     grunt.registerTask('build', [
         'clean-build:prod',
 
         'less:main',
+        'autoprefixer',
         'newer:cssmin:build',
         'newer:cssmin:user',
         'resolve-js-bundles',

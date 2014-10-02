@@ -7,10 +7,13 @@
 *
 * */
 
+'use strict';
+
 define([
     'jquery',
     'sourceModules/module',
-    'text!/api/specs/raw'], function ($, module, data) {
+    'text!/api/specs/raw'
+], function ($, module, data) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
@@ -29,14 +32,39 @@ define([
      * @deprecated since version 0.4, use REST API instead
      */
     ParseFileTree.prototype.parsePages = function (getSpecificCat, getCatInfo) {
-        var _this = this,
-            json = _this.json,
-            getSpecificCat = getSpecificCat,
-            fileTree = {},
-            totalTree = {};
+        var _this = this;
+        var json = _this.json;
+        var fileTree = {};
+        var totalTree = {};
 
         var searchCat = function(currentCatObj, currentCat, toCheckCat) {
+
+            var returnObject = function(returnedTreeObj, excludeRootDocument) {
+                var isSingle = false;
+                if (getSpecificCat.indexOf('specFile') === -1) {
+                    for (var innerCat in returnedTreeObj) {
+                        if ( _this.checkCatInfo(returnedTreeObj[innerCat], innerCat, getCatInfo) ) {
+                            if (innerCat === 'specFile' && (!excludeRootDocument)) {
+                                fileTree[innerCat] = {};
+                                fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
+                            } else {
+                                fileTree[innerCat] = returnedTreeObj[innerCat];
+                            }
+                        }
+                    }
+                } else {
+                    fileTree['specFile'] = {};
+                    fileTree['specFile']['specFile'] = returnedTreeObj;
+                    isSingle = true;
+                }
+                return isSingle;
+            };
+
+            /*jshint forin: false */
             for (var currentSubCat in currentCatObj) {
+                if (!currentCatObj.hasOwnProperty(currentSubCat)) {
+                    continue;
+                }
                 var targetSubCatObj = currentCatObj[currentSubCat];
 
                 if (typeof targetSubCatObj === 'object') {
@@ -44,7 +72,7 @@ define([
                     //Need to collect only spec pages objects
                     if ( checkCatInfo(targetSubCatObj, currentSubCat, getCatInfo) && checkCat(currentCat, getSpecificCat, toCheckCat) ) {
                         //Checking if object is already there
-                        if (typeof fileTree[currentSubCat] != 'object') {
+                        if (typeof fileTree[currentSubCat] !== 'object') {
                             fileTree[currentCat + '/' + currentSubCat] = targetSubCatObj;
                         }
 
@@ -53,38 +81,18 @@ define([
 
                         if (getSpecificCat) { getSpecificCat = getSpecificCat.replace(/index.html/i, 'specFile'); }
 
+                        var returnedTreeObj;
                         // complex/paths/handles/here
                         if ( (getSpecificCat !== undefined) && (getSpecificCat.indexOf('/') !== -1) ) {
-                                var getSpecificCatArr = getSpecificCat.split('/'),
-                                    success = true;
+                                var getSpecificCatArr = getSpecificCat.split('/');
+                                var success = true;
 
-                                if (getSpecificCatArr[ getSpecificCatArr.length-1 ] == '') {
+                                if (getSpecificCatArr[ getSpecificCatArr.length-1 ] === '') {
                                     getSpecificCatArr.pop();
                                 }
 
-                                var returnObject = function(returnedTreeObj, excludeRootDocument) {
-                                    var isSingle = false;
-                                    if (getSpecificCat.indexOf('specFile') === -1) {
-                                        for (innerCat in returnedTreeObj) {
-                                            if ( checkCatInfo(returnedTreeObj[innerCat], innerCat, getCatInfo) ) {
-                                                if (innerCat == 'specFile' && (!excludeRootDocument)) {
-                                                    fileTree[innerCat] = {};
-                                                    fileTree[innerCat]['specFile'] = returnedTreeObj[innerCat];
-                                                } else {
-                                                    fileTree[innerCat] = returnedTreeObj[innerCat];
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        fileTree['specFile'] = {};
-                                        fileTree['specFile']['specFile'] = returnedTreeObj;
-                                        isSingle = true;
-                                    }
-                                    return isSingle;
-                                };
-
                                 // absolute path
-                                if (getSpecificCat.indexOf('/') == 0) {
+                                if (getSpecificCat.indexOf('/') === 0) {
                                     returnedTreeObj = _this.json;
 
                                     for (var i = 1; i < getSpecificCatArr.length; i++) {
@@ -96,18 +104,18 @@ define([
                                 } else {
                                     //relative path
 
-                                    var	currentCheckCat = currentSubCat,
-                                        returnedTreeObj = currentCatObj;
+                                    var currentCheckCat = currentSubCat;
+                                    returnedTreeObj = currentCatObj;
 
-                                    for (var i = 0; i < getSpecificCatArr.length; i++) {
-                                        if (checkCat(currentCheckCat, getSpecificCatArr[i])) {
-                                            currentCheckCat = getSpecificCatArr[i+1];
+                                    for (var j = 0; j < getSpecificCatArr.length; j++) {
+                                        if (_this.checkCat(currentCheckCat, getSpecificCatArr[j])) {
+                                            currentCheckCat = getSpecificCatArr[j + 1];
                                         } else {
                                             success = false;
                                             break;
                                         }
 
-                                        returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
+                                        returnedTreeObj = returnedTreeObj[ getSpecificCatArr[j] ];
                                     }
 
                                     if (success) {
@@ -141,12 +149,12 @@ define([
 
         //Parse first level folders
         for (var currentCat in json) {
-            var currentCatObj = json[currentCat];
-
-            //Go inside first level folders
-            searchCat(currentCatObj, currentCat);
-
-            totalTree = $.extend(totalTree, fileTree);
+            if (json.hasOwnProperty(currentCat)) {
+                var currentCatObj = json[currentCat];
+                //Go inside first level folders
+                searchCat(currentCatObj, currentCat);
+                totalTree = $.extend(totalTree, fileTree);
+            }
         }
 
         if (Object.getOwnPropertyNames(fileTree).length > 0) {
@@ -168,11 +176,7 @@ define([
         }
     };
 
-    var checkCat = function (currentCat, getSpecificCat, toCheckCat) {
-        var getSpecificCat = getSpecificCat,
-            currentCat = currentCat,
-            toCheckCat = toCheckCat;
-
+    ParseFileTree.prototype.checkCat = function (currentCat, getSpecificCat, toCheckCat) {
         var checkCat = function() {
 
             //Multiple check cat support
@@ -205,7 +209,7 @@ define([
             return true;
         } else {
             //Check if cat checking is set
-            if (typeof getSpecificCat != 'undefined') {
+            if (typeof getSpecificCat !== 'undefined') {
                 return checkCat();
             } else {
                 return true;
@@ -221,7 +225,7 @@ define([
      * @deprecated since version 0.4, use REST API instead
      */
     ParseFileTree.prototype.getParsedJSON = function() {
-    	return this.json;
+        return this.json;
     };
 
     /**
@@ -233,15 +237,15 @@ define([
      */
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
-        var fileTree = this.parsePages(),
-        	fileFlat = {},
-        	_this = this;
+        var fileTree = this.parsePages();
+        var fileFlat = {};
+        var _this = this;
 
         var lookForIndexOrGoDeeper = function(tree) {
-			for (folder in tree) {
+            for (var folder in tree) {
 
-				if (typeof tree[folder] === 'object') {
-					if ( !checkCatInfo(tree[folder]) ) {
+                if (typeof tree[folder] === 'object') {
+                    if ( !_this.checkCatInfo(tree[folder]) ) {
 
                         // Don't add specs without a title (or info.json)
                         if (tree['specFile'].title) {
@@ -249,11 +253,11 @@ define([
                             fileFlat[fullPath] = tree;
                         }
 
-					} else {
-						lookForIndexOrGoDeeper( tree[folder] );
-					}
-				}
-			}
+                    } else {
+                        lookForIndexOrGoDeeper( tree[folder] );
+                    }
+                }
+            }
         };
 
         lookForIndexOrGoDeeper(fileTree);
@@ -284,6 +288,36 @@ define([
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
         //Get cat pages with cat info
         return this.parsePages(getSpecificCat, true);
+    };
+
+    var getCurrCatalogSpec = function(navListDir, targetCatalog) {
+        var catObj;
+        if (!!targetCatalog[navListDir + '/specFile']) {
+            catObj = targetCatalog[navListDir + '/specFile'];
+        } else if (!!targetCatalog[ 'specFile' ]) {
+            catObj = targetCatalog['specFile']['specFile']
+                ? targetCatalog['specFile']['specFile']
+                : targetCatalog['specFile'];
+        }
+        return catObj;
+    };
+
+    ParseFileTree.prototype.getCurrentCatalogSpec = function(catalogName) {
+        if (!catalogName) return;
+        var specsHash = this.parsePages(catalogName, true);
+        return getCurrCatalogSpec(catalogName, specsHash);
+    };
+
+    ParseFileTree.prototype.getSortedCatalogsArray = function(catalogName, sortingCallback) {
+        if (catalogName === undefined) return;
+        var specsHash = catalogName.length
+            ? this.parsePages(catalogName, true)
+            : this.getAllPages();
+        var result = $.map(specsHash, function(k, v) {
+            k['name'] = v;
+            return k['specFile'] ? [k] : undefined;
+        });
+        return result.sort(sortingCallback);
     };
 
     return new ParseFileTree();

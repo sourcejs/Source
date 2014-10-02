@@ -3,6 +3,8 @@ define([
 	'sourceModules/utils'
 	], function (module, u) {
 
+    'use strict';
+
     function ModuleLoader() {
         this.loadModules('modules');
         this.loadModules('plugins');
@@ -14,9 +16,9 @@ define([
     ModuleLoader.prototype.constructor = ModuleLoader;
 
     ModuleLoader.prototype.loadModules = function(type){
-        var path,
-            typeEnabled,
-            optionsBase = this.options;
+        var path;
+        var typeEnabled;
+        var optionsBase = this.options;
 
         // Override options with exceptions
         var isNav = $('meta[name=source-page-role]').attr('content') === 'navigation';
@@ -40,11 +42,13 @@ define([
         }
 
         if (typeof optionsBase[typeEnabled] !== 'undefined'){
-            for(var item in optionsBase[typeEnabled]){
-                var targetObj = optionsBase[typeEnabled][item];
+            for(var item in optionsBase[typeEnabled]) {
+                if (optionsBase[typeEnabled].hasOwnProperty(item)) {
+                    var targetObj = optionsBase[typeEnabled][item];
 
-                if (targetObj){
-                    require([path + item]);
+                    if (targetObj){
+                        require([path + item]);
+                    }
                 }
             }
         }

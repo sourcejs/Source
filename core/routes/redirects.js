@@ -2,9 +2,9 @@
     This file contains default redirects, to add custom redirects user /public/user/core/routes/index.js
 */
 
-var path = require('path'),
-    express = require('express'),
-    pathToApp = path.dirname(require.main.filename);
+var path = require('path');
+var express = require('express');
+var pathToApp = path.dirname(require.main.filename);
 
 // First, check if there's minified assets
 global.app.use('/source/assets', express.static(pathToApp + '/build/assets'));

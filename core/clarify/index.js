@@ -1,8 +1,7 @@
 // modules
-var
-	fs = require('fs'),
-	url = require('url'),
-	path = require('path');
+var fs = require('fs');
+var url = require('url');
+var path = require('path'););
 
 module.exports = function reply(req, res, next) {
 

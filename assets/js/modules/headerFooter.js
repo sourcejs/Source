@@ -1,4 +1,7 @@
 define(["source/load-options"], function(options) {
+
+    'use strict';
+
     if(options.modulesEnabled.headerFooter) {
         var headerExists = $(".source_header").length;
         var footerExists = $(".source_footer").length;
@@ -20,10 +23,12 @@ define(["source/load-options"], function(options) {
                 source_container.append($('<div class="source_main source_col-main" role="main">Welcome to Source!</div>'));
             }
 
-            var insertHeader = function(data) { $('.source_header').replaceWith(data.responseText);}
+            var insertHeader = function(data) {
+                $('.source_header').replaceWith(data.responseText);
+            };
 
-            var headerFile = 'header.inc.html',
-                footerFile = 'footer.inc.html';
+            var headerFile = 'header.inc.html';
+            var footerFile = 'footer.inc.html';
 
             $.ajax({
                 url:"/assets/templates/"+headerFile,
@@ -43,7 +48,9 @@ define(["source/load-options"], function(options) {
                 }
             });
 
-            var insertFooter = function(data) { $('.source_footer').replaceWith(data.responseText); }
+            var insertFooter = function(data) {
+                $('.source_footer').replaceWith(data.responseText);
+            };
 
             $.ajax({
                 url:"/assets/templates/"+footerFile,

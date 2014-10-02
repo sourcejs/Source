@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs-extra');
 var extend = require('extend');
 var deepExtend = require('deep-extend');
@@ -71,9 +73,7 @@ var fileTree = function (dir) {
 
     dirContent.forEach(function (pathToFile) {
         // Path is excluded
-        if (excludes.test(dir)) {
-            return
-        }
+        if (excludes.test(dir)) {return;}
 
         var targetFile = path.basename(pathToFile);
         var urlToFile = pathToFile;
@@ -97,14 +97,15 @@ var fileTree = function (dir) {
 
         } else if (isSpec(targetFile)) {
             var page = {};
+            var urlForJson;
 
             // If starts with root
             if (urlFromHostRoot.lastIndexOf(config.sourceRoot, 0) === 0) {
                 // Clean of from path
-                var urlForJson = urlFromHostRoot.replace(config.sourceRoot, '');
+                urlForJson = urlFromHostRoot.replace(config.sourceRoot, '');
             } else {
                 // Making path absolute
-                var urlForJson = '/' + urlFromHostRoot;
+                urlForJson = '/' + urlFromHostRoot;
             }
 
             //Removing filename from path
@@ -123,9 +124,9 @@ var fileTree = function (dir) {
 
                 deepExtend(page, fileJSON);
             }
-
-            if (fs.existsSync(dir + '/thumbnail.png')) {
-                page.thumbnail = true;
+            var thmumbPath = dir + '/thumbnail.png';
+            if (fs.existsSync(thmumbPath)) {
+                page.thumbnail = thmumbPath.split('/').splice(1).join('/');
             }
 
             outputJSON['specFile'] = extend(page);

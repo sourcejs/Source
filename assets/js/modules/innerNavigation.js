@@ -1,3 +1,5 @@
+'use strict';
+
 define([
     "jquery",
     "sourceModules/module",

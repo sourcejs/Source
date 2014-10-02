@@ -6,8 +6,6 @@
 	position:relative;
 
 	display: inline-block;
-	*display: inline;
-	*zoom: 1;
 	padding: 4px 17px;
 
 	background-color:#65A7D6;
@@ -18,13 +16,14 @@
 	font-weight:normal;
 	text-decoration:none;
 	font-size: 12px;
+
+    &:hover {
+        background-color: #5B9ECB;
+        }
+    &:active {
+        top:1px;
+        }
 	}
-	.source_btn:hover {
-		background-color: #5B9ECB;
-		}
-	.source_btn:active {
-		top:1px;
-		}
 
 /* /Buttons
 ---------------------------------------------------------------------------------- */

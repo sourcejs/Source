@@ -1,5 +1,7 @@
 define(["source/load-options"], function (options) {
 
+    'use strict';
+
     function Module() {
         this.options = {};
         this.setOptions(this.loadOptions());
@@ -10,7 +12,8 @@ define(["source/load-options"], function (options) {
     };
 
     Module.prototype.setOptions = function (opts) {
-        return this.options = opts;
+        this.options = opts;
+        return this.options;
     };
 
     Module.prototype.getOptions = function () {
@@ -22,7 +25,7 @@ define(["source/load-options"], function (options) {
     };
 
     Module.prototype.createInstance = function () {
-        return new this.constructor;
+        return new this.constructor();
     };
 
     return new Module();

@@ -1,44 +1,47 @@
 //In separate module, to trace script ready state
 define([
-	"jquery",
+    "jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",
     "sourceModules/sectionFolding"
     ], function($, utils, loadEvents) {
-    var navHash = utils.parseNavHash(),
-	    $sections = $('.source_section'),
-	    $navigation = $('.source_nav'),
-	    $mainContainer = $('.source_main'),
-	    $body = $('body');
 
-	// Show hidden sections and navigation
-	function showSections() {
-		$sections.addClass('__loaded');
-		$navigation.addClass('__loaded');
-		$mainContainer.removeClass('__loading');
-		$body.removeClass('__loading');
-	}
+    'use strict';
 
-	$mainContainer.addClass('__loading');
-	$body.addClass('__loading');
+    var navHash = utils.parseNavHash();
+    var $sections = $('.source_section');
+    var $navigation = $('.source_nav');
+    var $mainContainer = $('.source_main');
+    var $body = $('body');
 
-	loadEvents.init(function() {
-		showSections();
+    // Show hidden sections and navigation
+    function showSections() {
+        $sections.addClass('__loaded');
+        $navigation.addClass('__loaded');
+        $mainContainer.removeClass('__loading');
+        $body.removeClass('__loading');
+    }
 
-		// Chrome scroll bug
-		if ($('html').hasClass('webkit')) {
+    $mainContainer.addClass('__loading');
+    $body.addClass('__loading');
 
-			var t = setInterval(function() {
-				if (window.pageYOffset != 0) {
-					clearInterval(t);
-				}
+    loadEvents.init(function() {
+        showSections();
 
-				window.scrollTo(0, 1);
-				utils.scrollToSection(navHash);
-			}, 100)
-		} else {
-			utils.scrollToSection(navHash);
-		}
-	});
+        // Chrome scroll bug
+        if ($('html').hasClass('webkit')) {
+
+            var t = setInterval(function() {
+                if (window.pageYOffset !== 0) {
+                    clearInterval(t);
+                }
+
+                window.scrollTo(0, 1);
+                utils.scrollToSection(navHash);
+            }, 100);
+        } else {
+            utils.scrollToSection(navHash);
+        }
+    });
 
 });

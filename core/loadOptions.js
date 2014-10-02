@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(basePath){
     var path = require('path');
     var pathToApp = basePath || path.dirname(require.main.filename);
@@ -8,12 +10,12 @@ module.exports = function(basePath){
         return require(module);
     };
     var coreSettings = requireUncached(path.join(pathToApp,'options'));
-    var pathToUser = path.join(pathToApp, coreSettings.core.common.pathToUser)
+    var pathToUser = path.join(pathToApp, coreSettings.core.common.pathToUser);
 
     // Using specific path to specs parsing, because we don't have global.opts yet
     // TODO: check case when path to user folder is redefined
-    var userSettingsFile = path.join(pathToUser, 'options.js'),
-        userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
+    var userSettingsFile = path.join(pathToUser, 'options.js');
+    var userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
 
     var prepareClientNpmPlugins = function() {
         var pathToModules = path.join(pathToUser, 'node_modules');
@@ -24,7 +26,8 @@ module.exports = function(basePath){
         if (fs.existsSync(pathToModules)) {
             var allModules = fs.readdirSync(pathToModules);
             allModules.map(function (module) {
-                if (module.lastIndexOf('sourcejs-', 0) === 0) {
+                // Check if module has right namespace AND assets/index.js file
+                if (module.lastIndexOf('sourcejs-', 0) === 0 && fs.existsSync(path.join(pathToModules, module, 'assets/index.js'))) {
                     clientNpmPlugins.assets.npmPluginsEnabled[module] = true;
                 }
             });
