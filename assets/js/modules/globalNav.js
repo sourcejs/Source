@@ -308,7 +308,7 @@ define([
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
         var author = itemData.author
-            ? " | " + navConfig.author + ": " + itemData.author
+            ? " | " + navConfig.labels.author + ": " + itemData.author
             : "";
 
         // fixing relative path due to server settings
