@@ -9,22 +9,22 @@ var userTemplatesDir = global.app.get('user') + "/core/views/";
 var coreTemplatesDir = pathToApp + "/core/views/";
 
 /**
- * Get template: default or user-defined if it exists.
+ * Get full path to template: default or user-defined if it exists.
  *
  *
  * @param {string} name - Template name
  * @returns {string}
  * */
-function getTemplate(name) {
-    var output;
+function getTemplateFullPath (name) {
+    var pathToTemplate;
 
     if (fs.existsSync(userTemplatesDir + name)) {
-        output = fs.readFileSync(userTemplatesDir + name, "utf-8");
+        pathToTemplate = userTemplatesDir + name;
     } else {
-        output = fs.readFileSync(coreTemplatesDir + name, "utf-8");
+        pathToTemplate = coreTemplatesDir + name;
     }
 
-    return output;
+    return pathToTemplate;
 }
 
 /**
@@ -47,14 +47,15 @@ exports.process = function (req, res, next) {
         var headerFooterHTML = getHeaderAndFooter();
 
         // choose the proper template, depending on page type
-        var template;
+        var template, templatePath;
         if (info.template) {
-            template = getTemplate(info.template + '.ejs');
+            templatePath = getTemplateFullPath(info.template + ".ejs");
         } else if (info.role === 'navigation') {
-            template = getTemplate("navigation.ejs");
+            templatePath = getTemplateFullPath("navigation.ejs");
         } else {
-            template = getTemplate("spec.ejs");
+            templatePath = getTemplateFullPath("spec.ejs");
         }
+        template = fs.readFileSync(templatePath, "utf-8");
 
         // if the following fields are not set, set them to defaults
         info.title = info.title ? info.title : "New spec";
@@ -66,7 +67,8 @@ exports.process = function (req, res, next) {
             content : data,
             header  : headerFooterHTML.header,
             footer  : headerFooterHTML.footer,
-            info    : info
+            info    : info,
+            filename: templatePath
         };
 
         // render page and send it as response
