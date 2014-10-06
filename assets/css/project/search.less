@@ -29,12 +29,11 @@
 
 	border: 0 none;
 	line-height: 15px;
-	font-size: 14px;
 	background: #000 url(/source/assets/i/search.png) no-repeat 8px 50%;
 
 	box-sizing: border-box;
 
-    color: #999;
+    color: @gray;
 
 	/* Resets */
 	display: block;
@@ -46,13 +45,17 @@
 	transition: none;
 
 	font-weight: 400;
-	font: 14px/1.5 Arial, Helvetica, sans-serif;
+	font-family: @font-family-main;
+	font-size: 14px;
+	line-height: 1.5;
+
 	vertical-align: middle;
 	}
-    .source_container input.source_search_it:focus {
-        background: #fff url(/source/assets/i/search.png) no-repeat 8px 50%;
-		color: #333;
-		}
+
+.source_container input.source_search_it:focus {
+	background: #fff url(/source/assets/i/search.png) no-repeat 8px 50%;
+	color: @black;
+	}
 
 /* /Search
 ---------------------------------------------------------------------------------- */
