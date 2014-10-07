@@ -143,6 +143,19 @@ module.exports = function(grunt) {
                 cwd: 'build',
                 src: ['**/*.css']
             }
+        },
+        shipit: {
+            options: {
+                workspace: './',
+                repositoryUrl: 'https://github.com/sourcejs/Source.git',
+                ignores: ['.git', 'node_modules'],
+                keepReleases: 3
+            },
+            staging: {
+                branch: 'source/staging',
+                deployTo: '~/staging/Source',
+                servers: 'okp@myserver.com'
+            }
         }
     });
 
