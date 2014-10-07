@@ -113,6 +113,7 @@ var fileTree = function (dir) {
             urlForJson.pop();
             urlForJson = urlForJson.join('/');
 
+            page.id = urlForJson.substring(1);
             page.url = urlForJson || '';
             page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
             page.lastmodSec = Date.parse(fileStats.mtime) || '';

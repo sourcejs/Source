@@ -1,5 +1,5 @@
 /*
-    This file contains default redirects, to add custom redirects user /public/user/core/routes/index.js
+    This file contains default redirects, to add custom redirects user /user/core/routes/index.js
 */
 
 var path = require('path');
