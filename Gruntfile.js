@@ -154,7 +154,7 @@ module.exports = function(grunt) {
             staging: {
                 branch: 'source/staging',
                 deployTo: '~/staging/Source',
-                servers: 'okp@myserver.com'
+                servers: 'okp@172.19.57.74'
             }
         }
     });
