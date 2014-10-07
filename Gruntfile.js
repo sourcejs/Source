@@ -149,6 +149,7 @@ module.exports = function(grunt) {
                 workspace: ".",
                 ignores: ['.git', 'node_modules'],
                 keepReleases: 3,
+                repositoryUrl: 'https://github.com/sourcejs/Source.git',
                 servers: 'okp@172.19.57.74'
             },
             test: {
@@ -156,7 +157,6 @@ module.exports = function(grunt) {
             },
             staging: {
                 branch: 'source/staging',
-                repositoryUrl: 'https://github.com/sourcejs/Source.git',
                 deployTo: '~/builds/staging'
             }
         }
