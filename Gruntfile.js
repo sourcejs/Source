@@ -146,19 +146,37 @@ module.exports = function(grunt) {
         },
         shipit: {
             options: {
-                workspace: './',
-                repositoryUrl: 'https://github.com/sourcejs/Source.git',
+                workspace: ".",
                 ignores: ['.git', 'node_modules'],
-                keepReleases: 3
+                keepReleases: 3,
+                servers: 'okp@172.19.57.74'
+            },
+            test: {
+                deployTo: '~/builds/test'
             },
             staging: {
                 branch: 'source/staging',
-                deployTo: '~/staging/Source',
-                servers: 'okp@172.19.57.74'
+                repositoryUrl: 'https://github.com/sourcejs/Source.git',
+                deployTo: '~/builds/staging'
             }
         }
     });
 
+    grunt.registerTask('remote:install', function () {
+        grunt.shipit.remote('cp -r ./* ~/test/', this.async());
+    });
+
+    grunt.registerTask('remote:restart', function () {
+        grunt.shipit.remote('service myapp restart', this.async());
+    });
+
+    grunt.shipit.on('updated', function () {
+        grunt.task.run(['remote:install']);
+    });
+
+    grunt.shipit.on('published', function () {
+        grunt.task.run(['remote:restart']);
+    });
 
     /*
     *
