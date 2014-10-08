@@ -180,14 +180,6 @@ module.exports = function(grunt) {
         grunt.shipit.remote('echo "test"', this.async());
     });
 
-    grunt.shipit.on('fetched', function () {
-        grunt.task.run(['build']);
-    });
-
-    grunt.shipit.on('updated', function () {
-        grunt.task.run(['remote:install']);
-    });
-
     grunt.shipit.on('published', function () {
         grunt.task.run(['remote:restart']);
     });
