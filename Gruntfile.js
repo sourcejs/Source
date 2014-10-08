@@ -147,7 +147,7 @@ module.exports = function(grunt) {
         shipit: {
             options: {
                 workspace: ".",
-                ignores: ['.git', 'node_modules', '*.idea', '*.iml', '*.DS_Store', 'build', 'user'],
+                ignores: ['.git', '*.idea', '*.iml', '*.DS_Store', 'build'],
                 keepReleases: 3,
                 repositoryUrl: 'https://github.com/sourcejs/Source.git',
                 servers: 'okp@172.19.57.74'
@@ -169,18 +169,14 @@ module.exports = function(grunt) {
     *
     * */
 
-    grunt.registerTask('build', 'Build project', function () {
-        //prerelease hook (can be used to check code or smth like that).
-       // grunt.shipit.local('grunt build', this.async());
-    });
-
-    grunt.registerTask('remote:install', function () {
-        var releaseDir = path.join(grunt.shipit.releasesPath, grunt.shipit.releaseDirname);
-        console.log("RELEASE DIR:", releaseDir)
-        grunt.shipit.remote('cd ' + releaseDir + ' && npm i', this.async());
-    });
-
     grunt.registerTask('remote:restart', function () {
+        grunt.shipit.remote([
+                'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
+                'npm i',
+                'echo "test"'
+            ].join(' && '),
+            this.async()
+        );
         grunt.shipit.remote('echo "test"', this.async());
     });
 
