@@ -69,6 +69,7 @@ module.exports = {
         headerClass : 'source_header',
         SECTION_CLASS : 'source_section',
         exampleSectionClass : 'source_example',
+        exampleCleanClass : 'source_clean',
         mainClass : 'source_main',
         mainNav : 'source_main_nav',
 
