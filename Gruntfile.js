@@ -170,11 +170,14 @@ module.exports = function(grunt) {
     * */
 
     grunt.registerTask('build', 'Build project', function () {
-        grunt.shipit.local('grunt build', this.async());
+        //prerelease hook (can be used to check code or smth like that).
+       // grunt.shipit.local('grunt build', this.async());
     });
 
     grunt.registerTask('remote:install', function () {
-        grunt.shipit.remote('npm i', this.async());
+        var releaseDir = path.join(grunt.shipit.releasesPath, grunt.shipit.releaseDirname);
+        console.log("RELEASE DIR:", releaseDir)
+        grunt.shipit.remote('cd ' + releaseDir + ' && npm i', this.async());
     });
 
     grunt.registerTask('remote:restart', function () {
