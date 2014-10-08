@@ -59,7 +59,9 @@ Search.prototype.prepareAutoCompleteData = function() {
             var targetPage = pagesData[page]['specFile'];
 
             var keywords = targetPage.keywords;
-            var keywordsPageName = page; //get cat name
+            var keywordsPageName = pagesData[page] && pagesData[page]['name']
+                ? pagesData[page]['name']
+                : ""; //get cat name
             var prepareKeywords = '';
             var rootFolder = page.split('/');
             var autocompleteValue = targetPage.title;

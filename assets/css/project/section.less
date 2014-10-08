@@ -15,10 +15,10 @@
 		line-height: 28px;
 		font-size: 16px;
 		font-weight: normal;
-		color: #333;
+		color: @black;
 
 		border-radius: 10px;
-		background-color: #f1f2f3;
+		background-color: @light-gray;
 
 		font-family: inherit;
 
@@ -35,10 +35,10 @@
 		outline: 3px solid red;
 		outline-offset: 3px;
 
-        &:after {
+		&:after {
 			content: " error - duplicate h2 or not first tag in section";
 			font-weight: normal;
-			color: #333;
+			color: @black;
 			}
 		}
 
@@ -69,7 +69,7 @@
 		padding: 0 5px; background: #fff;
 
         &:before {
-			color: #999;
+			color: @gray;
 			counter-increment: h3 1;
 			content: counter(h2)"."counter(h3)". ";
 			}
@@ -79,14 +79,14 @@
 		margin: 0 0 10px;
 		padding: 0;
 		font-size: 13px;
-		color: #333;
+		color: @black;
 		font-weight: normal;
 		text-indent: .5ex;
 		line-height: 1.5;
 		font-family: inherit;
 
         &:before {
-			color: #999;
+			color: @gray;
 			counter-increment: h4 1;
 			content: counter(h2)"."counter(h3)"."counter(h4)". ";
 			}
@@ -203,7 +203,7 @@
 
 	font-size: 12px !important; //override reset styles
 	text-decoration: none;
-	color: #999 !important; //important to override link style
+	color: @gray !important; //important to override link style
 
     &:after {
         content: "►";
