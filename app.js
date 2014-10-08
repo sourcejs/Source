@@ -21,7 +21,7 @@ global.opts = loadOptions();
 commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
     .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
-    .option('-html, --parseHtml', 'Turn on HTML parser on app start')
+    .option('--html', 'Turn on HTML parser on app start')
     .parse(process.argv);
 
 global.commander = commander;
@@ -38,7 +38,7 @@ var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
 
-if (commander.parseHtml) global.opts.core.parseHTML.onStart = true;
+if (commander.html) global.opts.core.parseHTML.onStart = true;
 /* /Globals */
 
 
@@ -126,15 +126,13 @@ require('./core/routes');
 require('./core/api');
 
 // User extenstions
-try {
-    /* User plugins */
-    require("./core/plugins.js");
+/* User plugins */
+require("./core/plugins.js");
 
+try {
     /* User additional functionality */
     require(global.app.get('user') + "/core/app.js");
-} catch(e){
-    log.warn("User plugins require error:", e);
-}
+} catch(e){}
 /* /Includes */
 
 
