@@ -153,7 +153,7 @@ module.exports = function(grunt) {
                 servers: 'okp@172.19.57.74'
             },
             staging: {
-                branch: 'staging',
+                branch: 'source/staging',
                 deployTo: '/home/okp/builds/staging'
             },
             production: {
