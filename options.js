@@ -42,6 +42,7 @@ module.exports = {
             sections: true,
             globalNav: true,
             search: true,
+            loadEvents: true,
             navHighlight: true
         },
 
@@ -80,8 +81,7 @@ module.exports = {
                 specDecorations: true,
                 specAssets: true,
                 globalNav: true,
-                search: true,
-                navHighlight: true
+                search: true
             },
             pluginsEnabled: {},
             npmPluginsEnabled: {}

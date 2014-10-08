@@ -17,9 +17,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 		callback = callback || function () {};
 		var evt;
 		var complete = false;
-		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
-
-        console.log('document.createEvent', document.createEvent === undefined);
+		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
 		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined && document.createEvent === undefined) ) {
 			if (debug && utils.isDevelopmentMode()) {

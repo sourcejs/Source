@@ -22,6 +22,13 @@ var config = {
     errorLimit: 2,
     asyncPhantomCallLimit: 5,
 
+    specsFilter: {
+        filterOut: {
+            cats: ['docs'],
+            tags: ['parse-problems']
+        }
+    },
+
     // Path to HTML data otput
     pathToSpecs: path.join(global.pathToApp, global.opts.core.api.specsData)
 };
@@ -75,14 +82,7 @@ var getSpecsList = function() {
         path: require.resolve(config.pathToSpecs)
     });
 
-    var specs = parseSpecs.getFilteredData({
-        filter: {
-            cats: ['base']
-        },
-        filterOut: {
-            tags: ['parse-problems']
-        }
-    }, true);
+    var specs = parseSpecs.getFilteredData(config.specsFilter, true);
 
     // Preparing data for specs iteration
     specs = specs.map(function(item){

@@ -40,7 +40,7 @@ page.open('http://127.0.0.1:8080/'+ url, function (status) {
 
     setTimeout(function () {
         console.log(JSON.stringify([{
-                "error": "Too long request.",
+                "error": "Too long execution time.",
                 "url": url
             }])
         );
