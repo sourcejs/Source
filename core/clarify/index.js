@@ -3,79 +3,154 @@
 // modules
 var fs = require('fs');
 var url = require('url');
+var path = require('path');
+var exec = require('child_process').exec;
+var jsdom = require('jsdom');
+var dom = require('./dom');
+var jady = require('./jady');
+
+// custom vars & local dependencies
+var publicPath = global.opts.core.common.pathToUser;
 
 module.exports = function reply(req, res, next) {
+	var
+		parsedUrl = url.parse(req.url, true),
+		urlPath = parsedUrl.pathname,
+		urlHost = req.headers.host,
+		urlAdress = (parsedUrl.protocol || "") + urlHost + urlPath,
 
-    function prepareHTML(clientHTMLObj, sectionsID, tpl) {
+        q = parsedUrl.query,
+		tpl = q.get,
+		id = q.id,
+		wrap = q.wrap || true,
+        phantom = q.ph || false,
+        nojs = q.nojs || false;
 
-        var clientHTML = "";
+// check for current navigation position (navigation or file)
+	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
 
-        for (var i = 0; i < sectionsID.length; i++) {
-            var id = sectionsID[i];
-
-            if (clientHTMLObj[id]) {
-                clientHTML += clientHTMLObj[id];
-            } else {
-                clientHTML += "<div>id:"+id+" This section does not exist!</div>";
+// reading file
+		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
+            if (err) {
+                res.writeHead(404, {'Content-Type': 'text/plain'});
+                res.end('No such file.\n'+ err);
+                return;
             }
-        }
 
-        var placeHolder = "<%clarifyBody%>";
-        if (tpl !== undefined) {
-            try {
+// make data for template
+                function reqHandler(res, html) {
+                    if (html.source) {
+// Jade's vars
+                        var locals = {
+                            head: {
+                                title: html.title,
+                                mAuthor: html.meta.author,
+                                mKeywords: html.meta.keywords,
+                                mDescription: html.meta.description,
+                                scripts: (nojs)?  null : html.scripts,
+                                stylesheets: html.styles
+                            },
+                            body: {
+                                spec: html.source.content,
+                                specLength: html.source.length,
+                                specId: html.source.id,
+                                specIdSum: html.source.idSum,
+                                homeLink: 'http://'+ urlAdress
+                            },
+                            pretty: true
+                        };
 
-                try {
-                    tpl = fs.readFileSync("./user/core/clarify/tpl/"+tpl+".html", "utf8");
-                } catch (e) {
-                    tpl = fs.readFileSync(__dirname+"/tpl/"+tpl+".html", "utf8");
+// send headers and close request
+                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                        res.end(jady(locals, tpl));
+
+                    } else res.end('STDOUT: can\'t recieve content.');
                 }
 
-                var start = tpl.indexOf(placeHolder);
-                var end = start+placeHolder.length;
 
-                var startStr = tpl.substr(0,start);
-                var endStr = tpl.substr(end);
+// if ph == true -> PhantomJS
+                if (phantom) {
 
-                clientHTML = startStr + clientHTML + endStr;
+                var params = "core/clarify/phantomjs "+
+                        "core/clarify/phantom/ph.js "+
+                        "http://"+ urlAdress +" "+ id +" "+ wrap;
 
-            } catch (e) {
-                var fileList = fs.readdirSync(__dirname+"/tpl/").join(", ").replace(/.html/g, '');
-                clientHTML = "<div style='color: red;'>Template: "+tpl+" does not exist</div>" +
-                    "<div>There are: "+fileList+"</div>";
-            }
-        }
+// executes ph.js by phantomjs in new child process
+                    exec(params, function (err, stdout, stderr) {
+                        if (err) {
+                            res.end('Exec report error:\n ' + err);
+                        } else {
+                            var html;
 
-        return clientHTML;
-    }
+                            try {
+                                html = JSON.parse(stdout);
+                            } catch(e) {
+                                html = 'Parsing error: ' + e;
+                            }
+// PhantomJS output
+//        console.log(html);
+// template render function
+                            reqHandler(res, html);
+                        }
+                    });
 
-	var parsedUrl = url.parse(req.url, true),
-		urlPath = parsedUrl.pathname;
+// if ph == false (default) -> jsDom
+            } else {
+                jsdom.env(data.toString(), function (err, win) {
+            //  jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
+                    if (err) res.end('JSdom report error:\n ' + err);
+                        else {
+//                            console.log('JSDOM', wrap);
+                            var doc = win.document;
+                            var html = {};
 
-	if (req.url.indexOf("?clarify")>-1) {
-        var sectionsID = parsedUrl.query.id.split(",");
-        var tpl = parsedUrl.query.tpl;
+                            try {
+                                html.title = doc.title;
+                                html.meta = dom.getMeta(doc);
+                                html.styles = dom.getHeadData(doc)[0];
+                                html.scripts = dom.getHeadData(doc)[1];
+                                html.source = dom.getSource(doc, id, wrap);
+                            } catch (e) {
+                                html.err = {
+                                    text: e,
+                                    type: e.name
+                                };
+                            }
+//        console.log(html);
 
-        var pathStr = urlPath.substr(1,urlPath.length-2);
-        var pathArr = pathStr.split("/");
-        var htmlJSON = require("../../html.json");
+// template render function
+                            reqHandler(res, html);
+                        }
+                    });
+                }
 
-        var i;
-        for (i = 0; i < pathArr.length; i++) {
-            var path = pathArr[i];
-            htmlJSON = htmlJSON[path];
-        }
+		});
 
-        var sections = htmlJSON.specFile.contents;
-        var clientHTMLObj = {};
-
-        for (i = 0; i < sections.length; i++) {
-            var sec = sections[i];
-            if (sectionsID.indexOf(sec.id.toString())>-1) {
-                clientHTMLObj[sec.id] = sec.html;
-            }
-        }
-
-        res.end(prepareHTML(clientHTMLObj, sectionsID, tpl));
-
+// redirect to next express middleware
 	} else next();
 };
+
+
+
+// TODO: check list below
+// [done] beatify HTML output
+// [done] create JSON with data from <HEAD>
+// [done] parse several blocks in same page with one request
+// [done] switchers to another specs from cleared one;
+// [done] clear template - @param {GET} clr
+// [done] phantomjs -> jsdom
+// [..partial] client-side UI controls to clarify specs
+// [...] support for other template engines
+// * [] diffrernt links to phantomjs relative to OS
+// * [] connect custom templates and scripts
+// * [] avoid hardcoded paths
+// * [] use css/js optionally by GET params
+// * [] save user session settings
+// * [] try POST instead GET
+// * [] Ajax
+// * [] link from already clarified code to original spec page
+// * [] phantomjs error with try to get unavaliable script
+// * [] screenshots by phatnomjs
+// * [] phantomjs: not to close session (improve perfomance?);
+// * [] buttons  to add custom libraries to clarified page (jQuery, require);
+// * [in progress..] another context templates [mob, clr, ...]

@@ -221,12 +221,9 @@ define([
         };
 
         for(var j = 0; j < sections.getQuantity(); j++) {
-
             sections.getSections()[j].headerElement
                     .addClass("source_section_h")
-                    .append('<a href="#" onclick="return false" class="source_section_h_expand"></a>')
-                    .append('<a href="?clarify&id='+(j+1)+'" target="_blank" class="clarify">Clarify just html</a>')
-                    .append('<a href="?clarify&id='+(j+1)+'&tpl=mob" target="_blank" class="clarify">Clarify mob</a>');
+                    .append('<a href="#" onclick="return false" class="source_section_h_expand"></a>');
         }
 
         $('.source_section_h_expand').on({
