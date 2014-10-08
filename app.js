@@ -21,6 +21,7 @@ global.opts = loadOptions();
 commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
     .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
+    .option('-html, --parseHtml', 'Turn on HTML parser on app start')
     .parse(process.argv);
 
 global.commander = commander;
@@ -36,6 +37,8 @@ global.pathToApp = __dirname;
 var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
+
+if (commander.parseHtml) global.opts.core.parseHTML.onStart = true;
 /* /Globals */
 
 
