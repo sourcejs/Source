@@ -147,27 +147,42 @@ module.exports = function(grunt) {
         shipit: {
             options: {
                 workspace: ".",
-                ignores: ['.git', 'node_modules'],
+                ignores: ['.git', 'node_modules', '*.idea', '*.iml', '*.DS_Store', 'build', 'user'],
                 keepReleases: 3,
                 repositoryUrl: 'https://github.com/sourcejs/Source.git',
                 servers: 'okp@172.19.57.74'
             },
-            test: {
-                deployTo: '~/builds/test'
-            },
             staging: {
-                branch: 'source/staging',
-                deployTo: '~/builds/staging'
+                branch: 'staging',
+                deployTo: '/home/okp/builds/staging'
+            },
+            production: {
+                branch: 'master',
+                deployTo: '/home/okp/builds/master'
             }
         }
     });
 
+    /*
+    *
+    * Custom tasks
+    *
+    * */
+
+    grunt.registerTask('build', 'Build project', function () {
+        grunt.shipit.local('grunt build', this.async());
+    });
+
     grunt.registerTask('remote:install', function () {
-        grunt.shipit.remote('cp -r ./* ~/test/', this.async());
+        grunt.shipit.remote('npm i', this.async());
     });
 
     grunt.registerTask('remote:restart', function () {
-        grunt.shipit.remote('service myapp restart', this.async());
+        grunt.shipit.remote('echo "test"', this.async());
+    });
+
+    grunt.shipit.on('fetched', function () {
+        grunt.task.run(['build']);
     });
 
     grunt.shipit.on('updated', function () {
@@ -177,12 +192,6 @@ module.exports = function(grunt) {
     grunt.shipit.on('published', function () {
         grunt.task.run(['remote:restart']);
     });
-
-    /*
-    *
-    * Сustom tasks
-    *
-    * */
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
