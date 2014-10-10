@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 			"ignores": [],
 			"keepReleases": 5,
 			"repositoryUrl": grunt.file.readJSON('package.json').repository.url,
-			"hooks": []
+			"hooks": {}
 		});
 
 		grunt.config.set('shipit', getNormalizedConfig(envName, options));
@@ -21,12 +21,12 @@ module.exports = function (grunt) {
 	});
 
 	// TODO: implement rollback task (m.b. using map + proxy)
-	grunt.registerTask("release", "SourceJS release task", function() {
+	grunt.registerTask("rollback", "SourceJS release task", function() {
 		throw new Error("NotImplementedMethod");
 	});
 
 	// TODO: add customizable hooks into task configuration (if needed)
-	var createHooks = function(hooks) {
+	var createReleaseHooks = function(hooks) {
 		grunt.registerTask('remote:restart', function () {
 			grunt.shipit.remote([
 					'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
@@ -59,17 +59,17 @@ module.exports = function (grunt) {
 	var getNormalizedOptions = function(envOpts, taskOpts) {
 		return {
 			"workspace": envOpts.workspace || taskOpts.workspace,
-            "ignores": envConfig.ignores || taskOpts.ignores,
-            "keepReleases": envConfig.keepReleases || options.keepReleases,
-            "repositoryUrl": envConfig.keepReleases || options.repositoryUrl,
-            "servers": envConfig.servers || options.servers
+            "ignores": envOpts.ignores || taskOpts.ignores,
+            "keepReleases": envOpts.keepReleases || taskOpts.keepReleases,
+            "repositoryUrl": envOpts.keepReleases || taskOpts.repositoryUrl,
+            "servers": envOpts.servers || taskOpts.servers
 		};
 	};
 
 	var getNormalizedEnvOptions = function(envOpts, taskOpts) {
 		return {
-        	"branch": envConfig.branch || taskOpts.branch,
-        	"deployTo": envConfig.deployTo || taskOpts.deployTo
+        	"branch": envOpts.branch || taskOpts.branch,
+        	"deployTo": envOpts.deployTo || taskOpts.deployTo
         }
 	};
 	
