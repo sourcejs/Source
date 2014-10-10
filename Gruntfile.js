@@ -143,23 +143,6 @@ module.exports = function(grunt) {
                 cwd: 'build',
                 src: ['**/*.css']
             }
-        },
-        shipit: {
-            options: {
-                workspace: ".",
-                ignores: ['.git', '*.idea', '*.iml', '*.DS_Store', 'build'],
-                keepReleases: 3,
-                repositoryUrl: 'https://github.com/sourcejs/Source.git',
-                servers: 'okp@172.19.57.74'
-            },
-            staging: {
-                branch: 'source/staging',
-                deployTo: '/home/okp/builds/staging'
-            },
-            production: {
-                branch: 'master',
-                deployTo: '/home/okp/builds/master'
-            }
         }
     });
 
@@ -168,21 +151,6 @@ module.exports = function(grunt) {
     * Custom tasks
     *
     * */
-
-    grunt.registerTask('remote:restart', function () {
-        grunt.shipit.remote([
-                'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
-                'npm i',
-                'echo "test"'
-            ].join(' && '),
-            this.async()
-        );
-        grunt.shipit.remote('echo "test"', this.async());
-    });
-
-    grunt.shipit.on('published', function () {
-        grunt.task.run(['remote:restart']);
-    });
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
@@ -270,5 +238,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
+    grunt.loadTasks("grunt/tasks");
 
 };
