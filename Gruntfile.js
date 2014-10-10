@@ -9,6 +9,7 @@ module.exports = function(grunt) {
 
     // measuring processing time
     require('time-grunt')(grunt);
+    grunt.loadTasks("grunt/tasks");
 
     grunt.initConfig({
         options: loadOptions(pathToApp),
@@ -143,6 +144,20 @@ module.exports = function(grunt) {
                 cwd: 'build',
                 src: ['**/*.css']
             }
+        },
+
+        release: {
+            options: {
+                configsPath: "configs",
+                workspace: ".",
+                ignores: [".git", "*.idea", "*.iml", "*.DS_Store", "build"],
+                keepReleases: 2,
+                hooks: {
+                    published: function() {
+                        console.log('this callback is going to be executed after publishing. Grunt & shipit are globally availible here.');
+                    }
+                }
+            }
         }
     });
 
@@ -238,6 +253,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
-    grunt.loadTasks("grunt/tasks");
 
 };
