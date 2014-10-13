@@ -5,7 +5,6 @@ module.exports = function (grunt) {
 	var path = require('path');
 
 	grunt.registerTask("release", "SourceJS release task", function() {
-		var envName = grunt.option('env');
 		var options = this.options({
 			"configsPath": "configs",
 			"workspace": ".",
@@ -14,10 +13,13 @@ module.exports = function (grunt) {
 			"repositoryUrl": grunt.file.readJSON('package.json').repository.url,
 			"hooks": {}
 		});
-
-		grunt.config.set('shipit', getNormalizedConfig(envName, options));
+		var flagsOpts = {
+			"branch": grunt.option('branch'),
+			"envName": grunt.option('env')
+		};
+		grunt.config.set('shipit', getNormalizedConfig(options, flagsOpts));
 		createReleaseHooks(options.hooks);
-		grunt.task.run(["shipit:" + envName, "deploy"]);
+		grunt.task.run(["shipit:" + flagsOpts.envName, "deploy"]);
 	});
 
 	// TODO: implement rollback task (m.b. using map + proxy)
@@ -52,34 +54,34 @@ module.exports = function (grunt) {
 	};
 
 	// TODO: check if I shoud add flags redefinition which gonna have the highest priority
-	var getNormalizedConfig = function(envName, options) {
-		var envConfigPath = path.join(options.configsPath, envName + '.json');
+	var getNormalizedConfig = function(options, flagsOpts) {
+		var envConfigPath = path.join(options.configsPath, flagsOpts.envName + '.json');
 		if (!fs.existsSync(envConfigPath)) {
-			throw new Error("FileNotFoundError", "Config file " + envConfigPath + " not found");
+			throw new Error("Config file " + envConfigPath + " not found. Please use example.json to create it.");
 		}
 		var envConfig = grunt.file.readJSON(envConfigPath);
 		var config = {
 			"options": getNormalizedOptions(envConfig, options)
 		};
-		config[envName] = getNormalizedEnvOptions(envConfig, options);
+		config[flagsOpts.envName] = getNormalizedEnvOptions(envConfig, options, flagsOpts);
 		return config;
 	};
 
 	var getNormalizedOptions = function(envOpts, taskOpts) {
 		return {
 			"workspace": envOpts.workspace || taskOpts.workspace,
-            "ignores": envOpts.ignores || taskOpts.ignores,
-            "keepReleases": envOpts.keepReleases || taskOpts.keepReleases,
-            "repositoryUrl": envOpts.keepReleases || taskOpts.repositoryUrl,
-            "servers": envOpts.servers || taskOpts.servers
+			"ignores": envOpts.ignores || taskOpts.ignores,
+			"keepReleases": envOpts.keepReleases || taskOpts.keepReleases,
+			"repositoryUrl": envOpts.keepReleases || taskOpts.repositoryUrl,
+			"servers": envOpts.servers || taskOpts.servers
 		};
 	};
 
-	var getNormalizedEnvOptions = function(envOpts, taskOpts) {
+	var getNormalizedEnvOptions = function(envOpts, taskOpts, flagsOpts) {
 		return {
-        	"branch": envOpts.branch || taskOpts.branch,
-        	"deployTo": envOpts.deployTo || taskOpts.deployTo
-        }
+			"branch": flagsOpts.branch || envOpts.branch || taskOpts.branch,
+			"deployTo": envOpts.deployTo || taskOpts.deployTo
+		}
 	};
 	
 };
