@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 			grunt.shipit.remote([
 					'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
 					'npm i',
-					'cp ../options.js ./',
+					'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
 					'node app'
 				].join(' && '),
 				this.async()
