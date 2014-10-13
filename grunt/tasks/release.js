@@ -27,31 +27,19 @@ module.exports = function (grunt) {
 		throw new Error("NotImplementedMethod");
 	});
 
-	// TODO: add customizable hooks into task configuration (if needed)
 	var createReleaseHooks = function(hooks) {
-		if (hooks && hooks.buildApp) {
-			grunt.registerTask('buildApp', 'Build project', function () {
-				grunt.shipit.local('grunt', this.async());
-			});
-			grunt.shipit.on('fetched', function () {
-				grunt.task.run(['build']);
-			});
-		}
-		if (hooks && hooks.install) {
-			grunt.registerTask('remote:install', hooks.install);
-			grunt.shipit.on('updated', function () {
-				grunt.task.run(['remote:install']);
-			});
-		}
-		if (hooks && hooks.restart) {
-			grunt.registerTask('remote:restart', hooks.restart);
-			grunt.shipit.on('published', function () {
-				grunt.task.run(['remote:restart']);
-			});
-		}
+		if (!hooks) return;
+		Object.keys(hooks).forEach(function(key) {
+			var hook = hooks[key];
+			if (typeof hook.callback === "function" && typeof hook.event === "string") {
+				grunt.registerTask(key, hook.callback);
+				grunt.shipit.on(hook.event, function() {
+					grunt.task.run([key]);
+				});
+			}
+		});
 	};
 
-	// TODO: check if I shoud add flags redefinition which gonna have the highest priority
 	var getNormalizedConfig = function(options, flagsOpts) {
 		var envConfigPath = path.join(options.configsPath, flagsOpts.envName + '.json');
 		if (!fs.existsSync(envConfigPath)) {
