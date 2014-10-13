@@ -33,15 +33,22 @@ module.exports = function (grunt) {
 					'npm i',
 					'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
 					'ln -s /home/okp/Source/user /home/okp/builds/staging/current/user',
-					'node app'
+					'grunt build',
+					'forever start  -l ../staging.okp.log -a /home/okp/builds/staging/current/app.js'
 				].join(' && '),
 				this.async()
 			);
 		});
 
+		grunt.registerTask('remote:install', function () {
+			grunt.shipit.remote('forever stop /home/okp/builds/staging/current/app.js', this.async());
+		});
 		grunt.shipit.on('published', function () {
 			grunt.task.run(['remote:restart']);
-		});		
+		});
+		grunt.shipit.on('updated', function () {
+			grunt.task.run(['remote:install']);
+		});
 	};
 
 	// TODO: check if I shoud add flags redefinition which gonna have the highest priority
