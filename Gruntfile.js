@@ -153,8 +153,21 @@ module.exports = function(grunt) {
                 ignores: [".git", "*.idea", "*.iml", "*.DS_Store", "build", "node_modules"],
                 keepReleases: 2,
                 hooks: {
-                    published: function() {
-                        console.log('this callback is going to be executed after publishing. Grunt & shipit are globally availible here.');
+                    install: function() {
+                        grunt.shipit.remote('forever stop /home/okp/builds/staging/current/app.js', this.async());
+
+                    },
+                    restart: function() {
+                        grunt.shipit.remote([
+                                'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
+                                'npm i',
+                                'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
+                                'ln -s /home/okp/Source/user /home/okp/builds/staging/current/user',
+                                'grunt build',
+                                'forever start  -l ../staging.okp.log -a /home/okp/builds/staging/current/app.js'
+                            ].join(' && '),
+                            this.async()
+                        );
                     }
                 }
             }
