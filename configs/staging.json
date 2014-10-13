@@ -1,5 +1,5 @@
 {
-	"branch": "master",
+	"branch": "mikhailov/release-procedure",
 	"servers": "okp@172.19.57.74",
     "ignores": [".git", "*.idea", "*.iml", "*.DS_Store", "build"],
     "deployTo": "/home/okp/builds/staging"

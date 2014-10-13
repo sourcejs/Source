@@ -36,7 +36,6 @@ module.exports = function (grunt) {
 				].join(' && '),
 				this.async()
 			);
-			grunt.shipit.remote('echo "test"', this.async());
 		});
 
 		grunt.shipit.on('published', function () {
