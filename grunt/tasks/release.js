@@ -4,7 +4,22 @@ module.exports = function (grunt) {
 	var fs = require('fs');
 	var path = require('path');
 
-	grunt.registerTask("release", "SourceJS release task", function() {
+	[{
+		"name": "release",
+		"description": "SourceJS release task",
+		"command": "deploy"
+	}, {
+		"name": "revert",
+		"description": "SourceJS rollback task",
+		"command": "rollback"
+	}].forEach(function(task) {
+		grunt.registerTask(task.name, task.description, function() {
+			commonTask.call(this, task.command);
+		});
+	});
+
+	var commonTask = function(cmd) {
+		console.log(cmd, this);
 		var options = this.options({
 			"configsPath": "configs",
 			"workspace": ".",
@@ -19,13 +34,8 @@ module.exports = function (grunt) {
 		};
 		grunt.config.set('shipit', getNormalizedConfig(options, flagsOpts));
 		createReleaseHooks(options.hooks);
-		grunt.task.run(["shipit:" + flagsOpts.envName, "deploy"]);
-	});
-
-	// TODO: implement rollback task (m.b. using map + proxy)
-	grunt.registerTask("rollback", "SourceJS release task", function() {
-		throw new Error("NotImplementedMethod");
-	});
+		grunt.task.run(["shipit:" + flagsOpts.envName, cmd]);
+	};
 
 	var createReleaseHooks = function(hooks) {
 		if (!hooks) return;

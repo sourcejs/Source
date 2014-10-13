@@ -150,7 +150,7 @@ module.exports = function(grunt) {
             options: {
                 configsPath: "configs",
                 workspace: ".",
-                ignores: [".git", "*.idea", "*.iml", "*.DS_Store", "build", "node_modules"],
+                ignores: [".git", "*.idea", "*.iml", "*.DS_Store", "build", "node_modules", "user"],
                 keepReleases: 2,
                 hooks: {
                     install: {
