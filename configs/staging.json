@@ -1,5 +1,0 @@
-{
-	"branch": "mikhailov/release-procedure",
-	"servers": "okp@172.19.57.74",
-    "deployTo": "/home/okp/builds/staging"
-}
