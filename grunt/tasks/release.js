@@ -32,6 +32,7 @@ module.exports = function (grunt) {
 					'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
 					'npm i',
 					'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
+					'ln -s /home/okp/Source/user /home/okp/builds/staging/current/user',
 					'node app'
 				].join(' && '),
 				this.async()
