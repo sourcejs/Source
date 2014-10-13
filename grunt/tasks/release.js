@@ -30,6 +30,7 @@ module.exports = function (grunt) {
 		grunt.registerTask('remote:restart', function () {
 			grunt.shipit.remote([
 					'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
+					'npm i',
 					'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
 					'node app'
 				].join(' && '),
