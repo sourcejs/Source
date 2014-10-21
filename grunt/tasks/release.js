@@ -4,6 +4,15 @@ module.exports = function (grunt) {
 	var fs = require('fs');
 	var path = require('path');
 
+	var defaults = {
+		"configsPath": "configs",
+		"workspace": ".",
+		"ignores": [],
+		"keepReleases": 5,
+		"repositoryUrl": grunt.file.readJSON('package.json').repository.url,
+		"hooksModule": ""
+	};
+
 	[{
 		"name": "release",
 		"description": "SourceJS release task",
@@ -19,31 +28,37 @@ module.exports = function (grunt) {
 	});
 
 	var commonTask = function(cmd) {
-		console.log(cmd, this);
-		var options = this.options({
-			"configsPath": "configs",
-			"workspace": ".",
-			"ignores": [],
-			"keepReleases": 5,
-			"repositoryUrl": grunt.file.readJSON('package.json').repository.url,
-			"hooks": {}
-		});
 		var flagsOpts = {
 			"branch": grunt.option('branch'),
 			"envName": grunt.option('env')
 		};
+
+		var options = initOpts(this.options);
 		grunt.config.set('shipit', getNormalizedConfig(options, flagsOpts));
-		createReleaseHooks(options.hooks);
+
+		createReleaseHooks(options.hooks[flagsOpts.envName]);
 		grunt.task.run(["shipit:" + flagsOpts.envName, cmd]);
+	};
+
+	var initOpts = function(setOptionsCB) {
+		var opts = grunt.config('options').release;
+		return setOptionsCB({
+			"configsPath": opts.configsPath || defaults.configsPath,
+			"workspace": opts.workspace || defaults.workspace,
+			"ignores": opts.ignores || defaults.ignores,
+			"keepReleases": opts.keepReleases || defaults.keepReleases,
+			"repositoryUrl": opts.repositoryUrl || defaults.repositoryUrl,
+			"hooks":  opts.hooks || {}
+		});
 	};
 
 	var createReleaseHooks = function(hooks) {
 		if (!hooks) return;
 		Object.keys(hooks).forEach(function(key) {
 			var hook = hooks[key];
-			if (typeof hook.callback === "function" && typeof hook.event === "string") {
-				grunt.registerTask(key, hook.callback);
-				grunt.shipit.on(hook.event, function() {
+			if (typeof hook.create === "function" && typeof hook.topic === "string") {
+				grunt.registerTask(key, hook.create(grunt, path));
+				grunt.shipit.on(hook.topic, function() {
 					grunt.task.run([key]);
 				});
 			}
@@ -51,7 +66,7 @@ module.exports = function (grunt) {
 	};
 
 	var getNormalizedConfig = function(options, flagsOpts) {
-		var envConfigPath = path.join(options.configsPath, flagsOpts.envName + '.json');
+		var envConfigPath = path.join(options.configsPath, "deploy-" + flagsOpts.envName + '.json');
 		if (!fs.existsSync(envConfigPath)) {
 			throw new Error("Config file " + envConfigPath + " not found. Please use example.json to create it.");
 		}

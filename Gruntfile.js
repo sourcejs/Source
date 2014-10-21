@@ -9,7 +9,6 @@ module.exports = function(grunt) {
 
     // measuring processing time
     require('time-grunt')(grunt);
-    grunt.loadTasks("grunt/tasks");
 
     grunt.initConfig({
         options: loadOptions(pathToApp),
@@ -144,38 +143,6 @@ module.exports = function(grunt) {
                 cwd: 'build',
                 src: ['**/*.css']
             }
-        },
-
-        release: {
-            options: {
-                configsPath: "configs",
-                workspace: ".",
-                ignores: [".git", "*.idea", "*.iml", "*.DS_Store", "build", "node_modules", "user"],
-                keepReleases: 2,
-                hooks: {
-                    install: {
-                        event: "updated",
-                        callback: function() {
-                            grunt.shipit.remote('forever stop /home/okp/builds/staging/current/app.js', this.async());
-                        }
-                    },
-                    restart: {
-                        event: "published",
-                        callback: function() {
-                            grunt.shipit.remote([
-                                    'cd ' + path.join(grunt.shipit.config.deployTo, 'current'),
-                                    'npm i',
-                                    'cp ' + path.join(grunt.shipit.config.deployTo, "options.js") + " ./",
-                                    'ln -s /home/okp/Source/user /home/okp/builds/staging/current/user',
-                                    'grunt build',
-                                    'forever start  -l ../staging.okp.log -a /home/okp/builds/staging/current/app.js'
-                                ].join(' && '),
-                                this.async()
-                            );
-                        }
-                    }
-                }
-            }
         }
     });
 
@@ -184,6 +151,8 @@ module.exports = function(grunt) {
     * Custom tasks
     *
     * */
+
+    grunt.loadTasks("grunt/tasks");
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
