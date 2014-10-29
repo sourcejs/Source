@@ -19,8 +19,8 @@ var config = {
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
-    outputFile: path.join(global.pathToApp,'core/api/data/pages_tree.json'),
-    sourceRoot: globalOpts.common.pathToUser,
+    outputFile: path.join(global.pathToApp, 'core/api/data/pages_tree.json'),
+    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser),
 
     // Files from parser get info
     infoFile: "info.json"
@@ -28,14 +28,14 @@ var config = {
 // Overwriting base options
 deepExtend(config, global.opts.core.fileTree);
 
-var prepareExcludesRexex = function(){
+var prepareExcludesRegex = function(){
     var dirsForRegExp = '';
     var i = 1;
     config.excludedDirs.forEach(function (exlDir) {
         if (i < config.excludedDirs.length) {
-            dirsForRegExp = dirsForRegExp + "^" + config.sourceRoot + "\/" + exlDir + "|";
+            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir + "|";
         } else {
-            dirsForRegExp = dirsForRegExp + "^" + config.sourceRoot + "\/" + exlDir;
+            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir;
         }
         i++;
     });
@@ -57,7 +57,7 @@ var isSpec = function (file) {
 var fileTree = function (dir) {
     var outputJSON = {};
     var dirContent = fs.readdirSync(dir);
-    var excludes = prepareExcludesRexex();
+    var excludes = prepareExcludesRegex();
 
     // Adding paths to files in array
     for (var i = 0; dirContent.length > i; i++) {
@@ -65,9 +65,9 @@ var fileTree = function (dir) {
     }
 
     //on first call we add includedDirs
-    if (dir === config.sourceRoot) {
+    if (dir === config.specsRoot) {
         config.includedDirs.map(function (includedDir) {
-            dirContent.push(includedDir);
+            dirContent.push(path.join(global.pathToApp, includedDir));
         });
     }
 
@@ -76,10 +76,13 @@ var fileTree = function (dir) {
         if (excludes.test(dir)) {return;}
 
         var targetFile = path.basename(pathToFile);
-        var urlToFile = pathToFile;
         var baseName = path.basename(dir);
 
+        var urlToFile = pathToFile;
+
+        // Normalizing path for windows
         urlToFile = path.normalize(urlToFile).replace(/\\/g, '/');
+
         var urlFromHostRoot = urlToFile.replace('../', '/');
 
         outputJSON[baseName] = outputJSON[baseName];
@@ -99,13 +102,13 @@ var fileTree = function (dir) {
             var page = {};
             var urlForJson;
 
-            // If starts with root
-            if (urlFromHostRoot.lastIndexOf(config.sourceRoot, 0) === 0) {
-                // Clean of from path
-                urlForJson = urlFromHostRoot.replace(config.sourceRoot, '');
+            // If starts with root (specs)
+            if (urlFromHostRoot.lastIndexOf(config.specsRoot, 0) === 0) {
+                // Cleaning path to specs root folder
+                urlForJson = urlFromHostRoot.replace(config.specsRoot, '');
             } else {
-                // Making path absolute
-                urlForJson = '/' + urlFromHostRoot;
+                // Cleaning path for included folders
+                urlForJson = urlFromHostRoot.replace(global.pathToApp, '');
             }
 
             //Removing filename from path
@@ -125,9 +128,10 @@ var fileTree = function (dir) {
 
                 deepExtend(page, fileJSON);
             }
-            var thmumbPath = dir + '/thumbnail.png';
-            if (fs.existsSync(thmumbPath)) {
-                page.thumbnail = thmumbPath.split('/').splice(1).join('/');
+            var thumbPath = dir + '/thumbnail.png';
+
+            if (fs.existsSync(thumbPath)) {
+                page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
             }
 
             outputJSON['specFile'] = extend(page);
@@ -157,7 +161,7 @@ var writeDataFile = function (callback) {
             }
         }
 
-        fs.writeFile(outputFile, JSON.stringify(fileTree(config.sourceRoot), null, 4), function (err) {
+        fs.writeFile(outputFile, JSON.stringify(fileTree(config.specsRoot), null, 4), function (err) {
             if (err) {
                 console.log('Error writing file tree: ', err);
             } else {
