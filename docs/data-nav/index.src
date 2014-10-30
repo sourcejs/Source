@@ -7,7 +7,7 @@
 <section class="source_section">
     <h2>Embedding</h2>
 
-    Common scheme of embedding looks like this:
+    <p>Common scheme of embedding looks like this:</p>
 
     <code class="source_visible src-html">
         <div class="source_catalog" data-nav="/docs"></div>

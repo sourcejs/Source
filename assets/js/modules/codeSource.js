@@ -2,8 +2,6 @@
  *
  * View demo-examples source code
  *
- * @author Robert Haritonov (http://rhr.me)
- *
  * */
 
 define([

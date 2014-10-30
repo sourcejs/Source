@@ -41,7 +41,7 @@
     <h3>Examples</h3>
 
     <section class="source_example">
-        <div class="example_code">
+        <div class="some-code">
             <div style="display: none;">Hello world;</div>
 
             <p>Rendered code examples - main documentation blocks.</p>
@@ -74,7 +74,7 @@
     </code>
 
     <div class="source_example">
-        <div class="example_code">
+        <div class="some-code">
             <p>Click "Show source" in the inner navigation menu on the right to reveal the source for all examples.</p>
 
             <div class="btn-group">

@@ -1,0 +1,54 @@
+{
+    "base-test": {
+        "base": {
+            "specFile": {
+                "url": "/base/base",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html",
+                "thumbnail": false,
+                "author": "Evgeny Khoroshilov",
+                "title": "Мелкие стандарты",
+                "tag": [
+                    "html",
+                    "tag"
+                ],
+                "info": "Страница с описанием небольших стартов, которые не доросли до своей спеки."
+            }
+        },
+        "button": {
+            "specFile": {
+                "url": "/base/button",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html",
+                "thumbnail": true,
+                "tag": [
+                    "some"
+                ],
+                "keywords": "base, standard",
+                "author": "Evgeny Khoroshilov",
+                "title": "Мелкие стандарты"
+            }
+        }
+    },
+    "project-test": {
+        "project-spec": {
+            "specFile": {
+                "url": "/project/project-spec",
+                "lastmod": "12.8.2014",
+                "lastmodSec": 1407856231000,
+                "fileName": "index.html"
+            }
+        }
+    },
+    "specFile": {
+        "url": "",
+        "lastmod": "31.7.2014",
+        "lastmodSec": 1406793767000,
+        "fileName": "index.src",
+        "thumbnail": false,
+        "title": "OK Prototype",
+        "role": "navigation"
+    }
+}

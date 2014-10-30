@@ -1,5 +1,4 @@
 {
-	"es3": true,
 	"eqeqeq": true,
 	"expr": true,
 	"forin": true,
@@ -20,5 +19,5 @@
 	"browser": true,
 	"scripturl": true,
 	"jquery": true,
-	"predef": [ "define", "Prism" ]
+	"predef": [ "define", "Prism", "SourceGetSections"]
 }

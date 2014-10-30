@@ -27,7 +27,7 @@ define([
             try {
                 uid = new Date();
                 (storage = window.localStorage).setItem(uid, uid);
-                fail = storage.getItem(uid) !== uid;
+                fail = storage.getItem(uid) !== uid.toString();
                 storage.removeItem(uid);
                 fail && (storage = false);
             } catch (e) {

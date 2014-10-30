@@ -7,21 +7,16 @@
 *
 * */
 
-//Getting always new version of navigation JSON
-var fileTreeJson = 'text!/data/pages_tree.json?' + new Date().getTime();
+'use strict';
 
 define([
     'jquery',
     'sourceModules/module',
-    fileTreeJson
-], function ($, module, data) {
-
-'use strict';
+    'text!/api/specs/raw'], function ($, module, data) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
     }
-
 
     /* наследуем от Module */
     ParseFileTree.prototype = module.createInstance();
@@ -29,6 +24,15 @@ define([
 
     //getSpecificCat = a || [a,b] - Get only listed category, categories
     //getCatInfo = bool - Turn on cat info parsing
+    /**
+     * Abstract pages tree parser
+     *
+     * @params {String} getSpecificCat - Category name
+     * @params {Boolean} getCatInfo - Get category info or not
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.parsePages = function (getSpecificCat, getCatInfo) {
         var _this = this;
         var json = _this.json;
@@ -215,10 +219,24 @@ define([
         }
     };
 
+    /**
+     * Get raw file tree JSON
+     *
+     * @returns {Object} Return raw file tree JSON
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getParsedJSON = function() {
         return this.json;
     };
 
+    /**
+     * Get flat file tree with all specs
+     *
+     * @returns {Object} Return flat file tree
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getAllPages = function () {
         //Get pages from all categories
         var fileTree = this.parsePages();
@@ -248,11 +266,27 @@ define([
         return fileFlat;
     };
 
+    /**
+     * Get specific cat pages without category info
+     *
+     * @params {String} getSpecificCat - Category name
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getCatPages = function (getSpecificCat) {
         //Get cat pages
         return this.parsePages(getSpecificCat);
     };
 
+    /**
+     * Get specific cat pages with category
+     *
+     * @params {String} getSpecificCat - Category name
+     * @returns {Object} Return data object with specs
+     *
+     * @deprecated since version 0.4, use REST API instead
+     */
     ParseFileTree.prototype.getCatAll = function (getSpecificCat) {
         //Get cat pages with cat info
         return this.parsePages(getSpecificCat, true);

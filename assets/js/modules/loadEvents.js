@@ -12,15 +12,14 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 	LoadEvents.prototype = module.createInstance();
 	LoadEvents.prototype.constructor = LoadEvents;
-
 	LoadEvents.prototype.init = function( callback ) {
 
 		callback = callback || function () {};
 		var evt;
 		var complete = false;
-		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents.debug;
+		var debug = module.options.modulesEnabled.loadEvents && module.options.modulesOptions.loadEvents && module.options.modulesOptions.loadEvents.debug;
 
-		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined)) {
+		if ( (!module.options.modulesEnabled.loadEvents) || (window.CustomEvent === undefined && document.createEvent === undefined) ) {
 			if (debug && utils.isDevelopmentMode()) {
 				console.log('LoadEvents Module disabled.');
 			}
@@ -39,6 +38,14 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 				&& (Object.keys(window.source.loadEvents).length);
 		}
 
+        function phantomHook(event) {
+            console.log('PhantomJS hook: %s', event);
+
+            if (typeof window.callPhantom === 'function') {
+                window.callPhantom({message: event});
+            }
+        }
+
 		function generateSuccessEvent(eventName) {
 			if (debug && utils.isDevelopmentMode()) {
 				console.log('event happens ' + eventName );
@@ -53,6 +60,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 			document.dispatchEvent(evt);
 
+
 			if (!complete) {
 				complete = true;
 				callback();
@@ -64,6 +72,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 			// If there's no any render plugin, just skip checking section
 			if ( !checkPluginsDefinition() ) {
 				generateSuccessEvent('allPluginsFinish');
+                phantomHook('allPluginsFinish');
 				return;
 			}
 
@@ -173,12 +182,16 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 				}
 				setTimeout(function () {
 					generateSuccessEvent('allPluginsFinish');
+                    phantomHook('allPluginsFinish');
+
 				}, defaultPluginTimeout);
 
 				return;
 			}
 
 			checkPlugins();
+
+
 
 		})();
 	};

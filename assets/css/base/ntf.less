@@ -1,0 +1,30 @@
+.source_ntf {
+	position: fixed; z-index: 50;
+	top: 50px; /* toolbar height */
+    left: 0; right: 0;
+
+	font-size: 14px;
+	color: #333;
+	text-align: center;
+
+	height: 50px;
+	line-height: 48px;
+	white-space: nowrap;
+	overflow: hidden;
+
+	background: #FFF6DD;
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0 0 6px -2px rgba(0, 0, 0, .3);
+
+	opacity: 0;
+	visibility: hidden;
+
+	transition: opacity .2s, visibility 0 .2s;
+	}
+
+	.source_ntf.__active {
+		opacity: 1;
+		visibility: visible;
+
+		transition-delay: 0s;
+		}

@@ -1,46 +1,51 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
-var sourceRoot = global.opts.core.common.pathToUser;
+var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
 
-// add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-var excludedDirs = global.opts.core.fileTree.excludedDirs;
-var includedDirs = global.opts.core.fileTree.includedDirs;
+var globalOpts = global.opts.core;
 
-// File mask for search
-var fileMask = global.opts.core.fileTree.fileMask; //Arr
+var flagNotExec = true;
+var config = {
+    // Add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
+    includedDirs: ['docs'],
+    excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
 
-// files from parser get info
-var infoFile = "info.json";
+    // File masks for search
+    fileMask: ['index.html', 'index.src'],
+    cron: false,
+    cronProd: true,
+    cronRepeatTime: 60000,
+    outputFile: path.join(global.pathToApp, 'core/api/data/pages_tree.json'),
+    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser),
 
-// for waiting when function finished
-var NOT_EXEC = true;
+    // Files from parser get info
+    infoFile: "info.json"
+};
+// Overwriting base options
+deepExtend(config, global.opts.core.fileTree);
 
-// configuration for function timeout
-var CRON = global.opts.core.fileTree.cron;
-var CRON_PROD = global.opts.core.fileTree.cronProd;
-var CRON_REPEAT_TIME = global.opts.core.fileTree.cronRepeatTime;
+var prepareExcludesRegex = function(){
+    var dirsForRegExp = '';
+    var i = 1;
+    config.excludedDirs.forEach(function (exlDir) {
+        if (i < config.excludedDirs.length) {
+            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir + "|";
+        } else {
+            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir;
+        }
+        i++;
+    });
+    return new RegExp(dirsForRegExp);
+};
 
-// formatting RegExp for parser
-var dirsForRegExp = '';
-var i = 1;
-excludedDirs.forEach(function(exlDir) {
-    if (i<excludedDirs.length) {
-        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir+"|";
-    } else {
-        dirsForRegExp = dirsForRegExp+"^"+sourceRoot+"\/"+exlDir;
-    }
-    i++;
-});
-var excludes = new RegExp(dirsForRegExp);
-
-var isSpec = function(file) {
+var isSpec = function (file) {
     var response = false;
 
-    fileMask.map(function(specFile){
+    config.fileMask.map(function (specFile) {
         if (file === specFile) {
             response = true;
         }
@@ -49,33 +54,36 @@ var isSpec = function(file) {
     return response;
 };
 
-
-var fileTree = function(dir) {
+var fileTree = function (dir) {
     var outputJSON = {};
     var dirContent = fs.readdirSync(dir);
+    var excludes = prepareExcludesRegex();
 
     // Adding paths to files in array
-    for (var i=0; dirContent.length > i ;i++) {
+    for (var i = 0; dirContent.length > i; i++) {
         dirContent[i] = path.join(dir, dirContent[i]);
     }
 
     //on first call we add includedDirs
-    if (dir === sourceRoot){
-        includedDirs.map(function(includedDir){
-            dirContent.push(includedDir);
+    if (dir === config.specsRoot) {
+        config.includedDirs.map(function (includedDir) {
+            dirContent.push(path.join(global.pathToApp, includedDir));
         });
     }
 
-    dirContent.forEach(function(pathToFile) {
+    dirContent.forEach(function (pathToFile) {
         // Path is excluded
         if (excludes.test(dir)) {return;}
 
         var targetFile = path.basename(pathToFile);
-        var urlToFile = pathToFile;
         var baseName = path.basename(dir);
 
+        var urlToFile = pathToFile;
+
+        // Normalizing path for windows
         urlToFile = path.normalize(urlToFile).replace(/\\/g, '/');
-        var urlFromHostRoot = urlToFile.replace('../','/');
+
+        var urlFromHostRoot = urlToFile.replace('../', '/');
 
         outputJSON[baseName] = outputJSON[baseName];
 
@@ -87,19 +95,20 @@ var fileTree = function(dir) {
 
             var childObj = fileTree(urlToFile);
             if (Object.getOwnPropertyNames(childObj).length !== 0) {
-                outputJSON[targetFile] = extend(outputJSON[targetFile],childObj);
+                outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
             }
 
         } else if (isSpec(targetFile)) {
             var page = {};
             var urlForJson;
-            // If starts with root
-            if (urlFromHostRoot.lastIndexOf(sourceRoot, 0) === 0) {
-                // Clean of from path
-                urlForJson = urlFromHostRoot.replace(sourceRoot, '');
+
+            // If starts with root (specs)
+            if (urlFromHostRoot.lastIndexOf(config.specsRoot, 0) === 0) {
+                // Cleaning path to specs root folder
+                urlForJson = urlFromHostRoot.replace(config.specsRoot, '');
             } else {
-                // Making path absolute
-                urlForJson = '/' + urlFromHostRoot;
+                // Cleaning path for included folders
+                urlForJson = urlFromHostRoot.replace(global.pathToApp, '');
             }
 
             //Removing filename from path
@@ -107,20 +116,22 @@ var fileTree = function(dir) {
             urlForJson.pop();
             urlForJson = urlForJson.join('/');
 
+            page.id = urlForJson.substring(1);
             page.url = urlForJson || '';
-            page.lastmod = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('.') || '';
+            page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
             page.lastmodSec = Date.parse(fileStats.mtime) || '';
-            page.fileName = targetFile  || '';
-            page.thumbnail;
+            page.fileName = targetFile || '';
+            page.thumbnail = false;
 
-            if (fs.existsSync(dir+'/'+infoFile)) {
-                var fileJSON = JSON.parse(fs.readFileSync(dir+'/'+infoFile, "utf8"));
+            if (fs.existsSync(dir + '/' + config.infoFile)) {
+                var fileJSON = JSON.parse(fs.readFileSync(dir + '/' + config.infoFile, "utf8"));
 
                 deepExtend(page, fileJSON);
             }
-            var thmumbPath = dir + '/thumbnail.png';
-            if (fs.existsSync(thmumbPath)) {
-                page.thumbnail = thmumbPath.split('/').splice(1).join('/');
+            var thumbPath = dir + '/thumbnail.png';
+
+            if (fs.existsSync(thumbPath)) {
+                page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
             }
 
             outputJSON['specFile'] = extend(page);
@@ -132,42 +143,51 @@ var fileTree = function(dir) {
 
 
 // function for write json file
-var globalWrite = function() {
-    var outputFile = global.app.get('user') + "/" + global.opts.core.fileTree.outputFile;
-    var outputPath = path.dirname(outputFile);
+var writeDataFile = function (callback) {
+    if (flagNotExec) {
+        var outputFile = config.outputFile;
+        var outputPath = path.dirname(outputFile);
 
-    if (!fs.existsSync(outputPath)) {
-        fs.mkdirSync(outputPath);
-    }
+        flagNotExec = false;
 
-    fs.writeFile(outputFile, JSON.stringify(fileTree(sourceRoot), null, 4), function (err) {
-        if (err) {
-            console.log('Error writing file tree: ', err);
-        } else {
-            console.log("Pages tree JSON saved to " + outputFile);
-            NOT_EXEC=true;
+        // Preparing path for data write
+        try {
+            fs.mkdirpSync(outputPath);
+        } catch (e) {
+            if (e.code !== 'EEXIST') {
+                global.log.warn("Could not set up data directory for Pages Tree, error: ", e);
+
+                if (typeof callback === 'function') callback(e);
+            }
         }
-    });
+
+        fs.writeFile(outputFile, JSON.stringify(fileTree(config.specsRoot), null, 4), function (err) {
+            if (err) {
+                console.log('Error writing file tree: ', err);
+            } else {
+                console.log("Pages tree JSON saved to " + outputFile);
+                flagNotExec = true;
+            }
+
+            if (typeof callback === 'function') callback(err);
+        });
+    }
 };
 
+// Run function on server start
+writeDataFile(function(){
+    if (global.opts.core.parseHTML.onStart) parseHTML.processSpecs();
+});
 
-// run function on server start
-globalWrite();
-
-// setcron
-if (CRON || (global.MODE === 'production' && CRON_PROD)) {
-    setInterval(function(){
-        globalWrite();
-    }, CRON_REPEAT_TIME);
+// Running writeDataFile by cron
+if (config.cron || (global.MODE === 'production' && config.cronProd)) {
+    setInterval(function () {
+        writeDataFile();
+    }, config.cronRepeatTime);
 }
 
 // run task from server homepage
 module.exports.scan = function () {
-    // NOT_EXEC for waiting script end and only then can be run again
-    if (NOT_EXEC) {
-        NOT_EXEC = false;
-        setTimeout(function(){
-            globalWrite();
-        },5000);
-    }
+    // flag for waiting script end and only then can be run again
+    writeDataFile();
 };

@@ -4,24 +4,22 @@ module.exports = {
 
     // Restart app after changing core options
     core : {
+        api: {
+            specsData: 'core/api/data/pages_tree.json',
+            htmlData: 'core/api/data/html.json',
+            specsTestData: 'test/data/api-test-specs.json',
+            htmlTestData: 'test/data/api-test-html.json'
+        },
+        parseHTML: {
+            onStart: false
+        },
         common: {
             pathToUser: 'user',
+            defaultLogLevel: 'INFO',
+            defaultProdLogLevel: 'ERROR',
             port: 8080,
             infoFile: 'info.json',
             extensions: ["src", "jade", "haml"]
-        },
-        fileTree: {
-            includedDirs: ['docs'],
-            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
-            fileMask: ['index.html', 'index.src'],
-            cron: false,
-            cronProd: true,
-            cronRepeatTime: 60000,
-            outputFile: 'data/pages_tree.json'
-        },
-        specDependenciesTree: {
-            enabled: false,
-            outputFile: 'data/spec_dependencies_tree.json'
         },
         less: {
             compress: false
@@ -32,6 +30,7 @@ module.exports = {
     assets: {
         // Core modules
         modulesEnabled : {
+            htmlAPISync: true,
             headerFooter: true,
             specDecorations: true,
             codeSource: true,
@@ -43,6 +42,7 @@ module.exports = {
             sections: true,
             globalNav: true,
             search: true,
+            loadEvents: true,
             navHighlight: true
         },
 
@@ -69,6 +69,7 @@ module.exports = {
         headerClass : 'source_header',
         SECTION_CLASS : 'source_section',
         exampleSectionClass : 'source_example',
+        exampleCleanClass : 'source_clean',
         mainClass : 'source_main',
         mainNav : 'source_main_nav',
 
@@ -81,8 +82,7 @@ module.exports = {
                 specDecorations: true,
                 specAssets: true,
                 globalNav: true,
-                search: true,
-                navHighlight: true
+                search: true
             },
             pluginsEnabled: {},
             npmPluginsEnabled: {}
