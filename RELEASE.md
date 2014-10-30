@@ -159,6 +159,7 @@ release: {
 	}
 	...
 }
+```
 
 ## Release wrapper configuration example.
 
@@ -167,6 +168,7 @@ release: {
 As it was mentioned above, release wrapper options can be defined both in project options.js and environment config file. If you want to define some options in your project `options.js` file, please look at the following example:
 
 <appRoot>/user/options.js
+
 ```
 /** your project options **/
 module.exports = {
@@ -208,7 +210,6 @@ module.exports = {
         }
 	}
 }
-
 ```
 
 ## Release wrapper configuration example.
@@ -219,8 +220,8 @@ module.exports = {
 
 ```
 {
-	"branch": "tests-brunch",
-	"servers": "user@123.45.67.89",
+    "branch": "tests-brunch",
+    "servers": "user@123.45.67.89",
     "deployTo": "/home/source/builds/test"
 }
 ```
