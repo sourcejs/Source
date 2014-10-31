@@ -72,7 +72,7 @@
         <li>?get=<span class="emph">clr</span></li> {String}    new context template, absolutely clear page;
     </ul>
 
-    <p>Надстрйоки:</p>
+    <p>Addon:</p>
     <ul>
         <li>?ph=<span class="emph">false</span></li> {Boolean}   use PhantomJS engine (default: false)
         <li>?wrap=<span class="emph">true</span></li> {Boolean}    use .source_example wrapper  (default: true)
