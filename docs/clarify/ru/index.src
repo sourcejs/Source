@@ -66,7 +66,7 @@
         <li>?get=<span class="emph">clr</span></li> {String}    новый шаблон форматирования, полностью чистая страница;
     </ul>
 
-    <p>Надстрйоки:</p>
+    <p>Надстройки:</p>
     <ul>
         <li>?ph=<span class="emph">true</span></li> {Boolean}   использовать PhantomJS (по умалчанию false)
         <li>?wrap=<span class="emph">true</span></li> {Boolean}    использовать обертку .source_example (по умолчанию true)
