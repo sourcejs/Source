@@ -5,6 +5,7 @@ var fs = require('fs-extra');
 var async = require('async');
 var phantom = require('phantomjs');
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
+var extendTillSpec = require(path.join(global.pathToApp,'core/api/extendTillSpec'));
 var deepExtend = require('deep-extend');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
@@ -166,7 +167,7 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             data = excludeLowOverridings(prevData, data);
 
             // Extend final data
-            data = deepExtend(prevData, data);
+            data = extendTillSpec(prevData, data);
         }
 
         // Preparing path for data write
