@@ -93,7 +93,7 @@ var getSpecsList = function() {
 };
 
 /**
- * Write gathered HTML data to file system
+ * Remove all objects from data, that has lower priority (doesn't have forcedSave flag)
  *
  * @param {Object} prevData - data to check more priority specs from
  * @param {Object} data - data that will be merged onto prevData and will be processed with this func
@@ -158,8 +158,8 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             try {
                 prevData = fs.readJsonFileSync(dataStoragePath);
             } catch (e) {
+                apiLog.trace('Reading initial data error: ', e);
                 apiLog.debug('Extending from empty object, as we do not have initial data');
-                apiLog.trace('Reading initial data erro: ', e);
             }
 
             // Exclude from data all low-priority overridings
@@ -180,7 +180,6 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             }
         }
 
-        //TODO: Dmitry, add more data fields according to hmtl-stub.json
         fs.writeFile(dataStoragePath, JSON.stringify(data, null, JSONformat), function (err) {
             if (err) {
                 var message = 'ERROR: updated file write error';
@@ -271,12 +270,12 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
         var _specs = specs || getSpecsList();
         var specsLeft = _specs.slice(0);
-        var ph_path = phantom.path;
+        var PhantomPath = phantom.path;
         var outputHTML = {};
         var errorCounter = {};
         var specLength = _specs.length;
         var doneCounter = 0;
-        var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/parseHTML/ph_modules/index.js');
+        var phExecCommand = PhantomPath + " " + path.join(global.pathToApp, 'core/api/parseHTML/phantom-runner.js');
 
         processFlagNotExec = false;
 
@@ -343,7 +342,8 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                 }));
 
                 // Writing contents to common obj
-                outputHTML[spec+'/specFile/contents'] = parsedStdout;
+                outputHTML[spec+'/specFile/contents'] = parsedStdout.contents;
+                outputHTML[spec+'/specFile/resourceLinks'] = parsedStdout.resourceLinks;
             }
 
             apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);

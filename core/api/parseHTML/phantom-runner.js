@@ -5,9 +5,6 @@ var page = require('webpage').create();
 var fs = require('fs');
 var system = require('system');
 
-//var parser = require('./parser').parser;
-//var test = require('./test');
-
 // arguments from node query
 var url = system.args[1];
 //var id = system.args[2];
@@ -53,7 +50,7 @@ page.onCallback = function (data) {
     if (data.message) {
 
         var code = page.evaluate(function (url) {
-            var output;
+            var output = {};
 
             $.ajax({
                 url: '/source/assets/js/modules/sectionsParser.js',
@@ -61,7 +58,9 @@ page.onCallback = function (data) {
                 async: false,
                 success: function(){
                     var parser = new SourceGetSections(url);
-                    output = parser.get();
+
+                    output.contents = parser.getContents();
+                    output.resourceLinks = parser.getResourceLinks();
                 }
             });
 
@@ -69,12 +68,12 @@ page.onCallback = function (data) {
         }, url);
 
         // make reponse in {{ ... }} to parse only relevant part
-        console.log(code);
+        console.log(JSON.stringify(code));
         phantom.exit();
 
     } else {
         console.log(JSON.stringify({
-                "error": "No callback recieved",
+                "error": "No callback received",
                 "url": url
             })
         );
@@ -83,19 +82,15 @@ page.onCallback = function (data) {
 };
 
 page.onError = function(msg, trace) {
-//    console.log('--- error: '+ url +' ---\nph_modules/output.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function + '\n--- /error ---');
+    var log = {
+        "error": "Error onpage",
+        "message": msg,
+        "file": trace[0],
+        "line": trace[0].line,
+        "function": trace[0].function
+    };
 
-    var file = url.split('/').join('-');
-
-    fs.write(__dirname + '/ph_modules/log/output_'+ file +'.txt', 'Error: '+ msg + '\nFile: '+ trace[0].file +'\nLine: '+ trace[0].line +'\nFunc: '+ trace[0].function);
-
-//    console.log(JSON.stringify({
-//        "error": "Error onpage",
-//        "message": msg,
-//        "file": trace[0],
-//        "line": trace[0].line,
-//        "function": trace[0].function
-//    }));
+    console.log('Phantom-runner error: ', JSON.stringify(log, null, 4));
 };
 
 // TODO: check list below

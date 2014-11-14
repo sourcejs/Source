@@ -1,38 +1,43 @@
+/*
+ *
+ * Spec HTML parser for API
+ *
+ * @author Dmitry Lapynow
+ *
+ * */
+
+// TODO: wrap as requirejs module, and combine with phantom-runner.js
+
 function SourceGetSections() {
     // Defining strict inside func, because PhantomJS stops evaluating this script if it's on top
     'use strict';
 
     var config = {
-            // include params from opt@argument first
-            code: 'source_example',
-            h2: 'source_section_h',
-            h3: 'H3',
-            h4: 'H4',
-            timeout: 3000
-        },
+        // include params from opt@argument first
+        code: 'source_example',
+        h2: 'source_section_h',
+        h3: 'H3',
+        h4: 'H4',
+        timeout: 3000
+    };
 
-        _h2 = 0, _h3 = 0, _h4 = 0,
-
-        specData = [],
-        sections,
-        elem,
-        prevFlag,
-        root = false
-        ;
+    var _h2 = 0, _h3 = 0, _h4 = 0;
+    var elem;
+    var prevFlag;
+    var root = false;
 
     function getSections() {
-        sections = [].slice.call(document.getElementsByClassName(config.h2));
+        var specData = [];
+        var sections = [].slice.call(document.getElementsByClassName(config.h2));
 
-        /* If specs arent ready, trying again after 200ms */
         if (sections[0]) {
             for (var i = 0, l = sections.length; i < l; i++) {
                 elem = sections[i];
                 specData.push(parse(elem));
             }
 
-            return JSON.stringify(specData);
-        }
-        else {
+            return specData;
+        } else {
             return JSON.stringify([{
                 "error": "Spec page parsing error."
             }]);
@@ -142,11 +147,103 @@ function SourceGetSections() {
     }
 
     /* Start parser */
-    this.output = getSections();
+    this.specHTMLContents = getSections();
+    this.specResourceLinks = this.parseResourceLinks();
 }
 
-SourceGetSections.prototype.get = function(){
+SourceGetSections.prototype.parseResourceLinks = function(){
     'use strict';
 
-    return this.output;
+    var output = {};
+
+    output.cssLinks = this.getCssLinksHTML();
+    output.scriptLinks = this.getScriptsHTML();
+    output.cssStyles = this.getStyleContainersHTML();
+
+    return output;
+};
+
+SourceGetSections.prototype.getCssLinksHTML = function() {
+    var links = document.head.getElementsByTagName('link');
+    var linksArr = [];
+
+    // Checking some exceptions
+    var checkDataSet = function(el){
+        return !!(
+            el.dataset['nonclarify'] ||
+            el.dataset['source'] === 'core' ||
+            el.dataset['source'] === 'plugin'
+        );
+    };
+
+    var i = 0;
+    var el;
+    while(i < links.length) {
+        el = links[i];
+
+        if (el.rel === 'stylesheet' || el.type === 'text/css') {
+
+            // Check script attrs before adding to output
+            if (el.dataset && checkDataSet(el)) {
+                ++i;
+                continue;
+            }
+
+            // If not need to filter out, then push to output
+            linksArr.push(el.outerHTML);
+            ++i;
+        }
+    }
+
+    return linksArr;
+};
+
+SourceGetSections.prototype.getScriptsHTML = function() {
+    var scripts = document.head.getElementsByTagName('script');
+    var scriptsArr = [];
+
+    // Checking some exceptions
+    var checkDataSet = function(el){
+        return !!(
+            el.dataset['nonclarify'] ||
+            el.dataset['requiremodule'] ||
+            el.dataset['source'] === 'core' ||
+            el.dataset['source'] === 'plugin'
+        );
+    };
+
+    var i = 0;
+    var el;
+    while(i < scripts.length) {
+        el = scripts[i];
+
+        // Check script attrs before adding to output
+        if (el.dataset && checkDataSet(el)) {
+            ++i;
+            continue;
+        }
+
+        // If not need to filter out, then push to output
+        scriptsArr.push(el.outerHTML);
+        ++i;
+    }
+
+    return scriptsArr;
+};
+
+SourceGetSections.prototype.getStyleContainersHTML = function() {
+    var styleTag = document.head.getElementsByTagName('style')[0];
+    return (styleTag) ? styleTag.outerHTML : "";
+};
+
+SourceGetSections.prototype.getContents = function(){
+    'use strict';
+
+    return this.specHTMLContents;
+};
+
+SourceGetSections.prototype.getResourceLinks = function(){
+    'use strict';
+
+    return this.specResourceLinks;
 };

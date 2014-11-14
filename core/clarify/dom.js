@@ -10,8 +10,10 @@ module.exports = {
 		var headTag = doc.head;
 		var links = headTag.getElementsByTagName('link');
 		var linksArr = [];
+
 		var scripts = headTag.getElementsByTagName('script');
 		var scriptsArr = [];
+
 		var styleTag = headTag.getElementsByTagName('style')[0];
 		var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
