@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var ejs = require('ejs');
+var jsdom = require('jsdom');
 var path = require('path');
 var pathToApp = path.dirname(require.main.filename);
 var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
@@ -62,19 +63,34 @@ exports.process = function (req, res, next) {
         info.author = info.author ? info.author : "Anonymous";
         info.keywords = info.keywords ? info.keywords : "";
 
-        // final data object for the template
-        var templateJSON = {
-            content : data,
-            header  : headerFooterHTML.header,
-            footer  : headerFooterHTML.footer,
-            info    : info,
-            filename: templatePath
-        };
+        jsdom.env(
+            '<div id="data">'+data+'</div>',
+            function (errors, window) {
+                // get head contents from spec file source
+                var headHook = window.document.getElementsByTagName('head')[0];
+                var specData = window.document.getElementById('data');
+                var head = headHook.innerHTML || '';
 
-        // render page and send it as response
-        req.specData.renderedHtml = ejs.render(template, templateJSON);
+                specData.removeChild(headHook);
+
+                // final data object for the template
+                var templateJSON = {
+                    content: specData.innerHTML,
+                    head: head,
+                    header: headerFooterHTML.header,
+                    footer: headerFooterHTML.footer,
+                    info: info,
+                    filename: templatePath
+                };
+
+                // render page and send it as response
+                req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+                next();
+            }
+        );
+    } else {
+        // proceed to next middleware
+        next();
     }
-
-    // proceed to next middleware
-    next();
 };
