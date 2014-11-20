@@ -107,7 +107,10 @@
 .source-only(nav,{});
 .source-only(aside,{});
 
+html,
 body {
+    position: relative;
+    height: 100%;
     margin: 0;
     padding: 0;
     }
@@ -116,13 +119,19 @@ body {
     background: none;
     }
 
-.source_main > div@{notCleaningClasses},
-.source_main > p@{notCleaningClasses},
-.source_main > section@{notCleaningClasses}{
-    font-family: @font-family-main;
-    font-size: 14px;
-    line-height: 1.5;
-    }
+.source_main > .source_main_nav,
+.source_main > .source_deps,
+.source_main > .source_warn,
+.source_main > .source_info,
+.source_main > .source_doc,
+.source_main > p:not(.source_section),
+.source_main > section:not(.source_section),
+.source_main > div:not(.source_section),
+.source_main > a:not(.source_section) {
+  font-family: @font-family-main;
+  font-size: 14px;
+  line-height: 1.5;
+}
 
 .source_header a,
 .source_footer a,
