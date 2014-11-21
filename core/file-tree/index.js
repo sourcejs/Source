@@ -122,9 +122,19 @@ var fileTree = function (dir) {
             page.lastmodSec = Date.parse(fileStats.mtime) || '';
             page.fileName = targetFile || '';
             page.thumbnail = false;
+            var infoJsonPath = dir + '/' + config.infoFile;
+            if (fs.existsSync(infoJsonPath)) {
+                var fileJSON;
+                try {
+                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
+                } catch (e) {
+                    console.log("Error with info.json: " + infoJsonPath);
 
-            if (fs.existsSync(dir + '/' + config.infoFile)) {
-                var fileJSON = JSON.parse(fs.readFileSync(dir + '/' + config.infoFile, "utf8"));
+                    fileJSON = {
+                        error: "Cannot parse the file",
+                        path: infoJsonPath
+                    }
+                }
 
                 deepExtend(page, fileJSON);
             }
