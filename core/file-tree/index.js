@@ -20,7 +20,7 @@ var config = {
     cronProd: true,
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages_tree.json'),
-    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser),
+    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
 
     // Files from parser get info
     infoFile: "info.json"
@@ -61,7 +61,7 @@ var fileTree = function (dir) {
 
     // Adding paths to files in array
     for (var i = 0; dirContent.length > i; i++) {
-        dirContent[i] = path.join(dir, dirContent[i]);
+        dirContent[i] = path.join(dir, dirContent[i].replace(/\\/g, '/'));
     }
 
     //on first call we add includedDirs
@@ -78,10 +78,8 @@ var fileTree = function (dir) {
         var targetFile = path.basename(pathToFile);
         var baseName = path.basename(dir);
 
-        var urlToFile = pathToFile;
-
         // Normalizing path for windows
-        urlToFile = path.normalize(urlToFile).replace(/\\/g, '/');
+        var urlToFile = path.normalize(pathToFile).replace(/\\/g, '/');
 
         var urlFromHostRoot = urlToFile.replace('../', '/');
 
@@ -128,8 +126,8 @@ var fileTree = function (dir) {
 
                 deepExtend(page, fileJSON);
             }
-            var thumbPath = dir + '/thumbnail.png';
 
+            var thumbPath = dir + '/thumbnail.png';
             if (fs.existsSync(thumbPath)) {
                 page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
             }
