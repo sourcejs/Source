@@ -28,6 +28,8 @@ var config = {
 // Overwriting base options
 deepExtend(config, global.opts.core.fileTree);
 
+var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
+
 var prepareExcludesRegex = function(){
     var dirsForRegExp = '';
     var i = 1;
@@ -67,7 +69,7 @@ var fileTree = function (dir) {
     //on first call we add includedDirs
     if (dir === config.specsRoot) {
         config.includedDirs.map(function (includedDir) {
-            dirContent.push(path.join(global.pathToApp, includedDir));
+            dirContent.push(path.join(normalizedPathToApp, includedDir));
         });
     }
 
@@ -106,7 +108,7 @@ var fileTree = function (dir) {
                 urlForJson = urlFromHostRoot.replace(config.specsRoot, '');
             } else {
                 // Cleaning path for included folders
-                urlForJson = urlFromHostRoot.replace(global.pathToApp, '');
+                urlForJson = urlFromHostRoot.replace(normalizedPathToApp, '');
             }
 
             //Removing filename from path
