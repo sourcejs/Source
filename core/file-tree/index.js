@@ -128,7 +128,7 @@ var fileTree = function (dir) {
                 try {
                     fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
                 } catch (e) {
-                    console.log("Error with info.json: " + infoJsonPath);
+                    console.error("Error with info.json: " + infoJsonPath);
 
                     fileJSON = {
                         error: "Cannot parse the file",
