@@ -1,0 +1,5 @@
+{
+	"branch": "<%= RC branch name %>",
+	"servers": "<%= username@server_address %>",
+	"deployTo": "<%= path/to/deploy %>"
+}
