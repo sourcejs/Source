@@ -37,6 +37,7 @@ function getTemplateFullPath (name) {
  * */
 exports.process = function (req, res, next) {
 
+    // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
@@ -64,14 +65,18 @@ exports.process = function (req, res, next) {
         info.keywords = info.keywords ? info.keywords : "";
 
         jsdom.env(
-            '<div id="data">'+data+'</div>',
+            '<html id="data">'+data+'</html>',
             function (errors, window) {
                 // get head contents from spec file source
                 var headHook = window.document.getElementsByTagName('head')[0];
                 var specData = window.document.getElementById('data');
-                var head = headHook.innerHTML || '';
+                var head = '';
 
-                specData.removeChild(headHook);
+                if (headHook) {
+                    head = headHook.innerHTML;
+
+                    specData.removeChild(headHook);
+                }
 
                 // final data object for the template
                 var templateJSON = {
