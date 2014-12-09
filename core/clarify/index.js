@@ -24,11 +24,15 @@ module.exports = function reply(req, res, next) {
 		id = q.id,
 		wrap = q.wrap || true,
         phantom = q.ph || false,
-        nojs = q.nojs || false;
+        nojs = q.nojs || false,
+        extname = path.extname(parsedUrl.pathname);
 
 // check for current navigation position (navigation or file)
-	if (path.basename(parsedUrl.path).match(/.+\..+/i) && parsedUrl.query.get) {
+	if (parsedUrl.query.get) {
 
+        if (!extname) {
+            urlPath += 'index.src';
+        }
 // reading file
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
             if (err) {
@@ -38,44 +42,46 @@ module.exports = function reply(req, res, next) {
             }
 
 // make data for template
-                function reqHandler(res, html) {
-                    if (html.source) {
+            function reqHandler(res, html) {
+                if (html.source) {
 // Jade's vars
-                        var locals = {
-                            head: {
-                                title: html.title,
-                                mAuthor: html.meta.author,
-                                mKeywords: html.meta.keywords,
-                                mDescription: html.meta.description,
-                                scripts: (nojs)?  null : html.scripts,
-                                stylesheets: html.styles
-                            },
-                            body: {
-                                spec: html.source.content,
-                                specLength: html.source.length,
-                                specId: html.source.id,
-                                specIdSum: html.source.idSum,
-                                homeLink: 'http://'+ urlAdress
-                            },
-                            pretty: true
-                        };
+                    var locals = {
+                        head: {
+                            title: html.title,
+                            mAuthor: html.meta.author,
+                            mKeywords: html.meta.keywords,
+                            mDescription: html.meta.description,
+                            scripts: (nojs)?  null : html.scripts,
+                            stylesheets: html.styles
+                        },
+                        body: {
+                            spec: html.source.content,
+                            specLength: html.source.length,
+                            specId: html.source.id,
+                            specIdSum: html.source.idSum,
+                            homeLink: 'http://'+ urlAdress
+                        },
+                        pretty: true
+                    };
 
 // send headers and close request
-                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                        res.end(jady(locals, tpl));
+                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                    res.end(jady(locals, tpl));
 
-                    } else res.end('STDOUT: can\'t recieve content.');
+                } else  {
+                    debugger;
+                    res.end('STDOUT: can\'t recieve content.\n'+ html.err.text);
                 }
+            }
 
 
-// if ph == true -> PhantomJS
-                if (phantom) {
+// Phantom
+            if (phantom) {
 
                 var params = "core/clarify/phantomjs "+
                         "core/clarify/phantom/ph.js "+
                         "http://"+ urlAdress +" "+ id +" "+ wrap;
 
-// executes ph.js by phantomjs in new child process
                     exec(params, function (err, stdout, stderr) {
                         if (err) {
                             res.end('Exec report error:\n ' + err);
@@ -87,28 +93,27 @@ module.exports = function reply(req, res, next) {
                             } catch(e) {
                                 html = 'Parsing error: ' + e;
                             }
-// PhantomJS output
-//        console.log(html);
-// template render function
+
+                            // template render function
                             reqHandler(res, html);
                         }
                     });
-
-// if ph == false (default) -> jsDom
+// JSDom
             } else {
                 jsdom.env(data.toString(), function (err, win) {
             //  jsdom.env(publicPath + '/' + urlPath, function (err, win) { // url mode
                     if (err) res.end('JSdom report error:\n ' + err);
-                        else {
-//                            console.log('JSDOM', wrap);
-                            var doc = win.document;
+                    else {
+                        var doc = win.document;
                             var html = {};
 
                             try {
                                 html.title = doc.title;
                                 html.meta = dom.getMeta(doc);
-                                html.styles = dom.getHeadData(doc)[0];
-                                html.scripts = dom.getHeadData(doc)[1];
+                                if (extname !== '.src') {
+                                    html.styles = dom.getHeadData(doc)[0];
+                                    html.scripts = dom.getHeadData(doc)[1];
+                                }
                                 html.source = dom.getSource(doc, id, wrap);
                             } catch (e) {
                                 html.err = {
@@ -118,7 +123,7 @@ module.exports = function reply(req, res, next) {
                             }
 //        console.log(html);
 
-// template render function
+                            // template render function
                             reqHandler(res, html);
                         }
                     });

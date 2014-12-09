@@ -21,12 +21,11 @@ page.onLoadFinished = function (msg) {
 
                 // collect style tag data and links to styles
                 function getHeadData() {
-                    var headTag = document.head;
-                    var links = headTag.getElementsByTagName('link');
+                    var links = document.getElementsByTagName('link');
                     var linksArr = [];
-                    var scripts = headTag.getElementsByTagName('script');
+                    var scripts = document.getElementsByTagName('script');
                     var scriptsArr = [];
-                    var styleTag = headTag.getElementsByTagName('style')[0];
+                    var styleTag = document.getElementsByTagName('style')[0];
                     var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
                     // links to styles

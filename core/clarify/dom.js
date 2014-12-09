@@ -7,18 +7,17 @@ module.exports = {
 	// collect data from <head>
 	getHeadData: function (doc) {
 
-		var headTag = doc.head;
-		var links = headTag.getElementsByTagName('link');
+		var links = doc.getElementsByTagName('link');
 		var linksArr = [];
-		var scripts = headTag.getElementsByTagName('script');
+		var scripts = doc.getElementsByTagName('script');
 		var scriptsArr = [];
-		var styleTag = headTag.getElementsByTagName('style')[0];
+		var styleTag = doc.getElementsByTagName('style')[0];
 		var styleTagHtml = (styleTag)? styleTag.outerHTML : "";
 
 		// stylesheets
 		var i = 0;
 		var el;
-		while(i < links.length) {
+		while (i < links.length) {
 			el = links[i];
 
 			if(el.rel === 'stylesheet' || el.type === 'text/css') linksArr.push(el.outerHTML);
