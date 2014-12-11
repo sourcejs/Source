@@ -25,15 +25,22 @@ module.exports = function reply(req, res, next) {
 		wrap = q.wrap || true,
         phantom = q.ph || false,
         nojs = q.nojs || false,
-        extname = path.extname(parsedUrl.pathname);
+        extname = path.extname(urlPath);
 
-// check for current navigation position (navigation or file)
+    // check for clarify usage (todo: transfer this check to router)
 	if (parsedUrl.query.get) {
 
+        var exts = ['.html', '.src'],
+            extsLen = exts.length;
+
         if (!extname) {
-            urlPath += 'index.src';
+            while(extsLen--) {
+                if (fs.existsSync(publicPath + '/' + urlPath + "index" + exts[extsLen])) {
+                    urlPath += ("index" + exts[extsLen]);
+                }
+            }
         }
-// reading file
+
 		fs.readFile(publicPath + '/' + urlPath, function (err, data) {
             if (err) {
                 res.writeHead(404, {'Content-Type': 'text/plain'});
@@ -69,7 +76,6 @@ module.exports = function reply(req, res, next) {
                     res.end(jady(locals, tpl));
 
                 } else  {
-                    debugger;
                     res.end('STDOUT: can\'t recieve content.\n'+ html.err.text);
                 }
             }
@@ -121,7 +127,6 @@ module.exports = function reply(req, res, next) {
                                     type: e.name
                                 };
                             }
-//        console.log(html);
 
                             // template render function
                             reqHandler(res, html);
@@ -131,7 +136,6 @@ module.exports = function reply(req, res, next) {
 
 		});
 
-// redirect to next express middleware
 	} else next();
 };
 
