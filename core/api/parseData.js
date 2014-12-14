@@ -283,32 +283,28 @@ ParseData.prototype.flattenHTMLcontents = function(contents) {
  * @param {String} id - Request some item by id (for example "base/btn") and sections
  * @param {Array} sections - Array of sections to return
  *
- * @returns {Object} Return single object by requested ID and with specified sections HTML or undefined
+ * @returns {Object} Return single object by requested ID, with specified sections HTML OR undefined
  */
 ParseData.prototype.getBySection = function(id, sections) {
     // Sections are defined only in html data storage
-    if (this.scope === 'html') {
+    if (this.scope === 'html' && Array.isArray(sections) && sections.length > 0) {
         var specData = this.getByID(id);
 
         if (specData) {
             var specSections = this.flattenHTMLcontents(specData.contents);
 
-            if (Array.isArray(sections) && sections.length > 0) {
-                var pickedSections = [];
+            var pickedSections = [];
 
-                sections.forEach(function(id){
-                    var objectToAdd = specSections[id];
+            sections.forEach(function(id){
+                var objectToAdd = specSections[id];
 
-                    if (objectToAdd) pickedSections.push(objectToAdd);
-                });
+                if (objectToAdd) pickedSections.push(objectToAdd);
+            });
 
-                if (pickedSections.length !== 0) {
-                    specData.contents = pickedSections;
+            if (pickedSections.length !== 0) {
+                specData.contents = pickedSections;
 
-                    return specData;
-                } else {
-                    return undefined;
-                }
+                return specData;
             } else {
                 return undefined;
             }

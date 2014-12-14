@@ -55,7 +55,10 @@ var parseSpec = function(sections, pathToSpec) {
         ['http://127.0.0.1:' + global.opts.core.common.port + '/source/assets/js/modules/sectionsParser.js'],
         function (err, window) {
             if (err) {
-                deferred.reject(err);
+                deferred.reject({
+                    err: err,
+                    msg: 'JSDOM error'
+                });
                 return;
             }
 
@@ -63,11 +66,24 @@ var parseSpec = function(sections, pathToSpec) {
 
             var output = {};
             var parser = new SourceGetSections();
+            var contents = [];
 
-            output.contents = parser.getContents(sections);
-            output.headResources = parser.getHeadResources();
+            if (sections) {
+                contents = parser.getContentsBySection(sections);
+            } else {
+                contents = parser.getContents();
+            }
 
-            deferred.resolve(output);
+            if (contents) {
+                output.contents = contents;
+                output.headResources = parser.getHeadResources() || {};
+
+                deferred.resolve(output);
+            } else {
+                deferred.reject({
+                    msg: 'Requested sections HTML not found'
+                });
+            }
         }
     );
 
@@ -76,12 +92,28 @@ var parseSpec = function(sections, pathToSpec) {
 
 var getDataFromApi = function(sections, pathToSpec) {
     var deferred = Q.defer();
+    var output = {};
+    var errMsg = '';
 
     //TODO: Move spec ID check to utils
     var specID = pathToSpec.slice(1, pathToSpec.length - 1);
-    var specHTML = parseHTMLData.getBySection(specID, sections);
 
-    deferred.resolve(specHTML);
+    if (sections) {
+        output = parseHTMLData.getBySection(specID, sections);
+        errMsg = 'Requested sections HTML not found';
+    } else {
+        output = parseHTMLData.getByID(specID);
+
+        errMsg = 'Requested Spec not found';
+    }
+
+    if (output) {
+        deferred.resolve(output);
+    } else {
+        deferred.reject({
+            msg: errMsg
+        });
+    }
 
     return deferred.promise;
 };
@@ -111,7 +143,7 @@ module.exports = function(req, res, next) {
 
         getSpecData().then(function(specData){
             var checkHeadResources = function(specData, target){
-                return specData.headResources && specData.headResources[target]
+                return specData.headResources && specData.headResources[target];
             };
 
             var templateJSON = {
@@ -139,14 +171,16 @@ module.exports = function(req, res, next) {
             }).fail(function(err) {
                 var msg = 'ERROR: Could not find requested or default template for Clarify';
 
-                global.log.warn(msg + ': ', err);
+                global.log.warn('Clarify: ' + msg + ': ', err);
 
                 res.status(500).send(msg);
             });
-        }).fail(function(err) {
-            global.log('Clarify: Could not render parse Spec.', err);
+        }).fail(function(errData) {
+            var errMsg = errData.err ? ': ' + errData.err : '';
 
-            res.status(500).send('Could not render parse Spec.');
+            global.log.info('Clarify: ' + errData.msg, errMsg);
+
+            res.status(500).send(errData.msg);
         });
 	} else {
         // redirect to next express middleware

@@ -38,9 +38,7 @@ function SourceGetSections() {
 
             return specData;
         } else {
-            return JSON.stringify([{
-                "error": "Spec page parsing error."
-            }]);
+            return undefined;
         }
     }
 
@@ -274,6 +272,7 @@ SourceGetSections.prototype.getStyleContainersHTML = function(){
     return (styleTag) ? styleTag.outerHTML : "";
 };
 
+// TODO: Move to CommonJS module, and reuse API/parseData.js
 SourceGetSections.prototype.flattenHTMLContents = function(){
     'use strict';
     var flatList = {};
@@ -295,11 +294,20 @@ SourceGetSections.prototype.flattenHTMLContents = function(){
     this.specHTMLContentsFlatObj = flatList;
 };
 
-SourceGetSections.prototype.getContentsByID = function(sections){
+
+/**
+ * Get specific sections of Spec
+ *
+ * @param {Array} sections - Array of sections to return
+ *
+ * @returns {Object} Return array sections HTML OR undefined
+ */
+SourceGetSections.prototype.getContentsBySection = function(sections){
+    // TODO: Move to CommonJS module, and reuse API/parseData.js
     'use strict';
     var _this = this;
 
-    if (Array.isArray(sections) && sections.length > 0) {
+    if (_this.specHTMLContents && Array.isArray(sections) && sections.length > 0) {
         // Check if flattened object is already prepared
         if (!_this.specHTMLContentsFlatObj) {
             _this.flattenHTMLContents();
@@ -313,20 +321,16 @@ SourceGetSections.prototype.getContentsByID = function(sections){
             if (objectToAdd) pickedSections.push(objectToAdd);
         });
 
-        return pickedSections.length === 0 ? [] : pickedSections;
+        return pickedSections.length === 0 ? undefined : pickedSections;
     } else {
-        return [];
+        return undefined;
     }
 };
 
-SourceGetSections.prototype.getContents = function(sections){
+SourceGetSections.prototype.getContents = function(){
     'use strict';
 
-    if (sections) {
-        return this.getContentsByID(sections);
-    } else {
-        return this.specHTMLContents;
-    }
+    return this.specHTMLContents;
 };
 
 SourceGetSections.prototype.getHeadResources = function(){

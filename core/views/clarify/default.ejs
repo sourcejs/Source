@@ -21,17 +21,13 @@
 </head>
 <body class="source_clarify">
     <div class="source_clarify_content">
-        <% if (sections.length === 0) { %>
-            No data
-        <% } else {%>
-            <% for(var i = 0; i < sections.length; i++) { %>
-                <h2><%- sections[i].header %></h2>
+        <% for(var i = 0; i < sections.length; i++) { %>
+            <h2><%- sections[i].header %></h2>
 
-                <% for(var j = 0; j < sections[i].html.length; j++) { %>
-                    <div class="source_example">
-                        <%- sections[i].html[j] %>
-                    </div>
-                <% } %>
+            <% for(var j = 0; j < sections[i].html.length; j++) { %>
+                <div class="source_example">
+                    <%- sections[i].html[j] %>
+                </div>
             <% } %>
         <% } %>
     </div>

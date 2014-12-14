@@ -64,6 +64,28 @@ describe('API test /api/specs/html', function () {
                     done();
                 });
         });
+        it('should NOT return HTML of non existent section', function (done) {
+            var body = {
+                id: 'base-test/button',
+                sections: '11'
+            };
+            request(url)
+                .get('/api-test/specs/html')
+                .expect(404)
+                .send(body)
+                .end(function (err, res) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    res.should.be.json;
+
+                    var section = !!(res.body.contents && res.body.contents.length === 1);
+
+                    section.should.not.be.ok;
+                    done();
+                });
+        });
     });
 
     describe('POST /api/specs/html', function () {
