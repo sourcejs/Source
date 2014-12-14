@@ -10,24 +10,27 @@
  */
 var extendTillSpec = module.exports = function(target, extender) {
     for (var key in extender) {
-        if (!(key in extender)) continue;
+        if (extender.hasOwnProperty(key)) {
 
-        var src = target[key];
-        var val = extender[key];
+            if (!(key in extender)) continue;
 
-        if (val === target) continue;
+            var src = target[key];
+            var val = extender[key];
 
-        if (typeof val !== 'object' || key === "specFile" || val === null) {
-            target[key] = val;
-            continue;
+            if (val === target) continue;
+
+            if (typeof val !== 'object' || key === "specFile" || val === null) {
+                target[key] = val;
+                continue;
+            }
+
+            if (typeof src !== 'object' || src === null) {
+                target[key] = extendTillSpec({}, val);
+                continue;
+            }
+
+            target[key] = extendTillSpec(src, val);
         }
-
-        if (typeof src !== 'object' || src === null) {
-            target[key] = extendTillSpec({}, val);
-            continue;
-        }
-
-        target[key] = extendTillSpec(src, val);
     }
 
     return target;

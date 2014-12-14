@@ -85,10 +85,11 @@ GET
 Available params:
 
 ```
-[id]
+[id], [id, sections]
 ```
 
 * `id` (string, JSON or param) - return only one item with ID
+* `sections` (string, JSON or param) - pass coma separated sections ID list ('1, 1.1, 2'); returns only one item with HTML from selected sections
 
 ### POST
 

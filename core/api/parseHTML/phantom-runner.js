@@ -2,7 +2,6 @@
 
 /* global phantom: true */
 var page = require('webpage').create();
-var fs = require('fs');
 var system = require('system');
 
 // arguments from node query
@@ -21,10 +20,10 @@ page.onResourceReceived = function(response) {
 };
 
 page.onConsoleMessage = function(msg) {
-//    console.log('-- webkit console: ' + msg);
+    //console.log('-- webkit console: ' + msg);
 };
 
-page.open('http://127.0.0.1:8080/'+ url, function (status) {
+page.open('http://127.0.0.1:'+global.opts.core.common.port+'/'+ url, function (status) {
     if (status !== 'success') {
         console.log(JSON.stringify({
                 "error": "Error loading page.",
@@ -45,10 +44,8 @@ page.open('http://127.0.0.1:8080/'+ url, function (status) {
     }, 5000);
 });
 
-
 page.onCallback = function (data) {
     if (data.message) {
-
         var code = page.evaluate(function (url) {
             var output = {};
 
@@ -57,23 +54,22 @@ page.onCallback = function (data) {
                 dataType: "script",
                 async: false,
                 success: function(){
-                    var parser = new SourceGetSections(url);
+                    var parser = new SourceGetSections();
 
                     output.contents = parser.getContents();
-                    output.resourceLinks = parser.getResourceLinks();
+                    output.headResources = parser.getHeadResources();
                 }
             });
 
             return output;
         }, url);
 
-        // make reponse in {{ ... }} to parse only relevant part
+        // TODO: make reponse in {{ ... }} to parse only relevant part
         console.log(JSON.stringify(code));
         phantom.exit();
 
     } else {
-        console.log(JSON.stringify({
-                "error": "No callback received",
+        console.log("No callback received", JSON.stringify({
                 "url": url
             })
         );
@@ -92,30 +88,3 @@ page.onError = function(msg, trace) {
 
     console.log('Phantom-runner error: ', JSON.stringify(log, null, 4));
 };
-
-// TODO: check list below
-// [*] unify throw Error helper
-// [*] ...
-
-// from old Clarify:
-// [done] beatify HTML output
-// [done] create JSON with data from <HEAD>
-// [done] parse several blocks in same page with one request
-// [done] switchers to another specs from cleared one;
-// [done] clear template - @param {GET} clr
-// [done] phantomjs -> jsdom
-// [..partial] client-side UI controls to clarify specs
-// [...] support for other template engines
-// * [] diffrernt links to phantomjs relative to OS
-// * [] connect custom templates and scripts
-// * [] avoid hardcoded paths
-// * [] use css/js optionally by GET params
-// * [] save user session settings
-// * [] try POST instead GET
-// * [] Ajax
-// * [] link from already clarified code to original spec page
-// * [] phantomjs error with try to get unavaliable script
-// * [] screenshots by phatnomjs
-// * [] phantomjs: not to close session (improve perfomance?);
-// * [] buttons  to add custom libraries to clarified page (jQuery, require);
-// * [in progress..] another context templates [mob, clr, ...]

@@ -30,7 +30,7 @@ define([
         var specSections = new SourceGetSections();
 
         var specObj = {};
-        specObj[this.specID + '/specFile/resourceLinks'] = specSections.getResourceLinks();
+        specObj[this.specID + '/specFile/headResources'] = specSections.getHeadResources();
         specObj[this.specID + '/specFile/contents'] = specSections.getContents();
 
         // Marking hand synced content

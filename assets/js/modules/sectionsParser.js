@@ -15,7 +15,7 @@ function SourceGetSections() {
     var config = {
         // include params from opt@argument first
         code: 'source_example',
-        h2: 'source_section_h',
+        sectionHeader: '.source_section > h2:first-child',
         h3: 'H3',
         h4: 'H4',
         timeout: 3000
@@ -28,7 +28,7 @@ function SourceGetSections() {
 
     function getSections() {
         var specData = [];
-        var sections = [].slice.call(document.getElementsByClassName(config.h2));
+        var sections = [].slice.call(document.querySelectorAll(config.sectionHeader));
 
         if (sections[0]) {
             for (var i = 0, l = sections.length; i < l; i++) {
@@ -54,18 +54,19 @@ function SourceGetSections() {
 
     function Spec(section) {
         if (section.next){
-            elem = (elem)? elem.nextElementSibling : null;
+            elem = (elem) ? getNextSibling(elem) : null;
         }
 
         // this.html = getHTML(elem); // @Array with code
         // this.ID = returnId();
+        this.id = returnId();
         this.header = section.header || getHeader(elem);
         this.nested = [];
         this.html = [];
 
         while (elem) {
             if (root) {
-                elem = elem.previousElementSibling;
+                elem = getPreviousSibling(elem);
                 root = false;
                 break;
             }
@@ -90,7 +91,8 @@ function SourceGetSections() {
 
                 if (prevFlag === 'H3' || prevFlag === 'H4') {
                     prevFlag = null;
-                    elem = elem.previousElementSibling;
+                    elem = getPreviousSibling(elem);
+
                     break;
                 }
                 _h3++;
@@ -101,7 +103,7 @@ function SourceGetSections() {
             else if (flag === 'H4') {
                 if (prevFlag === flag) {
                     prevFlag = null;
-                    elem = elem.previousElementSibling;
+                    elem = getPreviousSibling(elem);
                     break;
                 }
                 _h4++;
@@ -109,17 +111,48 @@ function SourceGetSections() {
                 this.nested.push(new Spec({header: getHeader(elem), next: true}));
             }
 
-            if (elem) elem = elem.nextElementSibling;
+            if (elem) {
+                elem = getNextSibling(elem);
+            }
         }
     }
 
-// HELPERS
-//    function returnId() {
-//        return [_h2, _h3, _h4].join('.');
-//    }
+    // HELPERS
+    function getNextSibling(elem) {
+        // JSdom doesn't support nextElementSibling
+        var nextSibling = elem.nextSibling;
+
+        // Checking if next sibling is an element, not whitespace
+        while(nextSibling && nextSibling.nodeType !== 1) {
+            nextSibling = nextSibling.nextSibling;
+        }
+
+        return nextSibling;
+    }
+
+    function getPreviousSibling(elem) {
+        // JSdom doesn't support previousElementSibling
+        var previousSibling = elem.previousSibling;
+
+        // Checking if prev sibling is an element, not whitespace
+        while(previousSibling && previousSibling.nodeType !== 1) {
+            previousSibling = previousSibling.previousSibling;
+        }
+
+        return previousSibling;
+    }
+
+    function returnId() {
+        var idArr = [_h2];
+
+        if (_h3 > 0) idArr.push(_h3);
+        if (_h4 > 0) idArr.push(_h4);
+
+        return idArr.join('.');
+    }
 
     function getHeader(elem) {
-        return elem.innerText || 'API: cannot get header.';
+        return elem.textContent || 'API: cannot get header.';
     }
 
     function getHTML(elem) {
@@ -130,8 +163,8 @@ function SourceGetSections() {
         return isH2(tag, cls) || isH3(tag, cls) || isH4(tag, cls) || isCode(tag, cls);
     }
 
-    function isH2(tag, cls) {
-        return (tag === 'H2' && cls.match(new RegExp('\\b'+ config.h2 + '\\b')))? 'H2' : false;
+    function isH2(tag) {
+        return (tag === 'H2') ? 'H2' : false;
     }
 
     function isH3(tag) {
@@ -143,15 +176,15 @@ function SourceGetSections() {
     }
 
     function isCode(tag, cls) {
-        return ((tag === 'SECTION' || tag === 'DIV') && cls.match(new RegExp('\\b'+ config.code + '\\b')))? 'CODE' : false;
+        return ( (tag === 'SECTION' || tag === 'DIV') && cls.match(new RegExp('\\b'+ config.code + '\\b')) ) ? 'CODE' : false;
     }
 
     /* Start parser */
     this.specHTMLContents = getSections();
-    this.specResourceLinks = this.parseResourceLinks();
+    this.headResources = this.parseHeadResourceLinks();
 }
 
-SourceGetSections.prototype.parseResourceLinks = function(){
+SourceGetSections.prototype.parseHeadResourceLinks = function(){
     'use strict';
 
     var output = {};
@@ -164,15 +197,17 @@ SourceGetSections.prototype.parseResourceLinks = function(){
 };
 
 SourceGetSections.prototype.getCssLinksHTML = function() {
+    'use strict';
+
     var links = document.head.getElementsByTagName('link');
     var linksArr = [];
 
     // Checking some exceptions
     var checkDataSet = function(el){
         return !!(
-            el.dataset['nonclarify'] ||
-            el.dataset['source'] === 'core' ||
-            el.dataset['source'] === 'plugin'
+            el.getAttribute('data-nonclarify') ||
+            el.getAttribute('data-source') === 'core' ||
+            el.getAttribute('data-source') === 'plugin'
         );
     };
 
@@ -182,9 +217,8 @@ SourceGetSections.prototype.getCssLinksHTML = function() {
         el = links[i];
 
         if (el.rel === 'stylesheet' || el.type === 'text/css') {
-
             // Check script attrs before adding to output
-            if (el.dataset && checkDataSet(el)) {
+            if (checkDataSet(el)) {
                 ++i;
                 continue;
             }
@@ -199,16 +233,18 @@ SourceGetSections.prototype.getCssLinksHTML = function() {
 };
 
 SourceGetSections.prototype.getScriptsHTML = function() {
+    'use strict';
+
     var scripts = document.head.getElementsByTagName('script');
     var scriptsArr = [];
 
     // Checking some exceptions
     var checkDataSet = function(el){
         return !!(
-            el.dataset['nonclarify'] ||
-            el.dataset['requiremodule'] ||
-            el.dataset['source'] === 'core' ||
-            el.dataset['source'] === 'plugin'
+            el.getAttribute('data-nonclarify') ||
+            el.getAttribute('data-requiremodule') ||
+            el.getAttribute('data-source') === 'core' ||
+            el.getAttribute('data-source') === 'plugin'
         );
     };
 
@@ -218,7 +254,7 @@ SourceGetSections.prototype.getScriptsHTML = function() {
         el = scripts[i];
 
         // Check script attrs before adding to output
-        if (el.dataset && checkDataSet(el)) {
+        if (checkDataSet(el)) {
             ++i;
             continue;
         }
@@ -231,19 +267,70 @@ SourceGetSections.prototype.getScriptsHTML = function() {
     return scriptsArr;
 };
 
-SourceGetSections.prototype.getStyleContainersHTML = function() {
+SourceGetSections.prototype.getStyleContainersHTML = function(){
+    'use strict';
+
     var styleTag = document.head.getElementsByTagName('style')[0];
     return (styleTag) ? styleTag.outerHTML : "";
 };
 
-SourceGetSections.prototype.getContents = function(){
+SourceGetSections.prototype.flattenHTMLContents = function(){
     'use strict';
+    var flatList = {};
 
-    return this.specHTMLContents;
+    var parseContents = function(contents){
+        for (var i=0; contents.length > i ; i++) {
+            var current = contents[i];
+
+            flatList[current.id] = current;
+
+            if (current.nested.length > 0) {
+                parseContents(current.nested);
+            }
+        }
+    };
+
+    parseContents(this.specHTMLContents);
+
+    this.specHTMLContentsFlatObj = flatList;
 };
 
-SourceGetSections.prototype.getResourceLinks = function(){
+SourceGetSections.prototype.getContentsByID = function(sections){
+    'use strict';
+    var _this = this;
+
+    if (Array.isArray(sections) && sections.length > 0) {
+        // Check if flattened object is already prepared
+        if (!_this.specHTMLContentsFlatObj) {
+            _this.flattenHTMLContents();
+        }
+
+        var pickedSections = [];
+
+        sections.forEach(function(id){
+            var objectToAdd = _this.specHTMLContentsFlatObj[id];
+
+            if (objectToAdd) pickedSections.push(objectToAdd);
+        });
+
+        return pickedSections.length === 0 ? [] : pickedSections;
+    } else {
+        return [];
+    }
+};
+
+SourceGetSections.prototype.getContents = function(sections){
     'use strict';
 
-    return this.specResourceLinks;
+    if (sections) {
+        return this.getContentsByID(sections);
+    } else {
+        return this.specHTMLContents;
+    }
+};
+
+SourceGetSections.prototype.getHeadResources = function(){
+    'use strict';
+
+    return this.headResources;
 };

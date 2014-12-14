@@ -32,19 +32,21 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-newer": "~0.6.1",
     "jade": "~0.35.0",
-    "jsdom": "~0.8.5",
+    "jsdom": "^1.2.1",
     "load-grunt-tasks": "~0.3.0",
     "log4js": "~0.6.20",
     "node-fs-extra": "^0.8.1",
     "path": "^0.4.9",
     "phantomjs": "^1.9.7-15",
+    "q": "^1.1.1",
     "time-grunt": "~0.2.10"
   },
   "devDependencies": {
-    "less-middleware": "~0.1.12",
     "assert": "~1.1.1",
+    "grunt-jsdoc": "~0.5.7",
+    "less-middleware": "~0.1.12",
+    "mocha": "^2.0.1",
     "should": "~4.0.4",
-    "supertest": "~0.13.0",
-    "grunt-jsdoc": "~0.5.7"
+    "supertest": "~0.13.0"
   }
 }

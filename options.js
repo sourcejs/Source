@@ -5,7 +5,7 @@ module.exports = {
     // Restart app after changing core options
     core : {
         api: {
-            specsData: 'core/api/data/pages_tree.json',
+            specsData: 'core/api/data/pages-tree.json',
             htmlData: 'core/api/data/html.json',
             specsTestData: 'test/data/api-test-specs.json',
             htmlTestData: 'test/data/api-test-html.json'

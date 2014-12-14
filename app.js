@@ -76,13 +76,12 @@ if (global.MODE === 'development') {
     global.app.use(less(lessOpts));
 }
 
+
 // Clarify module
-var clarify = require('./core/clarify');
-global.app.use(clarify);
-global.app.use(express.static(__dirname + '/core/clarify')); // static for module css
+global.app.use(require('./core/middleware/clarify'));
 
 
-// Api first steps
+// Options
 global.app.use('/api/options', function(req, res){
     res.jsonp(loadOptions().assets);
 });
@@ -106,12 +105,10 @@ global.app.use(read.process);
 require("./core/middleware/userMiddleware.js");
 
 // Middleware that wraps spec with Source template
-var wrap = require("./core/middleware/wrap");
-global.app.use(wrap.process);
+global.app.use(require("./core/middleware/wrap").process);
 
 // Middleware that sends final spec response
-var send = require("./core/middleware/send");
-global.app.use(send.process);
+global.app.use(require("./core/middleware/send").process);
 
 /* /Middlewares */
 
@@ -126,11 +123,10 @@ require('./core/routes');
 require('./core/api');
 
 // User extenstions
-/* User plugins */
-require("./core/plugins.js");
+require("./core/load-plugins.js");
 
 try {
-    /* User additional functionality */
+    // User additional functionality
     require(global.app.get('user') + "/core/app.js");
 } catch(e){}
 /* /Includes */

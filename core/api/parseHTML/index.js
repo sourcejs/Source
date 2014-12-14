@@ -33,6 +33,7 @@ var config = {
     // Path to HTML data otput
     pathToSpecs: path.join(global.pathToApp, global.opts.core.api.specsData)
 };
+
 // Overwriting base options
 if (global.opts.core.parseHTML) deepExtend(config, global.opts.core.parseHTML);
 
@@ -344,7 +345,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
                 // Writing contents to common obj
                 outputHTML[spec+'/specFile/contents'] = parsedStdout.contents;
-                outputHTML[spec+'/specFile/resourceLinks'] = parsedStdout.resourceLinks;
+                outputHTML[spec+'/specFile/headResources'] = parsedStdout.headResources;
             }
 
             apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);

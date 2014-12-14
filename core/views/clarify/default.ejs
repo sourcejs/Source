@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= title %></title>
+
+    <link href="/source/assets/css/source.css" rel="stylesheet" data-source="core">
+    <link href="/source/assets/css/project/clarify.css" rel="stylesheet">
+    <script src="/source/assets/js/modules/clarify.js"></script>
+
+    <%- cssLinks %>
+    <%- cssStyles %>
+
+    <% if(turnOnJS) { %>
+        <%- scriptLinks %>
+    <% } %>
+</head>
+<body class="source_clarify">
+    <div class="source_clarify_content">
+        <% if (sections.length === 0) { %>
+            No data
+        <% } else {%>
+            <% for(var i = 0; i < sections.length; i++) { %>
+                <h2><%- sections[i].header %></h2>
+
+                <% for(var j = 0; j < sections[i].html.length; j++) { %>
+                    <div class="source_example">
+                        <%- sections[i].html[j] %>
+                    </div>
+                <% } %>
+            <% } %>
+        <% } %>
+    </div>
+    <div class="source_clarify_panel">
+        Some options
+    </div>
+</body>
+</html>
