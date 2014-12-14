@@ -162,6 +162,12 @@ module.exports = function(grunt) {
                 cwd: 'build',
                 src: ['**/*.css']
             }
+        },
+
+        mochaTest: {
+            test: {
+                src: ['test/**/*.js']
+            }
         }
     });
 
@@ -230,7 +236,8 @@ module.exports = function(grunt) {
     * Build tasks
     *
     * */
-    // Regular development update task
+
+     // Regular development update task
     grunt.registerTask('update', [
         'clean-build:dev',
         'resolve-js-bundles',
@@ -259,4 +266,12 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
 
+    /*
+    *
+    * Utils
+    *
+    * */
+
+    // Execute with running app
+    grunt.registerTask('test', ['mochaTest']);
 };
