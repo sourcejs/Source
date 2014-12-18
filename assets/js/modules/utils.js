@@ -21,6 +21,14 @@ define([
         return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
     };
 
+    Utils.prototype.getUrlParameter = function (name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        var results = regex.exec(location.search);
+
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
     Utils.prototype.scrollToSection = function (sectionID) { //sectionID = '#id'
         var new_position = $(sectionID).offset();
         var new_position_padding = 60; //Header heights

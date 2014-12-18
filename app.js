@@ -77,7 +77,7 @@ if (global.MODE === 'development') {
 }
 
 
-// Clarify module
+// Clarify
 global.app.use(require('./core/middleware/clarify'));
 
 

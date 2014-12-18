@@ -8,7 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><%= title %></title>
 
-    <link href="/source/assets/css/source.css" rel="stylesheet" data-source="core">
     <script data-main="/source/assets/js/clarify.js" src="/source/assets/js/require.bundle.js" data-source="core"></script>
 
     <%- headCssLinks %>
@@ -20,15 +19,11 @@
 
     <link href="/source/assets/css/project/clarify.css" rel="stylesheet">
 </head>
-<body class="source_clarify">
+<body class="source_clarify __clear">
     <div class="source_clarify_content">
         <% for(var i = 0; i < sections.length; i++) { %>
-            <h2 class="source_section_h"><%- sections[i].header %></h2>
-
             <% for(var j = 0; j < sections[i].html.length; j++) { %>
-                <div class="source_example">
-                    <%- sections[i].html[j] %>
-                </div>
+                <%- sections[i].html[j] %>
             <% } %>
         <% } %>
     </div>

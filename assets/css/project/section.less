@@ -182,7 +182,28 @@
 
 /* Header actions */
 
+//TODO: combine with .source_section > h2:first-child
 .source_section_h {
+	position: relative;
+	margin: 0 0 25px;
+
+	padding: 5px @layout_spec--inner-padding;
+	line-height: 28px;
+	font-size: 16px;
+	font-weight: normal;
+	color: @black;
+
+	border-radius: 10px;
+	background-color: @light-gray;
+
+	font-family: inherit;
+
+	&:before {
+		counter-increment: h2 1;
+		content: counter(h2)". ";
+		color: #666;
+		}
+
     &:hover .source_section_h_expand {
 		color:#4792D2 !important; //important to override link style
 		}

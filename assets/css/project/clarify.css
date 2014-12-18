@@ -1,10 +1,61 @@
-.source_example {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    padding: 20px;
-    min-width: 500px;
-    border: 5px solid #f0f0f0;
-    margin: 10px 0 15px;
-    background: none;
+html, body {
+	padding: 0 10px 10px;
+	margin: 0;
+    min-width: 0;
+	}
+
+/* Context
+-------------------------------------------------- */
+
+.source_clarify {
+	counter-reset: h2;
     }
+
+.source_clarify .source_section_h {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    }
+
+/* /Context */
+
+
+
+/* Panel
+-------------------------------------------------- */
+
+.source_clarify_panel {
+    width: 608px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px 21px 10px;
+    background-color: #f1f2f3;
+    }
+
+.source_clarify_panel_i {
+    margin-bottom: 15px;
+    }
+
+.source_clarify_panel_h2 {
+    font-weight: normal;
+    font-size: 15px;
+    color: #333333;
+    margin: 0 0 5px;
+    line-height: 1.5;
+    font-family: inherit;
+    text-rendering: auto;
+    }
+
+.source_clarify_panel_sections {
+    width: 100%;
+    min-height: 120px;
+    border-color: #dfe2e4;
+    padding: 5px;
+    }
+
+.source_clarify_panel_go {
+    font-size: 14px;
+    padding: 7px;
+    }
+
+/* /Panel */

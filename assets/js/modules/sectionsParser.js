@@ -179,101 +179,115 @@ function SourceGetSections() {
 
     /* Start parser */
     this.specHTMLContents = getSections();
-    this.headResources = this.parseHeadResourceLinks();
 }
 
-SourceGetSections.prototype.parseHeadResourceLinks = function(){
+/**
+ * Filter list of HTML nodes
+ *
+ * @param {Array} elementsArr - nodelist to filter
+ * @param {Function} [customElFilter] - Additional filter for element
+ * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Style containers OR undefined
+ */
+SourceGetSections.prototype.filterResourceElements = function(elementsArr, customElFilter, getAll){
     'use strict';
 
-    var output = {};
-
-    output.cssLinks = this.getCssLinksHTML();
-    output.scriptLinks = this.getScriptsHTML();
-    output.cssStyles = this.getStyleContainersHTML();
-
-    return output;
-};
-
-SourceGetSections.prototype.getCssLinksHTML = function() {
-    'use strict';
-
-    var links = document.head.getElementsByTagName('link');
-    var linksArr = [];
+    var filteredArr = [];
+    var defaultFilter = function(){ return true; };
+    var _customElFilter = typeof customElFilter === 'function' ? customElFilter : defaultFilter;
 
     // Checking some exceptions
     var checkDataSet = function(el){
-        return !!(
-            el.getAttribute('data-nonclarify') ||
-            el.getAttribute('data-source') === 'core' ||
-            el.getAttribute('data-source') === 'plugin'
-        );
+        if (getAll) {
+            return true;
+        } else {
+            return !(
+                el.getAttribute('data-nonclarify') ||
+                el.getAttribute('data-requiremodule') ||
+                el.getAttribute('data-source') === 'core' ||
+                el.getAttribute('data-source') === 'plugin'
+            );
+        }
     };
 
-    var i = 0;
-    var el;
-    while(i < links.length) {
-        el = links[i];
+    if (elementsArr && elementsArr.length > 0) {
+        var i = 0;
+        var el;
+        while(i < elementsArr.length) {
+            el = elementsArr[i];
 
-        if (el.rel === 'stylesheet' || el.type === 'text/css') {
-            // Check script attrs before adding to output
-            if (checkDataSet(el)) {
-                ++i;
-                continue;
+            if (_customElFilter(el) && checkDataSet(el)) {
+                // If not need to filter out, then push to output
+                filteredArr.push(el.outerHTML);
             }
-
-            // If not need to filter out, then push to output
-            linksArr.push(el.outerHTML);
             ++i;
         }
-    }
 
-    return linksArr;
+        return filteredArr.length > 0 ? filteredArr : undefined;
+    } else {
+        return undefined;
+    }
 };
 
-SourceGetSections.prototype.getScriptsHTML = function() {
+/**
+ * Parse CSS links from Spec
+ *
+ * @param {Object} scope to search - document.head or document.body
+ * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of CSS links OR undefined
+ */
+SourceGetSections.prototype.getCssLinksHTML = function(scope, getAll) {
     'use strict';
 
-    var scripts = document.head.getElementsByTagName('script');
-    var scriptsArr = [];
-
-    // Checking some exceptions
-    var checkDataSet = function(el){
-        return !!(
-            el.getAttribute('data-nonclarify') ||
-            el.getAttribute('data-requiremodule') ||
-            el.getAttribute('data-source') === 'core' ||
-            el.getAttribute('data-source') === 'plugin'
-        );
+    var links = scope.getElementsByTagName('link');
+    var customFilter = function(el){
+        return el.rel === 'stylesheet' || el.type === 'text/css';
     };
 
-    var i = 0;
-    var el;
-    while(i < scripts.length) {
-        el = scripts[i];
-
-        // Check script attrs before adding to output
-        if (checkDataSet(el)) {
-            ++i;
-            continue;
-        }
-
-        // If not need to filter out, then push to output
-        scriptsArr.push(el.outerHTML);
-        ++i;
-    }
-
-    return scriptsArr;
+    return this.filterResourceElements(links, customFilter, getAll);
 };
 
-SourceGetSections.prototype.getStyleContainersHTML = function(){
+/**
+ * Parse Scripts from Spec
+ *
+ * @param {Object} scope to search - document.head or document.body
+ * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Scripts OR undefined
+ */
+SourceGetSections.prototype.getScriptsHTML = function(scope, getAll) {
     'use strict';
 
-    var styleTag = document.head.getElementsByTagName('style')[0];
-    return (styleTag) ? styleTag.outerHTML : "";
+    var scripts = scope.getElementsByTagName('script');
+
+    return this.filterResourceElements(scripts, null, getAll);
 };
 
-// TODO: Move to CommonJS module, and reuse API/parseData.js
+/**
+ * Parse Style containers from Spec
+ *
+ * @param {Object} scope to search - document.head or document.body
+ * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Style containers OR undefined
+ */
+SourceGetSections.prototype.getStyleContainersHTML = function(scope, getAll){
+    'use strict';
+
+    var styles = scope.getElementsByTagName('style');
+
+    return this.filterResourceElements(styles, null, getAll);
+};
+
+/**
+ * Flatten HTML contents
+ *
+ * @returns {Object} Updates global 'specHTMLContentsFlatObj' and return flat specHTMLContents
+ */
 SourceGetSections.prototype.flattenHTMLContents = function(){
+    // TODO: Move to CommonJS module, and reuse API/parseData.js
     'use strict';
     var flatList = {};
 
@@ -292,6 +306,7 @@ SourceGetSections.prototype.flattenHTMLContents = function(){
     parseContents(this.specHTMLContents);
 
     this.specHTMLContentsFlatObj = flatList;
+    return flatList;
 };
 
 
@@ -327,14 +342,59 @@ SourceGetSections.prototype.getContentsBySection = function(sections){
     }
 };
 
+/**
+ * Getter for contents of the Spec
+ *
+ * @returns {Object} Returns object with spec HTML contents OR undefined
+ */
 SourceGetSections.prototype.getContents = function(){
     'use strict';
 
     return this.specHTMLContents;
 };
 
-SourceGetSections.prototype.getHeadResources = function(){
+/**
+ * Get full spec object
+ *
+ * @param {Array} [sections] - Array of sections to return
+ *
+ * @returns {Object} Returns object with spec HTML contents OR undefined
+ */
+SourceGetSections.prototype.getSpecFull = function(sections){
     'use strict';
 
-    return this.headResources;
+    var output = {};
+
+    output.headResources = this.getSpecResources() || {};
+    output.bodyResources = this.getSpecResources('body') || {};
+
+    if (sections) {
+        output.contents = this.getContentsBySection(sections);
+    } else {
+        output.contents = this.specHTMLContents;
+    }
+
+    return (output.contents || output.headResources || output.bodyResources) ? output : undefined;
+};
+
+
+/**
+ * Getter for assets resources of the Spec
+ *
+ * @param {String} [scope] - "head" or "body", "head" is used by default
+ *
+ * @returns {Object} Returns object with HTML lists containing Spec assets resources OR undefined
+ */
+SourceGetSections.prototype.getSpecResources = function(scope){
+    'use strict';
+
+    var _scope = scope === 'body' ? document.body : document.head;
+
+    var output = {};
+
+    output.cssLinks = this.getCssLinksHTML(_scope);
+    output.scripts = this.getScriptsHTML(_scope);
+    output.cssStyles = this.getStyleContainersHTML(_scope);
+
+    return (output.cssLinks || output.scripts || output.cssStyles) ? output : undefined;
 };

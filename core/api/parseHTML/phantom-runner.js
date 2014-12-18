@@ -1,3 +1,9 @@
+/*
+ *
+ * This script is executed in separate process from main app and runs in PhantomJS context
+ *
+ * */
+
 'use strict';
 
 /* global phantom: true */
@@ -56,8 +62,7 @@ page.onCallback = function (data) {
                 success: function(){
                     var parser = new SourceGetSections();
 
-                    output.contents = parser.getContents();
-                    output.headResources = parser.getHeadResources();
+                    output = parser.getSpecFull();
                 }
             });
 
@@ -65,6 +70,7 @@ page.onCallback = function (data) {
         }, url);
 
         // TODO: make reponse in {{ ... }} to parse only relevant part
+        // Returns stdout, that is then parsed from main app
         console.log(JSON.stringify(code));
         phantom.exit();
 

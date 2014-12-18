@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs-extra');
 var url = require('url');
 var Q = require('q');
+var _ = require('lodash');
 var jsdom = require('jsdom');
 var ejs = require('ejs');
 var specUtils = require(path.join(global.pathToApp, 'core/specUtils'));
@@ -46,6 +47,51 @@ var getTpl = function(tpl) {
     return deferred.promise;
 };
 
+var getTplList = function(){
+    var deferred = Q.defer();
+
+    var pathToTemplates = path.join(global.pathToApp, 'core/views/clarify');
+    var userPathToTemplates = path.join(global.app.get('user'), 'core/views/clarify');
+
+    var templatesList = [];
+
+    fs.readdir(pathToTemplates, function(err, coreTemplates){
+        if (err) {
+            deferred.reject({
+                err: err,
+                msg: 'Could not read directory with Clarify templates'
+            });
+            return;
+        }
+
+        coreTemplates.forEach(function(item){
+            templatesList.push(path.basename(item, '.ejs'));
+        });
+
+        fs.readdir(userPathToTemplates, function(err, userTemplates){
+            if (err) {
+                if (err.code === 'ENOENT') {
+                    deferred.resolve(templatesList);
+                } else {
+                    deferred.reject({
+                        err: err,
+                        msg: 'Could not read user directory with Clarify templates'
+                    });
+                }
+            } else {
+                userTemplates.forEach(function(item){
+                    templatesList.push(path.basename(item, '.ejs'));
+                });
+
+                deferred.resolve(_.uniq(templatesList));
+            }
+        });
+    });
+
+    return deferred.promise;
+};
+
+// TODO: Move to standalone API, for fast JSDOM spec parsing
 var parseSpec = function(sections, pathToSpec) {
     var deferred = Q.defer();
 
@@ -62,23 +108,24 @@ var parseSpec = function(sections, pathToSpec) {
                 return;
             }
 
+            var output = {};
+
             var SourceGetSections = window.SourceGetSections;
 
-            var output = {};
             var parser = new SourceGetSections();
-            var contents = [];
+            var allContents = parser.getSpecFull();
 
             if (sections) {
-                contents = parser.getContentsBySection(sections);
+                output = parser.getSpecFull(sections);
             } else {
-                contents = parser.getContents();
+                output = allContents;
             }
 
-            if (contents) {
-                output.contents = contents;
-                output.headResources = parser.getHeadResources() || {};
-
-                deferred.resolve(output);
+            if (output) {
+                deferred.resolve({
+                    output: output,
+                    allContents: allContents
+                });
             } else {
                 deferred.reject({
                     msg: 'Requested sections HTML not found'
@@ -97,18 +144,21 @@ var getDataFromApi = function(sections, pathToSpec) {
 
     //TODO: Move spec ID check to utils
     var specID = pathToSpec.slice(1, pathToSpec.length - 1);
+    var allContents = parseHTMLData.getByID(specID);
 
     if (sections) {
         output = parseHTMLData.getBySection(specID, sections);
         errMsg = 'Requested sections HTML not found';
     } else {
-        output = parseHTMLData.getByID(specID);
-
+        output = allContents;
         errMsg = 'Requested Spec not found';
     }
 
     if (output) {
-        deferred.resolve(output);
+        deferred.resolve({
+            output: output,
+            allContents: allContents
+        });
     } else {
         deferred.reject({
             msg: errMsg
@@ -116,6 +166,29 @@ var getDataFromApi = function(sections, pathToSpec) {
     }
 
     return deferred.promise;
+};
+
+var getSectionsIDList = function(sections) {
+    var output = [];
+
+    var parseContents = function(contents){
+        for (var i=0; contents.length > i ; i++) {
+            var current = contents[i];
+
+            output.push({
+                header: current.header,
+                id: current.id
+            });
+
+            if (current.nested.length > 0) {
+                parseContents(current.nested);
+            }
+        }
+    };
+
+    parseContents(sections.contents);
+
+    return output;
 };
 
 module.exports = function(req, res, next) {
@@ -132,7 +205,7 @@ module.exports = function(req, res, next) {
 
         var tpl = q.tpl;
         var fromApi = q.fromApi || false;
-        var turnOnJS = q.js || true;
+        var turnOffJS = q.nojs || false;
         var sections = q.sections ? q.sections.split(',') : undefined;
 
         var specInfo = specUtils.getSpecInfo(parsedPath.pathToSpec);
@@ -141,18 +214,38 @@ module.exports = function(req, res, next) {
             return fromApi ? getDataFromApi(sections, parsedPath.pathToSpec) : parseSpec(sections, parsedPath.pathToSpec);
         };
 
-        getSpecData().then(function(specData){
+        Q.all([
+            getSpecData(),
+            getTplList()
+        ]).spread(function(_specData, tplList) {
+            var specData = _specData.output;
+
             var checkHeadResources = function(specData, target){
                 return specData.headResources && specData.headResources[target];
             };
 
+            var checkBodyResources = function(specData, target){
+                return specData.bodyResources && specData.bodyResources[target];
+            };
+
+            var clarifyData = '<script>var sourceClarifyData = '+ JSON.stringify({
+                sectionsIDList: getSectionsIDList(_specData.allContents),
+                tplList: tplList
+            })+'</script>';
+
             var templateJSON = {
-                turnOnJS: turnOnJS,
+                nojs: turnOffJS,
                 title: specInfo.title,
                 sections: specData.contents ? specData.contents : [],
-                cssLinks: checkHeadResources(specData, 'cssLinks') ? specData.headResources.cssLinks.join('\n') : '',
-                scriptLinks: checkHeadResources(specData, 'scriptLinks') ? specData.headResources.scriptLinks.join('\n'): '',
-                cssStyles: checkHeadResources(specData, 'cssStyles') ? specData.headResources.cssStyles : ''
+                headCssLinks: checkHeadResources(specData, 'cssLinks') ? specData.headResources.cssLinks.join('\n') : '',
+                headScripts: checkHeadResources(specData, 'scripts') ? specData.headResources.scripts.join('\n'): '',
+                headCssStyles: checkHeadResources(specData, 'cssStyles') ? specData.headResources.cssStyles.join('\n') : '',
+
+                bodyCssLinks: checkBodyResources(specData, 'cssLinks') ? specData.bodyResources.cssLinks.join('\n') : '',
+                bodyScripts: checkBodyResources(specData, 'scripts') ? specData.bodyResources.scripts.join('\n'): '',
+                bodyCssStyles: checkBodyResources(specData, 'cssStyles') ? specData.bodyResources.cssStyles.join('\n') : '',
+
+                clarifyData: clarifyData
             };
 
             getTpl(tpl).then(function(tpl){
@@ -161,7 +254,7 @@ module.exports = function(req, res, next) {
                 try {
                     html = ejs.render(tpl, templateJSON);
                 } catch (err) {
-                    var msg = 'ERROR: EJS rendering failed';
+                    var msg = 'Clarify: ERROR with EJS rendering failed';
                     global.log.error(msg + ': ', err);
 
                     html = msg;
@@ -178,7 +271,7 @@ module.exports = function(req, res, next) {
         }).fail(function(errData) {
             var errMsg = errData.err ? ': ' + errData.err : '';
 
-            global.log.info('Clarify: ' + errData.msg, errMsg);
+            global.log.info('Clarify: ' + (errData.msg || 'Error in data preparation'), errMsg);
 
             res.status(500).send(errData.msg);
         });
