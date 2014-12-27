@@ -237,7 +237,7 @@ module.exports = function(grunt) {
     *
     * */
 
-     // Regular development update task
+    // Regular development update task
     grunt.registerTask('update', [
         'clean-build:dev',
         'resolve-js-bundles',

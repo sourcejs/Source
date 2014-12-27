@@ -8,7 +8,7 @@ require([
     "jquery",
     "sourceModules/utils",
     "text!sourceTemplates/clarifyPanel.inc.html"
-    ], function ($, u, clarifyPanelTpl) {
+    ], function ($, u, clarifyPanelTpl){
 
     // If we have data from Clarify output
     if (window.sourceClarifyData){
@@ -18,7 +18,7 @@ require([
             var output = '';
             var tplList = window.sourceClarifyData.tplList;
 
-            for (var i=0; i < tplList.length; i++) {
+            for (var i = 0; i < tplList.length; i++){
                 var currentTpl = tplList[i];
 
                 output += '<option data-tpl-name="'+currentTpl+'">'+currentTpl+'</option>'
@@ -29,19 +29,19 @@ require([
 
         var prepareSectionsList = function(){
             var output = '';
-            var sectionsList = window.sourceClarifyData.sectionsIDList;
+            var sectionsList = window.sourceClarifyData.sectionsIDList || [];
 
-            for (var i=0; i < sectionsList.length; i++) {
-                var current = sectionsList[i];
-
-                output += '<option data-section="'+current.id+'">'+current.id + '. '+ current.header +'</option>'
-            }
+            sectionsList.forEach(function(current){
+                output += '<option data-section="' + current.id + '">' + current.visualID + '. ' + current.header + '</option>';
+            });
 
             return output;
         };
 
         var enableCheckboxes = function(param){
-            if (u.getUrlParameter(param)) $panelTemplate.find('.js-source_clarify_panel_option-checkbox[name="'+param+'"]').attr('checked', true);
+            if (u.getUrlParameter(param)) {
+                $panelTemplate.find('.js-source_clarify_panel_option-checkbox[name="'+param+'"]').attr('checked', true);
+            }
         };
 
         // Filing select containers
@@ -50,18 +50,19 @@ require([
 
         // Restoring options from URL
         var checkboxes = ['nojs','fromApi'];
-        for (var c=0;c<checkboxes.length;c++) {
-            enableCheckboxes(checkboxes[c]);
-        }
+
+        checkboxes.forEach(function(item){
+            enableCheckboxes(item);
+        });
 
         var tepmplate = u.getUrlParameter('tpl') ? u.getUrlParameter('tpl') : 'default';
         $panelTemplate.find('.js-source_clarify_panel_select').val(tepmplate);
 
         var sections = u.getUrlParameter('sections') ? u.getUrlParameter('sections').split(',') : undefined;
         if (sections) {
-            for (var s=0;s<sections.length;s++) {
-                $panelTemplate.find('.js-source_clarify_panel_sections > option[data-section="'+sections[s]+'"]').attr('selected', true);
-            }
+            sections.forEach(function(item){
+                $panelTemplate.find('.js-source_clarify_panel_sections > option[data-section="' + item + '"]').attr('selected', true);
+            });
         }
 
         // Import template
@@ -78,13 +79,13 @@ require([
             $('.js-source_clarify_panel_option-checkbox').each(function(){
                 var t = $(this);
 
-                if (t.is(':checked')) {
+                if (t.is(':checked')){
                     constructedParams += '&' + t.attr('name') + '=true'
                 }
             });
 
             var selectedTpl = $('.js-source_clarify_panel_select').val();
-            if (selectedTpl !== 'default') {
+            if (selectedTpl !== 'default'){
                 constructedParams += '&tpl=' + selectedTpl;
             }
 
@@ -95,7 +96,7 @@ require([
                 selectedSections.push(t.attr('data-section'));
             });
 
-            if (selectedSections.length > 0) {
+            if (selectedSections.length > 0){
                 constructedParams += '&sections=' + selectedSections.join(',');
             }
 

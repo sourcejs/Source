@@ -177,7 +177,8 @@ var getSectionsIDList = function(sections) {
 
             output.push({
                 header: current.header,
-                id: current.id
+                id: current.id,
+                visualID: current.visualID
             });
 
             if (current.nested.length > 0) {

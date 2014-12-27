@@ -23,7 +23,7 @@
 <body class="source_clarify">
     <div class="source_clarify_content">
         <% for(var i = 0; i < sections.length; i++) { %>
-            <h2 class="source_section_h"><%- sections[i].header %></h2>
+            <h2 class="source_section_h"><%- sections[i].visualID %>. <%- sections[i].header %></h2>
 
             <% for(var j = 0; j < sections[i].html.length; j++) { %>
                 <div class="source_example">

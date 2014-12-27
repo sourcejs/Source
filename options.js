@@ -30,6 +30,7 @@ module.exports = {
     assets: {
         // Core modules
         modulesEnabled : {
+            clarifyInSpec: true,
             htmlAPISync: true,
             headerFooter: true,
             specDecorations: true,

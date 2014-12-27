@@ -12,7 +12,7 @@ var system = require('system');
 
 // arguments from node query
 var url = system.args[1];
-//var id = system.args[2];
+var port = system.args[2];
 
 page.onResourceReceived = function(response) {
     if (response.id === 1 && response.status === 404 || response.status === 500) {
@@ -29,7 +29,7 @@ page.onConsoleMessage = function(msg) {
     //console.log('-- webkit console: ' + msg);
 };
 
-page.open('http://127.0.0.1:'+global.opts.core.common.port+'/'+ url, function (status) {
+page.open('http://127.0.0.1:' + port + '/' + url, function (status) {
     if (status !== 'success') {
         console.log(JSON.stringify({
                 "error": "Error loading page.",

@@ -8,8 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><%= title %></title>
 
-    <script data-main="/source/assets/js/clarify.js" src="/source/assets/js/require.bundle.js" data-source="core"></script>
-
     <%- headCssLinks %>
     <%- headCssStyles %>
 
@@ -27,7 +25,6 @@
             <% } %>
         <% } %>
     </div>
-    <div class="js-source_clarify_panel"></div>
 
     <%- bodyCssLinks %>
     <%- bodyCssStyles %>
@@ -35,8 +32,5 @@
     <% if(!nojs) { %>
         <%- bodyScripts %>
     <% } %>
-
-    <!-- Important data for clarify panel -->
-    <%- clarifyData %>
 </body>
 </html>

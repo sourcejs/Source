@@ -294,7 +294,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             apiLog.trace('Starts...' + n, spec);
 
-            childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
+            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
                 handler(error, stdout, stderr, spec, callbackProxy);
                 next();
             });

@@ -103,7 +103,7 @@ var getHTML = function (req, res, parseObj) {
             responseData = parsedData.getByID(reqID);
         }
 
-        if (responseData && typeof responseData === 'object') {
+        if (typeof responseData === 'object') {
             res.status(config.statusCodes.OK).json(responseData);
         } else {
             res.status(config.statusCodes.notFound).json({
