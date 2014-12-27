@@ -28,12 +28,13 @@ define([
             hashSymb: '!',
             RESERVED_HEIGHT: 250 // (185 + 15 + 50) px
         }, this.options.modulesOptions.innerNavigation);
+        this.moduleOptions = this.options.modulesOptions.innerNavigation;
 
         this.menuItemTemplate = $(menuItemTemplate);
         this.menuItemTumblerTemplate = $(menuItemTumblerTemplate);
         this.container = $(navTemplate);
 
-        var $injectAfter = $(this.options.modulesOptions.innerNavigation.INJECT_AFTER).first();
+        var $injectAfter = $(this.moduleOptions.INJECT_AFTER).first();
 
         // Checking if inject after element exists, and isn't used in source example sections
         if (
@@ -79,8 +80,8 @@ define([
             }
         });
 
-        newItem.find('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC_TX).text(text);
-        $('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC).append(newItem);
+        newItem.find('.' + this.moduleOptions.MAIN_NAV_AC_TX).text(text);
+        $('.' + this.moduleOptions.MAIN_NAV_AC).append(newItem);
 
         // recalculate height after adding new action to menu
         $(window).trigger('resize');
@@ -116,8 +117,8 @@ define([
             }
         });
 
-        newItem.find('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC_TX).text(text);
-        $('.' + this.options.modulesOptions.innerNavigation.MAIN_NAV_AC).prepend(newItem);
+        newItem.find('.' + this.moduleOptions.MAIN_NAV_AC_TX).text(text);
+        $('.' + this.moduleOptions.MAIN_NAV_AC).prepend(newItem);
 
         // recalculate height after adding new action to menu
         $(window).trigger('resize');
@@ -138,7 +139,7 @@ define([
     InnerNavigation.prototype.calcMenuHeight = function () {
         var h = 0;
 
-        this.container.find('.' + this.options.modulesOptions.innerNavigation.MENU__I_CLASS).each(function () {
+        this.container.find('.' + this.moduleOptions.MENU__I_CLASS).each(function () {
             h += $(this).height();
         });
 
@@ -148,35 +149,50 @@ define([
     InnerNavigation.prototype.injectNavigation = function () {
         var appendString = '';
         for (var i = 0; i < sections.getQuantity() ; i++) {
-            appendString +=
-                    '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_CLASS + '">' +
-                            '<a href="#' + (sections.getSections()[i].id) + this.options.modulesOptions.innerNavigation.hashSymb + '"  class="' + this.options.modulesOptions.innerNavigation.NAV_LINK_CLASS + '">' +
-                            sections.getSections()[i].num + '. ' + sections.getSections()[i].caption + '</a>';
+            var section = sections.getSections()[i];
+            var sectionID = i + 1;
+            var href = (section.id) + this.moduleOptions.hashSymb;
 
-			if ( sections.getSections()[i].subHeaderElements !== undefined ) {
-				appendString += '<ul class="' + this.options.modulesOptions.innerNavigation.NAV_UL_SECONDLEVEL_CLASS + '">';
-				for (var j = 0; j < sections.getSections()[i].subHeaderElements.length; j++) {
-					appendString += '<li class="' + this.options.modulesOptions.innerNavigation.NAV_LI_SECONDLEVEL_CLASS + '">' +
-						'<a class="source_main_nav_a" href="#' + (sections.getSections()[i].id) + '_' + (j+1) + this.options.modulesOptions.innerNavigation.hashSymb + '">' +
-							sections.getSections()[i].num + '.' + (j+1) + '&nbsp;' + sections.getSections()[i].subHeaderElements[j].text() +
-						'</a></li>';
+            appendString += [
+                '<li class="' + this.moduleOptions.NAV_LI_CLASS + '">',
+                    '<a href="#' + href + '" class="' + this.moduleOptions.NAV_LINK_CLASS + '">',
+                        section.num + '. ' + section.caption,
+                    '</a>'
+            ].join('');
+
+			if ( section.subHeaderElements !== undefined ) {
+				appendString += '<ul class="' + this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
+
+				for (var j = 0; j < section.subHeaderElements.length; j++) {
+                    var seqNum = j+1;
+                    var subSection = section.subHeaderElements[j];
+                    var subSectionID = sectionID + '.' + seqNum;
+                    var subHref = subSection.attr('id') || subSectionID + this.moduleOptions.hashSymb;
+
+					appendString += [
+                        '<li class="' + this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
+                            '<a class="source_main_nav_a" href="#' + subHref + '">',
+                                section.num + '.' + seqNum + '&nbsp;' + subSection.text(),
+                            '</a>',
+                        '</li>'
+                    ].join('');
 				}
-				appendString += '</ul>';
+
+                appendString += '</ul>';
 			}
 
-             appendString += '</li>';
+            appendString += '</li>';
         }
 
-        $('.' + this.options.modulesOptions.innerNavigation.NAV_UL_CLASS).append(appendString);
+        $('.' + this.moduleOptions.NAV_UL_CLASS).append(appendString);
     };
 
     //TODO: refactor menu scrolling add
     InnerNavigation.prototype.addMenuScrolling = function () {
-
-        if (this.calcMenuHeight() + this.options.modulesOptions.innerNavigation.RESERVED_HEIGHT > $(window).height()) {
-            this.container.addClass(this.options.modulesOptions.innerNavigation.MENU_SCROLL_MOD_CLASS);
+        if (this.calcMenuHeight() + this.moduleOptions.RESERVED_HEIGHT > $(window).height()) {
+            this.container.addClass(this.moduleOptions.MENU_SCROLL_MOD_CLASS);
         } else {
-            this.container.removeClass(this.options.modulesOptions.innerNavigation.MENU_SCROLL_MOD_CLASS);
+            this.container.removeClass(this.moduleOptions.MENU_SCROLL_MOD_CLASS);
         }
     };
 

@@ -68,20 +68,24 @@ define([
         return this.getSections().length;
     };
 
-    /* если нет ID, добавляем */
+    // Adding unique ID to section, if it's present
     Sections.prototype.setSectionId = function (section, id) {
-        var newID = id;
-        if (section.attr('id') !== undefined) {
-            newID = section.attr('id');
-        } else {
-            section.attr('id', newID);
+        var _id = id;
+        var custom;
 
-            section.children('h3').each(function(index) {
-                $(this).attr('id', newID + '_' + (index+1));
-            });
+        if (section.attr('id') !== undefined) {
+            custom = section.attr('id');
+        } else {
+            section.attr('id', _id);
         }
 
-        return newID;
+        section.children('h3').each(function(index) {
+            if ($(this).attr('id') === undefined) {
+                $(this).attr('id', _id + '.' + (index+1));
+            }
+        });
+
+        return custom || _id;
     };
 
     return new Sections();

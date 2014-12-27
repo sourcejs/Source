@@ -32,8 +32,10 @@ function SourceGetSections() {
 
         if (sections[0]) {
             for (var i = 0, l = sections.length; i < l; i++) {
-                elem = sections[i];
-                specData.push(parse(elem));
+                var section = sections[i];
+                elem = section;
+
+                specData.push(parse(section));
             }
 
             return specData;
@@ -55,9 +57,8 @@ function SourceGetSections() {
             elem = (elem) ? getNextSibling(elem) : null;
         }
 
-        // this.html = getHTML(elem); // @Array with code
-        // this.ID = returnId();
-        this.id = returnId();
+        this.id = returnId(section);
+        this.visualID = visualID();
         this.header = section.header || getHeader(elem);
         this.nested = [];
         this.html = [];
@@ -96,7 +97,7 @@ function SourceGetSections() {
                 _h3++;
                 _h4 = 0;
                 prevFlag = flag;
-                this.nested.push(new Spec({header: getHeader(elem), next: true}));
+                this.nested.push(new Spec({header: getHeader(elem), next: true, headerElem: elem}));
             }
             else if (flag === 'H4') {
                 if (prevFlag === flag) {
@@ -106,7 +107,7 @@ function SourceGetSections() {
                 }
                 _h4++;
                 prevFlag = flag;
-                this.nested.push(new Spec({header: getHeader(elem), next: true}));
+                this.nested.push(new Spec({header: getHeader(elem), next: true, headerElem: elem}));
             }
 
             if (elem) {
@@ -140,7 +141,33 @@ function SourceGetSections() {
         return previousSibling;
     }
 
-    function returnId() {
+    function returnId(section) {
+        var hasClass = function(el, className) {
+            if (el.classList) {
+                return el.classList.contains(className);
+            } else {
+                return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+            }
+        };
+
+        var checkCustomID = function (){
+            var parent = section.parentNode;
+
+            if (parent && hasClass(parent, 'source_section') && parent.id) return parent.id;
+            if (section.id) return section.id;
+            if (section.headerElem && section.headerElem.id) return section.headerElem.id;
+
+            return undefined;
+        };
+
+        if (checkCustomID()) {
+            return checkCustomID();
+        } else {
+            return visualID();
+        }
+    }
+
+    function visualID() {
         var idArr = [_h2];
 
         if (_h3 > 0) idArr.push(_h3);
@@ -186,11 +213,11 @@ function SourceGetSections() {
  *
  * @param {Array} elementsArr - nodelist to filter
  * @param {Function} [customElFilter] - Additional filter for element
- * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
  *
  * @returns {Array} Returns array with HTML of Style containers OR undefined
  */
-SourceGetSections.prototype.filterResourceElements = function(elementsArr, customElFilter, getAll){
+SourceGetSections.prototype.filterResourceElements = function(elementsArr, customElFilter, skipAttrFilters){
     'use strict';
 
     var filteredArr = [];
@@ -199,7 +226,7 @@ SourceGetSections.prototype.filterResourceElements = function(elementsArr, custo
 
     // Checking some exceptions
     var checkDataSet = function(el){
-        if (getAll) {
+        if (skipAttrFilters) {
             return true;
         } else {
             return !(
@@ -234,11 +261,11 @@ SourceGetSections.prototype.filterResourceElements = function(elementsArr, custo
  * Parse CSS links from Spec
  *
  * @param {Object} scope to search - document.head or document.body
- * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
  *
  * @returns {Array} Returns array with HTML of CSS links OR undefined
  */
-SourceGetSections.prototype.getCssLinksHTML = function(scope, getAll) {
+SourceGetSections.prototype.getCssLinksHTML = function(scope, skipAttrFilters) {
     'use strict';
 
     var links = scope.getElementsByTagName('link');
@@ -246,39 +273,39 @@ SourceGetSections.prototype.getCssLinksHTML = function(scope, getAll) {
         return el.rel === 'stylesheet' || el.type === 'text/css';
     };
 
-    return this.filterResourceElements(links, customFilter, getAll);
+    return this.filterResourceElements(links, customFilter, skipAttrFilters);
 };
 
 /**
  * Parse Scripts from Spec
  *
  * @param {Object} scope to search - document.head or document.body
- * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
  *
  * @returns {Array} Returns array with HTML of Scripts OR undefined
  */
-SourceGetSections.prototype.getScriptsHTML = function(scope, getAll) {
+SourceGetSections.prototype.getScriptsHTML = function(scope, skipAttrFilters) {
     'use strict';
 
     var scripts = scope.getElementsByTagName('script');
 
-    return this.filterResourceElements(scripts, null, getAll);
+    return this.filterResourceElements(scripts, null, skipAttrFilters);
 };
 
 /**
  * Parse Style containers from Spec
  *
  * @param {Object} scope to search - document.head or document.body
- * @param {Boolean} [getAll] - Set to true, if expect not filtered list of resources
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
  *
  * @returns {Array} Returns array with HTML of Style containers OR undefined
  */
-SourceGetSections.prototype.getStyleContainersHTML = function(scope, getAll){
+SourceGetSections.prototype.getStyleContainersHTML = function(scope, skipAttrFilters){
     'use strict';
 
     var styles = scope.getElementsByTagName('style');
 
-    return this.filterResourceElements(styles, null, getAll);
+    return this.filterResourceElements(styles, null, skipAttrFilters);
 };
 
 /**
@@ -322,7 +349,7 @@ SourceGetSections.prototype.getContentsBySection = function(sections){
     'use strict';
     var _this = this;
 
-    if (_this.specHTMLContents && Array.isArray(sections) && sections.length > 0) {
+    if (Array.isArray(sections) && sections.length > 0) {
         // Check if flattened object is already prepared
         if (!_this.specHTMLContentsFlatObj) {
             _this.flattenHTMLContents();
