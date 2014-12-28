@@ -15,5 +15,6 @@ http://localhost:8080/spec/?clarify=true&sections=1
 | clarify | Boolean | false | Turn on clarify middleware. |
 | sections | '1, 1.1, 3' | empty (lists all sections) | List of sections to show. |
 | fromApi | Boolean | false | Set to `true`, if want to get rendered HTML from API in response. |
+| apiUpdate | Boolean | false | Set to `true`, if want to run HTML API update on spec, before getting results. Used only in combination with `fromApi` |
 | nojs | Boolean | false | Turn on and off JS injection from the Spec. |
 | tpl | 'template name' | 'default' | Define EJS template name to render sections. Templates are defined in `core/views/clarify/` and `user/core/views/clarify/`, user templates overrides core. |

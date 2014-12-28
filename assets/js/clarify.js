@@ -45,18 +45,18 @@ require([
         };
 
         // Filing select containers
-        $panelTemplate.find('.js-source_clarify_panel_select').append(prepareTplList());
+        $panelTemplate.find('.js-source_clarify_panel_select-tpl').append(prepareTplList());
         $panelTemplate.find('.js-source_clarify_panel_sections').append(prepareSectionsList());
 
         // Restoring options from URL
-        var checkboxes = ['nojs','fromApi'];
+        var checkboxes = ['nojs','fromApi','apiUpdate'];
 
         checkboxes.forEach(function(item){
             enableCheckboxes(item);
         });
 
         var tepmplate = u.getUrlParameter('tpl') ? u.getUrlParameter('tpl') : 'default';
-        $panelTemplate.find('.js-source_clarify_panel_select').val(tepmplate);
+        $panelTemplate.find('.js-source_clarify_panel_select-tpl').val(tepmplate);
 
         var sections = u.getUrlParameter('sections') ? u.getUrlParameter('sections').split(',') : undefined;
         if (sections) {
@@ -84,7 +84,7 @@ require([
                 }
             });
 
-            var selectedTpl = $('.js-source_clarify_panel_select').val();
+            var selectedTpl = $('.js-source_clarify_panel_select-tpl').val();
             if (selectedTpl !== 'default'){
                 constructedParams += '&tpl=' + selectedTpl;
             }

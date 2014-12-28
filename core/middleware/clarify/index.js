@@ -10,6 +10,7 @@ var ejs = require('ejs');
 var specUtils = require(path.join(global.pathToApp, 'core/specUtils'));
 var parseData = require(path.join(global.pathToApp, 'core/api/parseData'));
 var pathToApp = path.dirname(require.main.filename);
+var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
 
 var htmlDataPath = path.join(pathToApp, global.opts.core.api.htmlData);
 var parseHTMLData = new parseData({
@@ -137,32 +138,61 @@ var parseSpec = function(sections, pathToSpec) {
     return deferred.promise;
 };
 
-var getDataFromApi = function(sections, pathToSpec) {
+var updateApiData = function(specID) {
+    var deferred = Q.defer();
+    var specs = [specID];
+
+    parseHTML.processSpecs(specs, function(){
+        deferred.resolve();
+    });
+
+    return deferred.promise;
+};
+
+var getDataFromApi = function(sections, pathToSpec, apiUpdate) {
     var deferred = Q.defer();
     var output = {};
     var errMsg = '';
 
     //TODO: Move spec ID check to utils
     var specID = pathToSpec.slice(1, pathToSpec.length - 1);
-    var allContents = parseHTMLData.getByID(specID);
 
-    if (sections) {
-        output = parseHTMLData.getBySection(specID, sections);
-        errMsg = 'Requested sections HTML not found';
-    } else {
-        output = allContents;
-        errMsg = 'Requested Spec not found';
-    }
+    var getSpecData = function(){
+        var allContents = parseHTMLData.getByID(specID);
 
-    if (output) {
-        deferred.resolve({
-            output: output,
-            allContents: allContents
+        if (sections) {
+            output = parseHTMLData.getBySection(specID, sections);
+            errMsg = 'Requested sections HTML not found';
+        } else {
+            output = allContents;
+            errMsg = 'Requested Spec not found';
+        }
+
+        if (output) {
+            deferred.resolve({
+                output: output,
+                allContents: allContents
+            });
+        } else {
+            deferred.reject({
+                msg: errMsg
+            });
+        }
+    };
+
+    if (apiUpdate) {
+        updateApiData(specID).then(function(){
+            getSpecData();
+        }).fail(function(err) {
+            var msg = 'Failed updating HTML Spec API';
+
+            deferred.reject({
+                msg: msg
+            });
+            global.log.info('Clarify: ' + msg, err);
         });
     } else {
-        deferred.reject({
-            msg: errMsg
-        });
+        getSpecData();
     }
 
     return deferred.promise;
@@ -206,13 +236,14 @@ module.exports = function(req, res, next) {
 
         var tpl = q.tpl;
         var fromApi = q.fromApi || false;
+        var apiUpdate = q.apiUpdate || false;
         var turnOffJS = q.nojs || false;
         var sections = q.sections ? q.sections.split(',') : undefined;
 
         var specInfo = specUtils.getSpecInfo(parsedPath.pathToSpec);
 
         var getSpecData = function(){
-            return fromApi ? getDataFromApi(sections, parsedPath.pathToSpec) : parseSpec(sections, parsedPath.pathToSpec);
+            return fromApi ? getDataFromApi(sections, parsedPath.pathToSpec, apiUpdate) : parseSpec(sections, parsedPath.pathToSpec);
         };
 
         Q.all([
@@ -220,55 +251,60 @@ module.exports = function(req, res, next) {
             getTplList()
         ]).spread(function(_specData, tplList) {
             var specData = _specData.output;
+            var sections = specData.contents ? specData.contents : [];
 
-            var checkHeadResources = function(specData, target){
-                return specData.headResources && specData.headResources[target];
-            };
+            if (sections.length > 0) {
+                var checkHeadResources = function(specData, target){
+                    return specData.headResources && specData.headResources[target];
+                };
 
-            var checkBodyResources = function(specData, target){
-                return specData.bodyResources && specData.bodyResources[target];
-            };
+                var checkBodyResources = function(specData, target){
+                    return specData.bodyResources && specData.bodyResources[target];
+                };
 
-            var clarifyData = '<script>var sourceClarifyData = '+ JSON.stringify({
-                sectionsIDList: getSectionsIDList(_specData.allContents),
-                tplList: tplList
-            })+'</script>';
+                var clarifyData = '<script>var sourceClarifyData = '+ JSON.stringify({
+                    sectionsIDList: getSectionsIDList(_specData.allContents),
+                    tplList: tplList
+                })+'</script>';
 
-            var templateJSON = {
-                nojs: turnOffJS,
-                title: specInfo.title,
-                sections: specData.contents ? specData.contents : [],
-                headCssLinks: checkHeadResources(specData, 'cssLinks') ? specData.headResources.cssLinks.join('\n') : '',
-                headScripts: checkHeadResources(specData, 'scripts') ? specData.headResources.scripts.join('\n'): '',
-                headCssStyles: checkHeadResources(specData, 'cssStyles') ? specData.headResources.cssStyles.join('\n') : '',
+                var templateJSON = {
+                    nojs: turnOffJS,
+                    title: specInfo.title,
+                    sections: sections,
+                    headCssLinks: checkHeadResources(specData, 'cssLinks') ? specData.headResources.cssLinks.join('\n') : '',
+                    headScripts: checkHeadResources(specData, 'scripts') ? specData.headResources.scripts.join('\n'): '',
+                    headCssStyles: checkHeadResources(specData, 'cssStyles') ? specData.headResources.cssStyles.join('\n') : '',
 
-                bodyCssLinks: checkBodyResources(specData, 'cssLinks') ? specData.bodyResources.cssLinks.join('\n') : '',
-                bodyScripts: checkBodyResources(specData, 'scripts') ? specData.bodyResources.scripts.join('\n'): '',
-                bodyCssStyles: checkBodyResources(specData, 'cssStyles') ? specData.bodyResources.cssStyles.join('\n') : '',
+                    bodyCssLinks: checkBodyResources(specData, 'cssLinks') ? specData.bodyResources.cssLinks.join('\n') : '',
+                    bodyScripts: checkBodyResources(specData, 'scripts') ? specData.bodyResources.scripts.join('\n'): '',
+                    bodyCssStyles: checkBodyResources(specData, 'cssStyles') ? specData.bodyResources.cssStyles.join('\n') : '',
 
-                clarifyData: clarifyData
-            };
+                    clarifyData: clarifyData
+                };
 
-            getTpl(tpl).then(function(tpl){
-                var html = '';
+                getTpl(tpl).then(function(tpl){
+                    var html = '';
 
-                try {
-                    html = ejs.render(tpl, templateJSON);
-                } catch (err) {
-                    var msg = 'Clarify: ERROR with EJS rendering failed';
-                    global.log.error(msg + ': ', err);
+                    try {
+                        html = ejs.render(tpl, templateJSON);
+                    } catch (err) {
+                        var msg = 'Clarify: ERROR with EJS rendering failed';
+                        global.log.error(msg + ': ', err);
 
-                    html = msg;
-                }
+                        html = msg;
+                    }
 
-                res.send(html);
-            }).fail(function(err) {
-                var msg = 'ERROR: Could not find requested or default template for Clarify';
+                    res.send(html);
+                }).fail(function(err) {
+                    var msg = 'ERROR: Could not find requested or default template for Clarify';
 
-                global.log.warn('Clarify: ' + msg + ': ', err);
+                    global.log.warn('Clarify: ' + msg + ': ', err);
 
-                res.status(500).send(msg);
-            });
+                    res.status(500).send(msg);
+                });
+            } else {
+                res.send('Clarify did not found any of requested sections.');
+            }
         }).fail(function(errData) {
             var errMsg = errData.err ? ': ' + errData.err : '';
 

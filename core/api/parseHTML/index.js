@@ -286,21 +286,15 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
         async.mapLimit(_specs, config.asyncPhantomCallLimit, function (spec, next) {
             var n = _specs.indexOf(spec) + 1;
 
-            // Callback is passed to writeDataFile
-            var callbackProxy = function() {
-                apiLog.info('HTML API successfully updated');
-                processFlagNotExec = true;
-            };
-
             apiLog.trace('Starts...' + n, spec);
 
             childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
-                handler(error, stdout, stderr, spec, callbackProxy);
+                handler(error, stdout, stderr, spec);
                 next();
             });
         });
 
-        var handler = function(error, stdout, stderr, spec, callbackProxy) {
+        var handler = function(error, stdout, stderr, spec) {
             if (error) {
                 if (typeof errorCounter[spec] !== 'number') {
                      errorCounter[spec] = 0;
@@ -313,7 +307,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                     apiLog.debug('Rerun', spec);
 
                     childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-                        handler(error, stdout, stderr, spec, callbackProxy);
+                        handler(error, stdout, stderr, spec, writeCallback);
                     });
                     return;
                 }
@@ -358,11 +352,19 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             doneCounter++;
 
+            // We handled all requested specs
             if (doneCounter === specLength) {
                 var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
 
-                writeDataFile(outputData, true, false, callbackProxy);
-                if (typeof callback === 'function') callback(outputData);
+                // Callback is passed to writeDataFile
+                var writeCallback = function() {
+                    apiLog.info('HTML API successfully updated');
+                    processFlagNotExec = true;
+
+                    if (typeof callback === 'function') callback(outputData);
+                };
+
+                writeDataFile(outputData, true, false, writeCallback);
             }
         };
     }
