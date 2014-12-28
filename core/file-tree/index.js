@@ -19,7 +19,7 @@ var config = {
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
-    outputFile: path.join(global.pathToApp, 'core/api/data/pages_tree.json'),
+    outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
     specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser),
 
     // Files from parser get info
@@ -133,7 +133,7 @@ var fileTree = function (dir) {
                     fileJSON = {
                         error: "Cannot parse the file",
                         path: infoJsonPath
-                    }
+                    };
                 }
 
                 deepExtend(page, fileJSON);

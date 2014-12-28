@@ -27,10 +27,12 @@ define([
     HtmlAPiSync.prototype.constructor = HtmlAPiSync;
 
     HtmlAPiSync.prototype.syncHTML = function(){
-        var sectionsHTML = (new SourceGetSections()).get();
+        var parser = new SourceGetSections();
 
         var specObj = {};
-        specObj[this.specID + '/specFile/contents'] = JSON.parse(sectionsHTML);
+        specObj[this.specID + '/specFile'] = parser.getSpecFull();
+
+        // Marking hand synced content
         specObj[this.specID + '/specFile/forcedSave'] = true;
 
         var dataToSend = {

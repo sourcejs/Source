@@ -117,7 +117,7 @@ define([
 
             //Code show toggle on each code block
             var prepareCodeBlocks = function() {
-                new Css('/source/assets/js/lib/prism/prism.css');
+                new Css('/source/assets/js/lib/prism/prism.css', 'core');
                 var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
                     var _this = $(this);

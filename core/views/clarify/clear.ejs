@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= title %></title>
+
+    <%- headCssLinks %>
+    <%- headCssStyles %>
+
+    <% if(!nojs) { %>
+        <%- headScripts %>
+    <% } %>
+
+    <link href="/source/assets/css/project/clarify.css" rel="stylesheet">
+</head>
+<body class="source_clarify __clear">
+    <div class="source_clarify_content">
+        <% for(var i = 0; i < sections.length; i++) { %>
+            <% for(var j = 0; j < sections[i].html.length; j++) { %>
+                <%- sections[i].html[j] %>
+            <% } %>
+        <% } %>
+    </div>
+
+    <%- bodyCssLinks %>
+    <%- bodyCssStyles %>
+
+    <% if(!nojs) { %>
+        <%- bodyScripts %>
+    <% } %>
+</body>
+</html>

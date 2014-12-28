@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var ejs = require('ejs');
+var jsdom = require('jsdom');
 var path = require('path');
 var pathToApp = path.dirname(require.main.filename);
 var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
@@ -36,6 +37,7 @@ function getTemplateFullPath (name) {
  * */
 exports.process = function (req, res, next) {
 
+    // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
@@ -62,19 +64,38 @@ exports.process = function (req, res, next) {
         info.author = info.author ? info.author : "Anonymous";
         info.keywords = info.keywords ? info.keywords : "";
 
-        // final data object for the template
-        var templateJSON = {
-            content : data,
-            header  : headerFooterHTML.header,
-            footer  : headerFooterHTML.footer,
-            info    : info,
-            filename: templatePath
-        };
+        jsdom.env(
+            '<html id="data">'+data+'</html>',
+            function (errors, window) {
+                // get head contents from spec file source
+                var headHook = window.document.getElementsByTagName('head')[0];
+                var specData = window.document.getElementById('data');
+                var head = '';
 
-        // render page and send it as response
-        req.specData.renderedHtml = ejs.render(template, templateJSON);
+                if (headHook) {
+                    head = headHook.innerHTML;
+
+                    specData.removeChild(headHook);
+                }
+
+                // final data object for the template
+                var templateJSON = {
+                    content: specData.innerHTML,
+                    head: head,
+                    header: headerFooterHTML.header,
+                    footer: headerFooterHTML.footer,
+                    info: info,
+                    filename: templatePath
+                };
+
+                // render page and send it as response
+                req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+                next();
+            }
+        );
+    } else {
+        // proceed to next middleware
+        next();
     }
-
-    // proceed to next middleware
-    next();
 };

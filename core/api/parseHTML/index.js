@@ -5,6 +5,7 @@ var fs = require('fs-extra');
 var async = require('async');
 var phantom = require('phantomjs');
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
+var extendTillSpec = require(path.join(global.pathToApp,'core/api/extendTillSpec'));
 var deepExtend = require('deep-extend');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
@@ -32,6 +33,7 @@ var config = {
     // Path to HTML data otput
     pathToSpecs: path.join(global.pathToApp, global.opts.core.api.specsData)
 };
+
 // Overwriting base options
 if (global.opts.core.parseHTML) deepExtend(config, global.opts.core.parseHTML);
 
@@ -93,7 +95,7 @@ var getSpecsList = function() {
 };
 
 /**
- * Write gathered HTML data to file system
+ * Remove all objects from data, that has lower priority (doesn't have forcedSave flag)
  *
  * @param {Object} prevData - data to check more priority specs from
  * @param {Object} data - data that will be merged onto prevData and will be processed with this func
@@ -158,15 +160,15 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             try {
                 prevData = fs.readJsonFileSync(dataStoragePath);
             } catch (e) {
+                apiLog.trace('Reading initial data error: ', e);
                 apiLog.debug('Extending from empty object, as we do not have initial data');
-                apiLog.trace('Reading initial data erro: ', e);
             }
 
             // Exclude from data all low-priority overridings
             data = excludeLowOverridings(prevData, data);
 
             // Extend final data
-            data = deepExtend(prevData, data);
+            data = extendTillSpec(prevData, data);
         }
 
         // Preparing path for data write
@@ -180,7 +182,6 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             }
         }
 
-        //TODO: Dmitry, add more data fields according to hmtl-stub.json
         fs.writeFile(dataStoragePath, JSON.stringify(data, null, JSONformat), function (err) {
             if (err) {
                 var message = 'ERROR: updated file write error';
@@ -271,12 +272,12 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
         var _specs = specs || getSpecsList();
         var specsLeft = _specs.slice(0);
-        var ph_path = phantom.path;
+        var PhantomPath = phantom.path;
         var outputHTML = {};
         var errorCounter = {};
         var specLength = _specs.length;
         var doneCounter = 0;
-        var phExecCommand = ph_path + " " + path.join(global.pathToApp, 'core/api/parseHTML/ph_modules/index.js');
+        var phExecCommand = PhantomPath + " " + path.join(global.pathToApp, 'core/api/parseHTML/phantom-runner.js');
 
         processFlagNotExec = false;
 
@@ -285,21 +286,15 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
         async.mapLimit(_specs, config.asyncPhantomCallLimit, function (spec, next) {
             var n = _specs.indexOf(spec) + 1;
 
-            // Callback is passed to writeDataFile
-            var callbackProxy = function() {
-                apiLog.info('HTML API successfully updated');
-                processFlagNotExec = true;
-            };
-
             apiLog.trace('Starts...' + n, spec);
 
-            childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-                handler(error, stdout, stderr, spec, callbackProxy);
+            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
+                handler(error, stdout, stderr, spec);
                 next();
             });
         });
 
-        var handler = function(error, stdout, stderr, spec, callbackProxy) {
+        var handler = function(error, stdout, stderr, spec) {
             if (error) {
                 if (typeof errorCounter[spec] !== 'number') {
                      errorCounter[spec] = 0;
@@ -312,7 +307,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                     apiLog.debug('Rerun', spec);
 
                     childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-                        handler(error, stdout, stderr, spec, callbackProxy);
+                        handler(error, stdout, stderr, spec, writeCallback);
                     });
                     return;
                 }
@@ -343,7 +338,8 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                 }));
 
                 // Writing contents to common obj
-                outputHTML[spec+'/specFile/contents'] = parsedStdout;
+                outputHTML[spec+'/specFile/contents'] = parsedStdout.contents;
+                outputHTML[spec+'/specFile/headResources'] = parsedStdout.headResources;
             }
 
             apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
@@ -356,11 +352,19 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             doneCounter++;
 
+            // We handled all requested specs
             if (doneCounter === specLength) {
                 var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
 
-                writeDataFile(outputData, true, false, callbackProxy);
-                if (typeof callback === 'function') callback(outputData);
+                // Callback is passed to writeDataFile
+                var writeCallback = function() {
+                    apiLog.info('HTML API successfully updated');
+                    processFlagNotExec = true;
+
+                    if (typeof callback === 'function') callback(outputData);
+                };
+
+                writeDataFile(outputData, true, false, writeCallback);
             }
         };
     }

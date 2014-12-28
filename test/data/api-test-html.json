@@ -15,7 +15,7 @@
                         ],
                         "nested": [
                             {
-                                "id": "1_1",
+                                "id": "1.1",
                                 "class": "",
                                 "title": "",
                                 "html": [
@@ -24,6 +24,15 @@
                                 "nested": []
                             }
                         ]
+                    },
+                    {
+                        "id": "2",
+                        "class": "",
+                        "title": "",
+                        "html": [
+                            "<button type='button' class='btn btn-default'><span class='glyphicon glyphicon-align-right'></span></button>"
+                        ],
+                        "nested": []
                     }
                 ]
             }

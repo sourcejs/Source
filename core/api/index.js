@@ -2,7 +2,7 @@
 
 var express = require('express');
 var path = require('path');
-var parseData = require("./parseData");
+var parseData = require('./parseData');
 var pathToApp = path.dirname(require.main.filename);
 var deepExtend = require('deep-extend');
 var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
@@ -90,19 +90,26 @@ var getHTML = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
     var reqID = body.id || req.query.id;
+    var reqSections = body.sections || req.query.sections;
+    var sections = reqSections ? reqSections.split(',') : undefined;
     var parsedData = parseObj;
 
     if (reqID) {
-        var dataByID = parsedData.getByID(reqID);
+        var responseData = '';
 
-        if (dataByID && typeof dataByID === 'object') {
-            res.status(config.statusCodes.OK).json(dataByID);
+        if (reqSections) {
+            responseData = parsedData.getBySection(reqID, sections);
         } else {
-            res.status(config.statusCodes.notFound).json({
-                message: "id not found"
-            });
+            responseData = parsedData.getByID(reqID);
         }
 
+        if (typeof responseData === 'object') {
+            res.status(config.statusCodes.OK).json(responseData);
+        } else {
+            res.status(config.statusCodes.notFound).json({
+                message: "id and requested sections not found"
+            });
+        }
     } else {
         data = parsedData.getAll();
 

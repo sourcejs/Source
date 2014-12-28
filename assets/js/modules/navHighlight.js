@@ -68,7 +68,7 @@ define([
 		var extension = '';
 		var hashThreshold = 300;
 
-		var fullFilename = document.location.href.split('/').pop().split('.');
+		var fullFilename = window.location.href.split("#")[0].split('/').pop().split('.');
 
 		//update extension and filename only if there is one in URL
 		if(fullFilename.length !== 1) {

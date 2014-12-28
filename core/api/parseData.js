@@ -239,15 +239,81 @@ ParseData.prototype.getFilteredData = function(filterConf, array, data) {
 /**
  * Get item by ID
  *
- * @param {String} id - Request body
+ * @param {String} id - Request some item by id (for example "base/btn")
  *
- * @returns {Object} Return single object by requested ID or false boolean
+ * @returns {Object} Return single object by requested ID or undefined
  */
 ParseData.prototype.getByID = function(id) {
     var dataExists = this.updateData();
     var targetData = this.data[id];
 
     return dataExists && targetData ? targetData : undefined;
+};
+
+/**
+ * Flatten contents of Spec HTML object
+ *
+ * @param {Object} contents - Nested Spec HTML contents object
+ *
+ * @returns {Object} Return flat object with contents, grouped by section ID
+ */
+ParseData.prototype.flattenHTMLcontents = function(contents) {
+    var flatList = {};
+
+    var parseContents = function(contents){
+        for (var i=0; contents.length > i ; i++) {
+            var current = contents[i];
+
+            flatList[current.id] = current;
+
+            if (current.nested.length > 0) {
+                parseContents(current.nested);
+            }
+        }
+    };
+
+    parseContents(contents);
+
+    return flatList;
+};
+
+/**
+ * Get specific sections of defined Spec HTML
+ *
+ * @param {String} id - Request some item by id (for example "base/btn") and sections
+ * @param {Array} sections - Array of sections to return
+ *
+ * @returns {Object} Return single object by requested ID, with specified sections HTML OR undefined
+ */
+ParseData.prototype.getBySection = function(id, sections) {
+    // Sections are defined only in html data storage
+    if (this.scope === 'html' && Array.isArray(sections) && sections.length > 0) {
+        var specData = this.getByID(id);
+
+        if (specData) {
+            var specSections = this.flattenHTMLcontents(specData.contents);
+
+            var pickedSections = [];
+
+            sections.forEach(function(id){
+                var objectToAdd = specSections[id];
+
+                if (objectToAdd) pickedSections.push(objectToAdd);
+            });
+
+            if (pickedSections.length !== 0) {
+                specData.contents = pickedSections;
+
+                return specData;
+            } else {
+                return undefined;
+            }
+        } else {
+            return undefined;
+        }
+    } else {
+        return undefined;
+    }
 };
 
 module.exports = ParseData;

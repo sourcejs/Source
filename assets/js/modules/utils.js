@@ -21,15 +21,24 @@ define([
         return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
     };
 
-    Utils.prototype.scrollToSection = function (sectionID) { //sectionID = '#id'
-        var new_position = $(sectionID).offset();
-        var new_position_padding = 60; //Header heights
+    Utils.prototype.getUrlParameter = function (name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        var results = regex.exec(location.search);
+
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+     //sectionID = '#id'
+    Utils.prototype.scrollToSection = function (sectionID) {
+        // Modifying ID, for custom selection because of ids named "1.1", "2.2" etc
+        var _sectionID = sectionID.replace('#','');
+        var new_position = $(document.getElementById(_sectionID)).offset();
+
+        var new_position_padding = 60; //Header height
 
         if (new_position) {
-
-            $('html, body').animate({
-				scrollTop: (new_position.top - new_position_padding)
-			 }, 300);
+            window.scrollTo(new_position.left, new_position.top - new_position_padding);
         }
     };
 
