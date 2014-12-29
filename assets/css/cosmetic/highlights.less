@@ -16,9 +16,17 @@
 .source_main > *@{notCleaningClasses} > code:not(:empty),
 .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > code:not(:empty),
 .source_section > code:not(:empty),
+.source_section > table code:not(:empty),
 .source_section > *@{notCleaningClasses} > code:not(:empty),
 .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > code:not(:empty) {
     &:extend(.source_code);
+    }
+
+.lang-source_wide-code {
+    padding: 10px !important;
+    font-size: 1em !important;
+    margin: 10px 0 !important;
+    display: inline-block;
     }
 
 .source_hl {

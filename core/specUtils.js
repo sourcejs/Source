@@ -56,7 +56,11 @@ module.exports.getSpecInfo = function(pathToSpec) {
     var allSpecsPath = global.app.get('user');
 
     try {
-        output = fs.readJSONFileSync(path.join(allSpecsPath, pathToSpec, 'info.json'));
+        if (pathToSpec.split('/')[1] === 'docs'){
+            output = fs.readJSONFileSync(path.join(global.pathToApp, pathToSpec, 'info.json'));
+        } else {
+            output = fs.readJSONFileSync(path.join(allSpecsPath, pathToSpec, 'info.json'));
+        }
     } catch (e) {
         output = {
             title: 'No info file found'
