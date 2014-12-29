@@ -41,6 +41,7 @@
     "path": "^0.4.9",
     "phantomjs": "^1.9.7-15",
     "q": "^1.1.1",
+    "marked": "^0.3.2",
     "time-grunt": "~0.2.10"
   },
   "devDependencies": {

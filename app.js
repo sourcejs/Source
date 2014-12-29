@@ -102,7 +102,10 @@ global.app.use(read.handleIndex);
 global.app.use(read.process);
 
 // Load user defined middleware, that processes spec content
-require("./core/middleware/userMiddleware.js");
+require("./core/middleware/userMiddleware");
+
+// Basic markdown support
+global.app.use(require("./core/middleware/markdown").process);
 
 // Middleware that wraps spec with Source template
 global.app.use(require("./core/middleware/wrap").process);
