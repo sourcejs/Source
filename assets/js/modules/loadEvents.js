@@ -1,6 +1,6 @@
 /**
 *
-* Register any plugins and drop their finish events
+* Register any plugins and emit their finish events
 *
 */
 
@@ -12,6 +12,7 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 
 	LoadEvents.prototype = module.createInstance();
 	LoadEvents.prototype.constructor = LoadEvents;
+
 	LoadEvents.prototype.init = function( callback ) {
 
 		callback = callback || function () {};
@@ -190,9 +191,6 @@ define(["sourceModules/module", "sourceModules/utils"], function(module, utils) 
 			}
 
 			checkPlugins();
-
-
-
 		})();
 	};
 

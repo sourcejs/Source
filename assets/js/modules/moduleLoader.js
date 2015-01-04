@@ -1,7 +1,6 @@
 define([
-	'sourceModules/module',
-	'sourceModules/utils'
-	], function (module, u) {
+	'sourceModules/module'
+	], function (module) {
 
     'use strict';
 
@@ -26,7 +25,7 @@ define([
             optionsBase = this.options.navPageModulesBuild;
         }
 
-        if(type === 'modules') {
+        if (type === 'modules') {
             typeEnabled = 'modulesEnabled';
             path = 'sourceModules/';
         } else if (type === 'plugins') {

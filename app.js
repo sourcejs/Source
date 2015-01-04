@@ -126,7 +126,7 @@ require('./core/routes');
 require('./core/api');
 
 // User extenstions
-require("./core/load-plugins.js");
+require("./core/loadPlugins.js");
 
 try {
     // User additional functionality

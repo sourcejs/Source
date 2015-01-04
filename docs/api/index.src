@@ -1,5 +1,5 @@
 <div class="source_subhead">
-    <h1>[beta] API documentation</h1>
+    <h1>API documentation</h1>
 </div>
 
 <div class="source_catalog" data-nav="/docs/api">
@@ -10,6 +10,4 @@
     </ul>
 </div>
 
-<div class="mt-M">
-    <a href="/docs" class="source_a_hl">Go to engine documentation</a>
-</div>
+<a href="/docs" class="source_a_hl">Go to engine documentation</a>

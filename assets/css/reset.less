@@ -66,7 +66,7 @@
 .source-only(a,{
     color: #4792D2;
     text-decoration: none;
-    font-size: 14px;
+    font-size: @fz-size-m;
     line-height: 1.5;
 
     &:hover {
@@ -77,14 +77,14 @@
 .source-only(div,{});
 .source-only(p,{
     font-family: @font-family-main;
-    font-size: 14px;
+    font-size: @fz-size-m;
     line-height: 1.5;
     margin: 15px 0;
     });
 .source-only(ul,{});
 .source-only(ol,{});
 .source-only(li,{
-    font-size: 14px;
+    font-size: @fz-size-m;
     line-height: 1.5;
     list-style: disc inside;
     });
@@ -127,7 +127,7 @@ body {
 .source_main > div:not(.source_section),
 .source_main > a:not(.source_section) {
   font-family: @font-family-main;
-  font-size: 14px;
+  font-size: @fz-size-m;
   line-height: 1.5;
 }
 
@@ -144,7 +144,7 @@ body {
 
 .source-section-reset(p, {
     font-family: @font-family-main;
-    font-size: 14px;
+    font-size: @fz-size-m;
     line-height: 1.5;
     margin: 15px 0;
     });
@@ -152,7 +152,7 @@ body {
 .source-section-reset(a, {
     color: #4792D2;
     text-decoration: none;
-    font-size: 14px;
+    font-size: @fz-size-m;
     line-height: 1.5;
 
     &:hover {
@@ -162,8 +162,10 @@ body {
     });
 
 .source-section-reset(ul, {
-    margin: 15px 0 15px 5px;
+    margin: 25px 0 25px 22px;
+    list-style: outside disc;
     });
+
 .source-section-reset(ol, {
     margin: 15px 0 15px 5px;
     });

@@ -44,10 +44,10 @@
 
     & > h3 {
 		position: relative;
-		margin: 15px 0 15px -25px;
+		margin: 30px 0 15px -25px;
 		padding: 0 25px;
 
-		font-size: 15px;
+		font-size: 16px;
 		color: #000;
 		font-weight: normal;
 		line-height: 1.5;
@@ -76,9 +76,9 @@
 		}
 
     & > h4 {
-		margin: 0 0 10px;
+		margin: 10px 0;
 		padding: 0;
-		font-size: 13px;
+		font-size: @fz-size-m;
 		color: @black;
 		font-weight: normal;
 		text-indent: .5ex;
@@ -92,21 +92,15 @@
 			}
 		}
 
-    &  > ul,
 	& > p {
 		margin: 15px 0;
 		}
 
-    & > ul {
-		padding: 0;
-        margin-left: 22px;
-		list-style: outside disc;
-		}
-
 	& > table {
+		margin: 20px 0 30px;
 		border-collapse: collapse;
 		border-spacing: 0;
-		font-size: 14px;
+		font-size: @fz-size-m;
 		line-height: 1.5;
 		}
 
@@ -125,6 +119,10 @@
 	& > table td {
 		padding: 6px 13px;
 		border: 1px solid #ddd;
+		}
+
+	& > pre {
+		margin: 0;
 		}
 
 	& > table tr {
@@ -150,7 +148,7 @@
 		overflow: visible;
 		top: 0;
 		margin-top: 20px;
-		margin-bottom: 20px;
+		margin-bottom: 40px;
 	}
 
     & > script,

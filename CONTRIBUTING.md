@@ -27,7 +27,7 @@ Please read [this doc](MAINTAINING.md) for information on how we're running deve
 
 ## Team members
 
-All inquiries should be forwarded to [Robert Haritonov](https://github.com/operatino). 
+All inquiries should be forwarded to [Robert Haritonov](https://github.com/operatino).
 
 Core contributors and maintainers:
 * [Robert Haritonov](https://github.com/operatino)
@@ -40,4 +40,3 @@ Core contributors and maintainers:
 * [Gennady Tsarinny](https://github.com/genson)
 * [Dennis Przendzinski](https://github.com/nightkin)
 * [Evgeniy Khoroshilov](https://github.com/XOP)
-* [Juris Pukitis](https://github.com/jurispukitis)

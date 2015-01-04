@@ -4,6 +4,7 @@
 
 // Extending base js config with npm packages list
 requirejs.config({
+    // Create shorthands routes to clint-side npm plugins
     packages: function () {
         var modulesList = "{%= npmPluginsEnabled %}";
 
