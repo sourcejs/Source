@@ -16,7 +16,7 @@ if (fs.existsSync(pathToUserMiddleware)) {
 
     userMiddlewareFiles.map(function (file) {
         if ((/^sourcejs-/).test(file)) {
-            var pluginIndexPath = path.join(pathToUserMiddleware, file, 'core/middleware', file, 'index.js');
+            var pluginIndexPath = path.join(pathToUserMiddleware, file, 'core/middleware', 'index.js');
             if (fs.existsSync(pluginIndexPath)) {
                 var middleware = require(pluginIndexPath);
                 global.app.use(middleware.process);

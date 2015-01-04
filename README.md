@@ -8,12 +8,12 @@ SourceJS powered workflow allows developers to **code new components directly in
 
 Our main goal is to provide flexible, component based environment for managing reusable Front-end components library. We don't focus on specific technologies, allowing to seamlessly integrate SourceJS workflow with your existing codebase.
 
-SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and **is recommended for big and middle sized projects**, especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
+SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
 
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**FAQ in issues**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3Afaq+) &nbsp;&nbsp;&nbsp; [**Use Cases in issues**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3A%22Use+cases%22+)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**FAQ**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3Afaq+) &nbsp;&nbsp;&nbsp; [**Use Cases**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3A%22Use+cases%22+)
 
 ___
 
