@@ -16,8 +16,8 @@ module.exports = function(grunt) {
         pathToUser: '<%= options.core.common.pathToUser %>',
 
         banner:'/*!\n' +
-                '* SourceJS - IME for front-end components documentation and maintenance.\n' +
-                '* @copyright 2014 Sourcejs.com\n' +
+                '* SourceJS - Living Style Guides Engine and Integrated Maintenance Environment for Front-end Components.\n' +
+                '* @copyright 2013-2015 Sourcejs.com\n' +
                 '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
                 '* */\n',
 

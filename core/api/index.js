@@ -181,6 +181,18 @@ var deleteHTML = function (req, res, dataPath) {
     });
 };
 
+/**
+ * If app is running in presentation mode, handle response with stub
+ *
+ * @param {Object} req - express request
+ * @param {Object} res - express response
+ *
+ * Writes result to res object
+ */
+var presentationHandler = function (req, res) {
+    res.json({ message: 'API is running in presentation mode, no write operations permited.' });
+};
+
 /* Main API router */
 var apiRouter = express.Router();
 
@@ -228,11 +240,19 @@ apiRouter.route('/specs/html')
         getHTML(req, res, parseHTMLData);
     })
     .post(function (req, res) {
-        postHTML(req, res, htmlDataPath);
+        if (global.MODE === 'presentation') {
+            presentationHandler(req, res);
+        } else {
+            postHTML(req, res, htmlDataPath);
+        }
     })
     /* jshint es5:false */
     .delete(function (req, res) {
-        deleteHTML(req, res, htmlDataPath);
+        if (global.MODE === 'presentation') {
+            presentationHandler(req, res);
+        } else {
+            deleteHTML(req, res, htmlDataPath);
+        }
     });
 
 // Activating router
@@ -275,10 +295,18 @@ apiTestRouter.route('/specs/html')
         getHTML(req, res, parseHTMLDataTest);
     })
     .post(function (req, res) {
-        postHTML(req, res, htmlDataTestPath);
+        if (global.MODE === 'presentation') {
+            presentationHandler(req, res);
+        } else {
+            postHTML(req, res, htmlDataTestPath);
+        }
     })
     .delete(function (req, res) {
-        deleteHTML(req, res, htmlDataTestPath);
+        if (global.MODE === 'presentation') {
+            presentationHandler(req, res);
+        } else {
+            deleteHTML(req, res, htmlDataTestPath);
+        }
     });
 
 // Activating router

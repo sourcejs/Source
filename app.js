@@ -1,6 +1,6 @@
 /*!
-* SourceJS - IME for front-end components documentation and maintenance
-* @copyright 2014 Sourcejs.com
+* SourceJS - Living Style Guides Engine and Integrated Maintenance Environment for Front-end Components
+* @copyright 2013-2015 Sourcejs.com
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
@@ -29,6 +29,7 @@ global.commander = commander;
 global.app.set('views', __dirname + '/core/views');
 global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
 
+// We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';
 
 global.pathToApp = __dirname;
@@ -81,17 +82,14 @@ if (global.MODE === 'development') {
 global.app.use(require('./core/middleware/clarify'));
 
 
-// Options
-global.app.use('/api/options', function(req, res){
-    res.jsonp(loadOptions().assets);
-});
-
-
 // File tree module
 fileTree = require('./core/file-tree');
 global.app.use(function(req, res, next){
     if(req.url === "/") {
-        fileTree.scan();
+        // Making this async
+        setTimeout(function(){
+            fileTree.scan();
+        }, 1000);
     }
     next();
 });
@@ -122,8 +120,12 @@ global.app.use(require("./core/middleware/send").process);
 // Routes
 require('./core/routes');
 
-// Routes
+// API
 require('./core/api');
+
+global.app.use('/api/options', function(req, res){
+    res.jsonp(loadOptions().assets);
+});
 
 // User extenstions
 require("./core/loadPlugins.js");
