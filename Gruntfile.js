@@ -171,12 +171,13 @@ module.exports = function(grunt) {
         }
     });
 
-
     /*
     *
-    * Сustom tasks
+    * Custom tasks
     *
     * */
+
+    grunt.loadTasks("grunt/tasks");
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
