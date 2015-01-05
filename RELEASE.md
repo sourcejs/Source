@@ -25,8 +25,10 @@ Environment config (by default) should be placed into `<appRoot>/configs` direct
 
 Then environment config is defined you can define some options in your own options.js file and use following commands to release:
 
+```
 grunt release --env=<%your-environment-name%> --branch=<%branch-to-release-name%>
 grunt rollback --env=<%your-environment-name%> --branch=<%branch-to-release-name%>
+```
 
 ## Options description.
 
@@ -109,6 +111,7 @@ release: {
 	}
 	...
 }
+```
 
 #### release.hooks.<envName>.restart
 
@@ -134,6 +137,7 @@ release: {
 	}
 	...
 }
+```
 
 #### release.hooks.<envName>.restart
 
@@ -159,6 +163,7 @@ release: {
 	}
 	...
 }
+```
 
 ## Release wrapper configuration example.
 
@@ -166,7 +171,7 @@ release: {
 
 As it was mentioned above, release wrapper options can be defined both in project options.js and environment config file. If you want to define some options in your project `options.js` file, please look at the following example:
 
-<appRoot>/user/options.js
+`<appRoot>/user/options.js`
 ```
 /** your project options **/
 module.exports = {
