@@ -19,7 +19,7 @@ var config = {
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
-    outputFile: path.join(global.pathToApp, 'core/api/data/pages_tree.json'),
+    outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
     specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
 
     // Files from parser get info
