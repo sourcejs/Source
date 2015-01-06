@@ -35,24 +35,47 @@
     </code>
 
     <p>For first dev build Grunt will run automatically right after Yeoman init, here's a list of <a href="/docs/grunt">all Grunt tasks available</a>.</p>
+</section>
+
+<section class="source_section" id="examples">
+    <h2>Starting your first Spec</h2>
+
+    <p>Specs are the main content files in SourceJS engine, in them you define all your description of chosen components and it's code examples. Originally we use <code>*.src</code> file templates, but you're free to configure your own with <a href="https://github.com/sourcejs/sourcejs-jade">Jade</a> for example.</p>
+
+    <div class="source_note">
+        <p>After initialization, you get <code>sourcejs/user</code> folder, which is the place for all your custom content. All new Specs and configuration of main engine must be done there.</p>
+    </div>
 
     <h3>Spec Starting Template</h3>
 
-    <p>The starting template for new <strong>Spec</strong> pages can be found in <a href="/docs/starting">/docs/starting</a>. Copy the contents to a new folder and you'll be ready to write a new spec.</p>
+    <p>The starting template for new <strong>Spec</strong> pages can be found in <a href="/docs/starting">/docs/starting</a>. Copy the contents to a new folder in <code>source/user/specs</code> and you'll be ready to write a new spec.</p>
 
     <a href="/docs/spec" class="source_a_hl">Read more about <strong>Spec</strong> pages here.</a>
+
+    <h3>Server-side Templating Engines</h3>
+
+    <p>As we mentioned before, it's easy to use other server-side/compiled templating engines like Jade, you only need to create a simple SourceJS middleware (<a href="https://github.com/sourcejs/sourcejs-jade">example</a>) or process your sources with Grunt/Gulp. <code>*.src</code> files, that we use by default are processed with <a href="https://github.com/tj/ejs">EJS</a>, so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript.</p>
+
+    <p>We treat Spec files as an interface, you can construct your Spec page in any ways, following only few simple rules - each Spec must have <code>info.json</code> file aside, with meta information for the Engine and output spec page must have SourceJS compliant markup. Special markup contains only few vital classes like <code>.source_section</code>, <code>.source_example</code> and the rest is plain, semantic HTML.</p>
+
+    <h3>Client-side Templating Eninges</h3>
+
+    <p>For client-side templating you don't need any magic, just link Mustache or any other technology to your page and use it whenever you want. Remember, SourceJS Specs are a simple static pages, that are then enchanted with client-side scripts and internal APIs.</p>
+
+    <p>After 0.4 release we will put quite a lot of effort, creating example with popular technologies for fast scaffolding your SourceJS library.</p>
+
 </section>
 
-<div class="source_section" id="examples">
+<section class="source_section" id="examples">
     <h2>Examples</h2>
 
     <p>Main project website <a href="http://sourcejs.com">Sourcejs.com</a> is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out <a href="/docs/spec/">this section</a>.</p>
 
     <p>You can inspect <a href="https://github.com/sourcejs/Sourcejs.com">Sourcejs.com source code</a>, that demonstrates basic <code>source/user</code> folder contents.</p>
 
-    <p>More examples and screencasts coming soon, but for now, you can check this <a href="http://tohtml.it/post/93482335118/sourcejs">SourceJS video presentation</a> (ru).</p>
+    <p>More examples and screencasts coming soon, but for now, you can check this <a href="https://www.youtube.com/watch?v=ukFeZnJjrLs">SourceJS video presentation</a> (RU with EN subtitles).</p>
 
-</div>
+</section>
 
 <section class="source_section">
     <h2>File Structure</h2>
@@ -102,6 +125,10 @@
     <ul>
         <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-spec-status">sourcejs-spec-status</a></li>
         <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-crowd-voice">sourcejs-crowd-voice</a></li>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-jade">sourcejs-jade</a></li>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-specs-linting">sourcejs-specs-linting</a></li>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-spec-dependencies">sourcejs-spec-dependencies</a></li>
+        <li><a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-smiles">sourcejs-smiles</a></li>
     </ul>
 
 </section>

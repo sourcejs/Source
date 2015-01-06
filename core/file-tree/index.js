@@ -141,7 +141,12 @@ var fileTree = function (dir) {
 
             var thumbPath = dir + '/thumbnail.png';
             if (fs.existsSync(thumbPath)) {
-                page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
+                // If starts with root (specs)
+                if (urlFromHostRoot.lastIndexOf(config.specsRoot, 0) === 0) {
+                    page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
+                } else {
+                    page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
+                }
             }
 
             outputJSON['specFile'] = extend(page);

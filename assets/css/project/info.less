@@ -17,57 +17,78 @@
 		}
 
     p {
-		margin: 0 0 10px;
+		margin: 0 0 10px !important;
 
         &:last-child {
-			margin-bottom: 0;
+			margin-bottom: 0 !important;
 			}
 		}
     }
 
 body p.source_info, /* cascade for weight */
 .source_info {
-	background: #FFF6DD;
+	background: #FFF6DD !important;
 
-	padding: 15px 25px;
-	min-height: 50px;
-	margin: 15px 0;
-	margin-right: @layout_spec--inner-margin-right;
+	padding: 15px 25px !important;
+	min-height: 50px !important;
+	margin: 15px 0 !important;
+	margin-right: @layout_spec--inner-margin-right !important;
+
+    .source_section & {
+        margin-right: 0 !important;
+        }
 	}
 
 body p.source_warn, /* cascade for weight */
 .source_warn {
-	margin: 20px @layout_spec--inner-margin-right 20px 0;
-	padding: 10px 10px 10px 35px;
+	margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+	padding: 10px 10px 10px 35px !important;
 
-	background: #ffe2e5 url(/source/assets/i/warn.png) no-repeat 13px 13px;
+	background: #ffe2e5 url(/source/assets/i/warn.png) no-repeat 13px 13px !important;
+
+    .source_section & {
+        margin-right: 0 !important;
+        }
 	}
 
 body p.source_note, /* cascade for weight */
 .source_note {
-    margin: 20px @layout_spec--inner-margin-right 20px 0;
-    padding: 10px 10px 10px 35px;
+    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    padding: 10px 10px 10px 35px !important;
 
-    background: #DCF1FA url(/source/assets/i/note.png) no-repeat 13px 13px;
+    background: #DCF1FA url(/source/assets/i/note.png) no-repeat 13px 13px !important;
+
+
+    .source_section & {
+        margin-right: 0 !important;
+        }
     }
 
 body p.source_doc, /* cascade for weight */
 .source_doc {
-    margin: 20px @layout_spec--inner-margin-right 20px 0;
-    padding: 10px 25px;
+    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    padding: 10px 25px !important;
 
-    background: #DCFCDA;
-    font-family: Menlo, Monaco, Consolas, monospace;
+    background: #DCFCDA !important;
+    font-family: Menlo, Monaco, Consolas, monospace !important;
+
+    .source_section & {
+        margin-right: 0 !important;
+        }
     }
 
 body p.source_data, /* cascade for weight */
 .source_data {
-    margin: 20px @layout_spec--inner-margin-right 20px 0;
-    padding: 10px 25px;
+    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    padding: 10px 25px !important;
 
-    border: 1px dotted #ccc;
-    background: #f9f9f9;
-    font-size: 11px;
+    border: 1px dotted #ccc !important;
+    background: #f9f9f9 !important;
+    font-size: 11px !important;
+
+    .source_section & {
+        margin-right: 0 !important;
+        }
     }
 
 /* /Info blocks

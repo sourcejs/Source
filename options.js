@@ -48,10 +48,6 @@ module.exports = {
         },
 
         modulesOptions : {
-            globalNav: {
-                filterEnabled: false
-            },
-
             innerNavigation : {
                 hashSymb: '!'
             },

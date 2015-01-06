@@ -1,9 +1,3 @@
-html, body {
-    padding: 0;
-	margin: 0;
-    min-width: 0;
-	}
-
 /* Context
 -------------------------------------------------- */
 
@@ -40,6 +34,8 @@ html, body {
 -------------------------------------------------- */
 
 .source_clarify_panel {
+    .reset();
+
     width: 608px;
     max-width: calc(100% - 40px);
     box-sizing: border-box;
@@ -47,19 +43,28 @@ html, body {
     margin: 0 20px 20px;
     padding: 20px 21px 10px;
     background-color: #f1f2f3;
+    font-family: @font-family-main;
+    font-size: @fz-size-m;
+    line-height: 1.5;
     }
 
 .source_clarify_panel_i {
     margin-bottom: 15px;
     }
 
+.source_clarify_panel_i label {
+    .reset();
+    }
+
 .source_clarify_panel_h2 {
-    font-weight: normal;
-    font-size: 15px;
+    .reset();
+
+    font-family: @font-family-main;
+    font-size: @fz-size-m;
+
     color: #333333;
     margin: 0 0 5px;
     line-height: 1.5;
-    font-family: inherit;
     text-rendering: auto;
     }
 
@@ -68,6 +73,23 @@ html, body {
     min-height: 120px;
     border-color: #dfe2e4;
     padding: 5px;
+    }
+
+.source_clarify_panel_sections > option {
+    .reset();
+
+    font-family: @font-family-main;
+    font-size: @fz-size-xs;
+    line-height: 1.5;
+    }
+
+.source_clarify_panel_option-list,
+.source_clarify_panel_option-list li {
+    .reset();
+
+    font-family: @font-family-main;
+    font-size: @fz-size-s;
+    line-height: 1.5;
     }
 
 .source_clarify_panel_go {

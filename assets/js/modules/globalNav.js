@@ -32,7 +32,7 @@ define([
             "catalogListAll": "source_catalog_all",
             "catalogLinkToAll": "source_a_bl",
             "catalogImageThumbler": "source_catalog_image-tumbler",
-            "catalogListLink": "source_catalog_a source_a_g",
+            "catalogListLink": "source_catalog_a",
             "catalogListImage": "source_catalog_img",
             "catalogListTitle": "source_catalog_title",
             "catalogListDate": "source_catalog_footer",
@@ -47,14 +47,14 @@ define([
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
             "loading": "Загрузка...",
-            "hidePreview": "Скрыть превьюшки",
-            "showPreview": "Показать превьюшки"
+            "hidePreview": "Hide thumbnails",
+            "showPreview": "Show thumbnails"
         }
     };
 
     /**
      * @constructor GlobalNav
-     * 
+     *
      * @function GlobalNav. Module constructor.
      * It implements module initialization.
      */
@@ -95,8 +95,7 @@ define([
 
         "navigationListItem": _.template([
             '<li class="<%= classes.catalogListItem %>">',
-                '<a class="<%= classes.catalogListLink %>" href="#">',
-                    '<img class="<%= classes.catalogListImage %>" />',
+                '<a class="<%= classes.catalogListLink %> source_a_g" href="#">',
                     '<span class="<%= classes.catalogListTitle %>"></span>',
                     '<div class="<%= classes.catalogListDate %>"></div>',
                     '<div class="<%= classes.catalogListBubbles %>"></div>',
@@ -201,7 +200,7 @@ define([
         var navOptions = this.options.modulesOptions.globalNav;
         var classes = navOptions.classes;
         var labels = navOptions.labels;
-        
+
         sortType = sortType || navOptions.sortType;
         sortDirection = sortDirection || navOptions.sortDirection;
 
@@ -321,11 +320,8 @@ define([
         var result = $(this.renderNavTreeItem.template).clone(true);
         result.find("." + classes.catalogListLink.split(" ").join(".")).attr("href", itemDataUrl);
         if (imageUrl) {
-            result.find("." + classes.catalogListImage)
-                .attr("src", imageUrl)
-                .error(function(e) {
-                    $(this).remove();
-                });
+            result.find("." + classes.catalogListLink)
+                .prepend('<img class="'+ classes.catalogListImage +'" src="'+ imageUrl +'">');
         }
         result.find("." + classes.catalogListTitle).html(itemData.title);
         result.find("." + classes.catalogListDate).html(itemData.lastmod + author);

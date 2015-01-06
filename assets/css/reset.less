@@ -4,8 +4,10 @@
     margin: 0;
     padding: 0;
     border: 0;
+    border-radius: 0;
     font-size: 100%;
     font-family: @font-family-main;
+    font-weight: normal;
     vertical-align: baseline;
     background: none;
     outline: none;
@@ -20,6 +22,7 @@
     border-spacing: 0;
     box-sizing: border-box;
     box-shadow: none;
+    color: #333;
     }
 
 /* Fonts
@@ -111,6 +114,8 @@ html,
 body {
     margin: 0;
     padding: 0;
+    min-width: none;
+    max-width: none;
     }
 
 @{cleaningClasses} {
@@ -159,6 +164,14 @@ body {
         color: #1c76c2;
         text-decoration: underline;
         }
+    });
+
+.source-section-reset(b, {
+    font-weight: 700;
+    });
+
+.source-section-reset(strong, {
+    font-weight: 700;
     });
 
 .source-section-reset(ul, {

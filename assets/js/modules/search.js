@@ -28,7 +28,7 @@ var Search = function() {
             headerFocus: "source_header__focus"
         },
         labels: {
-            searchResults: "Результаты поиска:",
+            searchResults: "Search results:",
             showAllButtonText: "Show all search results"
         },
         suggestionsLimit: 4
