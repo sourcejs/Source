@@ -109,6 +109,13 @@ module.exports = function(grunt) {
                 files: {
                     "build/assets/css/defaults.css": "assets/css/defaults.less"
                 }
+            },
+            bundles: {
+                expand: true,
+                dest: 'build/assets/css',
+                cwd: 'assets/css',
+                src: ['**/*.bundle.less'],
+                ext: '.bundle.css'
             }
         },
 
@@ -242,7 +249,7 @@ module.exports = function(grunt) {
     grunt.registerTask('update', [
         'clean-build:dev',
         'resolve-js-bundles',
-        'less:main',
+        'less',
         'autoprefixer',
         'last-dev'
     ]);
@@ -252,7 +259,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean-build:prod',
 
-        'less:main',
+        'less',
         'autoprefixer',
         'newer:cssmin:build',
         'newer:cssmin:user',
@@ -273,6 +280,15 @@ module.exports = function(grunt) {
     *
     * */
 
-    // Execute with running app
-    grunt.registerTask('test', ['mochaTest']);
+    // Test task. Execute with running app
+    grunt.registerTask('test', 'Run ALL tests or specified by second param', function () {
+        var spec = grunt.option('spec');
+
+        if (spec) {
+            grunt.config.set('mochaTest.test.src', [spec]);
+            grunt.task.run('mochaTest');
+        } else {
+            grunt.task.run('mochaTest');
+        }
+    });
 };

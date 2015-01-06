@@ -1,7 +1,5 @@
 var should = require('should');
-var assert = require('assert');
 var request = require('supertest');
-var path = require('path');
 
 describe('API test /api/specs/html', function () {
     var url = 'http://localhost:8080';
