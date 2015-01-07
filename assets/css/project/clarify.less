@@ -95,6 +95,21 @@
 .source_clarify_panel_go {
     font-size: 14px;
     padding: 7px;
+
+    & + .source_clarify_panel_return-link {
+        display: inline-block;
+        margin-left: 10px;
+        }
+    }
+
+.source_clarify_panel_return-link {
+    .reset();
+
+    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+        }
     }
 
 /* /Panel */

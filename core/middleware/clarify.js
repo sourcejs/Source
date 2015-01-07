@@ -149,13 +149,12 @@ var updateApiData = function(specID) {
     return deferred.promise;
 };
 
-var getDataFromApi = function(sections, pathToSpec, apiUpdate) {
+var getDataFromApi = function(sections, specUrl, apiUpdate) {
     var deferred = Q.defer();
     var output = {};
     var errMsg = '';
 
-    //TODO: Move spec ID check to utils
-    var specID = pathToSpec.slice(1, pathToSpec.length - 1);
+    var specID = specUtils.getSpecIDFromUrl(specUrl);
 
     var getSpecData = function(){
         var allContents = parseHTMLData.getByID(specID);
@@ -232,7 +231,7 @@ module.exports = function(req, res, next) {
     // Check if middleware needs to be activated
 	if (clarifyFlag) {
         var urlPath = parsedUrl.pathname;
-        var parsedPath = specUtils.parseSpecPath(urlPath);
+        var parsedPath = specUtils.parseSpecUrlPath(urlPath);
 
         var tpl = q.tpl;
         var fromApi = q.fromApi || false;
@@ -263,6 +262,7 @@ module.exports = function(req, res, next) {
                 };
 
                 var clarifyData = '<script>var sourceClarifyData = '+ JSON.stringify({
+                    specUrl: specInfo.url,
                     sectionsIDList: getSectionsIDList(_specData.allContents),
                     tplList: tplList
                 })+'</script>';

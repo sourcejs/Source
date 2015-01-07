@@ -8,20 +8,7 @@
     @media @media_min-step-m { margin-right: @layout_spec--inner-margin-right; }
 
     & > h2:first-child {
-		.reset();
-
-		position: relative;
-		margin: 0 0 25px -@layout_spec--inner-padding;
-
-		padding: 5px @layout_spec--inner-padding;
-		line-height: 28px;
-		color: @black;
-
-		border-radius: 10px;
-		background-color: @light-gray;
-
-		font-size: @fz-size-l;
-		font-family: @font-family-main;
+		margin-left: -@layout_spec--inner-padding;
 
         &:before {
 			counter-increment: h2 1;
@@ -211,21 +198,22 @@
 
 /* Header actions */
 
-//TODO: combine with .source_section > h2:first-child
+.source_section > h2:first-child,
 .source_section_h {
+	.reset();
+
 	position: relative;
 	margin: 0 0 25px;
 
 	padding: 5px @layout_spec--inner-padding;
 	line-height: 28px;
-	font-size: 16px;
-	font-weight: normal;
 	color: @black;
 
 	border-radius: 10px;
 	background-color: @light-gray;
 
-	font-family: inherit;
+	font-size: @fz-size-l;
+	font-family: @font-family-main;
 
     &:hover .source_section_h_expand {
 		color:#4792D2 !important; //important to override link style

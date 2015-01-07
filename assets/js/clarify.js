@@ -14,6 +14,8 @@ require([
     if (window.sourceClarifyData){
         var $panelTemplate = $(clarifyPanelTpl);
 
+        $panelTemplate.find('.js-source_clarify_return-link').attr('href', window.sourceClarifyData.specUrl);
+
         var prepareTplList = function(){
             var output = '';
             var tplList = window.sourceClarifyData.tplList;
