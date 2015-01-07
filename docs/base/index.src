@@ -37,7 +37,7 @@
     <p>For first dev build Grunt will run automatically right after Yeoman init, here's a list of <a href="/docs/grunt">all Grunt tasks available</a>.</p>
 </section>
 
-<section class="source_section" id="examples">
+<section class="source_section" id="first-spec">
     <h2>Starting your first Spec</h2>
 
     <p>Specs are the main content files in SourceJS engine, in them you define all your description of chosen components and it's code examples. Originally we use <code>*.src</code> file templates, but you're free to configure your own with <a href="https://github.com/sourcejs/sourcejs-jade">Jade</a> for example.</p>
