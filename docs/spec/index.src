@@ -89,11 +89,11 @@
     </code>
     <code class="src-html source_visible">
         &lt;code class="src-css"&gt;
-            <style>
+            &lt;style&gt;
                 .css_source {
                     make-it: awesome;
                 }
-            </style>
+            &lt;/style&gt;
         &lt;/code&gt;
     </code>
     <code class="src-html source_visible">
@@ -149,3 +149,10 @@
     <p>Markdown support for editing documentation sections will be available within the next few updates.</p>
 
 </section>
+
+<style>
+    .for-tests {}
+</style>
+<script>
+    var forTest = '';
+</script>

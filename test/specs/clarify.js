@@ -16,7 +16,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         var url = 'http://localhost:8080/docs/spec/?clarify=true';
         it('should return nothing', function (done) {
             request(url)
-                .get(url + '&sections=77')
+                .get('&sections=77')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -40,7 +40,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
 
         it('should return all sections', function (done) {
             request(url)
-                .get(url)
+                .get()
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -66,7 +66,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
 
         it('should return one example', function (done) {
             request(url)
-                .get(url + '&sections=1.1')
+                .get('&sections=1.1')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -90,7 +90,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
 
         it('should have injected resources', function (done) {
             request(url)
-                .get(url + '&sections=1.1')
+                .get('&sections=1.1')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -103,7 +103,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         done: function (errors, window) {
                             var $ = window.$;
 
-                            $('[href="/docs/data/bootstrap.css"]').length.should.equal(1);
+                            $('[href*="bootstrap.css"]').length.should.equal(1);
                             $('body > style').length.should.be.greaterThan(0);
                             $('body > script').length.should.be.greaterThan(0);
 
@@ -115,7 +115,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
 
         it('should change template', function (done) {
             request(url)
-                .get(url + '&tpl=clear')
+                .get('&tpl=clear')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -140,12 +140,13 @@ describe('Clarify test /docs/spec?clarify=true', function () {
     });
 
     describe('GET from API /docs/spec?clarify=true&fromApi=true...', function () {
-        var url = 'http://localhost:8080/docs/spec/?clarify=true&fromApi=true';
+        var urlFromApi = 'http://localhost:8080/docs/spec/?clarify=true&fromApi=true';
 
         it('should return nothing', function (done) {
-            request(url)
-                .get(url + '&sections=77')
-                .expect(200)
+            this.timeout(10000);
+            request(urlFromApi)
+                .get('&sections=77&apiUpdate=true')
+                .expect(500)
                 .end(function (err, res) {
                     if (err) {
                         throw err;
@@ -167,8 +168,8 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         });
 
         it('should return all sections', function (done) {
-            request(url)
-                .get(url)
+            request(urlFromApi)
+                .get()
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -193,8 +194,8 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         });
 
         it('should return one example', function (done) {
-            request(url)
-                .get(url + '&sections=1.1')
+            request(urlFromApi)
+                .get('&sections=1.1')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -217,8 +218,8 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         });
 
         it('should have injected resources', function (done) {
-            request(url)
-                .get(url + '&sections=1.1')
+            request(urlFromApi)
+                .get('&sections=1.1')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -231,7 +232,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         done: function (errors, window) {
                             var $ = window.$;
 
-                            $('[href="/docs/data/bootstrap.css"]').length.should.equal(1);
+                            $('[href*="bootstrap.css"]').length.should.equal(1);
                             $('body > style').length.should.be.greaterThan(0);
                             $('body > script').length.should.be.greaterThan(0);
 
@@ -242,8 +243,8 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         });
 
         it('should change template', function (done) {
-            request(url)
-                .get(url + '&tpl=clear')
+            request(urlFromApi)
+                .get('&tpl=clear')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {

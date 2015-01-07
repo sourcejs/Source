@@ -340,6 +340,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                 // Writing contents to common obj
                 outputHTML[spec+'/specFile/contents'] = parsedStdout.contents;
                 outputHTML[spec+'/specFile/headResources'] = parsedStdout.headResources;
+                outputHTML[spec+'/specFile/bodyResources'] = parsedStdout.bodyResources;
             }
 
             apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);

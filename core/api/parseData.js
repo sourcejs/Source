@@ -28,7 +28,7 @@ ParseData.prototype.updateData = function() {
     try {
         this.data = JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
     } catch(e) {
-        console.warn('Api data of ' + this.scope + ' does not exist, please fix it.');
+        console.warn('Parse Data: Api data of ' + this.scope + ' does not exist, please update HTML API data.');
         console.warn('Error: ', e);
         return false;
     }
@@ -83,7 +83,7 @@ ParseData.prototype.getRaw = function() {
     try {
         return JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
     } catch(e) {
-        console.warn('Api data of ' + this.scope + ' does not exist, please fix it.');
+        console.warn('Parse Data: Api data of ' + this.scope + ' does not exist, please update HTML API data.');
         console.warn('Error: ', e);
         return undefined;
     }

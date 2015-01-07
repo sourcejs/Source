@@ -161,7 +161,7 @@ var getDataFromApi = function(sections, specUrl, apiUpdate) {
 
         if (sections) {
             output = parseHTMLData.getBySection(specID, sections);
-            errMsg = 'Requested sections HTML not found';
+            errMsg = 'Requested sections HTML not found, please define existing sections or update HTML API ("&apiUpdate=true").';
         } else {
             output = allContents;
             errMsg = 'Requested Spec not found';
@@ -188,7 +188,7 @@ var getDataFromApi = function(sections, specUrl, apiUpdate) {
             deferred.reject({
                 msg: msg
             });
-            global.log.info('Clarify: ' + msg, err);
+            global.log.warn('Clarify: ' + msg, err);
         });
     } else {
         getSpecData();
@@ -289,7 +289,8 @@ module.exports = function(req, res, next) {
                         html = ejs.render(tpl, templateJSON);
                     } catch (err) {
                         var msg = 'Clarify: ERROR with EJS rendering failed';
-                        global.log.error(msg + ': ', err);
+
+                        if (global.MODE === 'development') global.log.error(msg + ': ', err);
 
                         html = msg;
                     }
@@ -298,7 +299,7 @@ module.exports = function(req, res, next) {
                 }).fail(function(err) {
                     var msg = 'ERROR: Could not find requested or default template for Clarify';
 
-                    global.log.warn('Clarify: ' + msg + ': ', err);
+                    if (global.MODE === 'development') global.log.warn('Clarify: ' + msg + ': ', err);
 
                     res.status(500).send(msg);
                 });
@@ -308,7 +309,7 @@ module.exports = function(req, res, next) {
         }).fail(function(errData) {
             var errMsg = errData.err ? ': ' + errData.err : '';
 
-            global.log.info('Clarify: ' + (errData.msg || 'Error in data preparation'), errMsg);
+            global.log.warn('Clarify: ' + (errData.msg || 'Error in data preparation'), errMsg);
 
             res.status(500).send(errData.msg);
         });

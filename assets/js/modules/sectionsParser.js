@@ -319,13 +319,15 @@ SourceGetSections.prototype.flattenHTMLContents = function(){
     var flatList = {};
 
     var parseContents = function(contents){
-        for (var i=0; contents.length > i ; i++) {
-            var current = contents[i];
+        if (contents) {
+            for (var i=0; contents.length > i ; i++) {
+                var current = contents[i];
 
-            flatList[current.id] = current;
+                flatList[current.id] = current;
 
-            if (current.nested.length > 0) {
-                parseContents(current.nested);
+                if (current.nested.length > 0) {
+                    parseContents(current.nested);
+                }
             }
         }
     };
