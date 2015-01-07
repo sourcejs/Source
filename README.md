@@ -24,6 +24,7 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
+* \* 07.01.15. 0.4.0 Stable release. From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
 * \* 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
 * 01.08.14. [Video review](http://tohtml.it/post/93482335118/sourcejs) of SourceJS engine and workflow example (RU with EN subtitles)
 * \* 31.07.14. 0.4.0-beta release
