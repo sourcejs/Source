@@ -158,7 +158,7 @@ define([
 
             //Open all unclosed by confing spoilers and scroll to hash targeted section
             //For ie < 8 all sections closed by default
-            if (t.attr('data-def-stat') !== 'closed' && !($.browser.msie && parseInt($.browser.version, 10) < 8)) {
+            if (t.attr('data-def-stat') !== 'closed' && !(browser.msie && parseInt(browser.version, 10) < 8)) {
                openSpoiler(t);
             }
         }
@@ -189,7 +189,7 @@ define([
         };
 
         //If supports history API
-        if (window.history && history.pushState && !$.browser.msie)  {
+        if (window.history && history.pushState && !browser.msie)  {
             window.addEventListener('popstate', function (event) {
                 openOnNavigation();
             });

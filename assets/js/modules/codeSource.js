@@ -14,10 +14,9 @@ define([
     "sourceModules/innerNavigation",
     "sourceLib/prism/prism"
 ], function($, options, utils, Css, browser, codeFormat, innerNavigation) {
+    'use strict';
 
-'use strict';
-
-    if (!($.browser.msie && parseInt($.browser.version, 10) < 9)) { // and if not ie < 9
+    if (!(browser.msie && parseInt(browser.version, 10) < 9)) { // and if not ie < 9
         $(document).ready(function() {
             var SourceCode = 'source_source-code';
             var SourceCodeShow = SourceCode + '__show';

@@ -28,4 +28,6 @@ define(["sourceLib/jquery.mb.browser"], function() {
     }
 
     $('html').addClass(classString);
+
+    return $.browser;
 });

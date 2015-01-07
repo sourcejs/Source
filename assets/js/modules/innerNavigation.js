@@ -4,12 +4,11 @@ define([
     "jquery",
     "sourceModules/module",
     "sourceModules/utils",
-    "sourceModules/browser",
     "sourceModules/sections",
     "sourceModules/headerFooter",
     "text!sourceTemplates/nav.inc.html",
     "text!sourceTemplates/navActionItem.inc.html",
-    "text!sourceTemplates/navActionTumbler.inc.html"], function ($, module, utils, browser, sections, headerFooter, navTemplate, menuItemTemplate, menuItemTumblerTemplate) {
+    "text!sourceTemplates/navActionTumbler.inc.html"], function ($, module, utils, sections, headerFooter, navTemplate, menuItemTemplate, menuItemTumblerTemplate) {
 
     function InnerNavigation() {
         var _this = this;

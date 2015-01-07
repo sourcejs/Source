@@ -1,7 +1,8 @@
 define([
+    "jquery",
     "source/load-options",
     "sourceModules/browser"
-    ], function(options) {
+    ], function($, options, browser) {
 
     'use strict';
 
@@ -12,7 +13,7 @@ define([
     L_SECTION_CLASS.find('>h3').wrapInner('<span class="source_subsection_h"></span>');
 
     //IE layout fix
-    if ($.browser.msie && parseInt($.browser.version, 10) < 8) {
+    if (browser.msie && parseInt(browser.version, 10) < 8) {
         //After demo section clear
         $('<div class="source_clear"></div>').insertAfter('.source_section > .source_example');
     }
