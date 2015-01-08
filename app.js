@@ -85,12 +85,15 @@ global.app.use(require('./core/middleware/clarify'));
 // File tree module
 fileTree = require('./core/file-tree');
 global.app.use(function(req, res, next){
-    if(req.url === "/") {
+
+    // Updating navigation on each main page visit
+    if(global.MODE !== 'presentation' && req.url === "/") {
         // Making this async
         setTimeout(function(){
             fileTree.scan();
         }, 1000);
     }
+
     next();
 });
 
