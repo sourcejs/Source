@@ -24,7 +24,7 @@ If you notice some bugs, or need to help finding a better solution in your proce
 ## Updates
 * \* 07.01.15. 0.4.0 Stable release. From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
 * 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
-* 01.08.14. [Video review](http://tohtml.it/post/93482335118/sourcejs) of SourceJS engine and workflow example (RU with EN subtitles)
+* 01.08.14. [Video review](http://youtu.be/ukFeZnJjrLs?list=PL20zJcC2wnX7RY1CDrKLhSvYxEe6jtMbB) of SourceJS engine and workflow example (RU with EN subtitles)
 * 31.07.14. 0.4.0-beta release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
 * 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool, based on v0.4 HTML API - Design-lego
