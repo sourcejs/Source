@@ -9,18 +9,16 @@
 <section class="source_section" id="install">
     <h2>Quick Start</h2>
 
-    <p>First, install needed dependencies for getting started: <a href="http://help.github.com/articles/set-up-git">Git</a>, <a href="http://nodejs.org/">NodeJS</a>, <a href="http://gruntjs.com/getting-started">Grunt</a> and <a href="http://yeoman.io/">Yeoman</a> generators:</p>
+    <p>Before you start, please make sure that you have <a href="http://git-scm.com/downloads">Git</a> and <a href="http://nodejs.org/download/">Node.js</a> on your system, then install next NPM packages:</p>
 
     <code class="src-html source_visible">
-        $ npm install -g yo
-        $ npm install -g generator-sourcejs
+        $ npm install -g yo grunt-cli generator-sourcejs
     </code>
 
-    <p>Then init SourceJS with Yeoman and you're ready to start:</p>
+    <p>After that, you'll have special <code>yo sourcejs</code> generator available for init and bootstrapping new items:</p>
 
     <code class="src-html source_visible">
-        $ mkdir my-source
-        $ cd my-source
+        $ cd sourcejs-folder
         $ yo sourcejs
     </code>
 

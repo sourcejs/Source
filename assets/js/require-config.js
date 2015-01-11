@@ -6,7 +6,6 @@ requirejs.config({
         source: '/source/assets/js',
         sourceModules: '/source/assets/js/modules',
         sourceLib: '/source/assets/js/lib',
-        sourceJam: '/source/assets/jam',
         sourceTemplates: '/source/assets/templates',
 
         // Require.js plugins
