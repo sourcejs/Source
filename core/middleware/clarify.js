@@ -225,7 +225,7 @@ module.exports = function(req, res, next) {
 	var parsedUrl = url.parse(req.url, true);
 
     // Query params
-    var q = parsedUrl.query;
+    var q = parsedUrl.query || {};
     var clarifyFlag = q.clarify;
 
     // Check if middleware needs to be activated
