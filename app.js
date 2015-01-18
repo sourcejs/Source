@@ -11,7 +11,7 @@ var deepExtend = require('deep-extend');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
-
+var favicon = require('serve-favicon');
 
 /* Globals */
 global.app = express();
@@ -57,6 +57,9 @@ app.use(function (req, res, next) {
     // keep executing the router middleware
     next();
 });
+
+// Favicon
+app.use(favicon(global.app.get('user') + '/favicon.ico'));
 
 app.use(bodyParser.json());
 /* /App config */
