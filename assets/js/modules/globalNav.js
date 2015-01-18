@@ -43,7 +43,7 @@ define([
             "showPreview": "__show-preview"
         },
         "labels": {
-            "linkToAllSpecs": "Все",
+            "linkToAllSpecs": "All specs",
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
             "loading": "Загрузка...",
