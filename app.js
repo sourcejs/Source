@@ -40,6 +40,7 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) global.opts.core.parseHTML.onStart = true;
+if (commander.port) global.opts.core.common.port = parseInt(commander.port);
 /* /Globals */
 
 
@@ -193,9 +194,6 @@ global.app.use(errorHandler);
 // Server start
 if (!module.parent) {
     var port = global.opts.core.common.port;
-    if (commander.port) {
-        port = parseInt(commander.port);
-    }
 
     global.app.listen(port);
     var portString = port.toString();
