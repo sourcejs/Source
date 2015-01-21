@@ -49,7 +49,20 @@ define([
     Auth.prototype = module.createInstance();
     Auth.prototype.constructor = Auth;
 
-    Auth.renderers = {};
+    Auth.renderers = {
+        'avatar': function() {
+            this.target.append($('<img class="' + this.conf.classes.avatar + '" src="'
+                + (!!this.user.avatar_url ? this.user.avatar_url : this.conf.defaultAvatarURL)
+                + '">'
+            ));
+        },
+        'loginButton': function() {
+            this.target.append($('<div class="' + this.conf.classes.loginButton + '">'
+                + (!!this.user.id ? this.conf.labels.logout : this.conf.labels.login)
+                + '</div>'
+            ));
+        }
+    };
 
     Auth.prototype = {
         login: function() {
@@ -59,7 +72,6 @@ define([
         init: function() {
             var self = window.__auth = this;
             this.render();
-
             $('body').on('click', '.' + this.conf.classes.loginButton, function(e) {
                 e.preventDefault();
                 if (self.isLoginned()) {
@@ -72,15 +84,15 @@ define([
 
         render: function() {
             var user = this.getUser();
-            this.target.html('')
-                .append($('<img class="' + this.conf.classes.avatar + '" src="'
-                    + (!!user.avatar_url ? user.avatar_url : this.conf.defaultAvatarURL)
-                    + '">'
-                ))
-                .append($('<div class="' + this.conf.classes.loginButton + '">'
-                    + (!!user.id ? this.conf.labels.logout : this.conf.labels.login)
-                    + '</div>'
-                ));
+            var _this = this;
+            this.target.html('');
+            Object.keys(Auth.renderers).forEach(function(name) {
+                Auth.renderers[name].call({
+                    'target': _this.target,
+                    'user': user,
+                    'conf': _this.conf
+                });
+            });
         },
 
         logout: function() {
