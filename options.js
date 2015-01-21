@@ -84,5 +84,9 @@ module.exports = {
             pluginsEnabled: {},
             npmPluginsEnabled: {}
         }
+    },
+    github: {
+        appId: "1a203d58ae8cc1e0366f",
+        appSecret: "572aeb73c2602d1778ca308c0f42ae81d7c54b08"
     }
 };

@@ -9,7 +9,15 @@
     <img src="/source/assets/i/github-loagind.gif" width="500" alt="Loading">
     <script type="text/javascript">
         window.addEventListener('load', function() {
-            console.log(JSON.parse("<%= user %>"));
+            var data;
+            try {
+               data = JSON.parse("<%= user %>".split("&quot;").join('"')); 
+            } catch(e) {}
+            if (!data instanceof Object || !data.id) {
+                window.location = "/auth/github";
+            } else {
+                opener.__auth.done(data)
+            }
         });
     </script>
 </body>

@@ -21,12 +21,7 @@ module.exports = function(app) {
 		return user;
 	};
 
-	// TODO: remove debug mode or change it according to current environment
-	everyauth.debug = true;
-
 	everyauth.everymodule.findUserById(function(id, callback) {
-		console.log('findUserById', id);
-		console.log(callback);
 		callback(null, getUser(id));
 	});
 
@@ -51,12 +46,17 @@ module.exports = function(app) {
 	// application routes
 	var authTemplate = fs.readFileSync(path.join(global.pathToApp, '/assets/templates/auth-done.ejs'), "utf8");
 	app.get('/auth/stub', function (req, res) {
-		res.send(require('ejs').render(authTemplate, {'user': "{}"}));
+		res.send(require('ejs').render(authTemplate, {
+			'user': JSON.stringify({})
+		}));
 	});
 
 	app.get('/auth/done', function (req, res) {
 		req.session.authCache = req.session.auth;
-		res.send(require('ejs').render(authTemplate, {'user': JSON.stringify(getUser(currentUserId))}));
+
+		res.send(require('ejs').render(authTemplate, {
+			'user':  JSON.stringify(getUser(currentUserId))
+		}));
 	});
 
 	app.use(everyauth.middleware());

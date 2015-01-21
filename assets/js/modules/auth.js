@@ -2,42 +2,52 @@ define(['jquery'], function($) {
     "use strict";
 
     var _userStorageKey = 'sourcejsUser';
+    var loginWrapperSelector = '.sjs-login';
+    var defaultAvatarURL = '/source/assets/i/unknown.gif';
+    var labels = {
+        login: "Login",
+        logout: "Logout"
+    };
+    var popup;
 
-    var auth = function() {
-        open('/auth/stub', 'popup', 'width=1015,height=500');
+    var login = function() {
+        popup = open('/auth/stub', 'popup', 'width=1015,height=500');
     };
 
     var drawLoginControl = function() {
-        if (isLoginned()) {
-            console.log('drawLogined', getUser());
-        } else {
-            console.log('drawUnlogined', getUser());
-        }
+        var $wrapper = $(loginWrapperSelector);
+        var user = getUser();
+        $wrapper
+            .html('')
+            .append($('<img class="sjs-login-avatar" src="' + (!!user.avatar_url ? user.avatar_url : defaultAvatarURL) + '">'))
+            .append($('<div class="sjs-login-button">' + (!!user.id ? labels.logout : labels.login) + '</div>'));
     };
 
     var authCallback  = function(user) {
-        localStorage.setItem(_userStorageKey, user);
+        popup.close();
+        localStorage.setItem(_userStorageKey, JSON.stringify(user));
         drawLoginControl();
     };
 
-    var unAuth = function() {
+    var logout = function() {
         localStorage.removeItem(_userStorageKey);
         drawLoginControl();
     };
 
     var isLoginned = function() {
-        return !!localStorage['user'];
+        return !!localStorage[_userStorageKey];
     };
 
     var getUser = function() {
-        return JSON.parse(localStorage.getItem(_userStorageKey) || "");
+        return JSON.parse(localStorage.getItem(_userStorageKey) || "{}");
     };
 
     return {
-        "login": auth,
-        "logout": unAuth,
+        "login": login,
+        "logout": logout,
         "isLoginned": isLoginned,
         "getUser": getUser,
-        "done": authCallback
+        "done": authCallback,
+        "drawControls": drawLoginControl
     };
 });

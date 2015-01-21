@@ -17,25 +17,24 @@
                     <li class="source_header_nav_i"><a class="source_a_l" href="#777">Link</a></li>
                 </ul>
             </nav>
-            <a class="source_a_l js-login" href="/auth/stub">Login</a>
+            <div class="sjs-login"></div>
         </div>
     </div>
     <script type="text/javascript">
         require(['jquery', 'sourceModules/auth'], function($, auth) {
+
+            auth.init("sjs-login");
             window.__auth = auth;
+            auth.drawControls();
             $('body')
-                .on('click', '.js-login', function(e){
+                .on('click', '.sjs-login-button', function(e){
                     e.preventDefault();
-                    auth.login();
+                    if (auth.isLoginned()) {
+                        auth.logout();
+                    } else {
+                        auth.login();
+                    }
                 })
-                .on('click', '.js-logout', function(e){
-                    e.preventDefault();
-                    auth.logout();
-                })
-                .on('click', '.js-popup-close', function(e){
-                    e.preventDefault();
-                    console.log('closeModal();');
-                });
         });
     </script>
 </header>
