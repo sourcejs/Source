@@ -11,7 +11,7 @@ var deepExtend = require('deep-extend');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
-
+var favicon = require('serve-favicon');
 
 /* Globals */
 global.app = express();
@@ -40,6 +40,7 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) global.opts.core.parseHTML.onStart = true;
+if (commander.port) global.opts.core.common.port = parseInt(commander.port);
 /* /Globals */
 
 
@@ -71,6 +72,9 @@ app.use(function (req, res, next) {
     // keep executing the router middleware
     next();
 });
+
+// Favicon
+app.use(favicon(global.app.get('user') + '/favicon.ico'));
 
 app.use(bodyParser.json());
 /* /App config */
@@ -208,9 +212,6 @@ global.app.use(errorHandler);
 // Server start
 if (!module.parent) {
     var port = global.opts.core.common.port;
-    if (commander.port) {
-        port = parseInt(commander.port);
-    }
 
     global.app.listen(port);
     var portString = port.toString();
