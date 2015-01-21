@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<head>
+    <title>Github OAuth</title>
+    <style type="text/css">
+        body { overflow: hidden; margin: 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <img src="/source/assets/i/github-loagind.gif" width="500" alt="Loading">
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            console.log(JSON.parse("<%= user %>"));
+        });
+    </script>
+</body>

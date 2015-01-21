@@ -17,7 +17,25 @@
                     <li class="source_header_nav_i"><a class="source_a_l" href="#777">Link</a></li>
                 </ul>
             </nav>
+            <a class="source_a_l js-login" href="/auth/stub">Login</a>
         </div>
     </div>
-
+    <script type="text/javascript">
+        require(['jquery', 'sourceModules/auth'], function($, auth) {
+            window.__auth = auth;
+            $('body')
+                .on('click', '.js-login', function(e){
+                    e.preventDefault();
+                    auth.login();
+                })
+                .on('click', '.js-logout', function(e){
+                    e.preventDefault();
+                    auth.logout();
+                })
+                .on('click', '.js-popup-close', function(e){
+                    e.preventDefault();
+                    console.log('closeModal();');
+                });
+        });
+    </script>
 </header>
