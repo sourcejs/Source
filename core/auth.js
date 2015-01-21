@@ -8,6 +8,7 @@ module.exports = function(app) {
 	app.states = app.states || {};
 	app.states.users = app.states.users || {};
 
+	//TODO: wrong!
 	var currentUserId = "";
 
 	// users data processing
@@ -32,7 +33,7 @@ module.exports = function(app) {
 		.findOrCreateUser(function(sess, accessToken, accessTokenExtra, ghUser) {
 			setUser(ghUser);
 			currentUserId = ghUser.id;
-			return ghUser;//getUser(ghUser.id) || setUser(ghUser);
+			return ghUser;
 		})
 		.redirectPath('/auth/done');
 

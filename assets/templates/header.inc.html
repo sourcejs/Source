@@ -21,20 +21,10 @@
         </div>
     </div>
     <script type="text/javascript">
-        require(['jquery', 'sourceModules/auth'], function($, auth) {
-
-            auth.init("sjs-login");
-            window.__auth = auth;
-            auth.drawControls();
-            $('body')
-                .on('click', '.sjs-login-button', function(e){
-                    e.preventDefault();
-                    if (auth.isLoginned()) {
-                        auth.logout();
-                    } else {
-                        auth.login();
-                    }
-                })
+        require(['jquery', 'sourceModules/auth'], function($, Auth) {
+            new Auth({
+                target: $('.sjs-login')
+            });
         });
     </script>
 </header>

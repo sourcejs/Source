@@ -12,11 +12,13 @@
             var data;
             try {
                data = JSON.parse("<%= user %>".split("&quot;").join('"')); 
-            } catch(e) {}
+            } catch(e) {
+                console.log('incorrect user data', e);
+            }
             if (!data instanceof Object || !data.id) {
                 window.location = "/auth/github";
             } else {
-                opener.__auth.done(data)
+                opener.__auth.done(data);
             }
         });
     </script>
