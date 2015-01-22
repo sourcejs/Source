@@ -4,7 +4,7 @@
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
-[**Check out SourceJS video review**](http://youtu.be/bcSEZIaXDkU?list=PLS1YQ-Y8Utrt0FDspjk3fJKP7hftVTk7X)
+[![image](http://d.pr/i/7Ax4+)](http://youtu.be/y4KHmX8vCc0)
 
 Our main goal is to provide flexible, component based environment for managing reusable Front-end components library. We don't focus on specific technologies, allowing to seamlessly integrate SourceJS workflow with your existing codebase.
 
@@ -25,7 +25,7 @@ If you notice some bugs, or need to help finding a better solution in your proce
 
 ## Updates
 * 18.01.15. Published an [intro video about SourceJS](http://youtu.be/y4KHmX8vCc0)
-* \* 07.01.15. **0.4.0** Stable release. From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
+* 07.01.15. **0.4.0 Stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
 * 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
 * 01.08.14. [Video review](http://youtu.be/ukFeZnJjrLs?list=PL20zJcC2wnX7RY1CDrKLhSvYxEe6jtMbB) of SourceJS engine and workflow example (RU with EN subtitles)
 * 31.07.14. 0.4.0-beta release
