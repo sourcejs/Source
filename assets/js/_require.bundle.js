@@ -1,3 +1,5 @@
+//"{--%= ___grunt.file.read('assets/js/lib/jquery-1.11.1.js') %}"
+
 (function() {
     'use strict';
 
@@ -42,16 +44,19 @@
             // Relative to user root
             'js': '/assets/js',
             'plugins': '/plugins',
-            'node_modules': '/node_modules'
-        }
-        // TODO (Ilya Mikhailov 01.27.2015): replace global jQuery by no-conflict script using this config
-        /*,
+            'node_modules': '/node_modules',
+            'sourceLib/jquery.mb.browser': "lib/jquery/jquery-plugins-bundle",
+            'sourceLib/codeFormat': "lib/jquery/jquery-plugins-bundle",
+            'sourceLib/jquery.couch': "lib/jquery/jquery-plugins-bundle"
+        },
         'map': {
+            '*': {
+                // for * modules we use jquery-noconflict instead of jquery
+                'jquery': "lib/jquery/jquery-noconflict"
+            },
             // for jquery-noconflict module we use real jquery
-            'echo/third-party/jquery/jquery-noconflict': {'jquery': 'jquery'}
+            'lib/jquery/jquery-noconflict': {'jquery': "lib/jquery/jquery"},
+            'lib/jquery/jquery-plugins-bundle': {'jquery': "lib/jquery/jquery"}
         }
-        */
     });
 })();
-
-"{%= grunt.file.read('assets/js/lib/jquery-1.11.1.js') %}"

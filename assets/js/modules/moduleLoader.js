@@ -1,7 +1,7 @@
-define([
+SourceJS.define([
+    'jquery',
 	'sourceModules/module'
-	], function (module) {
-
+], function ($, Module) {
     'use strict';
 
     function ModuleLoader() {
@@ -11,7 +11,7 @@ define([
     }
 
     /* наследуем от Module */
-    ModuleLoader.prototype = module.createInstance();
+    ModuleLoader.prototype = Module.createInstance();
     ModuleLoader.prototype.constructor = ModuleLoader;
 
     ModuleLoader.prototype.loadModules = function(type){
@@ -46,7 +46,7 @@ define([
                     var targetObj = optionsBase[typeEnabled][item];
 
                     if (targetObj){
-                        require([path + item]);
+                        SourceJS.require([path + item]);
                     }
                 }
             }

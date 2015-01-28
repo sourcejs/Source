@@ -1,11 +1,10 @@
 //In separate module, to trace script ready state
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",
     "sourceModules/sectionFolding"
-    ], function($, utils, loadEvents) {
-
+], function($, utils, loadEvents) {
     'use strict';
 
     var navHash = utils.parseNavHash();

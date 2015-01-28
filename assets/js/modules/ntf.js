@@ -1,9 +1,8 @@
-'use strict';
-
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module'
 ], function($, module) {
+    'use strict';
 
     function Notification() {
         if ($('.source_ntf').length === 0) {

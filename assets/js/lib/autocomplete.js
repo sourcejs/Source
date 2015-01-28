@@ -1,7 +1,7 @@
 "use strict";
 (function(module) {
-    if (typeof(define) === "function" && define.amd) {
-        define(["jquery"], module);
+    if (typeof(SourceJS.define) === "function" && SourceJS.define.amd) {
+        SourceJS.define(["jquery"], module);
     } else {
         module(jquery);
     }

@@ -1,14 +1,12 @@
 /*
- *
  * Assets options
- *
- * */
+ */
 
-define([
+SourceJS.define([
     'jquery',
     'text!/api/options',
     'sourceModules/inlineOptions'
-    ], function($, options, inlineOptions) {
+], function($, options, inlineOptions) {
 
     // Default + User options merged built. Built from Grunt.
     var sourceOptions = JSON.parse(options);

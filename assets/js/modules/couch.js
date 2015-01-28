@@ -7,14 +7,13 @@
 *
 * */
 
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module',
     'sourceModules/utils',
     'sourceLib/jquery.couch'
     ], function ($, module, utils, couch) {
-
-'use strict';
+    'use strict';
 
     function Couch() {
         this.options.modulesOptions.couch = $.extend({

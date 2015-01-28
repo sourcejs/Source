@@ -6,11 +6,10 @@
 *
 * */
 
-"use strict";
-
-define([
+SourceJS.define([
     'sourceModules/module'
-    ], function (module) {
+], function (module) {
+	"use strict";
 
 	var NavHighlight = function() {
 

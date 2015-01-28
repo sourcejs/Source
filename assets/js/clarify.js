@@ -4,11 +4,11 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
-require([
+SourceJS.require([
     "jquery",
     "sourceModules/utils",
     "text!sourceTemplates/clarifyPanel.inc.html"
-    ], function ($, u, clarifyPanelTpl){
+], function ($, u, clarifyPanelTpl){
 
     // If we have data from Clarify output
     if (window.sourceClarifyData){

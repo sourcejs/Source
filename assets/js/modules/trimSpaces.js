@@ -6,11 +6,10 @@
 *
 * */
 
-define([
+SourceJS.define([
     "source/load-options",
     "sourceModules/codeSource"
-    ], function(options) {
-
+], function(options) {
     'use strict';
 
     var EXAMPLE_CLASS = options.exampleSectionClass;

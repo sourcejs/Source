@@ -6,11 +6,10 @@
  *
  * */
 
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/module"
-    ], function ($, module) {
-
+], function ($, module) {
     'use strict';
 
     function Sections() {

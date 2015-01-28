@@ -1,9 +1,9 @@
 "use strict";
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module',
     'sourceLib/lodash'
-    ], function($, module, _) {
+    ], function($, module) {
 
 var context; // instance of box
 

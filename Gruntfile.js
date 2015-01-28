@@ -175,6 +175,42 @@ module.exports = function(grunt) {
             test: {
                 src: ['test/**/*.js']
             }
+        },
+
+        wrap: {
+            options: {
+                header: [
+                    "SourceJS.define(\"lib/jquery/jquery-plugins-bundle\", [\"lib/jquery/jquery\"], function() {",
+                    "var $ = jQuery;",
+                    ""
+                ],
+                footer: [
+                    "});"
+                ]
+            },
+            jqueryPack: {
+                files: [{
+                    expand: true,
+                    dest: 'build',
+                    cwd: 'build',
+                    src: [
+                        'assets/js/lib/jquery/jquery-plugins-bundle.js'
+                    ]
+                }]
+            }
+        },
+        concat: {
+            options: {
+                separator: '',
+            },
+            dist: {
+                src: [
+                    "assets/js/lib/jquery/*.js",
+                    "!assets/js/lib/jquery/jquery.js",
+                    "!assets/js/lib/jquery/jquery-noconflict.js"],
+                dest: 'build/assets/js/lib/jquery/jquery-plugins-bundle.js',
+                cwd: 'build'
+            }
         }
     });
 
@@ -196,6 +232,18 @@ module.exports = function(grunt) {
         } else {
             console.log('Skipping clean build dir');
         }
+    });
+
+    grunt.registerMultiTask("wrap", "Simple files wrapper", function() {
+        var options = this.options({
+            "header": "",
+            "footer": ""
+        });
+        this.filesSrc.forEach(function(filepath) {
+            var result = Array.prototype.concat.call(options.header, grunt.file.read(filepath), options.footer);
+            grunt.file.write(filepath, result.join('\r\n'));
+            console.log(filepath);
+        });
     });
 
     grunt.registerTask('resolve-js-bundles', 'Resolving JS imports in _**.bundle.js', function(){
@@ -249,6 +297,9 @@ module.exports = function(grunt) {
     grunt.registerTask('update', [
         'clean-build:dev',
         'resolve-js-bundles',
+        'copy:js',
+        'concat',
+        'wrap',
         'less',
         'autoprefixer',
         'last-dev'
@@ -258,13 +309,14 @@ module.exports = function(grunt) {
     // Prod build, path to minified resources is routed by nodejs server
     grunt.registerTask('build', [
         'clean-build:prod',
-
         'less',
         'autoprefixer',
         'newer:cssmin:build',
         'newer:cssmin:user',
         'resolve-js-bundles',
-        'newer:copy:js',
+        'copy:js',
+        'concat',
+        'wrap',
         'newer:uglify:main',
 
         'newer:htmlmin:main',

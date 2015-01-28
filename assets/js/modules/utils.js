@@ -4,11 +4,10 @@
 *
 * */
 
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module'
-    ], function ($, module) {
-
+], function ($, module) {
     'use strict';
 
     function Utils() {}
@@ -50,6 +49,16 @@ define([
         specName = pageUrlSplit[pageUrlSplit.length - 2]; //Берет последнюю часть урла
 
         return specName;
+    };
+
+    Utils.prototype.inherit = function(parent, child) {
+        var F = function() {};
+        child = child || function() {};
+        F.prototype = parent.prototype;
+        child.prototype = new F();
+        child.prototype.constructor = child;
+        child.parent = parent.prototype;
+        return child;
     };
 
     Utils.prototype.getPathToPage = function(specUrlFromFileTree) {

@@ -4,15 +4,15 @@
 *
 * */
 
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/module",
     "sourceModules/utils",
     "sourceModules/parseFileTree",
     "sourceLib/lodash"
-    ], function($, module, utils, parseFileTree, _) {
+], function($, module, utils, parseFileTree) {
     "use strict";
-
+    var _ = window._; //TODO: remove it
     /**
      * @Object defaults. It represents preseted options to initialize
      * navigation module. Can be overrided by options.moduleOptions.globalNav.

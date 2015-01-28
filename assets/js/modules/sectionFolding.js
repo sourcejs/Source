@@ -6,15 +6,14 @@
 *
 * */
 
-define([
+SourceJS.define([
     "jquery",
     "source/load-options",
     "sourceModules/utils",
     "sourceModules/browser",
     "sourceModules/sections",
     "sourceModules/innerNavigation"
-    ], function($, options, utils, browser, sections, innerNavigation) {
-
+], function($, options, utils, browser, sections, innerNavigation) {
     'use strict';
 
     $(function(){

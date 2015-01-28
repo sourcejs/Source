@@ -1,5 +1,6 @@
-define(["source/load-options"], function (options) {
-
+SourceJS.define([
+    "source/load-options"
+], function (options) {
     'use strict';
 
     function Module() {

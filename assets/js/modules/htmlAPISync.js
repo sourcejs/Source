@@ -1,6 +1,4 @@
-'use strict';
-
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/module",
     "sourceModules/utils",
@@ -8,6 +6,8 @@ define([
     "sourceModules/ntf",
     "sourceModules/sectionsParser"
 ], function($, module, utils, innerNavigation, ntf) {
+    'use strict';
+
     function HtmlAPiSync() {
         this.specID = utils.getPathToPage().substring(1);
 

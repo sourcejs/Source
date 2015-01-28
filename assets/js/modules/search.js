@@ -4,7 +4,7 @@
 *
 * */
 
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module',
     'sourceLib/autocomplete',
@@ -13,7 +13,6 @@ define([
     'sourceModules/globalNav',
     'sourceModules/headerFooter'
 ], function ($, module, autocomplete, ModalBox, parseFileTree, globalNav) {
-
 'use strict';
 
 var Search = function() {

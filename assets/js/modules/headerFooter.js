@@ -1,5 +1,7 @@
-define(["source/load-options"], function(options) {
-
+SourceJS.define([
+    "jquery",
+    "source/load-options"
+], function($, options) {
     'use strict';
 
     if(options.modulesEnabled.headerFooter) {

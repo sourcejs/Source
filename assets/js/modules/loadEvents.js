@@ -4,7 +4,10 @@
 *
 */
 
-define(["sourceModules/module", "sourceModules/utils"], function(module, utils) {
+SourceJS.define([
+	"sourceModules/module",
+	"sourceModules/utils"
+], function(module, utils) {
 
     'use strict';
 

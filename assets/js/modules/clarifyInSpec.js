@@ -6,14 +6,13 @@
 *
 * */
 
-'use strict';
-
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module',
     'sourceModules/sections',
     'sourceModules/specDecorations'
 ], function($, module, sections, specDecorations) {
+    'use strict';
 
     function ClarifyInSpec() {
         var _this = this;

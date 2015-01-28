@@ -1,9 +1,8 @@
-define([
+SourceJS.define([
     "jquery",
     "source/load-options",
     "sourceModules/browser"
-    ], function($, options, browser) {
-
+], function($, options, browser) {
     'use strict';
 
     var SECTION_CLASS = options.SECTION_CLASS;

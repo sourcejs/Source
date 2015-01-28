@@ -7,12 +7,12 @@
 *
 * */
 
-'use strict';
-
-define([
+SourceJS.define([
     'jquery',
     'sourceModules/module',
-    'text!/api/specs/raw'], function ($, module, data) {
+    'text!/api/specs/raw'
+], function ($, module, data) {
+    'use strict';
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());

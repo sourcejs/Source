@@ -1,8 +1,8 @@
-define([
+SourceJS.define([
+    "jquery",
     "source/load-options"
     //, other modules
-    ], function(options) {
-
+], function($, options) {
     'use strict';
 
     var o = $.extend({}, {
