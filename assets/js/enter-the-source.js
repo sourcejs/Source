@@ -8,7 +8,6 @@ SourceJS.require([
 	"source/load-options"
 ], function($, globalOpts) {
 	"use strict";
-	console.log('loader', globalOpts);
 
 	$.each([{
 		'type': 'modules',
@@ -39,7 +38,6 @@ SourceJS.require([
                 if (optionsBase[initializer.enabledType].hasOwnProperty(item)) {
                     var targetObj = optionsBase[initializer.enabledType][item];
                     if (targetObj) {
-                    	console.log('required... ', initializer.path + item);
                         SourceJS.require([initializer.path + item]);
                     }
                 }

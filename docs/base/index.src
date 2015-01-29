@@ -99,7 +99,7 @@
 
     <code class="src-html source_visible">
         <script>
-            define('sourceModules/inlineOptions', {
+            SourceJS.define('sourceModules/inlineOptions', {
                 modulesOptions : {
                     globalNav : {
                         pageLimit: 6

@@ -6,21 +6,17 @@
 
 SourceJS.define([
     'jquery',
-    'sourceModules/module'
-], function ($, module) {
+    'source/load-options'
+], function ($, options) {
     'use strict';
 
-    function Utils() {}
+    var Utils = {};
 
-    /* наследуем от Module */
-    Utils.prototype = module.createInstance();
-    Utils.prototype.constructor = Utils;
-
-    Utils.prototype.parseNavHash = function () {
-        return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
+    Utils.parseNavHash = function () {
+        return window.location.hash.split(options.modulesOptions.innerNavigation.hashSymb)[0];
     };
 
-    Utils.prototype.getUrlParameter = function (name) {
+    Utils.getUrlParameter = function (name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
         var results = regex.exec(location.search);
@@ -29,7 +25,7 @@ SourceJS.define([
     };
 
      //sectionID = '#id'
-    Utils.prototype.scrollToSection = function (sectionID) {
+    Utils.scrollToSection = function (sectionID) {
         // Modifying ID, for custom selection because of ids named "1.1", "2.2" etc
         var _sectionID = sectionID.replace('#','');
         var new_position = $(document.getElementById(_sectionID)).offset();
@@ -41,7 +37,7 @@ SourceJS.define([
         }
     };
 
-    Utils.prototype.getSpecName = function() {
+    Utils.getSpecName = function() {
         var specName;
         var pageUrl = window.location.pathname;
 
@@ -51,7 +47,7 @@ SourceJS.define([
         return specName;
     };
 
-    Utils.prototype.inherit = function(parent, child) {
+    Utils.inherit = function(parent, child) {
         var F = function() {};
         child = child || function() {};
         F.prototype = parent.prototype;
@@ -61,7 +57,7 @@ SourceJS.define([
         return child;
     };
 
-    Utils.prototype.getPathToPage = function(specUrlFromFileTree) {
+    Utils.getPathToPage = function(specUrlFromFileTree) {
         var pathToSpec = (function(){
             var path;
 
@@ -82,7 +78,7 @@ SourceJS.define([
         return pathToSpec;
     };
 
-    Utils.prototype.hasClasses = function(element, selectorsArr) {
+    Utils.hasClasses = function(element, selectorsArr) {
         for (var i in selectorsArr) {
             if (element.hasClass(selectorsArr[i]))
                 return true;
@@ -91,20 +87,20 @@ SourceJS.define([
         return false;
     };
 
-    Utils.prototype.getCookie = function(name) {
+    Utils.getCookie = function(name) {
 		var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
 		return matches ? decodeURIComponent(matches[1]) : undefined;
     };
 
-    Utils.prototype.isDevelopmentMode = function() {
-		return this.getCookie('source-mode') === 'development';
+    Utils.isDevelopmentMode = function() {
+		return Utils.getCookie('source-mode') === 'development';
     };
 
-	Utils.prototype.isArray = function(arr) {
+	Utils.isArray = function(arr) {
 		return Object.prototype.toString.call(arr) === '[object Array]';
 	};
 
-    Utils.prototype.unifySpecPath = function(url) {
+    Utils.unifySpecPath = function(url) {
         if (url.slice(-10) === "index.html") url = url.slice(0, -10);
         if (url.slice(-9) === "index.src") url = url.slice(0, -9);
         if (url.charAt(0) !== "/") url = "/" + url;
@@ -113,7 +109,7 @@ SourceJS.define([
         return url;
     };
 
-    Utils.prototype.toggleBlock = function(elToClick, elToShow) {
+    Utils.toggleBlock = function(elToClick, elToShow) {
         var $elToClick = '.' + elToClick;
 
         $(document).on('click', $elToClick, function() {
@@ -124,5 +120,48 @@ SourceJS.define([
         });
     };
 
-    return new Utils();
+    Utils.foldLeft = function(acc, object, callback) {
+        var result;
+        $.each(object, function(key, item) {
+            result = callback(item, acc, key);
+            if (result !== undefined) {
+                acc = result;
+            }
+        });
+        return acc;
+    };
+
+    Utils.getComponent = function(name) {
+        return Utils.get(window.SourceJS, name);
+    };
+
+    Utils.isExist = function(name) {
+        return !!Utils.getComponent(name);
+    };
+
+    Utils.get = function(obj, key, callback) {
+        var keys = typeof key === "string"
+            ? key.split(".")
+            : key instanceof Array && key.length ? key : false;
+
+        if (!keys || !obj) return null;
+        var found = true;
+        var iteration = function(_key, _data) {
+            if (callback) {
+                callback(_data, _key);
+            }
+            if (typeof _data[_key] === "undefined") {
+                found = false;
+            } else {
+                return _data[_key];
+            }
+        };
+
+        var value = keys.length === 1
+            ? iteration(keys.pop(), obj)
+            : Utils.foldLeft(obj, keys, iteration);
+        return found ? value : null;
+    };
+
+    return Utils;
 });

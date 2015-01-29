@@ -38,7 +38,7 @@ window.source.loadEvents.moduleName = window.source.loadEvents.moduleName || {
 
 As module load sequence could be random, first we init main data object `window.source.loadEvent`, then define options for our module.
 
-Note: if you are using RequireJS, then be sure that module is registered before any `define`/`require` call.
+Note: if you are using RequireJS, then be sure that module is registered before any `SourceJS.define`/`SourceJS.require` call.
 
 <code class="source_visible src-js">
 window.source = window.source || {};

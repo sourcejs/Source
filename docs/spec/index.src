@@ -55,7 +55,7 @@
     <!-- Inline JS -->
     <!--
     <script>
-        require(['jquery'], function($){
+        SourceJS.require(['jquery'], function($){
             var makeSome;
         });
     </script>
