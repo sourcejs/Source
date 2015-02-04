@@ -4,7 +4,7 @@
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
-[**Check out SourceJS video review**](http://youtu.be/bcSEZIaXDkU?list=PLS1YQ-Y8Utrt0FDspjk3fJKP7hftVTk7X)
+[![image](http://d.pr/i/7Ax4+)](http://youtu.be/y4KHmX8vCc0)
 
 Our main goal is to provide flexible, component based environment for managing reusable Front-end components library. We don't focus on specific technologies, allowing to seamlessly integrate SourceJS workflow with your existing codebase.
 
@@ -24,14 +24,14 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
-* 18.01.15. Published an [intro video about SourceJS](http://youtu.be/bcSEZIaXDkU?list=PLS1YQ-Y8Utrt0FDspjk3fJKP7hftVTk7X)
-* \* 07.01.15. 0.4.0 Stable release. From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
+* 18.01.15. Published an [intro video about SourceJS](http://youtu.be/y4KHmX8vCc0)
+* 07.01.15. **0.4.0 Stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
 * 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
 * 01.08.14. [Video review](http://youtu.be/ukFeZnJjrLs?list=PL20zJcC2wnX7RY1CDrKLhSvYxEe6jtMbB) of SourceJS engine and workflow example (RU with EN subtitles)
 * 31.07.14. 0.4.0-beta release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
-* 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool, based on v0.4 HTML API - Design-lego
-* 31.12.13. 0.3.2 release
+* 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool for prototyping interfaces using existing components
+* 31.12.13. **0.3.2** release
 * 09.10.13. Engine [presentation](http://rhr.me/pres/source-min/) on [Fronteers Jam](http://fronteers.nl/congres/2013/jam-session) ([video](https://vimeo.com/77989211))
 * 23.09.13. Published [video recording](http://www.youtube.com/watch?v=3HNW5Bru0Ws) of Source engine presentation from [RIT++](http://ritconf.ru/) 2013 (RU)
 

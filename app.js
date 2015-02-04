@@ -74,7 +74,10 @@ app.use(function (req, res, next) {
 });
 
 // Favicon
-app.use(favicon(global.app.get('user') + '/favicon.ico'));
+var faviconPath = global.app.get('user') + '/favicon.ico';
+if (fs.existsSync(faviconPath)){
+    app.use(favicon(faviconPath));
+}
 
 app.use(bodyParser.json());
 /* /App config */
