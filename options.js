@@ -85,8 +85,14 @@ module.exports = {
             npmPluginsEnabled: {}
         }
     },
+    /*
+     * Please pay your attention. This is demo github applicatio key.
+     * To get your own one please use github applications service.
+     * Please visit this link to get more information:
+     * https://developer.github.com/guides/basics-of-authentication/#registering-your-app
+     */
     github: {
-        appId: "1a203d58ae8cc1e0366f",
+        appId: "a05d80a72d360fba596f",
         appSecret: "572aeb73c2602d1778ca308c0f42ae81d7c54b08"
     }
 };
