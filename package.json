@@ -43,7 +43,8 @@
     "phantomjs": "^1.9.7-15",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
-    "time-grunt": "~0.2.10"
+    "time-grunt": "~0.2.10",
+    "shelljs": "~0.3.0"
   },
   "scripts": {
     "start": "node app",
