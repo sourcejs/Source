@@ -1,6 +1,8 @@
 /* Info blocks
 ---------------------------------------------------------------------------------- */
 
+// !important next to rules are intended solution till we will use shadow DOM or iframes for source_examples
+
 .source_data,
 .source_doc,
 .source_note,
@@ -8,9 +10,13 @@
 .source_info {
 	display: block;
 	position: relative;
-    box-sizing: content-box;
+    box-sizing: content-box !important;
 
-	border-radius: 10px;
+	border-radius: @border-radius !important;
+
+    .source_section & {
+        font-size: @fz-size-xs !important;
+        }
 
     &:empty {
 		display: none;
@@ -25,7 +31,6 @@
 		}
     }
 
-body p.source_info, /* cascade for weight */
 .source_info {
 	background: #FFF6DD !important;
 
@@ -39,7 +44,6 @@ body p.source_info, /* cascade for weight */
         }
 	}
 
-body p.source_warn, /* cascade for weight */
 .source_warn {
 	margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
 	padding: 10px 10px 10px 35px !important;
@@ -51,20 +55,17 @@ body p.source_warn, /* cascade for weight */
         }
 	}
 
-body p.source_note, /* cascade for weight */
 .source_note {
     margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
     padding: 10px 10px 10px 35px !important;
 
     background: #DCF1FA url(/source/assets/i/note.png) no-repeat 13px 13px !important;
 
-
     .source_section & {
         margin-right: 0 !important;
         }
     }
 
-body p.source_doc, /* cascade for weight */
 .source_doc {
     margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
     padding: 10px 25px !important;
@@ -77,7 +78,6 @@ body p.source_doc, /* cascade for weight */
         }
     }
 
-body p.source_data, /* cascade for weight */
 .source_data {
     margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
     padding: 10px 25px !important;
