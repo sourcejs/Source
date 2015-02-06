@@ -96,9 +96,7 @@ global.app.use(function(req, res, next){
     // Updating navigation on each main page visit
     if(global.MODE !== 'presentation' && req.url === "/") {
         // Making this async
-        setTimeout(function(){
-            fileTree.scan();
-        }, 1000);
+    	fileTree.scan();
     }
 
     next();
