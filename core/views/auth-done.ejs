@@ -18,7 +18,7 @@
             if (!data instanceof Object || !data.id) {
                 window.location = "/auth/github";
             } else {
-                opener.__auth.done(data);
+                opener.sourcejs.__auth.done(data);
             }
         });
     </script>

@@ -44,7 +44,8 @@ module.exports = {
             globalNav: true,
             search: true,
             loadEvents: true,
-            navHighlight: true
+            navHighlight: true,
+            auth: false
         },
 
         modulesOptions : {

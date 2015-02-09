@@ -3,21 +3,37 @@ module.exports = function(app) {
 
 	var everyauth = require('everyauth');
 	var fs = require('fs');
+	var ejs = require('ejs');
 	var path = require('path');
 
 	app.states = app.states || {};
 	app.states.users = app.states.users || {};
 
-	//TODO: wrong!
 	var currentUserId = "";
 
 	// users data processing
+	/**
+	 * @method getUser - user getter
+	 *
+	 * @param {String} id - github user id
+	 *
+	 * @returns {Object} - user - github user entity or empty object, if user is undefined
+	 */
 	var getUser = function(id) {
-		id = id;
-		return app.states.users[id];
+		return app.states.users[id] || {};
 	};
 
+	/**
+	 * @method setUser - user setter
+	 *
+	 * @param {Object} user - github user entity
+	 *
+	 * @param {String} user.id - required user field, which is used as user templral storage key.
+	 *
+	 * @returns {Object} user - returns user parameter
+	 */
 	var setUser = function(user) {
+		if (typeof user !== "object" || !user.id) return;
 		app.states.users[user.id] = user;
 		return user;
 	};
@@ -45,7 +61,7 @@ module.exports = function(app) {
 	});
 
 	// application routes
-	var authTemplate = fs.readFileSync(path.join(global.pathToApp, '/assets/templates/auth-done.ejs'), "utf8");
+	var authTemplate = fs.readFileSync(path.join(global.pathToApp, '/core/views/auth-done.ejs'), "utf8");
 	app.get('/auth/stub', function (req, res) {
 		res.send(require('ejs').render(authTemplate, {
 			'user': JSON.stringify({})
@@ -55,11 +71,15 @@ module.exports = function(app) {
 	app.get('/auth/done', function (req, res) {
 		req.session.authCache = req.session.auth;
 
-		res.send(require('ejs').render(authTemplate, {
+		res.send(ejs.render(authTemplate, {
 			'user':  JSON.stringify(getUser(currentUserId))
 		}));
 	});
 
-	app.use(everyauth.middleware());
+	return {
+		'getUser': getUser,
+		'setUser': setUser,
+		'everyauth': everyauth
+	};
 
 };

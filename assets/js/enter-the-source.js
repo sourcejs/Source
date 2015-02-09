@@ -8,7 +8,12 @@ require([
     "jquery",
     "source/load-options", // TODO: remove when all modules inherit Module()
     "sourceModules/browser",
-    "sourceModules/moduleLoader"
-    ], function ($, options) {
-
+    "sourceModules/moduleLoader",
+    'sourceModules/auth',
+    ], function ($, options, browser, Loader, Auth) {
+        if (options && options.modulesEnabled && options.modulesEnabled.auth === true) {
+            new Auth({
+                target: $('.sjs-login')
+            });
+        }
 });
