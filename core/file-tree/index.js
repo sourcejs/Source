@@ -20,7 +20,9 @@ var config = {
     getFilesDateFromGit: true,
     // Files from parser get info
     infoFile: "info.json",
-    specFileRegEx: /index\.(html|src)/
+    specFileRegEx: /index\.(html|src)/,
+    thumbnailFileName: "thumbnail.png",
+    gitCommandBase: 'git -C ' + global.opts.core.common.pathToUser + ' log -1 --format="%ad" -- '
 };
 // Overwriting base options
 deepExtend(config, global.opts.core.fileTree);
@@ -134,7 +136,6 @@ var tasks = new TasksQueue({
  * @param {Object} meta.fileStat - nodeJS fs.stat method result 
  */
 var fillInSpecDataObject = function(accumulator, meta) {
-    var command = 'git -C ' + global.opts.core.common.pathToUser + ' log -1 --format="%ad" -- ' + dirname;  
     var specDataObject = accumulator['specFile'] = accumulator['specFile'] || {};
     var dirname = meta.dirname;
     var info = {};
@@ -156,12 +157,12 @@ var fillInSpecDataObject = function(accumulator, meta) {
     specDataObject['url'] = '/' + specDataObject['id'];
     specDataObject['fileName'] = meta.basename;
 
-    var thumbPath = path.join(dirname, 'thumbnail.png');
+    var thumbPath = path.join(dirname, config.thumbnailFileName);
     //TODO: false should be replaced by undefined or empty string
     specDataObject['thumbnail'] = fs.existsSync(thumbPath) ? thumbPath.replace(meta.root, '') : false;
     if (config.getFilesDateFromGit) {
         tasks.push(function(next) {
-            shell.exec(command, {silent:true}, function(err, out) {
+            shell.exec(config.gitCommandBase + dirname, {silent:true}, function(err, out) {
                 var date = new Date(out ? out : meta.fileStat.mtime);
                 specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
                 specDataObject['lastmodSec'] = date.getTime();            
