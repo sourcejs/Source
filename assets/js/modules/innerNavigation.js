@@ -38,7 +38,7 @@ define([
         // Checking if inject after element exists, and isn't used in source example sections
         if (
             $injectAfter.length !== 0 &&
-            $injectAfter.parents('.'+this.options.exampleSectionClass).length === 0 &&
+            $injectAfter.parents('.'+this.options.EXAMPLE_CLASS).length === 0 &&
             $injectAfter.parents('.'+this.options.exampleCleanClass).length === 0
         ) {
             $injectAfter.after(this.container);

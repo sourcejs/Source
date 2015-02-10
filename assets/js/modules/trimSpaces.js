@@ -13,7 +13,7 @@ define([
 
     'use strict';
 
-    var EXAMPLE_CLASS = options.exampleSectionClass;
+    var EXAMPLE_CLASS = options.EXAMPLE_CLASS;
     var L_EXAMPLE_CLASS = $('.'+EXAMPLE_CLASS);
 
     //trim spaces between html tags in example sections

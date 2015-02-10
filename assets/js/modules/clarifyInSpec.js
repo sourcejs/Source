@@ -63,7 +63,7 @@ define([
         var nodes = $element.closest("*").nextUntil("h2,h3,h4");
 
         nodes.each(function(){
-            if ($(this).hasClass(_this.options.exampleSectionClass)) {
+            if ($(this).hasClass(_this.options.EXAMPLE_CLASS)) {
                 response = true;
                 return false;
             }
