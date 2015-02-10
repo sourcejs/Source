@@ -1,34 +1,31 @@
 'use strict';
 
 var fs = require('fs-extra');
-var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
 var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
+var shell = require('shelljs');
 
 var globalOpts = global.opts.core;
-
 var flagNotExec = true;
 var config = {
     // Add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
     includedDirs: ['docs'],
     excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
-
-    // File masks for search
-    fileMask: ['index.html', 'index.src'],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
     specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
-
+    getFilesDateFromGit: true,
     // Files from parser get info
-    infoFile: "info.json"
+    infoFile: "info.json",
+    specFileRegEx: /index\.(html|src)/,
+    thumbnailFileName: "thumbnail.png",
+    gitCommandBase: 'git -C ' + global.opts.core.common.pathToUser + ' log -1 --format="%ad" -- '
 };
 // Overwriting base options
 deepExtend(config, global.opts.core.fileTree);
-
-var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareExcludesRegex = function(){
     var dirsForRegExp = '';
@@ -43,119 +40,6 @@ var prepareExcludesRegex = function(){
     });
     return new RegExp(dirsForRegExp);
 };
-
-var isSpec = function (file) {
-    var response = false;
-
-    config.fileMask.map(function (specFile) {
-        if (file === specFile) {
-            response = true;
-        }
-    });
-
-    return response;
-};
-
-var fileTree = function (dir) {
-    var outputJSON = {};
-    var dirContent = fs.readdirSync(dir);
-    var excludes = prepareExcludesRegex();
-
-    // Adding paths to files in array
-    for (var i = 0; dirContent.length > i; i++) {
-        dirContent[i] = path.join(dir, dirContent[i].replace(/\\/g, '/'));
-    }
-
-    //on first call we add includedDirs
-    if (dir === config.specsRoot) {
-        config.includedDirs.map(function (includedDir) {
-            dirContent.push(path.join(normalizedPathToApp, includedDir));
-        });
-    }
-
-    dirContent.forEach(function (pathToFile) {
-        // Path is excluded
-        if (excludes.test(dir)) {return;}
-
-        var targetFile = path.basename(pathToFile);
-        var baseName = path.basename(dir);
-
-        // Normalizing path for windows
-        var urlToFile = path.normalize(pathToFile).replace(/\\/g, '/');
-
-        var urlFromHostRoot = urlToFile.replace('../', '/');
-
-        outputJSON[baseName] = outputJSON[baseName];
-
-        var fileStats = fs.statSync(urlToFile);
-
-        var d = new Date(fileStats.mtime);
-
-        if (fileStats.isDirectory()) {
-
-            var childObj = fileTree(urlToFile);
-            if (Object.getOwnPropertyNames(childObj).length !== 0) {
-                outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
-            }
-
-        } else if (isSpec(targetFile)) {
-            var page = {};
-            var urlForJson;
-
-            // If starts with root (specs)
-            if (urlFromHostRoot.lastIndexOf(config.specsRoot, 0) === 0) {
-                // Cleaning path to specs root folder
-                urlForJson = urlFromHostRoot.replace(config.specsRoot, '');
-            } else {
-                // Cleaning path for included folders
-                urlForJson = urlFromHostRoot.replace(normalizedPathToApp, '');
-            }
-
-            //Removing filename from path
-            urlForJson = urlForJson.split('/');
-            urlForJson.pop();
-            urlForJson = urlForJson.join('/');
-
-            page.id = urlForJson.substring(1);
-            page.url = urlForJson || '';
-            page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
-            page.lastmodSec = Date.parse(fileStats.mtime) || '';
-            page.fileName = targetFile || '';
-            page.thumbnail = false;
-            var infoJsonPath = dir + '/' + config.infoFile;
-            if (fs.existsSync(infoJsonPath)) {
-                var fileJSON;
-                try {
-                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
-                } catch (e) {
-                    console.error("Error with info.json: " + infoJsonPath);
-
-                    fileJSON = {
-                        error: "Cannot parse the file",
-                        path: infoJsonPath
-                    };
-                }
-
-                deepExtend(page, fileJSON);
-            }
-
-            var thumbPath = dir + '/thumbnail.png';
-            if (fs.existsSync(thumbPath)) {
-                // If starts with root (specs)
-                if (urlFromHostRoot.lastIndexOf(config.specsRoot, 0) === 0) {
-                    page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
-                } else {
-                    page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
-                }
-            }
-
-            outputJSON['specFile'] = extend(page);
-        }
-    });
-
-    return outputJSON;
-};
-
 
 // function for write json file
 var writeDataFile = function (callback) {
@@ -176,17 +60,178 @@ var writeDataFile = function (callback) {
             }
         }
 
-        fs.writeFile(outputFile, JSON.stringify(fileTree(config.specsRoot), null, 4), function (err) {
-            if (err) {
-                console.log('Error writing file tree: ', err);
-            } else {
-                console.log("Pages tree JSON saved to " + outputFile);
-                flagNotExec = true;
-            }
+        collectSpecsData(config.specsRoot, function(specsData) {
+            fs.writeFile(outputFile, JSON.stringify(specsData, null, 4), function (err) {
+                if (err) {
+                    console.log('Error writing file tree: ', err);
+                } else {
+                    console.log("Pages tree JSON saved to " + outputFile);
+                    flagNotExec = true;
+                }
 
-            if (typeof callback === 'function') callback(err);
+                if (typeof callback === 'function') callback(err);
+            });
         });
     }
+};
+
+var TasksQueue = function(options) {
+    this.threadsNumber = options && options.threads ? options.threads : 1;
+    this.threadQueues = [];
+    this.ptr = 0;
+    for (var i = 0; i < this.threadsNumber; i++) {
+        this.threadQueues.push([]);
+    }
+};
+
+TasksQueue.prototype.push = function(task) {
+    this.threadQueues[this.getQueueNumber()].push(task);
+};
+
+TasksQueue.prototype.getQueueNumber = function() {
+    this.ptr++;
+    if (this.ptr >= this.threadsNumber) {
+        this.ptr = 0;
+    }
+    return this.ptr;
+};
+
+TasksQueue.processTasksSync = function(tasks, callback) {
+    if (!tasks || !tasks.length) {
+        callback && callback();
+        return;
+    }
+    tasks.shift()(function() {
+        TasksQueue.processTasksSync(tasks, callback);
+    });
+};
+
+TasksQueue.prototype.execute = function(callback) {
+    var self = this;
+    var remaining = this.threadQueues.length;
+    this.threadQueues.forEach(function(queue) {
+        TasksQueue.processTasksSync(queue, function() {
+            if (!--remaining) {
+                callback && callback();
+            }
+        });
+    });
+};
+
+var tasks = new TasksQueue({
+    'threads': 16
+});
+
+/**
+ * @function fillInSpecDataObject - method to fill in spec data.
+ * It create basic fields and initializes async action to fill last
+ * modification date from git log or nodeJS fs.stat data.
+ *
+ * @param {Object} accumulator - empty spec data object to fill
+ * @param {Object} meta - additional information, whitch is needed to create spec data
+ * @param {String} meta.basename - spec file name
+ * @param {String} meta.dirname - spec directory name
+ * @param {String} meta.root - normalized specs root path
+ * @param {String} meta.app - normalized app root path
+ * @param {Object} meta.fileStat - nodeJS fs.stat method result 
+ */
+var fillInSpecDataObject = function(accumulator, meta) {
+    var specDataObject = accumulator['specFile'] = accumulator['specFile'] || {};
+    var dirname = meta.dirname;
+    var info = {};
+
+    try {
+        info = JSON.parse(fs.readFileSync(dirname + '/' + config.infoFile));
+    } catch(e) {
+        info = {
+            'error': "Cannot parse the file",
+            'path': dirname + '/' + config.infoFile
+        };
+    };
+
+    Object.keys(info).forEach(function(key) {
+        specDataObject[key] = info[key];
+    });
+
+    specDataObject['id'] = dirname.replace(meta.root, '').replace(meta.app, '');
+    specDataObject['url'] = '/' + specDataObject['id'];
+    specDataObject['fileName'] = meta.basename;
+
+    var thumbPath = path.join(dirname, config.thumbnailFileName);
+    //TODO: false should be replaced by undefined or empty string
+    specDataObject['thumbnail'] = fs.existsSync(thumbPath) ? thumbPath.replace(meta.root, '') : false;
+    if (config.getFilesDateFromGit) {
+        tasks.push(function(next) {
+            shell.exec(config.gitCommandBase + dirname, {silent:true}, function(err, out) {
+                var date = new Date(out ? out : meta.fileStat.mtime);
+                specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
+                specDataObject['lastmodSec'] = date.getTime();            
+                next();
+            });
+        });
+    } else {
+        var date = new Date(meta.fileStat.mtime);
+        specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
+        specDataObject['lastmodSec'] = date.getTime();
+    }
+};
+
+var processActionsSync = function(callback) {
+    if (!actions || !actions.length) {
+        callback && callback();
+        return;
+    }
+    actions.shift()(function() {
+        processActionsSync(callback);
+    });
+};
+
+var collectSpecsData = function(root, done) {
+    root = root[root.length-1] !== '/' ? root + '/' : root;
+    var app = global.pathToApp[global.pathToApp.length-1] !== '/' ? global.pathToApp + '/' : global.pathToApp
+    var specsData = {};
+    var rootContent = fs.readdirSync(root);
+    var excludes = prepareExcludesRegex();
+    var rootFlag = false;
+    var debug = false;
+
+    var walkSpecsTreeRecursive = function(specPath, accumulator) {
+        if (excludes.test(specPath)) return;
+        var basename = path.basename(specPath);
+        var dirname = path.dirname(specPath);
+        var stat = fs.statSync(specPath);
+        if (stat.isDirectory()) {
+            rootFlag = root === specPath;
+            
+            fs.readdir(specPath, function(err, files) {
+                if (rootFlag) {
+                    config.includedDirs.map(function (includedDir) {
+                        files.push(path.join(global.pathToApp, includedDir));
+                    });
+                    rootFlag = false;
+                }
+                accumulator[basename] = {};
+                if (files && files.length) {
+                    files.forEach(function(item) {
+                        walkSpecsTreeRecursive(item[0] === '/' ? item : path.join(specPath, item), accumulator[basename]);
+                    });
+                } else {
+                    tasks.execute(function() {
+                        done(specsData[path.basename(root)]);
+                    });
+                }
+            });
+        } else if (config.specFileRegEx.test(basename) && root !== dirname + '/') {
+            fillInSpecDataObject(accumulator, {
+                'basename': basename,
+                'dirname': dirname,
+                'root': root,
+                'app': app,
+                'fileStat': stat
+            });
+        }
+    };
+    walkSpecsTreeRecursive(root, specsData);
 };
 
 // Run function on server start
