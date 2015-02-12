@@ -96,10 +96,10 @@ define([
 				return;
 			}
 
-			// catch section which is closed for top window border
+			// catch section which is close to top window border
 			for (var i=0; i < headersLength; i++) {
 
-				if ((sourceHeaders[i].tagName === 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section__open')) ) {
+				if ((sourceHeaders[i].tagName === 'H3') && (!utils.hasClass(utils.closest(sourceHeaders[i], 'source_section'), 'source_section')) ) {
 					continue;
 				}
 
@@ -122,8 +122,6 @@ define([
 				if (!!parent && parent) {
 					utils.addClass(parent, '__active');
 				}
-
-
 
 				// Modern browsers uses history API for correct back-button-browser functionality
 				if (!!(window.history && history.pushState)) {

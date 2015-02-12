@@ -2,8 +2,7 @@
 define([
     "jquery",
     "sourceModules/utils",
-    "sourceModules/loadEvents",
-    "sourceModules/sectionFolding"
+    "sourceModules/loadEvents"
     ], function($, utils, loadEvents) {
 
     'use strict';

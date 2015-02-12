@@ -9,7 +9,7 @@
 jQuery(document).ready(function($) {
     $.fn.formatify = function(options) {
 
-        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"] // list of self-closing tags
+        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"]; // list of self-closing tags
 
         return this.each(function() {
 

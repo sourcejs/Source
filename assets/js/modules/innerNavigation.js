@@ -24,7 +24,6 @@ define([
             MAIN_NAV_AC: 'source_main_nav_ac',
             MAIN_NAV_AC_TX: 'source_main_nav_ac_tx',
             INJECT_AFTER: '.source_main h1',
-            hashSymb: '!',
             RESERVED_HEIGHT: 250 // (185 + 15 + 50) px
         }, this.options.modulesOptions.innerNavigation);
         this.moduleOptions = this.options.modulesOptions.innerNavigation;
@@ -147,35 +146,37 @@ define([
 
     InnerNavigation.prototype.injectNavigation = function () {
         var appendString = '';
+        var _this = this;
+
         for (var i = 0; i < sections.getQuantity() ; i++) {
             var section = sections.getSections()[i];
             var sectionID = i + 1;
-            var href = (section.id) + this.moduleOptions.hashSymb;
+            var href = (section.id);
 
             appendString += [
-                '<li class="' + this.moduleOptions.NAV_LI_CLASS + '">',
-                    '<a href="#' + href + '" class="' + this.moduleOptions.NAV_LINK_CLASS + '">',
+                '<li class="' + _this.moduleOptions.NAV_LI_CLASS + '">',
+                    '<a href="#' + href + '" class="' + _this.moduleOptions.NAV_LINK_CLASS + '">',
                         section.num + '. ' + section.caption,
                     '</a>'
             ].join('');
 
-			if ( section.subHeaderElements !== undefined ) {
-				appendString += '<ul class="' + this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
+			if (section.subHeaderElements !== undefined) {
+				appendString += '<ul class="' + _this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
 
-				for (var j = 0; j < section.subHeaderElements.length; j++) {
-                    var seqNum = j+1;
-                    var subSection = section.subHeaderElements[j];
+                section.subHeaderElements.each(function(index){
+                    var $subSection = $(this);
+                    var seqNum = index + 1;
                     var subSectionID = sectionID + '.' + seqNum;
-                    var subHref = subSection.attr('id') || subSectionID + this.moduleOptions.hashSymb;
+                    var subHref = $subSection.attr('id') || subSectionID;
 
 					appendString += [
-                        '<li class="' + this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
+                        '<li class="' + _this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
                             '<a class="source_main_nav_a" href="#' + subHref + '">',
-                                section.num + '.' + seqNum + '&nbsp;' + subSection.text(),
+                                section.num + '.' + seqNum + '&nbsp;' + $subSection.text(),
                             '</a>',
                         '</li>'
                     ].join('');
-				}
+                });
 
                 appendString += '</ul>';
 			}
@@ -183,7 +184,7 @@ define([
             appendString += '</li>';
         }
 
-        $('.' + this.moduleOptions.NAV_UL_CLASS).append(appendString);
+        $('.' + _this.moduleOptions.NAV_UL_CLASS).append(appendString);
     };
 
     //TODO: refactor menu scrolling add

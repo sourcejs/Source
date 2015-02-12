@@ -35,7 +35,6 @@ module.exports = {
             headerFooter: true,
             specDecorations: true,
             codeSource: true,
-            sectionFolding: true,
             innerNavigation: true,
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
             specAssets: true,
@@ -49,9 +48,6 @@ module.exports = {
         },
 
         modulesOptions : {
-            innerNavigation : {
-                hashSymb: '!'
-            },
             specAssets : {
                 postponedInit : true
             },

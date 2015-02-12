@@ -33,7 +33,6 @@ define([
 
     ClarifyInSpec.prototype.drawClarifyLinks = function(){
         var _this = this;
-
         var prependHTML = function($el, id){
             $el.prepend('<a class="source_clarify-in-spec_link" href="?clarify=true&sections=' + id + '" title="' + _this.moduleOptions.linkTitle + '"></a>');
         };
@@ -45,14 +44,14 @@ define([
             if (_this.haveSectionsInside($sectionHeader)) prependHTML($sectionHeader, section.id);
 
             if (section.subHeaderElements !== undefined) {
-                for (var j = 0; j < section.subHeaderElements.length; j++) {
-                    var $sectionSubHeader = section.subHeaderElements[j];
+                section.subHeaderElements.each(function(){
+                    var $sectionSubHeader = $(this);
                     var subHeaderID = $sectionSubHeader.attr('id');
 
                     if (subHeaderID && _this.haveSectionsInside($sectionSubHeader)) {
                         prependHTML($sectionSubHeader, subHeaderID);
                     }
-                }
+                });
             }
         }
     };
