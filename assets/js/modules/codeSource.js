@@ -23,8 +23,52 @@ define([
         var SOURECE_CODE = 'source_source-code';
         var TOGGLER_SHOW_CODE = 'Show source';
 
+        // Add HTML source code container before each example without it
+        var generateCodeExamples = function() {
+            for (var i = 0; i < sections.getQuantity(); i++) {
+                var section = sections.getSections()[i];
 
+                Object.keys(section.examples).forEach(function (exampleID) {
+                    var example = section.examples[exampleID];
+                    var $examplePrev = example.$el.prev();
+
+                    if (!($examplePrev.hasClass('src-html') && ($.trim($examplePrev.html()) === ''))) {
+                        example.$el.before('<div class="source_source-code source_clean source_hidden"><pre class="src-html"><code></code></pre></div>');
+                    }
+                });
+            }
+        };
+
+        // Wrap and prepare all code examples
         var wrapTags = function() {
+            var $selection = $('.source_section pre > code, .source_section > code[class*="src-"]');
+
+            $selection.each(function() {
+                var $this = $(this);
+                var classes = $this.attr('class');
+                $this.attr('class','');
+
+                if (!$(this).parent().is('pre')) {
+                    $this.wrap('<pre></pre>');
+                    $(this).parent().attr('class', classes);
+                }
+
+                if ($(this).parent().parent('.source_source-code').length === 0) {
+                    $(this).parent().wrap('<div class="source_source-code source_clean"></div>')
+                }
+
+                if ($(this).parent().hasClass('source_visible')) {
+                    $(this).parent().removeClass('source_visible');
+                    $(this).parent().parent().addClass('source_visible');
+                }
+
+                if ($(this).parent().hasClass('src-html')) {
+                    $this.formatify()
+                }
+            });
+        };
+
+        var prepareTabs = function() {
             var _this = this;
 
             for (var i = 0; i < sections.getQuantity(); i++) {
@@ -32,36 +76,16 @@ define([
 
                 Object.keys(section.examples).forEach(function (exampleID) {
                     var example = section.examples[exampleID];
-                    var $examplePrev = example.$el.prev();
                     var codeNum = 1;
 
-                    // Add HTML source code container before each example without it
-                    if (!($examplePrev.hasClass('src-html') && ($.trim($examplePrev.html()) === ''))) {
-                        example.$el.before('<pre class="src-html source_hidden"><code></code></pre>');
-                    }
-
-                    var $codeContainers = example.$el.prevUntil('*:not([class*="src-"])');
+                    var $codeContainers = example.$el.prevUntil('*:not(.source_source-code)');
 
                     $codeContainers.each(function(){
                         var $this = $(this);
                         var codeID = example.id + '-code-' + codeNum;
                         codeNum++;
 
-                        // Wrap code to <pre>
-                        if ($this.is('code')) {
-                            var codeClass = $this.attr('class');
-                            $this.attr('class','');
-
-                            // Pointing $this to new parent <pre>
-                            $this = $this.wrap('<pre class="'+ codeClass +'" id="'+ codeID +'"></pre>').parent();
-                        } else {
-                            $this.attr('id', codeID);
-                        }
-
-                        //if ($this.hasClass('src-html')) {
-                        //    var HTMLcode = $this.html();
-                        //    $this.html(HTMLcode.replace(/</g, "&lt;").replace(/>/g,"&gt;"));
-                        //}
+                        $this.attr('id', codeID);
 
                         var visible = $this.hasClass('source_visible');
 
@@ -72,15 +96,12 @@ define([
                             contentID: codeID
                         });
 
-                        $this.addClass('source_example-code');
-
                         if (visible) {
                             // We leave it only for flagging block
                             $this.removeClass('source_visible');
                         } else {
                             $this.addClass('source_hidden');
                         }
-
                     });
                 });
             }
@@ -88,12 +109,12 @@ define([
 
         var fillCodeContainers = function() {
             // Auto copy HTML in code.html if it's now filled
-            var selection = $('.source_section pre.src-html > code');
+            var selection = $('.source_source-code > pre.src-html > code');
             selection.each(function () {
                 var $this = $(this);
 
                 if ($this.html().trim().length === 0) {
-                    var HTMLcode = $this.parent().nextAll('.'+ options.EXAMPLE_CLASS ).html();
+                    var HTMLcode = $this.parents('.source_source-code').nextAll('.'+ options.EXAMPLE_CLASS +':first').html();
 
                     $this.html(HTMLcode);
                     $this.formatify();
@@ -101,13 +122,23 @@ define([
             });
         };
 
-        var activateHighligt = function() {
-            var selection = $('.source_section pre[class*="src-"] > code');
+        var highLight = function() {
+            var selection = $('.source_source-code > pre > code');
 
-            selection.each(function() {
-                var _this = $(this);
+            selection.each(function () {
+                var $this = $(this);
 
-                Prism.highlightElement(_this[0]);
+                // Removing unwanted spaces and tabs
+                var HTMLcode = $this.html();
+                var spaces = HTMLcode.replace(/\t/,'  ').match(/^\s{0,}/)[0].length;
+                var HTMLarray = HTMLcode.trim().split("\n");
+                for (var i=0; i<HTMLarray.length;i++) {
+                    HTMLarray[i] = HTMLarray[i].replace(new RegExp(' {'+(spaces-1)+'}'), '');
+                }
+                HTMLcode = HTMLarray.join('\n');
+                $this.html(HTMLcode);
+
+                Prism.highlightElement($this[0]);
             });
         };
 
@@ -120,9 +151,11 @@ define([
             // TODO: send to tabs to hide all
         };
 
+        generateCodeExamples();
         wrapTags();
         fillCodeContainers();
-        activateHighligt();
+        prepareTabs();
+        highLight();
 
         innerNavigation.addMenuItem(TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
     });

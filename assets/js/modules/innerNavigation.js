@@ -129,6 +129,11 @@ define([
     InnerNavigation.prototype.bindEvents = function () {
         var _this = this;
 
+        // Listening hash change
+        window.addEventListener('popstate', function () {
+            utils.scrollToSection(utils.parseNavHash());
+        });
+
         $(window).on('resize',function () {
             _this.addMenuScrolling();
         }).trigger('resize');

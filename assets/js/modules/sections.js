@@ -91,7 +91,7 @@ define([
 
             if (!subCustomID) $this.attr('id', subSectionID);
 
-            $this.attr('data-parent-section', sectionID);
+            //$this.attr('data-parent-section', sectionID);
         });
 
         return sectionID;
@@ -104,10 +104,9 @@ define([
 
         if (!customID) $example.attr('id', exampleID);
 
-        var parentSubHeading = $example.prevAll('h3:first');
-        var parentID = parentSubHeading.length === 1 ? parentSubHeading.attr('id') : sectionID;
-
-        $example.attr('data-parent-section', parentID);
+        //var parentSubHeading = $example.prevAll('h3:first');
+        //var parentID = parentSubHeading.length === 1 ? parentSubHeading.attr('id') : sectionID;
+        //$example.attr('data-parent-section', parentID);
 
         return exampleID;
     };

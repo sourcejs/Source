@@ -7,7 +7,8 @@ Here you will find migration instructions from different Source versions
 * We removed Section Folding feature, if you called it from somewhere, please remove all usages
 ** Now sections does not have class `source_section__open`
 * `sections.js` API changes:
-** `subHeaderElements` is now jQuery nodelist, insted of array
+** `subHeaderElements` is now jQuery nodelist, instaed of array
+* Support of legacy code highlight with `brush : css` is now removed
 
 ## From 0.4.0-beta to 0.4.0-rc
 
