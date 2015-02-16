@@ -91,9 +91,10 @@ module.exports = {
      * To get your own one please use github applications service.
      * Please visit this link to get more information:
      * https://developer.github.com/guides/basics-of-authentication/#registering-your-app
+     * Current demo key is used in test mode for http://127.0.0.1:8080
      */
     github: {
-        appId: "a05d80a72d360fba596f",
-        appSecret: "572aeb73c2602d1778ca308c0f42ae81d7c54b08"
+        appId: "cf00a9e7ee5d9d6af36f",
+        appSecret: "aebe08e0aa66f6911e4f54df81ce64c9d6e0003b"
     }
 };

@@ -12,10 +12,11 @@ define([
         'storageKey': 'sourcejsUser',
         'defaultAvatarURL': '/source/assets/i/unknown.gif',
         'classes': {
-            'controlsWrapper': 'sjs-login',
-            'loginButton': 'sjs-login-button',
-            'avatar': 'sjs-login-avatar',
-            'anonymous': 'anonymous'
+            'controlsWrapper': 'source_login',
+            'loginButton': 'source_login-button',
+            'avatar': 'source_login-avatar',
+            'anonymous': 'anonymous',
+            'hook': 'js-hook'
         },
         'labels': {
             'login': 'Login',
@@ -44,7 +45,10 @@ define([
             this.options.modulesOptions.auth
         );
 
-        this.target = config.target || $(this.conf.classes.controlsWrapper);
+        this.target = config.target || $(this.conf.classes.hook);
+        if(!$(this.target).hasClass(this.conf.classes.controlsWrapper)) {
+            $(this.target).addClass(this.conf.classes.controlsWrapper);
+        }
         this.popup;
 
         $(function() {
@@ -58,16 +62,20 @@ define([
     Auth.renderers = {
         'avatar': function() {
             var hasAvatar = this.user && this.user.avatar_url;
-            this.target.append($(['<img class="', this.conf.classes.avatar, ' ',
-                (hasAvatar ? '' : this.conf.classes.anonymous), '" src="',
-                (hasAvatar ? this.user.avatar_url : this.conf.defaultAvatarURL),
-                '">'].join('')
+            this.target.append($([
+                    '<img class="', this.conf.classes.avatar, ' ',
+                    (hasAvatar ? '' : this.conf.classes.anonymous), '" src="',
+                    (hasAvatar ? this.user.avatar_url : this.conf.defaultAvatarURL),
+                    '">'
+                ].join('')
             ));
         },
         'loginButton': function() {
-            this.target.append($(['<div class="', this.conf.classes.loginButton, '">',
-                (this.user && this.user.id ? this.conf.labels.logout : this.conf.labels.login),
-                '</div>'].join('')
+            this.target.append($([
+                    '<div class="', this.conf.classes.loginButton, '">',
+                    (this.user && this.user.id ? this.conf.labels.logout : this.conf.labels.login),
+                    '</div>'
+                ].join('')
             ));
         }
     };

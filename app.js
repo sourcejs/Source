@@ -64,8 +64,6 @@ global.app.use(require('express-session')({
   saveUninitialized: true
 }));
 
-var auth = require('./core/auth')(app);
-
 app.use(function (req, res, next) {
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
@@ -87,6 +85,7 @@ app.use(bodyParser.json());
 /* Middlewares */
 
 // Auth initializing
+var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
 // LESS processing
