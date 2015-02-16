@@ -13,7 +13,7 @@ require([
     ], function ($, options, browser, Loader, Auth) {
         if (options && options.modulesEnabled && options.modulesEnabled.auth === true) {
             new Auth({
-                target: $('.js-hook')
+                target: $('.js-hook.source_login')
             });
         }
 });
