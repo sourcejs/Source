@@ -15,7 +15,7 @@ var config = {
     excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
 
     // File masks for search
-    fileMask: ['index.html', 'index.src'],
+    fileMask: ['index.html', 'index.src', 'index.jade', 'index.haml'],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
