@@ -153,6 +153,27 @@ define([
         var appendString = '';
         var _this = this;
 
+        var goThroughSubHeaders = function ($subHeaderElements) {
+            var appendString = '';
+
+            $subHeaderElements.each(function (index) {
+                var $subSection = $(this);
+                var seqNum = index + 1;
+                var subSectionID = sectionID + '.' + seqNum;
+                var subHref = $subSection.attr('id') || subSectionID;
+
+                appendString += [
+                    '<li class="' + _this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
+                    '<a class="source_main_nav_a" href="#' + subHref + '">',
+                    section.num + '.' + seqNum + '&nbsp;' + $subSection.text(),
+                    '</a>',
+                    '</li>'
+                ].join('');
+            });
+
+            return appendString;
+        };
+
         for (var i = 0; i < sections.getQuantity() ; i++) {
             var section = sections.getSections()[i];
             var sectionID = i + 1;
@@ -168,20 +189,7 @@ define([
 			if (section.subHeaderElements !== undefined) {
 				appendString += '<ul class="' + _this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
 
-                section.subHeaderElements.each(function(index){
-                    var $subSection = $(this);
-                    var seqNum = index + 1;
-                    var subSectionID = sectionID + '.' + seqNum;
-                    var subHref = $subSection.attr('id') || subSectionID;
-
-					appendString += [
-                        '<li class="' + _this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
-                            '<a class="source_main_nav_a" href="#' + subHref + '">',
-                                section.num + '.' + seqNum + '&nbsp;' + $subSection.text(),
-                            '</a>',
-                        '</li>'
-                    ].join('');
-                });
+                appendString += goThroughSubHeaders(section.subHeaderElements);
 
                 appendString += '</ul>';
 			}

@@ -36,7 +36,7 @@ module.exports = {
             specDecorations: true,
             codeSource: true,
             innerNavigation: true,
-            trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
+            trimSpaces: false, //trim spaces in example sections to emulate HTML minify, off by default
             specAssets: true,
             scrollToHash: true,
             sections: true,

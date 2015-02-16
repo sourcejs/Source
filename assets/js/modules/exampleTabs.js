@@ -19,7 +19,6 @@ define([
             res: {
                 DEFAULT_TAB: 'Example'
             }
-
         }, this.options.modulesOptions.exampleTabs);
         this.moduleOpts = this.options.modulesOptions.exampleTabs;
         this.res = this.moduleOpts.res;
@@ -35,16 +34,20 @@ define([
     ExampleTabs.prototype.init = function () {
         var _this = this;
 
-        for (var i = 0; i < sections.getQuantity(); i++) {
-            var section = sections.getSections()[i];
-
-            Object.keys(section.examples).forEach(function(exampleID){
+        var goThroughExamples = function(examples){
+            Object.keys(examples).forEach(function(exampleID){
                 var example = section.examples[exampleID];
 
                 example.tabs = {
-                    $el: _this.drawContainer(example)
+                    $el: _this.drawTabContainer(example)
                 };
             });
+        };
+
+        for (var i = 0; i < sections.getQuantity(); i++) {
+            var section = sections.getSections()[i];
+
+            goThroughExamples(section.examples);
         }
     };
 
@@ -75,7 +78,7 @@ define([
         return $tab;
     };
 
-    ExampleTabs.prototype.drawContainer = function (target) {
+    ExampleTabs.prototype.drawTabContainer = function (target) {
         var _this = this;
         var $codeConainers = target.$el.prevUntil('*:not([class*="src-"])');
         var $beforeTarget = $codeConainers.length > 0 ? $($codeConainers[$codeConainers.length - 1]) : target.$el;
@@ -105,9 +108,8 @@ define([
             text: conf.text || 'Source'
         });
 
-        $target.append($newTab)
+        $target.append($newTab);
     };
 
     return new ExampleTabs();
-
 });

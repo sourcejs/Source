@@ -37,22 +37,23 @@ define([
             $el.prepend('<a class="source_clarify-in-spec_link" href="?clarify=true&sections=' + id + '" title="' + _this.moduleOptions.linkTitle + '"></a>');
         };
 
+        var goThroughSubHeaders = function($subHeaderElements){
+            $subHeaderElements.each(function(){
+                var $sectionSubHeader = $(this);
+                var subHeaderID = $sectionSubHeader.attr('id');
+
+                if (subHeaderID && _this.haveSectionsInside($sectionSubHeader)) {
+                    prependHTML($sectionSubHeader, subHeaderID);
+                }
+            });
+        };
+
         for (var i = 0; i < sections.getQuantity(); i++) {
             var section = sections.getSections()[i];
             var $sectionHeader = section.headerElement;
 
             if (_this.haveSectionsInside($sectionHeader)) prependHTML($sectionHeader, section.id);
-
-            if (section.subHeaderElements !== undefined) {
-                section.subHeaderElements.each(function(){
-                    var $sectionSubHeader = $(this);
-                    var subHeaderID = $sectionSubHeader.attr('id');
-
-                    if (subHeaderID && _this.haveSectionsInside($sectionSubHeader)) {
-                        prependHTML($sectionSubHeader, subHeaderID);
-                    }
-                });
-            }
+            if (section.subHeaderElements !== undefined) goThroughSubHeaders(section.subHeaderElements);
         }
     };
 
