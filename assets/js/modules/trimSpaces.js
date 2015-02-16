@@ -1,43 +1,49 @@
 /*
 *
-* Media-queries helper
-*
-* @author Evgeniy Khoroshilov
+* Trim spaces, new lines and tabs from HTML string
 *
 * */
 
 define([
-    "source/load-options",
-    "sourceModules/codeSource"
-    ], function(options) {
+    "jquery",
+    "sourceModules/module"
+    ], function($, module) {
 
     'use strict';
 
-    var EXAMPLE_CLASS = options.EXAMPLE_CLASS;
-    var L_EXAMPLE_CLASS = $('.'+EXAMPLE_CLASS);
+    function TrimSpaces() {
+        if (this.options.modulesEnabled.trimSpaces) {
+            this.trimExamples();
+        }
 
-    //trim spaces between html tags in example sections
-    $.fn.trimSpaces = function () {
-        $(this).each(function () {
-            var elem = $(this);
-            var regex = new RegExp("\xa0");
-            if (elem.children().length) {
-                elem.contents()
-                        .filter(function () {
-                            return this.nodeType === 3 && !/\S/.test(this.nodeValue);
-                        })
-                        .filter(function () {
-                            return !regex.test(this.nodeValue);
-                        }).remove().end()
-                        .filter(function () {
-                            return  regex.test(this.nodeValue);
-                        }).replaceWith('&nbsp;');
-                elem.children().trimSpaces();
-            }
-        });
         return this;
+    }
+
+    TrimSpaces.prototype = module.createInstance();
+    TrimSpaces.prototype.constructor = TrimSpaces;
+
+    /**
+     * @method trimExamples. Trims spaces in all example containers.
+     */
+    TrimSpaces.prototype.trimExamples = function () {
+        var _this = this;
+        var $examples = $('.' + this.options.EXAMPLE_CLASS);
+
+        $examples.each(function () {
+            $(this).html(_this.trimHTML($(this).html()));
+        });
     };
 
-    L_EXAMPLE_CLASS.trimSpaces();
+    /**
+     * @method trimHTML. Trims spaces, new lines and tabs from HTML string.
+     *
+     * @param {String} html - HTML string
+     *
+     * @returns {String} trimmed HTML
+     */
+    TrimSpaces.prototype.trimHTML = function (html) {
+        return html.trim().replace(new RegExp( ">[\n\t ]+<" , "g" ) , "><");
+    };
 
+    return new TrimSpaces();
 });
