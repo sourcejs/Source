@@ -1,16 +1,12 @@
-﻿<h1>SourceJS REST API</h1>
+﻿# SourceJS REST API
 
-<p class="source_info">
-    From 0.4.0 version, SourceJS started to grow own REST API for flexible plugins development and easy side services integration. API provides full access to Spec contents, navigation tree and other useful features.
-</p>
+From 0.4.0 version, SourceJS started to grow own REST API for flexible plugins development and easy side services integration. API provides full access to Spec contents, navigation tree and other useful features.
 
-<section class="source_section">
-<markdown>
 ## GET Specs
 
 [Get](/api/specs) access to Specs navigation tree with filtering by various options. This Navigation tree is used to build search, catalog pages and digests, here you can also read all `info.json` configuration of each Spec.
 
-```source_wide-code
+```
 GET http://localhost:8080/api/specs
 ```
 
@@ -26,7 +22,7 @@ All parameters must be passed as JSON with request, except `id` that accepts reg
 
 Possible combinations:
 
-```source_wide-code
+```
 [id|filter|filterOut], [filter|filterOut]
 ```
 
@@ -52,7 +48,7 @@ And another custom param for filter:
 
 Get raw, nested Navigation tree:
 
-```source_wide-code
+```
 GET http://localhost:8080/api/specs/raw
 ```
 
@@ -60,25 +56,21 @@ GET http://localhost:8080/api/specs/raw
 
 Return all specs that has info field:
 
-```source_wide-code
+```
 $ curl -H "Content-Type: application/json" -X GET -d '{"filter":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
 
 Return all specs except those, which have info field:
 
-```source_wide-code
+```
 $ curl -H "Content-Type: application/json" -X GET -d '{"filterOut":{"fields":["info"]}}' http://localhost:8080/api/specs
 ```
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## GET HTML
 
 [Get](/api/specs/html) access to Spec examples HTML content.
 
-```source_wide-code
+```
 GET http://localhost:8080/api/specs/html
 ```
 
@@ -87,14 +79,10 @@ GET http://localhost:8080/api/specs/html
 | Param | Value | Description |
 |---|---|---|
 | id | String | Get specific Spec examples HTML information by ID - `base/btn`, `docs/spec` ([example](/api/specs/html?id=docs/spec)). |
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## POST HTML
 
-```source_wide-code
+```
 POST http://localhost:8080/api/specs/html
 ```
 
@@ -106,14 +94,10 @@ Params must be passed as JSON. List of possible params:
 |---|---|---|
 | data | Object | Data to post, will be extended on existing data. |
 | unflatten | Boolean | Set true, to unflatten object from `some/spec` before extending on current data. |
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## DELETE HTML
 
-```source_wide-code
+```
 DELETE http://localhost:8080/api/specs/html
 ```
 
@@ -122,5 +106,3 @@ DELETE http://localhost:8080/api/specs/html
 | Param | Value | Description |
 |---|---|---|
 | id | String | Spec ID (`some/spec`), that will be deleted from current data.|
-</markdown>
-</section>
