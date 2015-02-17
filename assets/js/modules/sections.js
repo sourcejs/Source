@@ -32,7 +32,7 @@ define([
             var section = $(elem);
             var headerElement = section.find("h2:first");
 
-            var subHeaders = section.find("h3");
+            var subHeaders = _this.findSubHeaders(section);
             var subHeaderElements = [];
 
             for (var i=0; i < subHeaders.length; i++) {
@@ -86,6 +86,24 @@ define([
         });
 
         return custom || _id;
+    };
+    
+    
+    /**
+     * Checking if h3 is not in source
+     *
+     * @param section
+     * @returns {jQuery}
+     */
+    Sections.prototype.findSubHeaders = function (section) {
+        var h3;
+
+        h3 = section.find("h3");
+
+        if (h3.length !== 0 && h3.parents('.source_example').length === 0) {
+            return h3;
+        }
+        return $();
     };
 
     return new Sections();
