@@ -15,7 +15,7 @@ var config = {
     excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
 
     // File masks for search
-    fileMask: ['index.html', 'index.src', 'index.jade', 'index.haml'],
+    fileMask: ['index.html', 'index.src', 'index.jade', 'index.haml', 'index.md', 'readme.md'],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
@@ -48,7 +48,7 @@ var isSpec = function (file) {
     var response = false;
 
     config.fileMask.map(function (specFile) {
-        if (file === specFile) {
+        if (file.toLowerCase() === specFile) {
             response = true;
         }
     });
