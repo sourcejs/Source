@@ -48,7 +48,7 @@
 
     <p>The starting template for new <strong>Spec</strong> pages can be found in <a href="/docs/starting">/docs/starting</a>. Copy the contents to a new folder in <code>source/user/specs</code> and you'll be ready to write a new spec.</p>
 
-    <a href="/docs/spec" class="source_a_hl">Read more about <strong>Spec</strong> pages here.</a>
+    <a href="/docs/spec" class="source_a_hl">Read more about Spec pages here.</a>
 
     <h3>Server-side Templating Engines</h3>
 
@@ -86,30 +86,47 @@
     </ul>
 </section>
 
-<section class="source_section">
-    <h2>Options</h2>
+<section class="source_section"><markdown>
 
-    <p>All default options for <code>assets</code> and <code>core</code> are located in <code>/options.js</code>. To overwrite basic options, user your own <code>/user/options.js</code> file, from your SourceJS instance home directory.</p>
+## Configuration
 
-    <p>Options examples are located in source files.</p>
+All default options for `assets` (front-end) and `core` (back-end) are located in `sourcejs/options.js`. To overwrite basic options, user your own `sourcejs/user/options.js` file, from your SourceJS instance home directory.
 
-    <h3>Page level overrides</h3>
+Options examples are located in source files.
 
-    <p>All client-side options can be overridden from within any page using the following approach:</p>
+### Page level overrides
 
-    <code class="src-html source_visible">
-        <script>
-            define('sourceModules/inlineOptions', {
-                modulesOptions : {
-                    globalNav : {
-                        pageLimit: 6
-                    }
+All client-side options can be overridden from within any page using the following approach:
+
+<code class="src-html source_visible">
+    <script>
+        define('sourceModules/inlineOptions', {
+            modulesOptions : {
+                globalNav : {
+                    pageLimit: 6
                 }
-            })
-        </script>
-    </code>
+            }
+        })
+    </script>
+</code>
 
-</section>
+### Patching core assets
+
+<div class="source_warn">
+    Patching is not recommended approach, it's supposed to be used only for edge cases, before your changes will be merged in SourceJS core.
+</div>
+
+To extend core Front-end assets, that are stored in `sourcejs/assets` we provide a patching feature.
+
+To use your own version of any core assets, all you need is to place your new files to `sourcejs/user/core/assets` folder. Custom routing will handle the rest:
+
+<code class="src-html source_visible">
+sourcejs/assets/js/modules/ntf.js < sourcejs/user/source/assets/js/modules/ntf.js
+sourcejs/assets/js/modules/css.js < sourcejs/user/source/assets/js/modules/css.js
+</code>
+
+In this example, on request for `localhost:8080/source/assets/js/modules/ntf.js` engine will provide version from `sourcejs/user/source/assets` folder, instead of version from core `sourcejs/assets`.
+</markdown></section>
 
 <section class="source_section">
     <h2>Plugins</h2>
