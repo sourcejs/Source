@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <title>Github OAuth</title>
+    <style type="text/css">
+        body { overflow: hidden; margin: 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <img src="/source/assets/i/github-loagind.gif" width="500" alt="Loading">
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            var data;
+            try {
+               data = JSON.parse("<%= user %>".split("&quot;").join('"')); 
+            } catch(e) {
+                console.log('incorrect user data', e);
+            }
+            if (!data instanceof Object || !data.id) {
+                window.location = "/auth/github";
+            } else {
+                opener.sourcejs.__auth.done(data);
+            }
+        });
+    </script>
+</body>
