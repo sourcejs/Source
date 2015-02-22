@@ -25,7 +25,7 @@ exports.process = function (req, res, next) {
         renderer.code = function (code, language) {
             if (language === 'example') {
                 return '<div class="source_example">'+ code +'</div>';
-            } else if (language) {
+            } else if (language && language !== '') {
                 return '<code class="src-'+ language +' source_visible">'+ code +'</code>';
             } else {
                 return '<pre><code class="lang-source_wide-code">'+ code +'</code></pre>';
@@ -48,7 +48,11 @@ exports.process = function (req, res, next) {
             $this.removeAttr('id');
             $sectionElems.remove();
 
-            $(this).replaceWith('<div class="source_section" id="'+ id +'">'+ $this +  $sectionElems +'</div>');
+            $(this).replaceWith([
+                '<div class="source_section" id="'+ id +'">',
+                    $this +  $sectionElems,
+                '</div>'
+            ].join(''));
 
         });
 

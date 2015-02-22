@@ -104,7 +104,6 @@ global.app.use(function(req, res, next){
 
 // Middleware that loads spec content
 var read = require("./core/middleware/read");
-global.app.use(read.handleIndex);
 global.app.use(read.process);
 
 // Markdown

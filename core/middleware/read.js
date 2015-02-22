@@ -16,7 +16,7 @@ var handleSpec = function(req, res, next) {
     req.specData = {};
 
     // Get the physical path of a requested file
-    var physicalPath = global.app.get('user') + req.path;
+    var physicalPath = path.join(global.app.get('user'), req.path);
 
     // TODO: move to config with array of exclusions
     if (req.path.lastIndexOf('/docs/', 0) === 0) {
@@ -26,55 +26,37 @@ var handleSpec = function(req, res, next) {
     // Extension of a requested file
     var extension = path.extname(physicalPath).replace(".", "");
     var directory = path.dirname(physicalPath); // get the dir of a requested file
-    var supportedExtensions = global.opts.core.common.extensions;
-    var extIndex = supportedExtensions.indexOf(extension);
 
     var infoJson = directory + '/' + global.opts.core.common.infoFile;
 
-    // in case if one of supported file types is requested
-    if (extIndex >= 0) {
-        fs.exists(physicalPath, function(exists) {
+    fs.readFile(physicalPath, 'utf8', function (err, data) {
+        if (err) {
+            res.send(err);
+            return;
+        }
 
-            if (exists) {
-                fs.readFile(physicalPath, 'utf8', function (err, data) {
-                    data = data.replace(/^\s+|\s+$/g, '');
+        data = data.replace(/^\s+|\s+$/g, '');
 
-                    if (err) {
-                        res.send(err);
-                    } else {
-                        fs.readFile(infoJson, 'utf8', function (err, info) {
-                            if (err) {
-                                info = {
-                                    title: "New spec",
-                                    author: "Anonymous",
-                                    keywords: ""
-                                };
-                            } else {
-                                info = JSON.parse(info);
-                            }
-
-                            // if requested file is one of supported file types, then write proper flag to request. f.e. req.specData.isJade; // true
-                            if (extension === supportedExtensions[extIndex]) {
-                                var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
-                                req.specData["is" + capitalizedExtension] = true;
-                            }
-
-                            req.specData.info = info; // add spec info object to request
-                            req.specData.renderedHtml = data; // add spec content to request
-
-                            next();
-                        });
-                    }
-
-                });
-
+        fs.readFile(infoJson, 'utf8', function (err, info) {
+            if (err) {
+                info = {
+                    title: "New spec",
+                    author: "Anonymous",
+                    keywords: ""
+                };
             } else {
-                next();
+                info = JSON.parse(info);
             }
+
+            var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
+
+            req.specData["is" + capitalizedExtension] = true;
+            req.specData.info = info; // add spec info object to request
+            req.specData.renderedHtml = data; // add spec content to request
+
+            next();
         });
-    } else {
-        next();
-    }
+    });
 };
 
 /**
@@ -113,6 +95,7 @@ exports.process = function(req, res, next) {
                 var urlParams = req.url.split('?')[1];
                 var paramsString = urlParams ? '?' + urlParams : '';
 
+                // Modifying url and saving params string
                 req.url = requestedDir + supportedIndexFormat + paramsString;
 
                 // Recursive call
@@ -138,26 +121,6 @@ exports.process = function(req, res, next) {
 
         if (specNotFileFound) next();
 
-    } else {
-        next();
-    }
-};
-
-/**
- * if URL ends with "index.src" => redirect to trailing slash
- *
- * @param {object} req - Request object
- * @param {object} res - Response object
- * @param {function} next - The callback function
- * */
-exports.handleIndex = function (req, res, next) {
-
-    // TODO: add rederection for any supported extensions
-    if (req.path.slice(-9) === 'index.src') {
-        // Keeping params on redirect
-        var urlParams = req.url.split('?')[1];
-        var paramsSting = urlParams ? '?' + urlParams : '';
-        res.redirect(301, req.path.slice(0, -9) + paramsSting);
     } else {
         next();
     }

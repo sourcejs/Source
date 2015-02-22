@@ -59,47 +59,50 @@ exports.process = function (req, res, next) {
 
         template = fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {
-                res.send('EJS template "'+ templatePath +'" not found in `core/views` and `user/core/views`.');
-            } else {
-                // get header and footer
-                var headerFooterHTML = getHeaderAndFooter();
+                res.send('EJS template "' + templatePath + '" not found in `core/views` and `user/core/views`.');
 
-                // if the following fields are not set, set them to defaults
-                info.title = info.title ? info.title : "New spec";
-                info.author = info.author ? info.author : "Anonymous";
-                info.keywords = info.keywords ? info.keywords : "";
-
-                jsdom.env(
-                    '<html id="data">'+data+'</html>',
-                    function (errors, window) {
-                        // get head contents from spec file source
-                        var headHook = window.document.getElementsByTagName('head')[0];
-                        var specData = window.document.getElementById('data');
-                        var head = '';
-
-                        if (headHook) {
-                            head = headHook.innerHTML;
-
-                            specData.removeChild(headHook);
-                        }
-
-                        // final data object for the template
-                        var templateJSON = {
-                            content: specData.innerHTML,
-                            head: head,
-                            header: headerFooterHTML.header,
-                            footer: headerFooterHTML.footer,
-                            info: info,
-                            filename: templatePath
-                        };
-
-                        // render page and send it as response
-                        req.specData.renderedHtml = ejs.render(template, templateJSON);
-
-                        next();
-                    }
-                );
+                return;
             }
+
+            // get header and footer
+
+            // if the following fields are not set, set them to defaults
+            info.title = info.title ? info.title : "New spec";
+            info.author = info.author ? info.author : "Anonymous";
+            info.keywords = info.keywords ? info.keywords : "";
+
+            jsdom.env(
+                '<html id="data">'+data+'</html>',
+                function (errors, window) {
+                    var headerFooterHTML = getHeaderAndFooter();
+
+                    // get head contents from spec file source
+                    var headHook = window.document.getElementsByTagName('head')[0];
+                    var specData = window.document.getElementById('data');
+                    var head = '';
+
+                    if (headHook) {
+                        head = headHook.innerHTML;
+
+                        specData.removeChild(headHook);
+                    }
+
+                    // final data object for the template
+                    var templateJSON = {
+                        content: specData.innerHTML,
+                        head: head,
+                        header: headerFooterHTML.header,
+                        footer: headerFooterHTML.footer,
+                        info: info,
+                        filename: templatePath
+                    };
+
+                    // render page and send it as response
+                    req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+                    next();
+                }
+            );
         });
     } else {
         // proceed to next middleware
