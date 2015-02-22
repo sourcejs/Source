@@ -7,7 +7,6 @@
 var express = require('express');
 var colors = require('colors');
 var fs = require('fs');
-var deepExtend = require('deep-extend');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
@@ -88,36 +87,28 @@ app.use(bodyParser.json());
 var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
-// LESS processing
-if (global.MODE === 'development') {
-    var less = require('less-middleware');
-
-    var lessOpts = {
-        src: global.app.get('user')
-    };
-
-    deepExtend(lessOpts, global.opts.core.less);
-
-    global.app.use(less(lessOpts));
-}
-
-
 // Clarify
 global.app.use(require('./core/middleware/clarify'));
 
-
 // File tree module
-fileTree = require('./core/file-tree');
-global.app.use(function(req, res, next){
+var fileTree = require('./core/file-tree');
 
-    // Updating navigation on each main page visit
-    if(global.MODE !== 'presentation' && req.url === "/") {
-        // Making this async
-    	fileTree.scan();
-    }
+// Run file tree scan on start
+fileTree.scan();
 
-    next();
-});
+// Run file tree scan on main page visit
+if (global.opts.core.fileTree.mainPageTrigger) {
+    global.app.use(function(req, res, next){
+
+        // Updating navigation on each main page visit
+        if(global.MODE !== 'presentation' && req.url === "/") {
+            fileTree.scan();
+        }
+
+        next();
+    });
+}
+
 
 // Middleware that loads spec content
 var read = require("./core/middleware/read");
@@ -159,6 +150,13 @@ try {
     // User additional functionality
     require(global.app.get('user') + "/core/app.js");
 } catch(e){}
+
+
+// Watchers
+if (global.opts.core.watch.enabled && global.MODE !== 'presentation') {
+    require('./core/watchNewSpecs');
+}
+
 /* /Includes */
 
 
@@ -200,7 +198,7 @@ var clientErrorHandler = function(err, req, res, next) {
     }
 };
 
-var errorHandler = function(err, req, res, next) {
+var errorHandler = function(err, req, res) {
     res.status(500);
     res.render('error', { error: err });
 };
@@ -219,5 +217,5 @@ if (!module.parent) {
     global.app.listen(port);
     var portString = port.toString();
 
-    log.info('[SOURCEJS] launched on http://localhost:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
 }

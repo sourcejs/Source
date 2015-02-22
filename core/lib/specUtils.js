@@ -101,3 +101,27 @@ module.exports.getSpecInfo = function(pathToSpec) {
 
     return parseSpecData.getByID(specID);
 };
+
+/**
+ * Get Spec name from defineddirectory
+ *
+ * @param {String} dir - Spec directory
+ *
+ * @returns {String} Return Spec file path or undefined
+ */
+module.exports.getSpecFromDir = function(dirPath) {
+    var dirContent = fs.readdirSync(dirPath);
+    var supportedSpecNames = global.opts.core.common.specFiles;
+    var specPath;
+
+    for (var i=0; i < supportedSpecNames.length; i++) {
+        var item = supportedSpecNames[i];
+
+        if (dirContent.indexOf(item) > -1) {
+            specPath = path.join(dirPath, item);
+            break;
+        }
+    }
+
+    return specPath;
+};

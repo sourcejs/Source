@@ -81,7 +81,7 @@ exports.process = function(req, res, next) {
     // Check if folder is requested
     if (extension === "") {
         var requestedDir = req.path;
-        var supportedExtensions = global.opts.core.common.extensions;
+        var specFiles = global.opts.core.common.specFiles;
 
         // Append trailing slash
         if (requestedDir.slice(-1) !== '/') {
@@ -90,7 +90,7 @@ exports.process = function(req, res, next) {
 
         var specNotFileFound = true;
         var checkingSpecFile = function(supportedIndexFormat){
-            if (specNotFileFound && fs.existsSync(physicalPath + supportedIndexFormat)) {
+            if (specNotFileFound && supportedIndexFormat !== 'index.html' && fs.existsSync(physicalPath + supportedIndexFormat)) {
                 // Passing req params
                 var urlParams = req.url.split('?')[1];
                 var paramsString = urlParams ? '?' + urlParams : '';
@@ -106,18 +106,15 @@ exports.process = function(req, res, next) {
         };
 
         // First check if any supported file exists in dir
-        for (var j = 0; j < supportedExtensions.length; j++) {
+        for (var j = 0; j < specFiles.length; j++) {
             if (specNotFileFound) {
-                var supportedIndexFormat = "index." + supportedExtensions[j];
+                var supportedIndexFormat = specFiles[j];
 
                 checkingSpecFile(supportedIndexFormat);
             } else {
                 break;
             }
         }
-
-        // Then check if component have readme.md
-        checkingSpecFile('readme.md');
 
         if (specNotFileFound) next();
 

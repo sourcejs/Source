@@ -4,6 +4,15 @@ module.exports = {
 
     // Restart app after changing core options
     core : {
+        common: {
+            pathToUser: 'user',
+            defaultLogLevel: 'INFO',
+            defaultProdLogLevel: 'ERROR',
+            port: 8080,
+            infoFile: 'info.json',
+            specPaths: ['specs'],
+            specFiles: ['index.html', 'index.src', 'index.jade', 'index.haml', 'index.md', 'readme.md']
+        },
         api: {
             specsData: 'core/api/data/pages-tree.json',
             htmlData: 'core/api/data/html.json',
@@ -13,16 +22,11 @@ module.exports = {
         parseHTML: {
             onStart: false
         },
-        common: {
-            pathToUser: 'user',
-            defaultLogLevel: 'INFO',
-            defaultProdLogLevel: 'ERROR',
-            port: 8080,
-            infoFile: 'info.json',
-            extensions: ["src", "md", "jade", "haml"]
+        fileTree: {
+            mainPageTrigger: false
         },
-        less: {
-            compress: false
+        watch: {
+            enabled: true
         }
     },
 
@@ -94,7 +98,7 @@ module.exports = {
      * Current demo key is used in test mode for http://127.0.0.1:8080
      */
     github: {
-        appId: "cf00a9e7ee5d9d6af36f",
-        appSecret: "aebe08e0aa66f6911e4f54df81ce64c9d6e0003b"
+        appId: 'cf00a9e7ee5d9d6af36f',
+        appSecret: 'aebe08e0aa66f6911e4f54df81ce64c9d6e0003b'
     }
 };
