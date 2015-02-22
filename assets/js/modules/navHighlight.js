@@ -151,7 +151,12 @@ define([
 				h2Nodes = document.querySelectorAll('.source_section');
 
 				for (var h2 = 0; h2 < h2Nodes.length; h2++) {
-					var h3Nodes = h2Nodes[h2].querySelectorAll(':scope > h3');
+					var h3Nodes = [];
+					var childerArray = [].slice.call(h2Nodes[h2].children);
+
+					childerArray.forEach(function(item){
+						if (item.tagName === 'H3') h3Nodes.push(item);
+					});
 
 					sourceHeaders.push( h2Nodes[h2].querySelector('h2') );
 					for (var h3 = 0; h3 < h3Nodes.length; h3++) {
