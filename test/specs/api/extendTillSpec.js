@@ -3,7 +3,7 @@ var assert = require('assert');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
-var extendTillSpec = require(path.join(pathToMasterApp, 'core/api/extendTillSpec'));
+var extendTillSpec = require(path.join(pathToMasterApp, 'core/lib/extendTillSpec'));
 
 var target = {
     base: {

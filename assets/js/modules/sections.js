@@ -32,7 +32,7 @@ define([
             var section = $(elem);
             var headerElement = section.find("h2:first");
 
-            var subHeaders = section.find("h3");
+            var subHeaders = section.children("h3");
             var subHeaderElements = [];
 
             for (var i=0; i < subHeaders.length; i++) {

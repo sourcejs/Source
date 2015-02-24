@@ -1,0 +1,65 @@
+<h1>Using Github Auth</h1>
+
+<section class="source_section" id="install">
+    <h2>Quick Start</h2>
+
+    <p>Before you start, please make sure that you have referenced GitHub App registered. Please visit <a href="https://developer.github.com/guides/basics-of-authentication/#registering-your-app"> this link </a> to get more information.</p>
+    
+    <p>If you allready have registered app replace existed github api key and secret into your local options file, as mentioned <a href="/docs/base/#5!">here</a>.</p>
+
+    <p>Values, given below, are cretated as a demo. They are useble for <a href=http://127.0.0.1:8080"> local instance</a> at <code>127.0.0.1:8080</code></p>
+
+    <code class="src-js source_visible">
+        github: {
+            appId: "cf00a9e7ee5d9d6af36f",
+            appSecret: "aebe08e0aa66f6911e4f54df81ce64c9d6e0003b"
+        }
+    </code>
+
+    <p> Please take into account, that auth feature is turned off by default and you have to set related option: <code>options.modulesEnabled.auth</code> to <code>true</code> in your config.</p>
+
+    <p>After that, auth feature is able to use.</p>
+
+
+    <h3>Client-side auth controll.</h3>
+
+    <p>Github auth module includes client-side controll. It should be included into your <code>header.inc.html</code> (if you have the overriden one). Here is the example:</p>
+    <code class="src-html source_visible">
+    <!-- header.inc.html content-->
+          <a class="js-hook source_login"></a>
+    <!-- header.inc.html content-->
+    </code>
+
+    <p> Auth uses <code>js-hook</code> and <code>source_login</code> classes for targeting. This hook is defined into <code>/assets/js/enter-the-source.js</code> file.</p>
+</section>
+
+<section class="source_section" id="configuration">
+    <h2>Auth configuration</h2>
+    <p> Auth configuration is availible from your instance options, as it was mentioned above. Here is the full options list:</p>
+<code class="src-js source_visible">
+// localStorage key for client-side user object
+'storageKey': 'sourcejsUser',
+// avatar stub URL
+'defaultAvatarURL': '/source/assets/i/unknown.gif',
+// set of client-side control classes
+'classes': {
+    'controlsWrapper': 'source_login', 
+    'loginButton': 'source_login-button',
+    'avatar': 'source_login-avatar',
+    'anonymous': 'anonymous',
+    'hook': 'js-hook'
+},
+// login/logout button labels
+'labels': {
+    'login': 'Login',
+    'logout': 'Logout'
+}
+</code>
+</section>
+
+<section class="source_section" id="usage">
+    <h2>Auth modules usage</h2>
+    <p> Both server-side and client-side auth parts are able to use from other modules.</p>
+    <p>Server-side part provides <a href="https://github.com/bnoguchi/everyauth">The everyauth</a> API whitch it is based on. Also there are methods either to get or to set GitHub user into temporary users storage.</p>
+    <p>Client-side part allows to login/logout using github, to check if user is logined and to get user data.</p>
+</section>
