@@ -38,6 +38,7 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
+* 24.02.15. 0.4.1 patch release
 * 05.02.15. Mentioned at in-depth [Style Guides Tools overview talk](http://youtu.be/Fr23VpM6wl4ds)
 * 18.01.15. Published an [intro video about SourceJS](http://youtu.be/y4KHmX8vCc0)
 * 07.01.15. **0.4.0 Stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0

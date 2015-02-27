@@ -19,7 +19,7 @@ var config = deepExtend({
     'getFilesDateFromGit': true,
     'infoFile': "info.json",
     'thumbnailFileName': "thumbnail.png",
-    'specFileRegExPattern': "index\.(html|src)",
+    'specFileRegExPattern': "index\.(html|src|jade|haml)",
     'gitCommandBase': 'git -C ' + global.opts.core.common.pathToUser + ' log -1 --format="%ad" -- '
 }, global.opts.core.fileTree);
 
