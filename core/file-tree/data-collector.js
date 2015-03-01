@@ -1,5 +1,6 @@
-var path = require('path');
-var parser = require(path.join(__dirname, 'specs-parser'));
+'use strict';
+
+var parser = require('./specs-parser');
 
 process.on('message', function(msg) {
 
@@ -14,7 +15,7 @@ process.on('message', function(msg) {
 		if(msg) {
 			this.dataCollectionTask(msg);
 		} else {
-			console.log("Child process resieved empty message. Unable to start processing.");
+			console.log("Child process received empty message. Unable to start processing.");
 		}
 	}.bind(this)();
 });

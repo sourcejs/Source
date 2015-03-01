@@ -1,5 +1,4 @@
 var fs = require('fs-extra');
-var deepExtend = require('deep-extend');
 var path = require('path');
 var shell = require('shelljs');
 var TasksQueue = require(path.join(__dirname, 'tasks-queue'));
@@ -38,7 +37,7 @@ module.exports = (function() {
      * @param {String} meta.dirname - spec directory name
      * @param {String} meta.root - normalized specs root path
      * @param {String} meta.app - normalized app root path
-     * @param {Object} meta.fileStat - nodeJS fs.stat method result 
+     * @param {Object} meta.mTime - nodeJS fs.stat.mtime method result 
      */
     var fillInSpecDataObject = function(accumulator, meta) {
         var specDataObject = accumulator['specFile'] = accumulator['specFile'] || {};
@@ -52,7 +51,7 @@ module.exports = (function() {
                 'error': "Cannot parse the file",
                 'path': dirname + '/' + config.infoFile
             };
-        };
+        }
 
         Object.keys(info).forEach(function(key) {
             specDataObject[key] = info[key];
@@ -68,38 +67,26 @@ module.exports = (function() {
         if (config.getFilesDateFromGit) {
             tasks.push(function(next) {
                 shell.exec(config.gitCommandBase + dirname, {silent:true}, function(err, out) {
-                    var date = new Date(out ? out : meta.fileStat.mtime);
+                    var date = new Date(out && out.length ? out : meta.mTime);
                     specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
-                    specDataObject['lastmodSec'] = date.getTime();            
+                    specDataObject['lastmodSec'] = date.getTime();
                     next();
                 });
             });
         } else {
-            var date = new Date(meta.fileStat.mtime);
+            var date = new Date(meta.mTime);
             specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
             specDataObject['lastmodSec'] = date.getTime();
         }
     };
 
-    var processActionsSync = function(callback) {
-        if (!actions || !actions.length) {
-            callback && callback();
-            return;
-        }
-        actions.shift()(function() {
-            processActionsSync(callback);
-        });
-    };
-
     var parseSpecsData = function(root, done) {
         config.specFileRegEx = new RegExp(config.specFileRegExPattern);
         root = root[root.length-1] !== '/' ? root + '/' : root;
-        var app = config.pathToApp[config.pathToApp.length-1] !== '/' ? config.pathToApp + '/' : config.pathToApp
+        var app = config.pathToApp[config.pathToApp.length-1] !== '/' ? config.pathToApp + '/' : config.pathToApp;
         var specsData = {};
-        var rootContent = fs.readdirSync(root);
         var excludes = prepareExcludesRegex();
         var rootFlag = false;
-        var debug = false;
 
         var walkSpecsTreeRecursive = function(specPath, accumulator) {
             if (excludes.test(specPath)) return;
@@ -133,7 +120,7 @@ module.exports = (function() {
                     'dirname': dirname,
                     'root': root,
                     'app': app,
-                    'fileStat': stat
+                    'mTime': stat.mtime
                 });
             }
         };

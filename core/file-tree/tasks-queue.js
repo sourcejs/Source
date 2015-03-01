@@ -33,7 +33,6 @@ module.exports = (function() {
     };
 
     TasksQueue.prototype.execute = function(callback) {
-        var self = this;
         var remaining = this.threadQueues.length;
         this.threadQueues.forEach(function(queue) {
             TasksQueue.processTasksSync(queue, function() {

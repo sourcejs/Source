@@ -6,6 +6,8 @@ var path = require('path');
 var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
 var childProcess = require("child_process");
 
+/* jshint -W044: false */
+
 var config = deepExtend({
     'pathToApp': global.pathToApp,
     // Add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
@@ -24,6 +26,23 @@ var config = deepExtend({
 }, global.opts.core.fileTree);
 
 var isCollectingInProgress = false;
+var isFirstLaunch = true;
+
+// function for write json file
+var writeDataFile = function (specsData, callback) {
+    var outputFile = config.outputFile;
+
+    fs.writeFile(outputFile, JSON.stringify(specsData, null, 4), function (err) {
+        if (err) {
+            global.log.error('Error writing file tree: ', err);
+        } else if(isFirstLaunch) {
+            isFirstLaunch = false;
+            global.log.info("Pages tree JSON saved to " + outputFile);
+        }
+        isCollectingInProgress = false;
+        callback && callback();
+    });
+};
 
 var collector = childProcess.fork(path.join(__dirname, "/data-collector"));
 
@@ -41,27 +60,11 @@ var collectData = function() {
     collector.send({"config": config});
 };
 
-// function for write json file
-var writeDataFile = function (specsData, callback) {
-    var outputFile = config.outputFile;
-    var outputPath = path.dirname(outputFile);
-
-    fs.writeFile(outputFile, JSON.stringify(specsData, null, 4), function (err) {
-        if (err) {
-            global.log.error('Error writing file tree: ', err);
-        } else {
-            global.log.debug("Pages tree JSON saved to " + outputFile);
-        }
-        isCollectingInProgress = false;
-        callback && callback();
-    });
-};
-
 if (config.cron || (global.MODE === 'production' && config.cronProd)) {
     setInterval(function () {
         collectData();
     }, config.cronRepeatTime);
-};
+}
 
 collectData();
 
