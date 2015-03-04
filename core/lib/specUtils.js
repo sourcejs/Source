@@ -42,7 +42,7 @@ module.exports.parseSpecUrlPath = function(urlPath){
  * Read Spec file from file system
  *
  * @param {String} pathToSpec - path to spec ("/base/btn/")
- * @param {String} [ext] - spec file extension, if ommited, we will try .src and .html
+ * @param {String} [ext] - spec file extension, if omitted, we will try .src and .html
  *
  * @returns {String} Return a content of a file
  */
@@ -103,9 +103,9 @@ module.exports.getSpecInfo = function(pathToSpec) {
 };
 
 /**
- * Get Spec name from defineddirectory
+ * Get Spec name from defined directory
  *
- * @param {String} dir - Spec directory
+ * @param {String} dirPath - Spec directory
  *
  * @returns {String} Return Spec file path or undefined
  */
@@ -114,8 +114,13 @@ module.exports.getSpecFromDir = function(dirPath) {
     var supportedSpecNames = global.opts.core.common.specFiles;
     var specPath;
 
+    // Normalizing file names
+    dirContent = dirContent.map(function(item){
+       return item.toLowerCase();
+    });
+
     for (var i=0; i < supportedSpecNames.length; i++) {
-        var item = supportedSpecNames[i];
+        var item = supportedSpecNames[i].toLowerCase();
 
         if (dirContent.indexOf(item) > -1) {
             specPath = path.join(dirPath, item);

@@ -126,7 +126,7 @@ var fileTree = function (processingDir) {
                 outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
             }
 
-        } else if (targetFile.toLowerCase() === config.infoFile) {
+        } else if (targetFile.toLowerCase() === config.infoFile.toLowerCase()) {
             var specPath = specUtils.getSpecFromDir(processingDir);
             var pageMeta = getSpecMeta(specPath);
 
