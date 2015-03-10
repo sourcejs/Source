@@ -67,7 +67,12 @@ module.exports = (function() {
         if (config.getFilesDateFromGit) {
             tasks.push(function(next) {
                 shell.exec(config.gitCommandBase + dirname, {silent:true}, function(err, out) {
-                    var date = new Date(out && out.length ? out : meta.mTime);
+                    var date;
+                    if (!err || typeof out === 'string' && out.length > 0) {
+                        date = new Date(out);
+                    } else {
+                        date = new Date(meta.mTime);
+                    }
                     specDataObject['lastmod'] = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('.') || '';
                     specDataObject['lastmodSec'] = date.getTime();
                     next();
