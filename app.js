@@ -168,10 +168,9 @@ var headerFooter = require('./core/headerFooter');
 global.app.use(express.static(global.app.get('user')));
 
 // Page 404
-global.app.use(function(req, res, next){
+global.app.use(function(req, res){
 
 	if (req.accepts('html')) {
-
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
 		res.status(404).render(__dirname + '/core/views/404.ejs', {
             header: headerFooterHTML.header,
@@ -186,26 +185,23 @@ global.app.use(function(req, res, next){
 
 /* Error handling */
 var logErrors = function(err, req, res, next) {
-    log.error(("Error: " + err.stack).red);
-    next(err);
-};
+    if (err) {
+        var url = req.url || '';
 
-var clientErrorHandler = function(err, req, res, next) {
-    if (req.xhr) {
-        res.send(500, { error: 'Something blew up!' });
+        log.debug(req.method, req.headers);
+        log.error(url.red, ('Error: ' + err.stack).red);
+
+        if (req.xhr) {
+            res.status(500).json({msg: 'Server error'});
+        } else {
+            res.status(500).send('Server error');
+        }
     } else {
-        next(err);
+        next();
     }
 };
 
-var errorHandler = function(err, req, res) {
-    res.status(500);
-    res.render('error', { error: err });
-};
-
 global.app.use(logErrors);
-global.app.use(clientErrorHandler);
-global.app.use(errorHandler);
 /* /Error handling */
 
 
