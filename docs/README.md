@@ -1,1 +1,1 @@
-Engine documentation comes packed to every SourceJS instance, run `docs` section locally or visit http://sourcejs.com/docs.
+Engine documentation comes packed to every SourceJS instance, run `/docs` section locally or visit http://sourcejs.com/docs.
