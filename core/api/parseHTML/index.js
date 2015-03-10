@@ -5,10 +5,12 @@ var fs = require('fs-extra');
 var async = require('async');
 var phantom = require('phantomjs');
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
-var extendTillSpec = require(path.join(global.pathToApp,'core/api/extendTillSpec'));
+var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var deepExtend = require('deep-extend');
 var childProcess = require('child_process');
 var logger = require(path.join(global.pathToApp,'core/logger'));
+var ParseData = require(path.join(global.pathToApp,'core/api/parseData'));
+var flattenTillSpec = require(path.join(global.pathToApp,'core/lib/flattenTillSpec'));
 
 var processFlagNotExec = true;
 
@@ -78,7 +80,6 @@ var apiLog = (function(){
  * @returns {Array} Returns array with spec URLs
  */
 var getSpecsList = function() {
-    var ParseData = require(path.join(global.pathToApp,'core/api/parseData'));
     var parseSpecs = new ParseData({
         scope: 'specs',
         path: require.resolve(config.pathToSpecs)
@@ -103,7 +104,6 @@ var getSpecsList = function() {
  * @returns {Object} Returns processed data, with removed low-priority specs
  */
 var excludeLowOverridings = function(prevData, data) {
-    var flattenTillSpec = require(path.join(global.pathToApp,'core/api/flattenTillSpec'));
     var checkObj = flattenTillSpec(prevData);
 
     var processData = function(obj, currentNesting){
@@ -325,7 +325,8 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
                 try {
                     parsedStdout = JSON.parse(stdout);
                 } catch(e) {
-                    apiLog.debug('HTML Parser stdout parse error: ', e);
+                    apiLog.debug('HTML Parser stdout parse error: ', e, stdout);
+                    apiLog.debug('Error from Phantom parser: ', stdout);
                     parsedStdout = {
                         message: "Stdout parse error"
                     };

@@ -4,6 +4,8 @@ var request = require('supertest');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
+global.pathToApp = pathToMasterApp;
+
 var parseData = require(path.join(pathToMasterApp, 'core/api/parseData'));
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
