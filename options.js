@@ -23,6 +23,7 @@ module.exports = {
             onStart: false
         },
         fileTree: {
+            getFilesDateFromGit: false,
             mainPageTrigger: false
         },
         watch: {

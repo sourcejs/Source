@@ -1,274 +1,208 @@
 'use strict';
 
 var fs = require('fs-extra');
-var extend = require('extend');
 var deepExtend = require('deep-extend');
 var path = require('path');
-var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
+var childProcess = require("child_process");
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
-var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
-var globalOpts = global.opts.core;
-var busy = false;
+var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
+var parser = require('./specs-parser');
 
-var config = {
+/* jshint -W044: false */
+
+var config = deepExtend({
+    'pathToApp': global.pathToApp,
     // Add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-    includedDirs: ['docs'],
-    excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
-    cron: false,
-    cronProd: true,
-    cronRepeatTime: 60000,
-    outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
-    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
-    busyTimeout: 300,
+    'includedDirs': ['docs'],
+    'excludedDirs': ['data', 'plugins', 'node_modules', '.git', '.idea'],
+    'cron': false,
+    'cronProd': true,
+    'cronRepeatTime': 60000,
+    'outputFile': path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
+    'specsRoot': path.join(global.pathToApp, global.opts.core.common.pathToUser).replace(/\\/g, '/'),
+    'getFilesDateFromGit': true,
+    'infoFile': "info.json",
+    'thumbnailFileName': "thumbnail.png",
+    'specFileRegExPattern': "index\.(html|src|jade|haml)",
+    'normalizedPathToApp': global.pathToApp.replace(/\\/g, '/'),
+    'gitCommandBase': 'git -C ' + global.opts.core.common.pathToUser + ' log -1 --format="%ad" -- ',
+    'busyTimeout': 300
+}, global.opts.core.fileTree);
 
-    // Files from parser get info
-    infoFile: "info.json"
-};
-// Overwriting base options
-deepExtend(config, global.opts.core.fileTree);
+var isCollectingInProgress = false;
+var isFirstLaunch = true;
 
-var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
+// function for write json file
+var writeDataFile = function (specsData, callback) {
+    var outputFile = config.outputFile;
 
-var prepareExcludesRegex = function(){
-    var dirsForRegExp = '';
-    var i = 1;
-    config.excludedDirs.forEach(function (exlDir) {
-        if (i < config.excludedDirs.length) {
-            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir + "|";
-        } else {
-            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir;
+    fs.writeFile(outputFile, JSON.stringify(specsData, null, 4), function (err) {
+        if (err) {
+            global.log.error('Error writing file tree: ', err);
+        } else if(isFirstLaunch) {
+            isFirstLaunch = false;
+            global.log.info("Pages tree JSON saved to " + outputFile);
         }
-        i++;
+        callback && callback();
+        isCollectingInProgress = false;
     });
-    return new RegExp(dirsForRegExp);
 };
 
-var getSpecMeta = module.exports.getSpecMeta = function(specPath){
-    var page = {};
+var collector = childProcess.fork(path.join(__dirname, "/data-collector"));
+var currentData = {};
 
-    if (!specPath || !fs.existsSync(specPath)) {
-        return page;
+var foldl = function(acc, object, callback) {
+    var result;
+    $.each(object, function(key, item) {
+        result = callback(item, acc, key);
+        if (result !== undefined) {
+            acc = result;
+        }
+    });
+    return acc;
+};
+
+var _prepareFieldAccessKey = function(key, separator) {
+    if (!key) return false;
+    return typeof key === "string"
+        ? key.split(separator || "/")
+        : key instanceof Array && key.length
+            ? key
+            : false; // unknown key type
+};
+
+var get = function(obj, key, defaults, callback) {
+    var keys = _prepareFieldAccessKey(key);
+    if (!keys || !obj) return defaults;
+    var found = true;
+    var iteration = function(_key, _data) {
+        if (callback) {
+            callback(_data, _key);
+        }
+        if (typeof _data[_key] === "undefined") {
+            found = false;
+        } else {
+            return _data[_key];
+        }
+    };
+    // avoid foldl usage for plain keys
+    var value = keys.length === 1
+        ? iteration(keys.pop(), obj)
+        : foldl(obj, keys, iteration);
+    return found ? value : defaults;
+};
+
+var collectData = function() {
+    if (isCollectingInProgress) {
+        setTimeout(function() {
+            collectData();
+        }, config.busyTimeout);
+        return;
     }
+    isCollectingInProgress = true;
+    collector.send({"config": config});
+};
 
-    var fileStats = fs.statSync(specPath);
-    var targetFile = path.basename(specPath);
-    var dirName = path.dirname(specPath);
-    var d = new Date(fileStats.mtime);
+// function for update file tree json
+var scan = module.exports.scan = function(callback) {
+    collectData();
+    collector.on('message', function(specs) {
+        if (typeof specs === 'object') {
+            currentData = specs;
+            writeDataFile(specs, function() {
+                callback && callback();
+            });
+        }
+    }.bind(global.app));
+};
 
-    var urlForJson;
-
-    // If starts with root (specs)
-    if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
-        // Cleaning path to specs root folder
-        urlForJson = specPath.replace(config.specsRoot, '');
-    } else {
-        // Cleaning path for included folders
-        urlForJson = specPath.replace(normalizedPathToApp, '');
-    }
+module.exports.getSpecMeta = function(specPath) {
+    var url = specPath.lastIndexOf(config.specsRoot, 0) === 0
+        ? specPath.replace(config.specsRoot, '')
+        : specPath.replace(config.normalizedPathToApp, '');
 
     //Removing filename from path
-    urlForJson = urlForJson.split('/');
-    urlForJson.pop();
-    urlForJson = urlForJson.join('/');
-
-    page.id = urlForJson.substring(1);
-    page.url = urlForJson || '';
-    page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
-    page.lastmodSec = Date.parse(fileStats.mtime) || '';
-    page.fileName = targetFile || '';
-    page.thumbnail = false;
-
-    var thumbPath = path.join(dirName, 'thumbnail.png');
-    if (fs.existsSync(thumbPath)) {
-        // If starts with root (specs)
-        if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
-            page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
-        } else {
-            page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
-        }
-    }
-
-    return page;
-};
-
-var fileTree = function (processingDir) {
-    var outputJSON = {};
-    var dirContent = fs.readdirSync(processingDir);
-    var excludes = prepareExcludesRegex();
-
-    // Adding paths to files in array
-    for (var i = 0; dirContent.length > i; i++) {
-        dirContent[i] = path.join(processingDir, dirContent[i].replace(/\\/g, '/'));
-    }
-
-    //on first call we add includedDirs
-    if (processingDir === config.specsRoot) {
-        config.includedDirs.map(function (includedDir) {
-            dirContent.push(path.join(normalizedPathToApp, includedDir));
-        });
-    }
-
-    dirContent.forEach(function (pathToFile) {
-        // Path is excluded
-        if (excludes.test(processingDir)) return;
-
-        var targetFile = path.basename(pathToFile);
-
-        // Normalizing path for windows
-        pathToFile = path.normalize(pathToFile).replace(/\\/g, '/');
-
-        var fileStats = fs.statSync(pathToFile);
-
-        if (fileStats.isDirectory()) {
-            // Going deeper
-            var childObj = fileTree(pathToFile);
-            if (Object.getOwnPropertyNames(childObj).length !== 0) {
-                outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
-            }
-
-        } else if (targetFile.toLowerCase() === config.infoFile.toLowerCase()) {
-            var specPath = specUtils.getSpecFromDir(processingDir);
-            var pageMeta = getSpecMeta(specPath);
-
-            var infoJsonPath = processingDir + '/' + config.infoFile;
-
-            if (fs.existsSync(infoJsonPath)) {
-                var fileJSON;
-                try {
-                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
-                } catch (e) {
-                    console.error("Error reading info.json: " + infoJsonPath);
-
-                    fileJSON = {
-                        error: "Cannot parse the file",
-                        path: infoJsonPath
-                    };
-                }
-
-                deepExtend(pageMeta, fileJSON);
-            }
-
-            outputJSON['specFile'] = pageMeta;
-        }
-    });
-
-    return outputJSON;
-};
-
-// function for write file tree json
-var writeDataFile = function (data, callback) {
-    var outputFile = config.outputFile;
-    callback = typeof callback === 'function' ? callback : function(){};
-
-    fs.outputFile(outputFile, JSON.stringify(data, null, 4), function (err) {
-        if (err) {
-            console.log('Error writing file tree: ', err);
-            callback(err);
-            return;
-        }
-
-        global.log.trace("Pages tree JSON saved to " + outputFile);
-
-        callback();
-    });
+    url = url.split('/');
+    url.pop();
+    url = url.join('/');
+    var specId = url.substring(1);
+    var result = get(currentData, specId, undefined);
+    return result || parser.getSpecMeta(specPath);
 };
 
 // function for updating file tree
 var updateFileTree = module.exports.updateFileTree = function (data, unflattenData, callback) {
-    if (busy) {
-        setTimeout(function(){
+    if (isCollectingInProgress) {
+        setTimeout(function() {
             updateFileTree(data, unflattenData, callback);
         }, config.busyTimeout);
-    } else {
-        var prevData = {};
-        var dataStoragePath = global.opts.core.api.specsData;
-        callback = typeof callback === 'function' ? callback : function(){};
-
-        if (unflattenData) {
-            data = unflatten(data, { delimiter: '/', overwrite: 'root' });
-        }
-
-        try {
-            prevData = fs.readJsonFileSync(dataStoragePath);
-        } catch (e) {
-            global.log.trace('Reading initial data error: ', e);
-            global.log.debug('Extending from empty object, as we do not have initial data');
-        }
-
-        var dataToWrite = extendTillSpec(prevData, data);
-
-        busy = true;
-
-        writeDataFile(dataToWrite, function(){
-            callback();
-
-            setTimeout(function(){
-                busy = false;
-            }, config.busyTimeout);
-        });
+        return;
     }
+    var prevData = {};
+    var dataStoragePath = global.opts.core.api.specsData;
+    callback = typeof callback === 'function' ? callback : function() {};
+
+    if (unflattenData) {
+        data = unflatten(data, { delimiter: '/', overwrite: 'root' });
+    }
+
+    try {
+        prevData = fs.readJsonFileSync(dataStoragePath);
+    } catch (e) {
+        global.log.trace('Reading initial data error: ', e);
+        global.log.debug('Extending from empty object, as we do not have initial data');
+    }
+
+    var dataToWrite = extendTillSpec(prevData, data);
+
+    isCollectingInProgress = true;
+    writeDataFile(dataToWrite, function() {
+        callback();
+        setTimeout(function() {
+            isCollectingInProgress = false;
+        }, config.busyTimeout);
+    });
 };
+
 
 // function for deleting object from file tree
 var deleteFromFileTree = module.exports.deleteFromFileTree = function (specID) {
-    if (busy) {
-        setTimeout(function(){
+    if (isCollectingInProgress) {
+        setTimeout(function() {
             deleteFromFileTree(specID);
         }, config.busyTimeout);
-    } else {
-        fs.readJSON(config.outputFile, function (err, data) {
-            if (err) return;
+        return;
+    }
+    fs.readJSON(config.outputFile, function (err, data) {
+        if (err) return;
 
-            var pathSplit = specID.split('/');
+        var pathSplit = specID.split('/');
+        var processPath = function (pathArr, obj) {
+            var pathArrQueue = pathArr.slice(0); // Arr copy
+            var currentItem = pathArrQueue.shift();
 
-            var processPath = function (pathArr, obj) {
-                var pathArrQueue = pathArr.slice(0); // Arr copy
-                var currentItem = pathArrQueue.shift();
-
-                if (currentItem !== '' && obj[currentItem]) {
-                    if (pathArrQueue.length === 0) {
-                        delete obj[currentItem];
-                    }
-
-                    if (pathArrQueue.length !== 0 && obj[currentItem].toString() === '[object Object]') {
-                        obj[currentItem] = processPath(pathArrQueue, obj[currentItem]);
-                    }
+            if (currentItem !== '' && obj[currentItem]) {
+                if (pathArrQueue.length === 0) {
+                    delete obj[currentItem];
                 }
 
-                return obj;
-            };
+                if (pathArrQueue.length !== 0 && obj[currentItem].toString() === '[object Object]') {
+                    obj[currentItem] = processPath(pathArrQueue, obj[currentItem]);
+                }
+            }
 
-            var processedData = processPath(pathSplit, data);
+            return obj;
+        };
 
-            busy = true;
-            writeDataFile(processedData, function () {
-                global.log.trace('Deleted object from file tree: ', specID);
-
-                setTimeout(function(){
-                    busy = false;
-                }, config.busyTimeout);
-            });
-        });
-    }
-};
-
-// function for update file tree json
-var scan = module.exports.scan = function (callback) {
-    if (busy) {
-        setTimeout(function(){
-            scan(callback);
-        }, config.busyTimeout);
-    } else {
-        callback = typeof callback === 'function' ? callback : function () {};
-
-        writeDataFile(fileTree(config.specsRoot), function(){
-            callback();
-
-            setTimeout(function(){
-                busy = false;
+        var processedData = processPath(pathSplit, data);
+        isCollectingInProgress = true;
+        writeDataFile(processedData, function () {
+            global.log.trace('Deleted object from file tree: ', specID);
+            setTimeout(function() {
+                isCollectingInProgress = false;
             }, config.busyTimeout);
         });
-    }
+    });
 };
 
 // Running writeDataFile by cron
