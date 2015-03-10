@@ -19,13 +19,11 @@ module.exports = {
             specsTestData: 'test/data/api-test-specs.json',
             htmlTestData: 'test/data/api-test-html.json'
         },
-        fileTree: {
-            getFilesDateFromGit: false,
-        },
         parseHTML: {
             onStart: false
         },
         fileTree: {
+            getFilesDateFromGit: false,
             mainPageTrigger: false
         },
         watch: {

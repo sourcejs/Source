@@ -26,6 +26,54 @@ module.exports = (function() {
         'threads': 16
     });
 
+    var getSpecMeta = function(specPath) {
+        var page = {};
+        var normalizedPathToApp = config.normalizedPathToApp;
+
+
+        if (!specPath || !fs.existsSync(specPath)) {
+            return page;
+        }
+
+        var fileStats = fs.statSync(specPath);
+        var targetFile = path.basename(specPath);
+        var dirName = path.dirname(specPath);
+        var d = new Date(fileStats.mtime);
+
+        var urlForJson;
+
+        // If starts with root (specs)
+        if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
+            // Cleaning path to specs root folder
+            urlForJson = specPath.replace(config.specsRoot, '');
+        } else {
+            // Cleaning path for included folders
+            urlForJson = specPath.replace(normalizedPathToApp, '');
+        }
+
+        //Removing filename from path
+        urlForJson = urlForJson.split('/');
+        urlForJson.pop();
+        urlForJson = urlForJson.join('/');
+
+        page.id = urlForJson.substring(1);
+        page.url = urlForJson || '';
+        page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
+        page.lastmodSec = Date.parse(fileStats.mtime) || '';
+        page.fileName = targetFile || '';
+        page.thumbnail = false;
+
+        var thumbPath = path.join(dirName, 'thumbnail.png');
+        if (fs.existsSync(thumbPath)) {
+            // If starts with root (specs)
+            if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
+                page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
+            } else {
+                page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
+            }
+        }
+    };
+
     /**
      * @function fillInSpecDataObject - method to fill in spec data.
      * It create basic fields and initializes async action to fill last
@@ -136,7 +184,8 @@ module.exports = (function() {
         'init': function(_config) {
             config = _config;
         },
-        'parse': parseSpecsData
+        'parse': parseSpecsData,
+        'getSpecMeta': getSpecMeta
     };
 
 })();
