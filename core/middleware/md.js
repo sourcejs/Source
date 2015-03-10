@@ -1,7 +1,9 @@
 'use strict';
 
+var path = require('path');
 var cheerio = require('cheerio');
 var prettyHrtime = require('pretty-hrtime');
+var translit = require(path.join(global.pathToApp,'core/lib/translit'));
 
 var marked = require('marked');
 var renderer = new marked.Renderer();
@@ -32,31 +34,46 @@ exports.process = function (req, res, next) {
             }
         };
 
-        var $ = cheerio.load(marked(input));
+        renderer.heading = function (text, level) {
+            var escapedText = translit(text);
+
+            return '<h' + level + ' id="' + escapedText + '">' + text + '</h' + level + '>';
+        };
+
+        var $ = cheerio.load('<div id="content">'+ marked(input) +'</div>');
 
         // Spec description
-        var $H1 = $('h1');
+        var $H1 = $('#content > h1');
         var $afterH1 = $H1.nextUntil('h2');
         $afterH1.remove();
         $H1.after('<div class="source_info">'+ $afterH1 +'</div>');
 
         // Spec sections
-        $('h2').each(function(){
+        $('#content > h2').each(function(){
             var $this = $(this);
+            var $filteredElems = $('');
+
             var $sectionElems = $this.nextUntil('h2');
             var id = $this.attr('id');
             $this.removeAttr('id');
-            $sectionElems.remove();
+
+            // Adding additional check, since cheerio .nextUntil is not stable
+            $sectionElems.each(function(){
+                if (this.tagName === 'h2') return false;
+
+                $filteredElems = $filteredElems.add(this);
+            });
+
+            $filteredElems.remove();
 
             $(this).replaceWith([
                 '<div class="source_section" id="'+ id +'">',
-                    $this +  $sectionElems,
+                    $this +  $filteredElems,
                 '</div>'
             ].join(''));
-
         });
 
-        req.specData.renderedHtml = $.html();
+        req.specData.renderedHtml = $('#content').html();
 
         var end = process.hrtime(start);
         global.log.debug('Markdown processing took: ', prettyHrtime(end));
