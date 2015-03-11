@@ -95,6 +95,22 @@ Params must be passed as JSON. List of possible params:
 | data | Object | Data to post, will be extended on existing data. |
 | unflatten | Boolean | Set true, to unflatten object from `some/spec` before extending on current data. |
 
+#### Data example
+
+Data object must contain spec ID and `specFile` pointer, to follow current API storage structure.
+
+By default API expects to get nested object `docs.api.rest-api.specFile`, but you can also define a flat ID `docs/api/rest-api/specFile`, passing `unflatten:true` together with post request.
+
+```js
+{
+    "docs/api/rest-api/specFile": {
+        "headResources": {},
+        "bodyResources": {},
+        "contents": []
+    }
+}
+```
+
 ## DELETE HTML
 
 ```

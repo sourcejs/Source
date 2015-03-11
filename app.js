@@ -97,13 +97,11 @@ var fileTree = require('./core/file-tree');
 fileTree.scan();
 
 // Run file tree scan on main page visit
-if (global.opts.core.fileTree.mainPageTrigger) {
+if (global.opts.core.fileTree.mainPageTrigger && global.MODE !== 'presentation') {
     global.app.use(function(req, res, next){
 
         // Updating navigation on each main page visit
-        if(global.MODE !== 'presentation' && req.url === "/") {
-            fileTree.scan();
-        }
+        if (req.url === "/") fileTree.scan();
 
         next();
     });
