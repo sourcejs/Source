@@ -2,7 +2,7 @@ var should = require('should');
 var request = require('supertest');
 
 describe('API test /api/specs/html', function () {
-    var url = 'http://localhost:8080';
+    var url = 'http://127.0.0.1:8080';
 
     describe('GET /api/specs/html', function () {
         it('should return list of html', function (done) {
