@@ -45,25 +45,26 @@ var prepareExcludesRegex = function(){
 
 var getSpecMeta = module.exports.getSpecMeta = function(specPath){
     var page = {};
+    var _specPath = specPath.replace(/\\/g, '/');
 
-    if (!specPath || !fs.existsSync(specPath)) {
+    if (!_specPath || !fs.existsSync(_specPath)) {
         return page;
     }
 
-    var fileStats = fs.statSync(specPath);
-    var targetFile = path.basename(specPath);
-    var dirName = path.dirname(specPath);
+    var fileStats = fs.statSync(_specPath);
+    var targetFile = path.basename(_specPath);
+    var dirName = path.dirname(_specPath);
     var d = new Date(fileStats.mtime);
 
     var urlForJson;
 
     // If starts with root (specs)
-    if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
+    if (_specPath.lastIndexOf(config.specsRoot, 0) === 0) {
         // Cleaning path to specs root folder
-        urlForJson = specPath.replace(config.specsRoot, '');
+        urlForJson = _specPath.replace(config.specsRoot, '');
     } else {
         // Cleaning path for included folders
-        urlForJson = specPath.replace(normalizedPathToApp, '');
+        urlForJson = _specPath.replace(normalizedPathToApp, '');
     }
 
     //Removing filename from path
@@ -78,10 +79,10 @@ var getSpecMeta = module.exports.getSpecMeta = function(specPath){
     page.fileName = targetFile || '';
     page.thumbnail = false;
 
-    var thumbPath = path.join(dirName, 'thumbnail.png');
+    var thumbPath = path.join(dirName, 'thumbnail.png').replace(/\\/g, '/');
     if (fs.existsSync(thumbPath)) {
         // If starts with root (specs)
-        if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
+        if (_specPath.lastIndexOf(config.specsRoot, 0) === 0) {
             page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
         } else {
             page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
@@ -108,7 +109,7 @@ var fileTree = function (processingDir) {
         });
     }
 
-    dirContent.forEach(function (pathToFile) {
+    dirContent.forEach(function(pathToFile) {
         // Path is excluded
         if (excludes.test(processingDir)) return;
 

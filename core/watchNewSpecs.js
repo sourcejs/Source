@@ -13,6 +13,8 @@ var config = {
 // Overwriting base options
 deepExtend(config, global.opts.core.watch);
 
+var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
+
 var prepareData = function(data, targetFile){
     var dir = path.dirname(targetFile);
     var specPath = specUtils.getSpecFromDir(dir);
@@ -21,9 +23,9 @@ var prepareData = function(data, targetFile){
 };
 
 watch(global.pathToApp + '/**/info.json', function(vinyl){
-    var filePath = vinyl.path;
+    var filePath = vinyl.path.replace(/\\/g, '/');
     var event = vinyl.event;
-    var cleanPath = filePath.replace(global.pathToApp + '/', '').replace(global.opts.core.common.pathToUser +'/', '');
+    var cleanPath = filePath.replace(normalizedPathToApp + '/', '').replace(global.opts.core.common.pathToUser +'/', '');
     var specID = path.dirname(cleanPath);
     var rawContents;
 
