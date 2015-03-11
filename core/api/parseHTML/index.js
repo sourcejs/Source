@@ -373,8 +373,12 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 };
 
 // Running processSpecs by cron
-if (config.onStart && (config.cron || (global.MODE === 'production' && config.cronProd))) {
+if (config.cron || (global.MODE === 'production' && config.cronProd)) {
     setInterval(function () {
         processSpecs();
     }, config.cronRepeatTime);
+}
+
+if (config.onStart) {
+    setTimeout(processSpecs, 100);
 }
