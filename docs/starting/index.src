@@ -1,6 +1,6 @@
 ﻿<link rel="stylesheet" href="css/starting.css">
 
-<h1>Documentation Page</h1>
+<h1>Starting Spec Page Template</h1>
 
 <div class="source_info">
     <p>
@@ -21,5 +21,9 @@
     <div class="source_example">
         <p>Rendered code examples.</p>
     </div>
+
+    <p>
+        This spec uses <code>index.src</code> template, view it's <a href="index.src">source</a>.
+    </p>
 
 </section>

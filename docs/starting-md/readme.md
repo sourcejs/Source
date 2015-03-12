@@ -1,6 +1,6 @@
 ﻿<link rel="stylesheet" href="css/starting.css">
 
-# Documentation Page
+# Markdown Spec Page Template
 
 Developer: Name<br>
 Designer: Name
@@ -16,3 +16,5 @@ Useful notes.
 ```example
 <p>Rendered code examples.</p>
 ```
+
+This spec uses <code>readme.md</code> template, view it's <a href="readme.md">source</a>.

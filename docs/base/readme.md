@@ -19,7 +19,7 @@ $ cd sourcejs-folder
 $ yo sourcejs
 ```
 
-If you're running Windows, and have some issues with [jsdom](https://github.com/tmpvar/jsdom) dependencies compilation, check this [topic](https://github.com/sourcejs/Source/issues/23).
+If you're running Windows and have some issues with [jsdom](https://github.com/tmpvar/jsdom) dependencies compilation, check this [topic](https://github.com/sourcejs/Source/issues/23).
 
 ### Run Commands
 
@@ -31,9 +31,9 @@ $ node app
 
 For first dev build Grunt will run automatically right after Yeoman init, here's a list of [all Grunt tasks available](/docs/grunt).
 
-## First spec
+## Creating First Spec
 
-Specs are the main content files in SourceJS engine, in them you define all your description of chosen components and it's code examples. Originally we use `*.src` file templates, but you're free to configure your own with [Jade](https://github.com/sourcejs/sourcejs-jade) for example.
+Specs are the main content files in SourceJS engine, in them you define all your description of chosen components and it's code examples. Originally we use `*.src` and `*.md` file templates, but you're free to configure your own technologies with plugins, like [Jade](https://github.com/sourcejs/sourcejs-jade) for example.
 
 <div class="source_note">
     After initialization, you get `sourcejs/user` folder, which is the place for all your custom content. All new Specs and configuration of main engine must be done there.
@@ -47,31 +47,23 @@ The starting template for new **Spec** pages can be found in [/docs/starting](/d
 
 ### Server-side Templating Engines
 
-As we mentioned before, it's easy to use other server-side/compiled templating engines like Jade, you only need to create a simple SourceJS middleware ([example](https://github.com/sourcejs/sourcejs-jade)) or process your sources with Grunt/Gulp. `*.src` files, that we use by default are processed with [EJS](https://github.com/tj/ejs), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript.
+As we mentioned before, it's easy to use other server-side/compiled templating engines like Jade, you only need to create a simple SourceJS middleware ([example](https://github.com/sourcejs/sourcejs-jade)) or process your sources with Grunt/Gulp.
+
+`*.src` files, that we use by default are processed with [EJS](https://github.com/tj/ejs), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript.
 
 We treat Spec files as an interface, you can construct your Spec page in any ways, following only few simple rules - each Spec must have `info.json` file aside, with meta information for the Engine and output spec page must have SourceJS compliant markup. Special markup contains only few vital classes like `.source_section`, `.source_example` and the rest is plain, semantic HTML.
 
 ### Client-side Templating Eninges
 
-For client-side templating you don't need any magic, just link Mustache or any other technology to your page and use it whenever you want. Remember, SourceJS Specs are a simple static pages, that are then enchanted with client-side scripts and internal APIs.
-
-After 0.4 release we will put quite a lot of effort, creating example with popular technologies for fast scaffolding your SourceJS library.
+For client-side templating you don't need any magic, just link Mustache or any other JS library to your page and use it whenever you want. Remember, SourceJS Specs are a simple static pages, that are then enchanted with client-side scripts and internal APIs.
 
 ## Examples
 
-Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out [this section](/docs/spec/).
+Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out [this spec](/docs/spec/).
 
 You can inspect [Sourcejs.com source code](https://github.com/sourcejs/Sourcejs.com), that demonstrates basic `source/user` folder contents.
 
 More examples and screencasts coming soon, but for now, you can check this [SourceJS video presentation](https://www.youtube.com/watch?v=ukFeZnJjrLs) (RU with EN subtitles).
-
-## File Structure
-
-Engine architecture is based on **two enviroments:**
-
-
-* **assets** - JavaScript front-end
-* **core** - NodeJS back-end
 
 ## Configuration
 
@@ -120,14 +112,16 @@ Plugins could have `core` and `assets` parts to improve both back-end and front-
 
 Here's few official plugins:
 
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-spec-status">sourcejs-spec-status</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-crowd-voice">sourcejs-crowd-voice</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-jade">sourcejs-jade</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-comments">sourcejs-comments</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-specs-linting">sourcejs-specs-linting</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-spec-dependencies">sourcejs-spec-dependencies</a>
-* <a class="source_a_hl" href="https://github.com/sourcejs/sourcejs-smiles">sourcejs-smiles</a>
+* [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
+* [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)
+* [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade)
+* [sourcejs-comments](https://github.com/sourcejs/sourcejs-comments)
+* [sourcejs-specs-linting](https://github.com/sourcejs/sourcejs-specs-linting)
+* [sourcejs-spec-dependencies](https://github.com/sourcejs/sourcejs-spec-dependencies)
+* [sourcejs-smiles](https://github.com/sourcejs/sourcejs-smiles)
+
+Follow [this guide](/docs/api/plugins) to jump into own SourceJS plugin development.
 
 ## Contact us
 
-Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on Github.
+Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub.

@@ -1,11 +1,9 @@
 ﻿<h1>Spec Page Documentation</h1>
 
 <div class="source_info">
+    <p>This page highlights the basic features of SourceJS documentation pages that we call Specs. To create your own Spec, follow this <a href="/docs/base/#creating-first-spec">short guide</a>.</p>
 
-    <p>You can add info blocks to spec pages by adding <code>.source_info</code> to a div:</p>
-
-    <p>Specs are generated directly from the <span class="source_hl">/user</span> folder in Source's <a href="/docs/base#2">file structure</a>. To create a new spec page like this one, make a copy of the <a href="/docs/starting">starting template</a> folder in <span class="source_hl">/user/docs</span>.</p>
-
+    <p>For text description, SourceJS uses basic HTML markup, and custom CSS class hooks. To render highlighted description block like this, add <code>.source_info</code> class to a any HTML element on page.</p>
 </div>
 
 <div class="source_warn">
@@ -77,7 +75,7 @@
         </div>
     </div>
 
-    <p>To render and highlight the source code, wrap it in <code>&lt;code class="src-html"&gt;</code>, <code>&lt;code class="src-css"&gt;</code> or <code>&lt;code class="src-js"&gt;</code> tags, depending on the language you want to highlight, like this:</p>
+    <p>To render and highlight the source code, wrap it in <code>&lt;code class="src-html"&gt;</code>, <code>&lt;code class="src-css"&gt;</code><br> or <code>&lt;code class="src-js"&gt;</code> tags, depending on the language you want to highlight, like this:</p>
     <code class="src-html source_visible">
         &lt;code class="src-html"&gt;
             <div class="foo">Bar</div>
@@ -107,7 +105,7 @@
 <section class="source_section">
     <h2>Linking Your Project's CSS</h2>
 
-    <p>Your project's CSS should be linked to each spec page to render your examples, and you can also add styles specific to a spec page:</p>
+    <p>Your project's CSS should be linked to each spec page to render your examples using <code>/user/core/views/spec.ejs</code>, or you can also add styles specific to a spec page:</p>
 
     <code class="src-html source_visible">
     <!-- Your project styles -->
@@ -124,9 +122,7 @@
 <section class="source_section">
     <h2>Spec Page Markup</h2>
 
-    <h3>Documentation Text</h3>
-
-    <p>Only the following tags in documentation sections are styled by Source:</p>
+    <p>SourceJS Specs support styling of these semantic HTML tags, that you could use to describe your sections:</p>
 
     <ul>
       <li><code>p</code></li>
@@ -142,7 +138,18 @@
 
     <p>This styling <strong>is not applied inside example blocks</strong>.</p>
 
-    <p>Markdown support for editing documentation sections will be available within the next few updates.</p>
+    <p>From 0.5.0 SourceJS fully supports Markdown based Specs as well. You can use <code>&lt;markdown&gt;</code> tag in any Spec templates including <code>index.src</code>, or just use <code>readme.md</code> templates instead.</p>
+
+    <p><a href="/docs/markdown">Read more about markdown support</a></p>
+
+</section>
+
+<section class="source_section">
+    <h2>Source code</h2>
+
+    <p>
+        This spec uses <code>index.src</code> template, view it's <a href="index.src">source</a>.
+    </p>
 
 </section>
 

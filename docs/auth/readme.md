@@ -21,7 +21,9 @@ After that, auth feature is able to use.
 
 ### Client-side auth control
 
-Github auth module includes client-side controll. It should be included into your `header.inc.html` (if you have the overridden one). Here is the example:
+GitHub login module should be embedded into your `header.inc.html` or any other place you want.
+
+Here is the example:
 
 ```html
 <!-- header.inc.html content-->
@@ -33,13 +35,15 @@ Auth uses `js-hook` and `source_login` classes for targeting. This hook is defin
 
 ## Auth configuration
 
-Auth configuration is availible from your instance options, as it was mentioned above. Here is the full options list:
+Auth configuration is available from your instance [options](/docs/base/#configuration), as it was mentioned above. Here's few of available options:
 
 ```js
 // localStorage key for client-side user object
 'storageKey': 'sourcejsUser',
+
 // avatar stub URL
 'defaultAvatarURL': '/source/assets/i/unknown.gif',
+
 // set of client-side control classes
 'classes': {
     'controlsWrapper': 'source_login',
@@ -48,12 +52,15 @@ Auth configuration is availible from your instance options, as it was mentioned 
     'anonymous': 'anonymous',
     'hook': 'js-hook'
 },
+
 // login/logout button labels
 'labels': {
     'login': 'Login',
     'logout': 'Logout'
 }
 ```
+
+View the full list in `/assets/js/modules/auth.js` file.
 
 ## Auth modules usage
 
