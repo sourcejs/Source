@@ -114,11 +114,6 @@ module.exports.getSpecFromDir = function(dirPath) {
     var supportedSpecNames = global.opts.core.common.specFiles;
     var specPath;
 
-    // Normalizing file names
-    dirContent = dirContent.map(function(item){
-       return item.toLowerCase();
-    });
-
     for (var i=0; i < supportedSpecNames.length; i++) {
         var item = supportedSpecNames[i];
 
