@@ -45,9 +45,11 @@ var prepareExcludesRegex = function(){
 
 var getSpecMeta = module.exports.getSpecMeta = function(specPath){
     var page = {};
-    var _specPath = specPath.replace(/\\/g, '/');
+    var _specPath = specPath;
 
-    if (!_specPath || !fs.existsSync(_specPath)) {
+    if (specPath || fs.existsSync(specPath)) {
+        _specPath = _specPath.replace(/\\/g, '/');
+    } else {
         return page;
     }
 
