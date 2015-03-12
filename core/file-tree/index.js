@@ -47,7 +47,7 @@ var getSpecMeta = module.exports.getSpecMeta = function(specPath){
     var page = {};
     var _specPath = specPath;
 
-    if (specPath || fs.existsSync(specPath)) {
+    if (specPath && fs.existsSync(specPath)) {
         _specPath = _specPath.replace(/\\/g, '/');
     } else {
         return page;

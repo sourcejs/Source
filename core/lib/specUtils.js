@@ -120,7 +120,7 @@ module.exports.getSpecFromDir = function(dirPath) {
     });
 
     for (var i=0; i < supportedSpecNames.length; i++) {
-        var item = supportedSpecNames[i].toLowerCase();
+        var item = supportedSpecNames[i];
 
         if (dirContent.indexOf(item) > -1) {
             specPath = path.join(dirPath, item);
