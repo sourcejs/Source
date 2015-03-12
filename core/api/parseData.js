@@ -2,7 +2,8 @@
 
 var fs = require('fs');
 var util = require('util');
-var flattenTillSpec = require('./flattenTillSpec');
+var path = require('path');
+var flattenTillSpec = require(path.join(global.pathToApp, 'core/lib/flattenTillSpec'));
 
 /**
  * ParseData Constructor

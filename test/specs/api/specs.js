@@ -4,6 +4,8 @@ var request = require('supertest');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
+global.pathToApp = pathToMasterApp;
+
 var parseData = require(path.join(pathToMasterApp, 'core/api/parseData'));
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
@@ -33,7 +35,7 @@ describe('Internal API tests', function () {
 
 
 describe('API test /api/specs', function () {
-    var url = 'http://localhost:8080';
+    var url = 'http://127.0.0.1:8080';
 
     describe('Check real API data available', function () {
         it('should return list of specs', function (done) {

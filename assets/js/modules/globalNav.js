@@ -36,7 +36,6 @@ define([
             "catalogListImage": "source_catalog_img",
             "catalogListTitle": "source_catalog_title",
             "catalogListDate": "source_catalog_footer",
-            "catalogListBubbles": "source_bubble",
             "catalogFilter" : "source_catalog-filter",
             "sourceSubhead" : "source_subhead",
             "catalogText": "source_catalog_tx",
@@ -98,7 +97,6 @@ define([
                 '<a class="<%= classes.catalogListLink %> source_a_g" href="#">',
                     '<span class="<%= classes.catalogListTitle %>"></span>',
                     '<div class="<%= classes.catalogListDate %>"></div>',
-                    '<div class="<%= classes.catalogListBubbles %>"></div>',
                 '</a>',
             '</li>'
         ].join("")),
@@ -236,7 +234,7 @@ define([
         var navListCat = catalog.attr("data-tag");
 
         var filter = function(spec) {
-            var isInIgnoreList = !spec || !spec.title || !!~$.inArray(spec.title, navOptions.ignorePages);
+            var isInIgnoreList = !spec || !spec.title || !spec.url || !!~$.inArray(spec.title, navOptions.ignorePages);
             var isFiltered = !!navListDir && !!navListCat && skipSpec(navListCat, spec) || isHidden(spec);
             return isInIgnoreList || isFiltered ? false : true;
         };
@@ -277,6 +275,7 @@ define([
             if (!isValid(spec)) {
                 continue;
             }
+
             navigationItemsList.appendChild(this.renderNavTreeItem(spec).get(0));
         }
 
@@ -303,7 +302,8 @@ define([
      * @returns [Object] result - rendering result
      */
     GlobalNav.prototype.renderNavTreeItem = function(itemData) {
-        if (!itemData) return;
+        if (!itemData || !itemData.url || !itemData.title) return;
+
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
         var author = itemData.author
@@ -325,9 +325,7 @@ define([
         }
         result.find("." + classes.catalogListTitle).html(itemData.title);
         result.find("." + classes.catalogListDate).html(itemData.lastmod + author);
-        if(parseInt(itemData.bubbles, 10)) {
-            result.find("." + classes.catalogListBubbles).html(itemData.bubbles);
-        }
+
         return result;
     };
 

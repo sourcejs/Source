@@ -36,7 +36,7 @@ define([
             var RES_HIDE_CODE = 'Hide';
             var RES_SHOW_CODE = 'Show';
             var RES_CODE = 'code';
-            var RES_TOGGLER_SHOW_CODE = 'Show source';
+            var RES_TOGGLER_SHOW_CODE = 'Show source code';
 
             var urlConfig = 'sc';
 

@@ -1,16 +1,12 @@
-<h1>Clarify - Spec Section Testing Environment</h1>
+# Clarify - Spec Section Testing Environment
 
-<p class="source_info">
-    SourceJS middleware, that allows to open separate documentation examples in custom or clean environment for component testing and development.
-</p>
+SourceJS middleware, that allows to open separate documentation examples in custom or clean environment for component testing and development.
 
-<section class="source_section">
-<markdown>
 ## General information
 
 Clarify is an [expressJS](http://expressjs.com/) middleware built into SourceJS engine. Easy configurable through URL parameters in Spec pages:
 
-```source_wide-code
+```html
 http://localhost:8080/docs/spec/?clarify=true&sections=1.1
 ```
 
@@ -18,12 +14,8 @@ When enabled, Clarify uses [JSdom](https://github.com/tmpvar/jsdom) for getting 
 
 Clarify page is enhanced with helper panel, where you can chose any option available:
 
-<a href="/docs/spec/?clarify=true&sections=1.1"><img src="i/clarify.png" alt="image" style="margin-left: -57px;"></a>
-</markdown>
-</section>
+[<img src="i/clarify.png" alt="image" style="margin-left: -57px;">](/docs/spec/?clarify=true&sections=1.1)
 
-<section class="source_section">
-<markdown>
 ## List of parameters
 
 | Param | Value | Default setting | Description |
@@ -36,11 +28,7 @@ Clarify page is enhanced with helper panel, where you can chose any option avail
 | tpl | template-name | default | Define EJS template name to render sections. Templates are defined in `core/views/clarify/` and `user/core/views/clarify/`, user templates overrides core. |
 
 To play around with available URL params, open [Clarify page](/docs/spec/?clarify=true&sections=1.1) and fill the helpers form below.
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## Use cases
 
 Clarify is covering wide range of use cases:
@@ -51,5 +39,3 @@ Clarify is covering wide range of use cases:
 * Isoleted page for automated testing
 * Responsive design testing
 * Fast transfer of code examples to templates
-</markdown>
-</section>

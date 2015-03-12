@@ -285,6 +285,7 @@ module.exports = function(grunt) {
         var spec = grunt.option('spec');
 
         if (spec) {
+            // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
             grunt.config.set('mochaTest.test.src', [spec]);
             grunt.task.run('mochaTest');
         } else {

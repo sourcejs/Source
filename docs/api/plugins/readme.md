@@ -1,19 +1,15 @@
-<h1>Writing SourceJS Plugins and Middlewares</h1>
+# Writing SourceJS Plugins and Middlewares
 
-<p class="source_info">
-    SourceJS core contains only default APIs for most common use cases, all specific features we move to plugins, that could contain back-end and client-side improvements.
-</p>
+SourceJS core contains only default APIs for most common use cases, all specific features we move to plugins, that could contain back-end and client-side improvements.
 
-<section class="source_section">
-<markdown>
 ## Starting Templates
 
 To easily bootstrap new SourceJS items, we extended our official [SourceJS Generator](https://github.com/sourcejs/generator-sourcejs) with default templates for all types of engine components:
 
-<code class="src-html source_visible">
+```html
 $ yo sourcejs:plugin
 $ yo sourcejs:middleware
-</code>
+```
 
 Besides generators, we also have abstract plugin demos, which will be always updated to current engine APIs:
 
@@ -21,25 +17,21 @@ Besides generators, we also have abstract plugin demos, which will be always upd
 * [sourcejs-tpl-middleware](https://github.com/sourcejs/sourcejs-tpl-middleware)
 
 We are continuously improving mentioned demos, adding new best practices and API usage examples.
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## SourceJS Plugins and Middleware Structure
 
 The recommended way of structuring SourceJS plugins is to define them as [NPM packages](https://docs.npmjs.com/misc/developers). All public plugins must be named by corresponding prefix `sourcejs-*`, so they could be easily searchable through global repository.
 
 All plugins must be installed in `sourcejs/user` directory:
 
-<code class="src-html source_visible">
+```html
 /source
   user
     package.json
     node_modules
       sourcejs-plugin1
       sourcejs-plugin2
-</code>
+```
 
 ### Internal plugins
 
@@ -50,11 +42,7 @@ SourceJS is an open source project, and we expect our community to be open as we
 * Using `sourcejs/user/plugins` folder for your custom client-side dependencies and `sourcejs/user/app.js` to extend SourceJS back-end
 
 Last mentioned option is deprecated, and not recommended to use, yet you can still find some mentions of this approach in `options.js` and `moduleLoader.js`.
-</markdown>
-</section>
 
-<section class="source_section">
-<markdown>
 ## Plugins
 
 ### Client-side
@@ -65,22 +53,22 @@ Each plugin works the same as any internal JavaScript module and is loaded throu
 
 From your plugin, you can call any libraries and internal APIs, defining your dependencies in AMD module:
 
-<code class="src-js source_visible">
+```js
 define([
     'jquery',
     'sourceModules/module',
     'sourceModules/css'
 ], function ($, module, css) {});
-</code>
+```
 
 To access other plugin assets, you can use direct path to your component:
 
-<code class="src-js source_visible">
+```js
 define([
     'node_modules/sourcejs-plugin/assets/js/innerDep',
     'text!node_modules/sourcejs-plugin/assets/templates/tpl.html'
 ], function (innerDep, tpl) {});
-</code>
+```
 
 #### Connecting Plugin JS Modules
 
@@ -90,7 +78,7 @@ To achieve this, we generate custom RequireJS configuration through default Grun
 
 To disable client-side module of any installed npm Plugins, you can edit the module definition in `user/options.js`:
 
-<code class="src-js source_visible">
+```js
 {
   core: {},
   assets: {
@@ -99,7 +87,7 @@ To disable client-side module of any installed npm Plugins, you can edit the mod
     }
   }
 }
-</code>
+```
 
 ### Back-end
 
@@ -114,11 +102,6 @@ As SourceJS back-end uses [ExpressJS](http://expressjs.com), it's recommended to
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-specs-linting](https://github.com/sourcejs/sourcejs-specs-linting)
 
-</markdown>
-</section>
-
-<section class="source_section">
-<markdown>
 ## Middlewares
 
 SourceJS Middleware is basically the same as Plugin item, but it has only back-end part and its entry point must be defined in `core/middleware/index.js` path.
@@ -147,5 +130,3 @@ In 0.4.0 middlewares from plugins are connected one by one, sorted by alphabet. 
 
 * [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade)
 * [sourcejs-smiles](https://github.com/sourcejs/sourcejs-smiles)
-</markdown>
-</section>

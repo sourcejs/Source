@@ -66,7 +66,7 @@ define([
 		var currentHeader = -1;
 		var filename = '';
 		var extension = '';
-		var hashThreshold = 300;
+		var hashThreshold = 100;
 
 		var fullFilename = window.location.href.split("#")[0].split('/').pop().split('.');
 
