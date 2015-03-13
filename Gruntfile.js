@@ -10,9 +10,17 @@ module.exports = function(grunt) {
     // measuring processing time
     require('time-grunt')(grunt);
 
+    var dirs = {
+        "build": "build",
+        "src": "assets",
+        "js": "assets/js",
+        "css": "assets/css"
+    };
+
     grunt.initConfig({
         options: loadOptions(pathToApp),
-
+        dirs: dirs,
+        pkg: grunt.file.readJSON('package.json'),
         pathToUser: '<%= options.core.common.pathToUser %>',
 
         banner:'/*!\n' +
@@ -26,6 +34,35 @@ module.exports = function(grunt) {
             build: [
                 'build'
             ]
+        },
+
+        requirejs: {
+            options: {
+                appDir: "<%= dirs.build %>/js",
+                baseUrl: "./",
+                dir: "<%= dirs.js %>",
+                optimize: "none",
+                wrap: false,
+                namespace: "<%= options.assets.namespace %>",
+                removeCombined: false,
+                useStrict: true,
+                skipDirOptimize: true,
+                normalizeDirDefines: true
+            },
+            common: {
+                options: {
+                    modules: [{
+                        name: "lib/jquery/jquery-bundle",
+                        create: true,
+                        include: [
+                            "lib/jquery/jquery.mb.browser.js",
+                            "lib/jquery/codeFormat.js",
+                            "lib/jquery/jquery.couch.js",
+                            "lib/jquery/jquery.mb.browser.js"
+                        ]
+                    }]
+                }
+            }
         },
 
         jshint: {
@@ -249,6 +286,7 @@ module.exports = function(grunt) {
     grunt.registerTask('update', [
         'clean-build:dev',
         'resolve-js-bundles',
+        'requirejs',
         'less',
         'autoprefixer',
         'last-dev'

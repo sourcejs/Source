@@ -32,6 +32,7 @@ module.exports = {
 
     // Run `grunt` after changing assets options. Or use`grunt watch-all`.
     assets: {
+        namespace: "SourceJS",
         // Core modules
         modulesEnabled : {
             clarifyInSpec: true,
