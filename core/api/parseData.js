@@ -93,8 +93,6 @@ ParseData.prototype.getRaw = function() {
 /**
  * Filter placeholder function
  *
- * @param {Object} value - One item data, simple object without nesting
- * @param {Boolean} inOut - for filtering and filteringOut
  * @param {Array} filterArr - Array with filtering params
  * @param {Function} filterFunc - callback function
  *      example: filterFunc(filterItem) — accepts data item key for param

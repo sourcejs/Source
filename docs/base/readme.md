@@ -59,7 +59,7 @@ For client-side templating you don't need any magic, just link Mustache or any o
 
 ## Examples
 
-Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out [this spec](/docs/spec/).
+Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're [surfing](https://github.com/sourcejs/Source/tree/master/docs) right now. To see more complex example of Spec page, check out [this spec](/docs/spec/).
 
 You can inspect [Sourcejs.com source code](https://github.com/sourcejs/Sourcejs.com), that demonstrates basic `source/user` folder contents.
 
