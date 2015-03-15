@@ -36,7 +36,6 @@
     "grunt-jsdoc": "^0.5.7",
     "grunt-newer": "~0.6.1",
     "gulp-watch": "^4.1.1",
-    "jade": "~0.35.0",
     "jsdom": "^1.2.1",
     "load-grunt-tasks": "~0.3.0",
     "lodash": "^2.4.1",

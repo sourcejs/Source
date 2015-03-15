@@ -90,6 +90,10 @@ module.exports = {
             npmPluginsEnabled: {}
         }
     },
+
+    plugins: {
+    },
+
     /*
      * Please pay your attention. This is demo github applicatio key.
      * To get your own one please use github applications service.

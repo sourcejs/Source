@@ -57,10 +57,10 @@
     <!-- /Inline JS -->
 
     <code class="src-html">
-        Place for HTML code examples.
+        You can fill custom source code blocks before "source_example".
 
         If &lt;code class="src-html"&gt; is not set, it will be created
-        and filled automatically from "source_example".
+        and filled automatically from "source_example" contents.
     </code>
 
     <div class="source_example">
@@ -99,6 +99,8 @@
             </script>
         &lt;/code&gt;
     </code>
+
+    <p>By default (before 0.6.0) all code blocks are hidden by default, and are shown after toggling "Show source code" in menu. To define block as visible by default, add <code>.source_visible</code> class next to <code>.src-*</code></p>
 
 </section>
 

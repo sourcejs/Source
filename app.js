@@ -187,7 +187,7 @@ var logErrors = function(err, req, res, next) {
         var url = req.url || '';
 
         log.debug(req.method, req.headers);
-        log.error(url.red, ('Error: ' + err.stack).red);
+        log.error(('Requested url: ' + url).red, ('Error: ' + err.stack).red);
 
         if (req.xhr) {
             res.status(500).json({msg: 'Server error'});
