@@ -57,11 +57,18 @@ For client-side templating you don't need any magic, just link Mustache or any o
 
 ## Examples
 
-Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're surfing right now. To see more complex example of Spec page, check out [this spec](/docs/spec/).
+Main project website [Sourcejs.com](http://sourcejs.com) is based on SourceJS engine, as well as all documentation that you're surfing right now. Engine docs are both viewable on [GitHub](https://github.com/sourcejs/Source/tree/master/docs) and in SourceJS environment.
 
 You can inspect [Sourcejs.com source code](https://github.com/sourcejs/Sourcejs.com), that demonstrates basic `source/user` folder contents.
 
-More examples and screencasts coming soon, but for now, you can check this [SourceJS video presentation](https://www.youtube.com/watch?v=ukFeZnJjrLs) (RU with EN subtitles).
+To see more complex example of Spec page, check out [this spec](/docs/spec/).
+
+### Specs Showcase
+
+View SourceJS example Specs in [special repo](https://github.com/sourcejs/examples), compare source code and [rendered result](http://sourcejs.com/specs/examples/).
+
+Showcase includes both native Specs examples, and ones that are rendered with plugins like [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) and [sourcejs-jade](http://github.com/sourcejs/sourcejs-jade).
+
 
 ## Configuration
 
@@ -110,6 +117,7 @@ Plugins could have `core` and `assets` parts to improve both back-end and front-
 
 Here's few official plugins:
 
+* [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)
 * [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade)
