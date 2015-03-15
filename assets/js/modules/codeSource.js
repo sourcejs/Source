@@ -49,7 +49,7 @@ define([
                 var _this = $(this);
 
                 // <pre class="src-*"><code>...</code></pre> is the wrapper for prism.js plugin
-                if (!(_this.prev().hasClass('src-html') && ($.trim(_this.prev().html()) === ''))) {
+                if ( !_this.prev().hasClass('src-html') ) {
                     _this.before('<pre class="src-html" style="display:none"><code></code></pre>');
                 }
             });
@@ -222,7 +222,7 @@ define([
                 utils.scrollToSection(navHash);
             };
 
-            if ($('pre:not(.source_visible)')[0]) {
+            if ($('[class*="src-"]:not(.source_visible)')[0]) {
                 innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
             }
 
