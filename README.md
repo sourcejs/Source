@@ -38,6 +38,7 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
+* 15.03.15. CSS Documentation support with DSS https://github.com/sourcejs/sourcejs-contrib-dss
 * 12.03.15. **[0.5.0](https://github.com/sourcejs/Source/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
 * 24.02.15. [0.4.1](https://github.com/sourcejs/Source/releases/tag/0.4.1) patch release
 * 05.02.15. Mentioned at in-depth [Style Guides Tools overview talk](http://youtu.be/Fr23VpM6wl4ds)
@@ -54,7 +55,6 @@ If you notice some bugs, or need to help finding a better solution in your proce
 
 ## Upcoming updates
 
-* [DSS](https://github.com/darcyclarke/DSS) support
 * Support of multiple documentation projects in one environment
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
