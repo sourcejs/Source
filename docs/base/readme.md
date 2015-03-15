@@ -49,8 +49,6 @@ The starting template for new **Spec** pages can be found in [/docs/starting](/d
 
 As we mentioned before, it's easy to use other server-side/compiled templating engines like Jade, you only need to create a simple SourceJS middleware ([example](https://github.com/sourcejs/sourcejs-jade)) or process your sources with Grunt/Gulp.
 
-`*.src` files, that we use by default are processed with [EJS](https://github.com/tj/ejs), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript.
-
 We treat Spec files as an interface, you can construct your Spec page in any ways, following only few simple rules - each Spec must have `info.json` file aside, with meta information for the Engine and output spec page must have SourceJS compliant markup. Special markup contains only few vital classes like `.source_section`, `.source_example` and the rest is plain, semantic HTML.
 
 ### Client-side Templating Eninges
