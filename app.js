@@ -151,7 +151,7 @@ try {
 
 
 // Watchers
-if (global.opts.core.watch.enabled && global.MODE !== 'presentation') {
+if (global.opts.core.watch.enabled && global.MODE === 'development') {
     require('./core/watchNewSpecs');
 }
 
