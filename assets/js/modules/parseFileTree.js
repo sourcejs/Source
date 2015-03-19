@@ -98,6 +98,8 @@ define([
                                     returnedTreeObj = _this.json;
 
                                     for (var i = 1; i < getSpecificCatArr.length; i++) {
+                                        if (!returnedTreeObj) return;
+
                                         returnedTreeObj = returnedTreeObj[ getSpecificCatArr[i] ];
                                     }
 
@@ -306,7 +308,11 @@ define([
 
     ParseFileTree.prototype.getCurrentCatalogSpec = function(catalogName) {
         if (!catalogName) return;
+
         var specsHash = this.parsePages(catalogName, true);
+
+        if (!specsHash) return;
+
         return getCurrCatalogSpec(catalogName, specsHash);
     };
 

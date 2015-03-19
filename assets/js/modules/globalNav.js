@@ -42,10 +42,11 @@ define([
             "showPreview": "__show-preview"
         },
         "labels": {
+            "noDataInCat": "No data in specified nav category",
             "linkToAllSpecs": "All specs",
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
-            "loading": "Загрузка...",
+            "loading": "Loading...",
             "hidePreview": "Hide thumbnails",
             "showPreview": "Show thumbnails"
         }
@@ -208,15 +209,20 @@ define([
             var navListCat = catalog.attr("data-tag");
             // Catalog has no data about category
             var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
-            _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
-            // TODO: check if its valid
-            if (navListDir && !navListDir.length) {
-                // Display error
-                catalog.find("." + classes.catalogList).html(labels.noDataAttr);
-                return;
+            var targetData;
+
+            if (targetCatalog){
+                _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
+                // TODO: check if its valid
+                if (navListDir && !navListDir.length) {
+                    // Display error
+                    catalog.find("." + classes.catalogList).html(labels.noDataAttr);
+                    return;
+                }
+
+                targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
             }
 
-            var targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
             _this.renderNavigationList(catalog, targetData);
         });
     };
@@ -240,7 +246,7 @@ define([
         };
 
         if (!data || !data.length) {
-            target.empty();
+            target.html(navOptions.labels.noDataInCat);
             return;
         }
 
