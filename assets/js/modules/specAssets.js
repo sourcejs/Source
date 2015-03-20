@@ -1,4 +1,4 @@
-define([
+SourceJS.define([
     "source/load-options"
     //, other modules
     ], function(options) {

@@ -4,7 +4,7 @@
 *
 * */
 
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/module",
     "sourceModules/utils",

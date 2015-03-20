@@ -1,4 +1,4 @@
-define(function() {
+SourceJS.define(function() {
 
     'use strict';
 

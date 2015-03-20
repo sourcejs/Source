@@ -1,5 +1,5 @@
 //In separate module, to trace script ready state
-define([
+SourceJS.define([
     "jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",

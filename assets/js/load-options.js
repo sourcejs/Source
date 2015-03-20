@@ -4,7 +4,7 @@
  *
  * */
 
-define([
+SourceJS.define([
     'jquery',
     'text!/api/options',
     'sourceModules/inlineOptions'

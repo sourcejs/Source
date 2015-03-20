@@ -6,7 +6,7 @@
 *
 * */
 
-define([
+SourceJS.define([
     "jquery",
     "source/load-options",
     "sourceModules/utils",

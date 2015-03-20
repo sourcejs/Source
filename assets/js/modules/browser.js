@@ -1,6 +1,6 @@
 "use strict";
 
-define(["sourceLib/jquery.mb.browser"], function() {
+SourceJS.define(["jquery"], function($) {
     //Browser context classes
     var browserClasses = {
         msie: "ie",

@@ -1,6 +1,6 @@
 'use strict';
 
-define(["source/load-options"], function(options) {
+SourceJS.define(["source/load-options"], function(options) {
     function Css (url, cat) {
         this.url = url;
         this.cat = cat || 'plugin';

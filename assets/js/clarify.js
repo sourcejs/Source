@@ -4,7 +4,7 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
-require([
+SourceJS.define([
     "jquery",
     "sourceModules/utils",
     "text!sourceTemplates/clarifyPanel.inc.html"

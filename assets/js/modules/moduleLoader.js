@@ -1,4 +1,4 @@
-define([
+SourceJS.define([
 	'sourceModules/module'
 	], function (module) {
 

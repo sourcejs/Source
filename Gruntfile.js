@@ -38,13 +38,17 @@ module.exports = function(grunt) {
 
         requirejs: {
             options: {
-                appDir: "<%= dirs.build %>/js",
+                appDir: "assets/js",
                 baseUrl: "./",
-                dir: "<%= dirs.js %>",
+                dir: "build/assets/js",
                 optimize: "none",
+                mainConfigFile: './assets/js/loader.js',
+                paths: {
+                    'lib/jquery/jquery-noconflict': "lib/jquery/jquery-noconflict"
+                },
                 wrap: false,
-                namespace: "<%= options.assets.namespace %>",
-                removeCombined: false,
+                namespace: "SourceJS",
+                removeCombined: true,
                 useStrict: true,
                 skipDirOptimize: true,
                 normalizeDirDefines: true
@@ -52,15 +56,29 @@ module.exports = function(grunt) {
             common: {
                 options: {
                     modules: [{
-                        name: "lib/jquery/jquery-bundle",
+                        "name": "loader",
+                        "create": false,
+                        "include": [
+                            "lib/requirejs/require",
+                            "lib/requirejs/text"
+                        ]
+                    }, {
+                        name: "lib/jquery.bundle",
                         create: true,
                         include: [
+                            "lib/jquery/jquery.js",
+                            "lib/jquery/jquery-noconflict.js",
                             "lib/jquery/jquery.mb.browser.js",
                             "lib/jquery/codeFormat.js",
+                            "lib/jquery/autocomplete.js",
                             "lib/jquery/jquery.couch.js",
                             "lib/jquery/jquery.mb.browser.js"
                         ]
-                    }]
+                    }]/*,
+                    "onBuildWrite": function(moduleName, path, contents) {
+                        contents = contents.replace("SourceJS.define(\'", "SourceJS.define(\'source/");
+                        return contents;
+                    },*/
                 }
             }
         },

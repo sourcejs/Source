@@ -3,7 +3,7 @@
     if (typeof(define) === "function" && define.amd) {
         define(["jquery"], module);
     } else {
-        module(jquery);
+        module(jQuery);
     }
 })(function($) {
 

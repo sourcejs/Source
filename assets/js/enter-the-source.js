@@ -4,9 +4,9 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
-require([
+SourceJS.define([
     "jquery",
-    "source/load-options", // TODO: remove when all modules inherit Module()
+    "load-options", // TODO: remove when all modules inherit Module()
     "sourceModules/browser",
     "sourceModules/moduleLoader",
     'sourceModules/auth',
