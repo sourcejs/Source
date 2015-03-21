@@ -2,20 +2,8 @@
     <h1>Documentation and Examples</h1>
 </div>
 
-<div class="source_catalog" data-nav="/docs" data-tag="without-tag">
-    <h2 class="source_catalog_title"></h2>
-
-    <ul class="source_catalog_list">
-        <!--Navigation is generated dynamically from value of data-nav attribute-->
-        <img src="/source/assets/i/process.gif" alt="Loading..."/>
-    </ul>
-</div>
+<div class="source_catalog" data-nav="/docs" data-tag="without-tag"></div>
 
 <div class="source_catalog" data-nav="/docs" data-tag="templates">
-    <h2 class="source_catalog_h2">Templates</h2>
-
-    <ul class="source_catalog_list">
-        <!--Navigation is generated dynamically from value of data-nav attribute-->
-        <img src="/source/assets/i/process.gif" alt="Loading..."/>
-    </ul>
+    <h2>Templates</h2>
 </div>
