@@ -42,7 +42,6 @@ module.exports = {
             sectionFolding: true,
             innerNavigation: true,
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
-            specAssets: true,
             scrollToHash: true,
             sections: true,
             globalNav: true,
@@ -53,9 +52,6 @@ module.exports = {
         },
 
         modulesOptions : {
-            specAssets : {
-                postponedInit : true
-            },
             search: {
                 autoFocus: false,
                 autoFocusOnNavigationPage: true,
@@ -79,7 +75,6 @@ module.exports = {
             modulesEnabled : {
                 headerFooter: true,
                 specDecorations: true,
-                specAssets: true,
                 globalNav: true,
                 search: true
             },
