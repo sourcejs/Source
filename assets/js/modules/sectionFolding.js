@@ -87,13 +87,13 @@ define([
             }
         };
 
-        var openSpoiler = function (t, config) {
-            if (t.is('h3')) {
-                t = t.closest('.source_section');
+        var openSpoiler = function ($target, config) {
+            if ($target.is('h3')) {
+                $target = $target.closest('.source_section');
             }
-            t.addClass(OPEN_SECTION_CLASS);
+            $target.addClass(OPEN_SECTION_CLASS);
 
-            var sectionID = t.attr('id');
+            var sectionID = $target.attr('id');
             var isRendered = false;
 
             closedSections["section" + sectionID] = false;
@@ -108,7 +108,7 @@ define([
                 require(['/plugins/mustache/js/mustache.js'], function(templater){
                     if (typeof templater.PostponedTemplates !== 'undefined') {
 
-                        if (t.attr('data-rendered') === 'true') {
+                        if ($target.attr('data-rendered') === 'true') {
                             isRendered = true;
                         }
 
@@ -121,7 +121,7 @@ define([
                                 }
                             }
 
-                            t.attr('data-rendered', 'true');
+                            $target.attr('data-rendered', 'true');
                         }
 
                     }
@@ -148,18 +148,18 @@ define([
         var sectionsCount = sectionsOnPage.length;
 
         for (var i = 0; i < sectionsCount; i++) {
-            var t = $(sectionsOnPage[i]);
-            var tID = t.attr('id');
+            var $this = $(sectionsOnPage[i]);
+            var tID = $this.attr('id');
 
             //Check from local storage config
             if (closedSections["section" + tID]) {
-                t.attr('data-def-stat', 'closed');
+                $this.attr('data-def-stat', 'closed');
             }
 
             //Open all unclosed by confing spoilers and scroll to hash targeted section
             //For ie < 8 all sections closed by default
-            if (t.attr('data-def-stat') !== 'closed' && !(browser.msie && parseInt(browser.version, 10) < 8)) {
-               openSpoiler(t);
+            if ($this.attr('data-def-stat') !== 'closed' && !(browser.msie && parseInt(browser.version, 10) < 8)) {
+               openSpoiler($this);
             }
         }
 
@@ -195,7 +195,7 @@ define([
             });
         } else {
             $('.source_main_nav_a').on({
-                'click': function(e) {
+                click: function(e) {
                     e.preventDefault();
 
                     //Imitate hash change on click
@@ -227,9 +227,9 @@ define([
         }
 
         $('.source_section_h_expand').on({
-            'click':function () {
-                t = $(this).closest('.source_section');
-                toggleSpoiler(t);
+            click:function () {
+                $this = $(this).closest('.source_section');
+                toggleSpoiler($this);
             }
         });
 
