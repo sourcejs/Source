@@ -6,12 +6,16 @@
  *
  * */
 
-jQuery(document).ready(function($) {
-    $.fn.formatify = function(options) {
 
-        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"] // list of self-closing tags
+define([
+    "jquery"
+], function($) {
 
-        return this.each(function() {
+    return function($el, options) {
+
+        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"]; // list of self-closing tags
+
+        return $el.each(function() {
 
             var settings = $.extend({
                     escape:true // escape HTML symbols (<,>,&)
@@ -58,6 +62,5 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
 });
-
-

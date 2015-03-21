@@ -18,7 +18,7 @@ define([
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
-        return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
+        return window.location.hash.replace('#/','#');
     };
 
     Utils.prototype.getUrlParameter = function (name) {

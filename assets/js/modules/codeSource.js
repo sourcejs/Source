@@ -38,8 +38,6 @@ define([
             var RES_CODE = 'code';
             var RES_TOGGLER_SHOW_CODE = 'Show source code';
 
-            var urlConfig = 'sc';
-
             var prepared = false;
             var onlyStatic = true;
 
@@ -147,16 +145,17 @@ define([
                 //Auto copy HTML in code.html if it's now filled
                 var selection = onlyStatic ? $('.source_section pre[class*="src-"].source_visible > code') : $('.source_section pre[class*="src-"] > code');
                 selection.each(function () {
-                    var _this = $(this), HTMLcode;
+                    var _this = $(this);
+                    var HTMLcode;
 
                     if (_this.html().trim().length === 0) {
                         HTMLcode = _this.parent().nextAll('.'+ options.exampleSectionClass ).html();
                         _this.html(HTMLcode);
+
                         if (_this.parent().hasClass('src-html')) {
-                            _this.formatify();
+                            codeFormat(_this)
                         }
-                    }
-                    else {
+                    } else {
                         HTMLcode = _this.html();
                         var spaces = HTMLcode.replace(/\t/,'  ').match(/^\s{0,}/)[0].length;
                         var HTMLarray = HTMLcode.trim().split("\n");
@@ -197,10 +196,6 @@ define([
                     prepared = true;
                 }
                 afterActivation();
-
-                //TODO: finish url update on code show toggle functionality
-//                var updateHref = hash === '' ? '!sc' : hash + urlConfig;
-//                window.location.hash = updateHref;
             };
 
             var showStaticCode = function () {
@@ -224,18 +219,6 @@ define([
 
             if ($('[class*="src-"]:not(.source_visible)')[0]) {
                 innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
-            }
-
-//          If url has '!sc', show source code by default
-            var getUrlParam = document.location.href.split(options.modulesOptions.innerNavigation.hashSymb);
-
-            getUrlParam = getUrlParam[getUrlParam.length - 1];
-
-            if (getUrlParam === urlConfig) {
-                $(document).ajaxStop(function() {
-                    $('.source_main_nav_ac_tx:contains("'+RES_TOGGLER_SHOW_CODE+'")').next('.source_slider_frame').addClass('source_slider_frame__on');
-                    showAllCode();
-                });
             }
 
             showStaticCode();

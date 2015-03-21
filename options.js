@@ -53,9 +53,6 @@ module.exports = {
         },
 
         modulesOptions : {
-            innerNavigation : {
-                hashSymb: '!'
-            },
             specAssets : {
                 postponedInit : true
             },
