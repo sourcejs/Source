@@ -2,7 +2,13 @@
 
 var fs = require('fs');
 var path = require('path');
+var url = require('url');
+var ejs = require('ejs');
 var pathToApp = path.dirname(require.main.filename);
+
+var config = {
+    includedDirs: ['docs']
+};
 
 /**
  * Handling Spec request
@@ -49,6 +55,29 @@ var handleSpec = function(req, res, next) {
             }
 
             var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
+            var parsedUrl = url.parse(req.url);
+            var urlPath = parsedUrl.pathname.replace(/\\/g, '/');
+            var specPath = path.join(global.app.get('user'), urlPath).replace(/\\/g, '/');
+
+            // Including non-standard paths, outside default static route
+            config.includedDirs.forEach(function(item){
+                if (urlPath.split('/')[1] === item) {
+                    specPath = specPath.replace('/'+ global.opts.core.common.pathToUser + '/', '/');
+                }
+            });
+
+            // Pre-render Spec contents with EJS
+            if (!info.noEjs) {
+
+                try {
+                    data = ejs.render(data, {
+                        info: info,
+                        filename: specPath
+                    });
+                } catch(err){
+                    global.log.warn('Could not pre-render spec with EJS: ' + urlPath, err);
+                }
+            }
 
             req.specData["is" + capitalizedExtension] = true;
             req.specData.info = info; // add spec info object to request
@@ -88,9 +117,10 @@ exports.process = function(req, res, next) {
             requestedDir += '/';
         }
 
-        var specNotFileFound = true;
+        var noSpecFound = true;
         var checkingSpecFile = function(supportedIndexFormat){
-            if (specNotFileFound && supportedIndexFormat !== 'index.html' && fs.existsSync(physicalPath + supportedIndexFormat)) {
+            // Skip index.html and check if file exists
+            if (supportedIndexFormat !== 'index.html' && fs.existsSync(physicalPath + supportedIndexFormat)) {
                 // Passing req params
                 var urlParams = req.url.split('?')[1];
                 var paramsString = urlParams ? '?' + urlParams : '';
@@ -101,13 +131,13 @@ exports.process = function(req, res, next) {
                 // Recursive call
                 handleSpec(req, res, next);
 
-                specNotFileFound = false;
+                noSpecFound = false;
             }
         };
 
         // First check if any supported file exists in dir
         for (var j = 0; j < specFiles.length; j++) {
-            if (specNotFileFound) {
+            if (noSpecFound) {
                 var supportedIndexFormat = specFiles[j];
 
                 checkingSpecFile(supportedIndexFormat);
@@ -116,7 +146,7 @@ exports.process = function(req, res, next) {
             }
         }
 
-        if (specNotFileFound) next();
+        if (noSpecFound) next();
 
     } else {
         next();

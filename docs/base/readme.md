@@ -35,6 +35,8 @@ For first dev build Grunt will run automatically right after Yeoman init, here's
 
 Specs are the main content files in SourceJS engine, in them you define all your description of chosen components and it's code examples. Originally we use `*.src` and `*.md` file templates, but you're free to configure your own technologies with plugins, like [Jade](https://github.com/sourcejs/sourcejs-jade) for example.
 
+We treat Spec files as an interface, you can construct your Spec page in any ways, following only few simple rules - each Spec must have `info.json` file aside, with meta information for the Engine and output spec page must have SourceJS compliant markup. Special markup contains only few vital classes like `.source_section`, `.source_example` and the rest is plain, semantic HTML.
+
 <div class="source_note">
     After initialization, you get `sourcejs/user` folder, which is the place for all your custom content. All new Specs and configuration of main engine must be done there.
 </div>
@@ -47,11 +49,14 @@ The starting template for new **Spec** pages can be found in [/docs/starting](/d
 
 ### Server-side Templating Engines
 
-As we mentioned before, it's easy to use other server-side/compiled templating engines like Jade, you only need to create a simple SourceJS middleware ([example](https://github.com/sourcejs/sourcejs-jade)) or process your sources with Grunt/Gulp.
+As we mentioned before, it's easy to use other server-side templating engines like Jade, you only need to create a simple SourceJS middleware ([example](https://github.com/sourcejs/sourcejs-jade)) or process your sources with Grunt/Gulp.
 
-`*.src` files, that we use by default are processed with [EJS](https://github.com/tj/ejs), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript.
+By default all files are pre-processed with [EJS](http://ejs.co/), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript:
 
-We treat Spec files as an interface, you can construct your Spec page in any ways, following only few simple rules - each Spec must have `info.json` file aside, with meta information for the Engine and output spec page must have SourceJS compliant markup. Special markup contains only few vital classes like `.source_section`, `.source_example` and the rest is plain, semantic HTML.
+```html
+&lt;% include filename.html %&gt;
+&lt;% if (info.title === 'Title') {% &gt; Action! &lt;% } %&gt;
+```
 
 ### Client-side Templating Eninges
 

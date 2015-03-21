@@ -64,16 +64,16 @@ exports.process = function (req, res, next) {
                 return;
             }
 
-            // get header and footer
-
             // if the following fields are not set, set them to defaults
             info.title = info.title ? info.title : "New spec";
             info.author = info.author ? info.author : "Anonymous";
             info.keywords = info.keywords ? info.keywords : "";
 
+            // TODO: remove JSDom
             jsdom.env(
                 '<html id="data">'+data+'</html>',
                 function (errors, window) {
+                    // get header and footer
                     var headerFooterHTML = getHeaderAndFooter();
 
                     // get head contents from spec file source
