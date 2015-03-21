@@ -52,6 +52,10 @@ module.exports = {
         },
 
         modulesOptions : {
+            navHighlight: {
+                updateHash: false, // Hash update on scroll turned off because of performance issues
+            },
+
             search: {
                 autoFocus: false,
                 autoFocusOnNavigationPage: true,
