@@ -186,7 +186,7 @@ define([
         if (catalogMeta && !isHeaderAdded) {
             catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
         }
-        if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+        if (catalogMeta && catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
             catalog
                 .children("." + classes.catalogListTitle)
                 .first()
@@ -197,8 +197,8 @@ define([
     /**
      * @method renderNavigation. Drawing navigation and page info in each catalog defined on page.
      *
-     * @param {String} sortType - type of sorting
-     * @param {String} sortDirection - ASC || DESC
+     * @param {String} [sortType] - type of sorting
+     * @param {String} [sortDirection] - ASC || DESC
      */
     GlobalNav.prototype.renderNavigation = function (sortType, sortDirection) {
         var _this = this;
@@ -214,20 +214,17 @@ define([
             var navListDir = catalog.attr("data-nav");
             var navListCat = catalog.attr("data-tag");
             // Catalog has no data about category
-            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
-            var targetData;
+            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir) || {};
 
-            if (targetCatalog){
-                _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
-                // TODO: check if its valid
-                if (navListDir && !navListDir.length) {
-                    // Display error
-                    catalog.find("." + classes.catalogList).html(labels.noDataAttr);
-                    return;
-                }
+            _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
 
-                targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
+            if (navListDir && !navListDir.length) {
+                // Display error
+                catalog.find("." + classes.catalogList).html(labels.noDataAttr);
+                return;
             }
+
+            var targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
 
             _this.renderNavigationList(catalog, targetData);
         });

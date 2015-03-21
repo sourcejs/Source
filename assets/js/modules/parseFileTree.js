@@ -18,7 +18,6 @@ define([
         this.json = $.parseJSON(data.toString());
     }
 
-    /* наследуем от Module */
     ParseFileTree.prototype = module.createInstance();
     ParseFileTree.prototype.constructor = ParseFileTree;
 
@@ -318,13 +317,18 @@ define([
 
     ParseFileTree.prototype.getSortedCatalogsArray = function(catalogName, sortingCallback) {
         if (catalogName === undefined) return;
+
         var specsHash = catalogName.length
             ? this.parsePages(catalogName, true)
             : this.getAllPages();
+
+        if (!specsHash) return;
+
         var result = $.map(specsHash, function(k, v) {
             k['name'] = v;
             return k['specFile'] ? [k] : undefined;
         });
+
         return result.sort(sortingCallback);
     };
 

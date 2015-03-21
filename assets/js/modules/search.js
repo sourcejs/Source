@@ -1,6 +1,6 @@
 /*
 *
-* @author Robert Haritonov (http://rhr.me)
+* @author Ilya Mikhailov
 *
 * */
 
@@ -10,9 +10,10 @@ define([
     'sourceLib/autocomplete',
     'sourceLib/modalbox',
     'sourceModules/parseFileTree',
+    'text!/api/specs',
     'sourceModules/globalNav',
     'sourceModules/headerFooter'
-], function ($, module, autocomplete, ModalBox, parseFileTree, globalNav) {
+], function ($, module, autocomplete, ModalBox, parseFileTree, specs, globalNav) {
 
 'use strict';
 
@@ -50,33 +51,20 @@ Search.prototype.prepareAutoCompleteData = function() {
 
     this.data = [];
 
-    var sort = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortDirection": "forward", "sortType": "sortByAlph"};
-    var pagesData = parseFileTree.getSortedCatalogsArray("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
-
+    var pagesData = JSON.parse(specs);
 
     for (var page in pagesData) {
         if (pagesData.hasOwnProperty(page)) {
-            var targetPage = pagesData[page]['specFile'];
+            var targetPage = pagesData[page];
 
             // Skip hidden specs
             if (targetPage.tag && targetPage.tag.indexOf('hidden') > -1) continue;
 
+            var keywordsPageName = targetPage['url'];
             var keywords = targetPage.keywords;
-            var keywordsPageName = pagesData[page] && pagesData[page]['name']
-                ? pagesData[page]['name']
-                : ""; //get cat name
             var prepareKeywords = '';
-            var rootFolder = page.split('/');
             var autocompleteValue = targetPage.title;
-            var searchOptions = this.options.modulesOptions.search;
-            var json = parseFileTree.getParsedJSON();
 
-            var isRootSpecExists = json[rootFolder[ 1 ]] && json[rootFolder[ 1 ]]['specFile'];
-
-            if (isRootSpecExists && searchOptions.replacePathBySectionName) {
-                keywordsPageName = json[rootFolder[1]]['specFile'].title
-                    + ': ' + rootFolder[ rootFolder.length-1 ]; // exclude <b> from search
-            }
             if (keywords && keywords !== '') {
                 prepareKeywords += ', ' + keywords;
             }

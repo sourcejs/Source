@@ -58,8 +58,7 @@ module.exports = {
 
             search: {
                 autoFocus: false,
-                autoFocusOnNavigationPage: true,
-            	replacePathBySectionName: false // replace spec's path by root parent's dir name from json.info
+                autoFocusOnNavigationPage: true
             }
         },
 
