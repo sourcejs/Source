@@ -153,7 +153,7 @@ define([
                         _this.html(HTMLcode);
 
                         if (_this.parent().hasClass('src-html')) {
-                            codeFormat(_this)
+                            codeFormat(_this);
                         }
                     } else {
                         HTMLcode = _this.html();
