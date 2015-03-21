@@ -58,6 +58,9 @@ Search.prototype.prepareAutoCompleteData = function() {
         if (pagesData.hasOwnProperty(page)) {
             var targetPage = pagesData[page]['specFile'];
 
+            // Skip hidden specs
+            if (targetPage.tag && targetPage.tag.indexOf('hidden') > -1) continue;
+
             var keywords = targetPage.keywords;
             var keywordsPageName = pagesData[page] && pagesData[page]['name']
                 ? pagesData[page]['name']
@@ -67,7 +70,6 @@ Search.prototype.prepareAutoCompleteData = function() {
             var autocompleteValue = targetPage.title;
             var searchOptions = this.options.modulesOptions.search;
             var json = parseFileTree.getParsedJSON();
-
 
             var isRootSpecExists = json[rootFolder[ 1 ]] && json[rootFolder[ 1 ]]['specFile'];
 
