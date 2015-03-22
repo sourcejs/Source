@@ -13,7 +13,7 @@ Our main goal is to provide flexible, modular environment for managing reusable 
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**FAQ**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3Afaq+) &nbsp;&nbsp;&nbsp; [**Use Cases**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3A%22Use+cases%22+)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**FAQ**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3Afaq+) &nbsp;&nbsp;&nbsp;
 
 ___
 
@@ -38,10 +38,13 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
-* 24.02.15. 0.4.1 patch release
+* 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/examples/) ([source code](https://github.com/sourcejs/examples)) 
+* 15.03.15. CSS Documentation support with DSS https://github.com/sourcejs/sourcejs-contrib-dss
+* 12.03.15. **[0.5.0](https://github.com/sourcejs/Source/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
+* 24.02.15. [0.4.1](https://github.com/sourcejs/Source/releases/tag/0.4.1) patch release
 * 05.02.15. Mentioned at in-depth [Style Guides Tools overview talk](http://youtu.be/Fr23VpM6wl4ds)
 * 18.01.15. Published an [intro video about SourceJS](http://youtu.be/y4KHmX8vCc0)
-* 07.01.15. **0.4.0 Stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
+* 07.01.15. **[0.4.0](https://github.com/sourcejs/Source/releases/tag/0.4.0) stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
 * 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
 * 01.08.14. [Video review](http://youtu.be/ukFeZnJjrLs?list=PL20zJcC2wnX7RY1CDrKLhSvYxEe6jtMbB) of SourceJS engine and workflow example (RU with EN subtitles)
 * 31.07.14. 0.4.0-beta release
@@ -53,10 +56,7 @@ If you notice some bugs, or need to help finding a better solution in your proce
 
 ## Upcoming updates
 
-* [DSS](https://github.com/darcyclarke/DSS) support
-* Full Markdown support within `component/index.md` and `component/readme.md`
 * Support of multiple documentation projects in one environment
-* GitHub Authorization for personalizing user actions, group management and notifications
 * Screencasts and engine usage demos
 * Full english documentation stack for core API
 * Test coverage
