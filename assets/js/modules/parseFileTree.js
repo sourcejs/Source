@@ -278,7 +278,7 @@ define([
 
         if (catalogName.length) {
             newStructure = false;
-            specsHash = this.parsePages(catalogName, true)
+            specsHash = this.parsePages(catalogName, true);
         } else {
             specsHash = JSON.parse(allSpecs);
         }
@@ -288,18 +288,17 @@ define([
         var result = [];
 
         for (var key in specsHash) {
-            var value = newStructure ? specsHash[key] : specsHash[key]['specFile'];
+            if (specsHash.hasOwnProperty(key)) {
+                var value = newStructure ? specsHash[key] : specsHash[key]['specFile'];
 
-            if (!value) continue;
+                if (!value) continue;
 
-            result.push({
-                name: value.url,
-                specFile: value
-            });
+                result.push({
+                    name: value.url,
+                    specFile: value
+                });
+            }
         }
-
-        console.log('result',result);
-
 
         return result.sort(sortingCallback);
     };
