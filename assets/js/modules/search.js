@@ -10,10 +10,9 @@ define([
     'sourceLib/autocomplete',
     'sourceLib/modalbox',
     'sourceModules/parseFileTree',
-    'text!/api/specs',
     'sourceModules/globalNav',
     'sourceModules/headerFooter'
-], function ($, module, autocomplete, ModalBox, parseFileTree, specs, globalNav) {
+], function ($, module, autocomplete, ModalBox, parseFileTree, globalNav) {
 
 'use strict';
 
@@ -51,17 +50,21 @@ Search.prototype.prepareAutoCompleteData = function() {
 
     this.data = [];
 
-    var pagesData = JSON.parse(specs);
+    var sort = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortDirection": "forward", "sortType": "sortByAlph"};
+    var pagesData = parseFileTree.getSortedCatalogsArray("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
+
 
     for (var page in pagesData) {
         if (pagesData.hasOwnProperty(page)) {
-            var targetPage = pagesData[page];
+            var targetPage = pagesData[page]['specFile'];
 
             // Skip hidden specs
             if (targetPage.tag && targetPage.tag.indexOf('hidden') > -1) continue;
 
-            var keywordsPageName = targetPage['url'];
             var keywords = targetPage.keywords;
+            var keywordsPageName = pagesData[page] && pagesData[page]['name']
+                ? pagesData[page]['name']
+                : ""; //get cat name
             var prepareKeywords = '';
             var autocompleteValue = targetPage.title;
 

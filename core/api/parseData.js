@@ -23,9 +23,11 @@ function ParseData(config) {
 /**
  * Update data and return data status
  *
+ * @param {Boolean} [withCategories] - get categories info either
+ *
  * @returns {Boolean} Return data status
  */
-ParseData.prototype.updateData = function() {
+ParseData.prototype.updateData = function(withCategories) {
     try {
         this.data = JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
     } catch(e) {
@@ -36,7 +38,7 @@ ParseData.prototype.updateData = function() {
 
     this.data = flattenTillSpec(this.data);
 
-    if (this.scope === 'specs') {
+    if (this.scope === 'specs' && !withCategories) {
         this.removeCatalogueDescription();
     }
 
@@ -69,10 +71,12 @@ ParseData.prototype.removeCatalogueDescription = function(data) {
 /**
  * Get all data
  *
+ * @param {Boolean} [withCategories] - get categories info either
+ *
  * @returns {Object} Return flat all data object with all items
  */
-ParseData.prototype.getAll = function() {
-    return this.updateData() ? this.data : undefined;
+ParseData.prototype.getAll = function(withCategories) {
+    return this.updateData(withCategories) ? this.data : undefined;
 };
 
 /**

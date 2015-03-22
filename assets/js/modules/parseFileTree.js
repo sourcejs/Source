@@ -12,7 +12,9 @@
 define([
     'jquery',
     'sourceModules/module',
-    'text!/api/specs/raw'], function ($, module, data) {
+    'text!/api/specs/raw',
+    'text!/api/specs?cats=true'
+    ], function ($, module, data, allSpecs) {
 
     function ParseFileTree() {
         this.json = $.parseJSON(data.toString());
@@ -221,53 +223,6 @@ define([
     };
 
     /**
-     * Get raw file tree JSON
-     *
-     * @returns {Object} Return raw file tree JSON
-     *
-     * @deprecated since version 0.4, use REST API instead
-     */
-    ParseFileTree.prototype.getParsedJSON = function() {
-        return this.json;
-    };
-
-    /**
-     * Get flat file tree with all specs
-     *
-     * @returns {Object} Return flat file tree
-     *
-     * @deprecated since version 0.4, use REST API instead
-     */
-    ParseFileTree.prototype.getAllPages = function () {
-        //Get pages from all categories
-        var fileTree = this.parsePages();
-        var fileFlat = {};
-        var _this = this;
-
-        var lookForIndexOrGoDeeper = function(tree) {
-            for (var folder in tree) {
-
-                if (typeof tree[folder] === 'object') {
-                    if ( !_this.checkCatInfo(tree[folder]) ) {
-
-                        // Don't add specs without a title (or info.json)
-                        if (tree['specFile'].title) {
-                            var fullPath = tree['specFile'].url;
-                            fileFlat[fullPath] = tree;
-                        }
-
-                    } else {
-                        lookForIndexOrGoDeeper( tree[folder] );
-                    }
-                }
-            }
-        };
-
-        lookForIndexOrGoDeeper(fileTree);
-        return fileFlat;
-    };
-
-    /**
      * Get specific cat pages without category info
      *
      * @params {String} getSpecificCat - Category name
@@ -318,16 +273,33 @@ define([
     ParseFileTree.prototype.getSortedCatalogsArray = function(catalogName, sortingCallback) {
         if (catalogName === undefined) return;
 
-        var specsHash = catalogName.length
-            ? this.parsePages(catalogName, true)
-            : this.getAllPages();
+        var specsHash;
+        var newStructure = true;
+
+        if (catalogName.length) {
+            newStructure = false;
+            specsHash = this.parsePages(catalogName, true)
+        } else {
+            specsHash = JSON.parse(allSpecs);
+        }
 
         if (!specsHash) return;
 
-        var result = $.map(specsHash, function(k, v) {
-            k['name'] = v;
-            return k['specFile'] ? [k] : undefined;
-        });
+        var result = [];
+
+        for (var key in specsHash) {
+            var value = newStructure ? specsHash[key] : specsHash[key]['specFile'];
+
+            if (!value) continue;
+
+            result.push({
+                name: value.url,
+                specFile: value
+            });
+        }
+
+        console.log('result',result);
+
 
         return result.sort(sortingCallback);
     };
