@@ -18,7 +18,14 @@ define([
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
-        return window.location.hash.replace('#/','#');
+        var hash = window.location.hash.replace('#/','#');
+
+        // Cleaning "!" from the end of hash, left for legacy link support
+        if (hash.substring(hash.length-1) === "!") {
+            hash = hash.substring(0, hash.length-1);
+        }
+
+        return hash;
     };
 
     Utils.prototype.getUrlParameter = function (name) {
