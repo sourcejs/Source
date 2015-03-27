@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= info.title %></title>
+    <meta name="author" content="<%= info.author %>">
+    <% if (info.keywords !== '') {%>
+    <meta name="keywords" content="<%= info.keywords %>">
+    <% } %>
+
+    <!-- Source default resources -->
+        <link href="/source/assets/css/source.css" rel="stylesheet" data-source="core">
+        <script src="/source/assets/js/require.bundle.js" data-source="core"></script>
+        <script src="/source/assets/js/enter-the-source.js" data-source="core"></script>
+    <!-- /Source default resources -->
+
+    <%- head %>
+</head>
+<body>
+    <div class="source_container">
+        <%- header %>
+        <div class="source_main source_col-main" role="main"><%- content %></div>
+        <%- footer %>
+    </div>
+</body>
+</html>
