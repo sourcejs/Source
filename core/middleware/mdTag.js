@@ -16,7 +16,10 @@ exports.process = function (req, res, next) {
         /* find text wrapped with <markdown> */
         html = html.replace(/<markdown>([\s\S]*?)<\/markdown>/g, function(match) {
             // strip tags
-            match = match.replace(/<markdown>|<\/markdown>/g, "");
+            match = match.replace(/<markdown>|<\/markdown>/g, '');
+
+            // Remove tabs and multiple spaces
+            match = match.replace(/\t/g, '').replace(/ +(?= )/g, '');
 
             // render markdown
             match = marked(match);
