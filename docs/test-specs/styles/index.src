@@ -19,6 +19,8 @@
 <p><a class="source_a_d" href="#777">Links can be highlighted as link to design specification by adding <code>.source_a_d</code> as a class on the link</a></p>
 <p><a class="source_a_s" href="#777">Links can be highlighted as link to other specification by adding <code>.source_a_s</code> as a class on the link</a></p>
 
+<a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
+
 <p>Highlighting can be achieved by either wrapping text in <code>&lt;code&gt;</code> tags, or by using the <span class="source_hl">.source_hl class</span>.</p>
 
 <section class="source_section">
