@@ -18,7 +18,14 @@ define([
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
-        return window.location.hash.split(this.options.modulesOptions.innerNavigation.hashSymb)[0];
+        var hash = window.location.hash.replace('#/','#');
+
+        // Cleaning "!" from the end of hash, left for legacy link support
+        if (hash.substring(hash.length-1) === "!") {
+            hash = hash.substring(0, hash.length-1);
+        }
+
+        return hash;
     };
 
     Utils.prototype.getUrlParameter = function (name) {
@@ -33,13 +40,19 @@ define([
     Utils.prototype.scrollToSection = function (sectionID) {
         // Modifying ID, for custom selection because of ids named "1.1", "2.2" etc
         var _sectionID = sectionID.replace('#','');
-        var new_position = $(document.getElementById(_sectionID)).offset();
 
-        var new_position_padding = 60; //Header height
+        if (_sectionID === '') return;
 
-        if (new_position) {
-            window.scrollTo(new_position.left, new_position.top - new_position_padding);
-        }
+        var newPosition = $(document.getElementById(_sectionID)).offset();
+
+        if (!newPosition) return;
+
+        var newPositionPadding = $(".source_header").outerHeight() + 10; // Header height + padding
+        var scrollTopPosition = newPosition.top - newPositionPadding;
+
+        window.scrollTo(0, scrollTopPosition);
+
+        return scrollTopPosition;
     };
 
     Utils.prototype.getSpecName = function() {

@@ -95,6 +95,7 @@
  *          @reset - Boolean enable of disable reset (enabled by default) [true | false]
  */
 .source-only(@selector, @rules, @reset: true) {
+    .source_section > @{selector}@{notCleaningClasses}:not(.source_section_h):not(h2):not(h3):not(h4):not(.source_note):not(.source_data):not(.source_doc):not(.source_warn):not(.source_info),
     .source_section > *@{notCleaningClasses} > @{selector},
     .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},

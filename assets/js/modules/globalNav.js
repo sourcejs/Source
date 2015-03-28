@@ -42,10 +42,11 @@ define([
             "showPreview": "__show-preview"
         },
         "labels": {
+            "noDataInCat": "No data in specified nav category",
             "linkToAllSpecs": "All specs",
             "author" : "Author",
             "noDataAttr" : "Data-nav attr not set",
-            "loading": "Загрузка...",
+            "loading": "Loading...",
             "hidePreview": "Hide thumbnails",
             "showPreview": "Show thumbnails"
         }
@@ -132,10 +133,10 @@ define([
      * @private
      * @method skipSpec. Filtering by specified catalogue
      *
-     * @param [String] navListCat catalogue type
-     * @param [Object] obj - object to filter
+     * @param {String} navListCat catalogue type
+     * @param {Object} obj - object to filter
      *
-     * @returns [Boolean] true if spec shoud be skipped.
+     * @returns {Boolean} true if spec shoud be skipped.
      */
     var skipSpec = function(navListCat, obj) {
         // obj["cat"] is an array; if cat has needed value
@@ -149,9 +150,9 @@ define([
      * @private
      * @method isHidden. It helps to filter hidden specs.
      *
-     * @param [Object] obj - spec to check.
+     * @param {Object} obj - spec to check.
      *
-     * @returns [Boolean] true if spec is hidden.
+     * @returns {Boolean} true if spec is hidden.
      */
     var isHidden = function(obj) {
         return !!obj["tag"] && !!~obj["tag"].indexOf("hidden");
@@ -160,9 +161,9 @@ define([
     /**
      * @method initCatalog - initialize catalog DomElement
      *
-     * @param [Object] catalog - Catalog DomElement
-     * @param [Object] catalogMeta - additional catalog information.
-     * @param [Boolean] specifCatAndDirDefined - boolean flag, which defines if some cat and dir are defined
+     * @param {Object} catalog - Catalog DomElement
+     * @param {Object} catalogMeta - additional catalog information.
+     * @param {Boolean} specifCatAndDirDefined - boolean flag, which defines if some cat and dir are defined
      */
     GlobalNav.prototype.initCatalog = function(catalog, catalogMeta, specifCatAndDirDefined) {
         var config = this.options.modulesOptions.globalNav;
@@ -173,13 +174,19 @@ define([
         if (specifCatAndDirDefined || !catalogMeta) {
             return;
         }
-        var isHeaderAdded = catalog.find("." + classes.catalogListTitle).length !== 0;
-        var isInfoAdded = catalog.find("." + classes.catalogText).length !== 0;
+        var isHeaderAdded = (
+            catalog.find("." + classes.catalogListTitle).length !== 0 ||
+            catalog.children("h2").length !== 0
+        );
+        var isInfoAdded = (
+            catalog.find("." + classes.catalogText).length !== 0 ||
+            catalog.children("p").length !== 0
+        );
 
         if (catalogMeta && !isHeaderAdded) {
             catalog.prepend(this.templates.catalogHeader({"classes": classes, "catalogMeta": catalogMeta}));
         }
-        if (catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
+        if (catalogMeta && catalogMeta.info && $.trim(catalogMeta.info) !== "" && !isInfoAdded) {
             catalog
                 .children("." + classes.catalogListTitle)
                 .first()
@@ -190,8 +197,8 @@ define([
     /**
      * @method renderNavigation. Drawing navigation and page info in each catalog defined on page.
      *
-     * @param [String] sortType - type of sorting
-     * @param [String] sortDirection - ASC || DESC
+     * @param {String} [sortType] - type of sorting
+     * @param {String} [sortDirection] - ASC || DESC
      */
     GlobalNav.prototype.renderNavigation = function (sortType, sortDirection) {
         var _this = this;
@@ -207,9 +214,10 @@ define([
             var navListDir = catalog.attr("data-nav");
             var navListCat = catalog.attr("data-tag");
             // Catalog has no data about category
-            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir);
+            var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir) || {};
+
             _this.initCatalog(catalog, targetCatalog, !!navListDir && !!navListCat);
-            // TODO: check if its valid
+
             if (navListDir && !navListDir.length) {
                 // Display error
                 catalog.find("." + classes.catalogList).html(labels.noDataAttr);
@@ -217,15 +225,20 @@ define([
             }
 
             var targetData = parseFileTree.getSortedCatalogsArray(navListDir, _this.getSortCondition(sortType, sortDirection));
+
             _this.renderNavigationList(catalog, targetData);
         });
+
+        // Scroll to hash after render
+        var navHash = utils.parseNavHash();
+        utils.scrollToSection(navHash);
     };
 
     /**
      * @method renderNavigationList. It draws navigation list into catalog.
      *
-     * @param [Object] catalog - DomElement to fill
-     * @param [Object] data - content
+     * @param {Object} catalog - DomElement to fill
+     * @param {Object} data - content
      */
     GlobalNav.prototype.renderNavigationList = function(catalog, data) {
         var navOptions = this.options.modulesOptions.globalNav;
@@ -240,7 +253,7 @@ define([
         };
 
         if (!data || !data.length) {
-            target.empty();
+            target.html(navOptions.labels.noDataInCat);
             return;
         }
 
@@ -254,10 +267,10 @@ define([
      * @methor getNavigationItemsList. It creates the list of navigation items.
      *
      * @param [Array] specifications - list of items to create nav items.
-     * @param [String] catalogUrl - URL to catalog
+     * @param {String} catalogUrl - URL to catalog
      * @param [function] isValid - callback to check if spec is valid.
      *
-     * @returns [Object] document fragment which contains list of navItems.
+     * @returns {Object} document fragment which contains list of navItems.
      */
     GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
         // temporary container to hold navigation items.
@@ -297,9 +310,9 @@ define([
     /**
      * @method renderNavTreeItem. Returns single navigation tree item. It uses item template for it.
      *
-     * @param [Object] itemData - data of single list item.
+     * @param {Object} itemData - data of single list item.
      *
-     * @returns [Object] result - rendering result
+     * @returns {Object} result - rendering result
      */
     GlobalNav.prototype.renderNavTreeItem = function(itemData) {
         if (!itemData || !itemData.url || !itemData.title) return;
@@ -345,7 +358,7 @@ define([
     /**
      * @method renderFilters. It renders filters layout.
      *
-     * @param [Object] filtersTarget - dom element which is going to be
+     * @param {Object} filtersTarget - dom element which is going to be
      * container for rendering.
      */
     GlobalNav.prototype.renderFilters = function(filtersTarget) {
@@ -443,8 +456,8 @@ define([
     /**
      * @method getSortCondition. It defines current sorting property and order.
      *
-     * @param [String] type - on of predefined sort types.
-     * @param [String] direction - ASC or DESC sort odrer
+     * @param {String} type - on of predefined sort types.
+     * @param {String} direction - ASC or DESC sort odrer
      *
      * @returns [Function] sortingCallback - function to sort items.
      */

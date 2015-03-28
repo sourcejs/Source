@@ -11,7 +11,7 @@ module.exports = {
             port: 8080,
             infoFile: 'info.json',
             specPaths: ['specs'],
-            specFiles: ['index.html', 'index.src', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md']
+            specFiles: ['index.src', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html']
         },
         api: {
             specsData: 'core/api/data/pages-tree.json',
@@ -42,7 +42,6 @@ module.exports = {
             sectionFolding: true,
             innerNavigation: true,
             trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
-            specAssets: true,
             scrollToHash: true,
             sections: true,
             globalNav: true,
@@ -53,16 +52,13 @@ module.exports = {
         },
 
         modulesOptions : {
-            innerNavigation : {
-                hashSymb: '!'
+            navHighlight: {
+                updateHash: false, // Hash update on scroll turned off because of performance issues
             },
-            specAssets : {
-                postponedInit : true
-            },
+
             search: {
                 autoFocus: false,
-                autoFocusOnNavigationPage: true,
-            	replacePathBySectionName: false // replace spec's path by root parent's dir name from json.info
+                autoFocusOnNavigationPage: true
             }
         },
 
@@ -82,7 +78,6 @@ module.exports = {
             modulesEnabled : {
                 headerFooter: true,
                 specDecorations: true,
-                specAssets: true,
                 globalNav: true,
                 search: true
             },
@@ -90,6 +85,10 @@ module.exports = {
             npmPluginsEnabled: {}
         }
     },
+
+    plugins: {
+    },
+
     /*
      * Please pay your attention. This is demo github applicatio key.
      * To get your own one please use github applications service.

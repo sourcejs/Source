@@ -36,6 +36,7 @@ var getSpecs = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
     var reqID = body.id || req.query.id;
+    var cats = body.cats || req.query.cats;
     var reqFilter = body.filter || req.query.filter;
     var reqFilterOut = body.filterOut || req.query.filterOut;
     var parsedData = parseObj;
@@ -65,7 +66,7 @@ var getSpecs = function (req, res, parseObj) {
             });
         }
     } else {
-        data = parsedData.getAll();
+        data = parsedData.getAll(cats);
 
         if (data) {
             res.status(config.statusCodes.OK).json(data);

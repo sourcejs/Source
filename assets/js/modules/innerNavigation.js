@@ -24,7 +24,6 @@ define([
             MAIN_NAV_AC: 'source_main_nav_ac',
             MAIN_NAV_AC_TX: 'source_main_nav_ac_tx',
             INJECT_AFTER: '.source_main h1',
-            hashSymb: '!',
             RESERVED_HEIGHT: 250 // (185 + 15 + 50) px
         }, this.options.modulesOptions.innerNavigation);
         this.moduleOptions = this.options.modulesOptions.innerNavigation;
@@ -150,7 +149,7 @@ define([
         for (var i = 0; i < sections.getQuantity() ; i++) {
             var section = sections.getSections()[i];
             var sectionID = i + 1;
-            var href = (section.id) + this.moduleOptions.hashSymb;
+            var href = (section.id);
 
             appendString += [
                 '<li class="' + this.moduleOptions.NAV_LI_CLASS + '">',
@@ -166,7 +165,7 @@ define([
                     var seqNum = j+1;
                     var subSection = section.subHeaderElements[j];
                     var subSectionID = sectionID + '.' + seqNum;
-                    var subHref = subSection.attr('id') || subSectionID + this.moduleOptions.hashSymb;
+                    var subHref = subSection.attr('id') || subSectionID;
 
 					appendString += [
                         '<li class="' + this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',

@@ -29,6 +29,14 @@
 			margin-bottom: 0 !important;
 			}
 		}
+
+    th, td {
+        border-color: #868686 !important;
+        }
+
+    > *:last-child {
+        margin-bottom: 0 !important;
+        }
     }
 
 .source_info {
@@ -37,7 +45,10 @@
 	padding: 15px 25px !important;
 	min-height: 50px !important;
 	margin: 15px 0 !important;
-	margin-right: @layout_spec--inner-margin-right !important;
+
+    @media @media_min-step-m {
+	    margin-right: @layout_spec--inner-margin-right !important;
+        }
 
     .source_section & {
         margin-right: 0 !important;
@@ -45,10 +56,14 @@
 	}
 
 .source_warn {
-	margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+	margin: 20px 0 !important;
 	padding: 10px 10px 10px 35px !important;
 
 	background: #ffe2e5 url(/source/assets/i/warn.png) no-repeat 13px 13px !important;
+
+    @media @media_min-step-m {
+        margin-right: @layout_spec--inner-margin-right !important;
+        }
 
     .source_section & {
         margin-right: 0 !important;
@@ -56,10 +71,14 @@
 	}
 
 .source_note {
-    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    margin: 20px 0 !important;
     padding: 10px 10px 10px 35px !important;
 
     background: #DCF1FA url(/source/assets/i/note.png) no-repeat 13px 13px !important;
+
+    @media @media_min-step-m {
+        margin-right: @layout_spec--inner-margin-right !important;
+        }
 
     .source_section & {
         margin-right: 0 !important;
@@ -67,11 +86,20 @@
     }
 
 .source_doc {
-    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    margin: 20px 0 !important;
     padding: 10px 25px !important;
 
     background: #DCFCDA !important;
     font-family: Menlo, Monaco, Consolas, monospace !important;
+
+    @media @media_min-step-m {
+        margin-right: @layout_spec--inner-margin-right !important;
+        }
+
+    & code,
+    & p {
+        font-family: Menlo, Monaco, Consolas, monospace !important;
+        }
 
     .source_section & {
         margin-right: 0 !important;
@@ -79,12 +107,17 @@
     }
 
 .source_data {
-    margin: 20px @layout_spec--inner-margin-right 20px 0 !important;
+    margin: 20px 0 !important;
     padding: 10px 25px !important;
 
     border: 1px dotted #ccc !important;
     background: #f9f9f9 !important;
     font-size: 11px !important;
+
+
+    @media @media_min-step-m {
+        margin-right: @layout_spec--inner-margin-right !important;
+        }
 
     .source_section & {
         margin-right: 0 !important;

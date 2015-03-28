@@ -17,13 +17,14 @@ All parameters must be passed as JSON with request, except `id` that accepts reg
 | Param | Value | Description |
 |---|---|---|
 | id | String | Get specific Spec information by ID - `base/btn`, `docs/spec` ([example](/api/specs?id=docs/spec)). |
+| cats | Boolean | Set to true, if you want to get categories info either. |
 | filter | Object | Return list of items by filter (filter something that we want to see). |
 | filterOut | Object | Return list of items by filter (filter something that we DON'T want to see). |
 
 Possible combinations:
 
 ```
-[id|filter|filterOut], [filter|filterOut]
+[cats], [id|filter|filterOut], [filter|filterOut]
 ```
 
 ### Filters

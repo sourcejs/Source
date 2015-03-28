@@ -28,17 +28,19 @@ define([
     loadEvents.init(function() {
         showSections();
 
-        // Chrome scroll bug
-        if ($('html').hasClass('webkit')) {
+        // FF scroll bug, related native to scroll to hash conflicts
+        if ($('html').hasClass('mozilla')) {
+            var triesCount = 0;
 
             var t = setInterval(function() {
-                if (window.pageYOffset !== 0) {
-                    clearInterval(t);
-                }
+                var scrollTopCord = utils.scrollToSection(navHash);
 
-                window.scrollTo(0, 1);
-                utils.scrollToSection(navHash);
-            }, 100);
+                if (window.pageYOffset === scrollTopCord || triesCount < 4) {
+                    clearInterval(t);
+                } else {
+                    triesCount++;
+                }
+            }, 300);
         } else {
             utils.scrollToSection(navHash);
         }

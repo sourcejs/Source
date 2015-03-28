@@ -12,10 +12,22 @@ define([
     'sourceModules/module'
     ], function (module) {
 
-	var NavHighlight = function() {
+	function NavHighlight() {
+		var defaults = {
+			updateHash: true
+		};
 
-		NavHighlight.prototype = module.createInstance();
-		NavHighlight.prototype.constructor = NavHighlight;
+		this.options.modulesOptions.navHighlight = $.extend(true, defaults, this.options.modulesOptions.navHighlight);
+		this.conf = this.options.modulesOptions.navHighlight;
+
+		this.init();
+	}
+
+	NavHighlight.prototype = module.createInstance();
+	NavHighlight.prototype.constructor = NavHighlight;
+
+	NavHighlight.prototype.init = function(){
+		var _this = this;
 
 		// basic utils
 		var utils = (function() {
@@ -123,13 +135,15 @@ define([
 					utils.addClass(parent, '__active');
 				}
 
+				if (_this.conf.updateHash) {
+					// TODO: pause hash change when scrolling - append it only on stand-still
 
-
-				// Modern browsers uses history API for correct back-button-browser functionality
-				if (!!(window.history && history.pushState)) {
-					window.history.replaceState({anchor: closestHeader+1}, document.title, fileNameInUrl + hashFromLink);
-				} else { // ie9 fallback
-					 window.location.hash = hashFromLink;
+					// Modern browsers uses history API for correct back-button-browser functionality
+					if (!!(window.history && history.pushState)) {
+						window.history.replaceState({anchor: closestHeader+1}, document.title, fileNameInUrl + hashFromLink);
+					} else { // ie9 fallback
+						 window.location.hash = hashFromLink;
+					}
 				}
 
 				currentHeader = closestHeader;
@@ -189,7 +203,3 @@ define([
 
 	return new NavHighlight();
 });
-
-
-
-

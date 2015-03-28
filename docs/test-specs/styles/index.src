@@ -1,23 +1,25 @@
-﻿<h1>Spec Page Documentation</h1>
+﻿<h1>Spec Styles Test Page</h1>
 
 <div class="source_info">
-    <p>This page highlights the basic features of SourceJS documentation pages that we call Specs. To create your own Spec, follow this <a href="/docs/base/#creating-first-spec">short guide</a>.</p>
-
-    <p>For text description, SourceJS uses basic HTML markup, and custom CSS class hooks. To render highlighted description block like this, add <code>.source_info</code> class to a any HTML element on page.</p>
+    <% include includes/all-tags.html %>
 </div>
 
 <div class="source_warn">
-    <p>Warning blocks can be added using <code>.source_warn</code>:</p>
-
-    <p>It is highly recommended that you read the HTML source of this document.</p>
+    <% include includes/all-tags.html %>
 </div>
 
 <div class="source_doc">
-    <p>Some related useful information you can wrap with <code>.source_doc</code></p>
+    <% include includes/all-tags.html %>
+</div>
+
+<div class="source_note">
+    <% include includes/all-tags.html %>
 </div>
 
 <p><a class="source_a_d" href="#777">Links can be highlighted as link to design specification by adding <code>.source_a_d</code> as a class on the link</a></p>
 <p><a class="source_a_s" href="#777">Links can be highlighted as link to other specification by adding <code>.source_a_s</code> as a class on the link</a></p>
+
+<a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
 
 <p>Highlighting can be achieved by either wrapping text in <code>&lt;code&gt;</code> tags, or by using the <span class="source_hl">.source_hl class</span>.</p>
 
@@ -27,8 +29,6 @@
     <a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
 
     <p>Notes specific to particular interface elements can be documented here. Heading numbering is generated dynamically, and is supported up to 3 levels deep.</p>
-
-    <p>To render examples of interface elements, place them in a div with a class of <code>.source_example</code>:</p>
 
     <section class="source_example">
         <div class="some-code">
@@ -43,18 +43,6 @@
             <a class="btn btn-primary" href="#777">Hey!</a>
         </div>
     </section>
-
-    <h3>Show source code</h3>
-
-    <!-- Inline JS -->
-    <!--
-    <script>
-        require(['jquery'], function($){
-            var makeSome;
-        });
-    </script>
-    -->
-    <!-- /Inline JS -->
 
     <code class="src-html">
         You can fill custom source code blocks before "source_example".
@@ -76,38 +64,25 @@
     </div>
 
     <p>To render and highlight the source code, wrap it in <code>&lt;code class="src-html"&gt;</code>, <code>&lt;code class="src-css"&gt;</code><br> or <code>&lt;code class="src-js"&gt;</code> tags, depending on the language you want to highlight, like this:</p>
+
     <code class="src-html source_visible">
         &lt;code class="src-html"&gt;
             <div class="foo">Bar</div>
         &lt;/code&gt;
     </code>
-    <code class="src-html source_visible">
-        &lt;code class="src-css"&gt;
-            &lt;style&gt;
-                .css_source {
-                    make-it: awesome;
-                }
-            &lt;/style&gt;
-        &lt;/code&gt;
-    </code>
-    <code class="src-html source_visible">
-        &lt;code class="src-js"&gt;
-            <script>
-                require(['jquery'], function($){
-                    var makeSome;
-                });
-            </script>
-        &lt;/code&gt;
-    </code>
 
-    <p>By default (before 0.6.0) all code blocks are hidden by default, and are shown after toggling "Show source code" in menu. To define block as visible by default, add <code>.source_visible</code> class next to <code>.src-*</code></p>
+    <h3>h3</h3>
+
+    some
+
+    <h4>h4</h4>
+
+    some
 
 </section>
 
 <section class="source_section">
     <h2>Linking Your Project's CSS</h2>
-
-    <p>Your project's CSS should be linked to each spec page to render your examples using <code>/user/core/views/spec.ejs</code>, or you can also add styles specific to a spec page:</p>
 
     <code class="src-html source_visible">
     <!-- Your project styles -->
@@ -124,26 +99,23 @@
 <section class="source_section">
     <h2>Spec Page Markup</h2>
 
-    <p>SourceJS Specs support styling of these semantic HTML tags, that you could use to describe your sections:</p>
+    <% include includes/all-tags.html %>
 
-    <ul>
-      <li><code>p</code></li>
-      <li><code>h1</code></li>
-      <li><code>h2</code></li>
-      <li><code>h3</code></li>
-      <li><code>h4</code></li>
-      <li><code>ol</code></li>
-      <li><code>ul</code></li>
-      <li><code>li</code></li>
-      <li><code>table</code></li>
-      <li><code>code</code></li>
-    </ul>
+    <div class="source_info">
+        <% include includes/all-tags.html %>
+    </div>
 
-    <p>This styling <strong>is not applied inside example blocks</strong>.</p>
+    <div class="source_warn">
+        <% include includes/all-tags.html %>
+    </div>
 
-    <p>From 0.5.0 SourceJS fully supports Markdown based Specs as well. You can use <code>&lt;markdown&gt;</code> tag in any Spec templates including <code>index.src</code>, or just use <code>readme.md</code> templates instead.</p>
+    <div class="source_doc">
+        <% include includes/all-tags.html %>
+    </div>
 
-    <p><a href="/docs/markdown">Read more about markdown support</a></p>
+    <div class="source_note">
+        <% include includes/all-tags.html %>
+    </div>
 
 </section>
 
@@ -155,10 +127,3 @@
     </p>
 
 </section>
-
-<style>
-    .for-tests {}
-</style>
-<script>
-    var forTest = '';
-</script>
