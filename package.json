@@ -43,7 +43,7 @@
     "marked": "^0.3.2",
     "node-fs-extra": "^0.8.1",
     "path": "^0.4.9",
-    "phantomjs": "^1.9.7-15",
+    "phantomjs": "1.9.7-15",
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",

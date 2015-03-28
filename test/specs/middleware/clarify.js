@@ -14,7 +14,7 @@ var jsdom = require('jsdom');
 describe('Clarify test /docs/spec?clarify=true', function () {
     describe('GET from JSDOM /docs/spec?clarify=true...', function () {
         var url = 'http://localhost:8080/docs/spec/?clarify=true';
-        it('should return nothing', function (done) {
+        it('should return nothing (&sections=77)', function (done) {
             request(url)
                 .get('&sections=77')
                 .expect(200)
@@ -142,7 +142,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
     describe('GET from API /docs/spec?clarify=true&fromApi=true...', function () {
         var urlFromApi = 'http://localhost:8080/docs/spec/?clarify=true&fromApi=true';
 
-        it('should return nothing', function (done) {
+        it('should return nothing (&sections=77&apiUpdate=true)', function (done) {
             this.timeout(10000);
             request(urlFromApi)
                 .get('&sections=77&apiUpdate=true')
