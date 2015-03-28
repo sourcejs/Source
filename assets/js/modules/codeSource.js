@@ -206,6 +206,10 @@ define([
                 onlyStatic = false;
                 $('pre[class*="src-"] > code').addClass('__visible');
                 $('pre.source_visible').removeAttr('style');
+
+                //Scroll to section
+                var navHash = utils.parseNavHash();
+                utils.scrollToSection(navHash);
             };
 
             var hideAllCode = function () {
