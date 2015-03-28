@@ -15,13 +15,15 @@ Our main goal is to provide flexible, modular environment for managing reusable 
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**FAQ**](https://github.com/sourcejs/Source/issues?q=is%3Aissue+label%3Afaq+) &nbsp;&nbsp;&nbsp;
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**How-to's**](https://github.com/sourcejs/blog-howto)
 
 ___
 
 SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
 
-## Things that SourceJS is NOT
+## SourceJS is NOT
+
+To clear some confusion around Living Style Guide Platforms comparison, let us define few main differences.
 
 ### Static site builder
 
@@ -29,9 +31,9 @@ SourceJS component management engine was originally developed in [OK.ru](http://
 
 ### CSS Documentation parser
 
-Engine is based on gathering special documentation files (`index.src` by default), where you leave your HTML examples, template calls and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
+Engine is based on gathering special documentation templates (`index.src`, `readme.md` and others), where you leave your HTML examples, template includes and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
 
-**But** engine will support [DSS](https://github.com/darcyclarke/DSS) as a plugin, which is universal CSS Documentation parser. So it will be possible to document your components both in CSS, Markdown and native `index.src`.
+**But** you can use official SourceJS plugin based on DSS, CSS Documentation parser - https://github.com/sourcejs/sourcejs-contrib-dss.
 
 ## Join the community
 
@@ -40,7 +42,8 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
-* 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/examples/) ([source code](https://github.com/sourcejs/examples)) 
+* 28.03.15. SourceJS [Bootstrap example bundle](https://github.com/sourcejs/example-bootstrap-bundle) and [How-to articles blog](https://github.com/sourcejs/blog-howto)
+* 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/examples/) ([source code](https://github.com/sourcejs/examples))
 * 15.03.15. CSS Documentation support with DSS https://github.com/sourcejs/sourcejs-contrib-dss
 * 12.03.15. **[0.5.0](https://github.com/sourcejs/Source/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
 * 24.02.15. [0.4.1](https://github.com/sourcejs/Source/releases/tag/0.4.1) patch release
@@ -52,17 +55,25 @@ If you notice some bugs, or need to help finding a better solution in your proce
 * 31.07.14. 0.4.0-beta release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
 * 31.01.14. [Preview](http://youtu.be/cefy_U5NU4o) of Source companion tool for prototyping interfaces using existing components
-* 31.12.13. **0.3.2** release
+* 31.12.13. **0.3.2 release**
 * 09.10.13. Engine [presentation](http://rhr.me/pres/source-min/) on [Fronteers Jam](http://fronteers.nl/congres/2013/jam-session) ([video](https://vimeo.com/77989211))
 * 23.09.13. Published [video recording](http://www.youtube.com/watch?v=3HNW5Bru0Ws) of Source engine presentation from [RIT++](http://ritconf.ru/) 2013 (RU)
 
 ## Upcoming updates
 
-* Support of multiple documentation projects in one environment
-* Screencasts and engine usage demos
-* Full english documentation stack for core API
-* Test coverage
-* Stable v1.0.0 version
+Respecting open source community, we track all our tasks publicly on GitHub. Follow our [milestones](https://github.com/sourcejs/example-bootstrap-bundle) and twitter announcements [@SourceJS](http://sourcejs.com) to keep in sync with latest plans.
+
+List of few global upcoming features
+
+* Refactored code snippets API
+* Integrations with JSDoc and drop-in replacement setup for other Style Guide tools like KSS/Pattern Lab
+* More screencasts and engine usage demos
+* Wider support of multiple documentation projects in one environment
+* Full documentation stack for core API for writing plugins
+
+SourceJS follows semantic versioning and we do our best to keep as less breaking changes as possible.
+
+Preparing to 1.0 release, we plan to keep migration path very smooth and painless. So if you will keep in sync with minor releases and API deprecation announcements, you won't face any problems setting up major release updates.
 
 ## Useful information
 
