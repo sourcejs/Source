@@ -228,6 +228,10 @@ define([
 
             _this.renderNavigationList(catalog, targetData);
         });
+
+        // Scroll to hash after render
+        var navHash = utils.parseNavHash();
+        utils.scrollToSection(navHash);
     };
 
     /**
