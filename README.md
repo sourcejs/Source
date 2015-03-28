@@ -42,6 +42,7 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
+* 28.03.15 [0.5.1](https://github.com/sourcejs/Source/releases/tag/0.5.1) patch release with EJS pre-rendering and various bugfixes
 * 28.03.15. SourceJS [Bootstrap example bundle](https://github.com/sourcejs/example-bootstrap-bundle) and [How-to articles blog](https://github.com/sourcejs/blog-howto)
 * 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/examples/) ([source code](https://github.com/sourcejs/examples))
 * 15.03.15. CSS Documentation support with DSS https://github.com/sourcejs/sourcejs-contrib-dss
