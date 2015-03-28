@@ -50,6 +50,7 @@
     "time-grunt": "~0.2.10"
   },
   "scripts": {
+    "build": "npm i && grunt",
     "start": "node app",
     "test": "grunt test"
   },
