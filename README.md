@@ -44,8 +44,8 @@ If you notice some bugs, or need to help finding a better solution in your proce
 ## Updates
 * 28.03.15 [0.5.1](https://github.com/sourcejs/Source/releases/tag/0.5.1) patch release with EJS pre-rendering and various bugfixes
 * 28.03.15. SourceJS [Bootstrap example bundle](https://github.com/sourcejs/example-bootstrap-bundle) and [How-to articles blog](https://github.com/sourcejs/blog-howto)
-* 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/examples/) ([source code](https://github.com/sourcejs/examples))
-* 15.03.15. CSS Documentation support with DSS https://github.com/sourcejs/sourcejs-contrib-dss
+* 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/) ([source code](https://github.com/sourcejs/example-specs-showcase))
+* 15.03.15. CSS Documentation support with [SourceJS DSS plugin](https://github.com/sourcejs/sourcejs-contrib-dss)
 * 12.03.15. **[0.5.0](https://github.com/sourcejs/Source/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
 * 24.02.15. [0.4.1](https://github.com/sourcejs/Source/releases/tag/0.4.1) patch release
 * 05.02.15. Mentioned at in-depth [Style Guides Tools overview talk](http://youtu.be/Fr23VpM6wl4ds)

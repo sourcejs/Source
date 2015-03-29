@@ -104,7 +104,7 @@ Read our how-to articles, to get more insights on the [SourceJS catalog set-up](
 
 ### Specs Showcase
 
-Highlighting the variety of different ways for organizing Spec pages we gathered another special bundle. View it's source code at [showcase repo](https://github.com/sourcejs/examples) and compare with [rendered result](http://sourcejs.com/specs/examples/).
+Highlighting the variety of different ways for organizing Spec pages we gathered another special bundle. View it's source code at [showcase repo](https://github.com/sourcejs/example-specs-showcase) and compare with [rendered result](http://sourcejs.com/specs/example-specs-showcase/).
 
 Showcase includes both native Specs examples, and ones that are rendered with plugins like [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) and [sourcejs-jade](http://github.com/sourcejs/sourcejs-jade).
 
