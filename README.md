@@ -21,6 +21,8 @@ ___
 
 SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
 
+[Materials for presentations](https://github.com/sourcejs/pres).
+
 ## SourceJS is NOT
 
 To clear some confusion around Living Style Guide Platforms comparison, let us define few main differences.
