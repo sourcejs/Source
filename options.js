@@ -11,7 +11,7 @@ module.exports = {
             port: 8080,
             infoFile: 'info.json',
             specPaths: ['specs'],
-            specFiles: ['index.src', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html']
+            specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html']
         },
         api: {
             specsData: 'core/api/data/pages-tree.json',

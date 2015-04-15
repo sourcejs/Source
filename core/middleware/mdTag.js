@@ -1,6 +1,7 @@
 'use strict';
 
-var marked = require('marked');
+var path = require('path');
+var processMd = require(path.join(global.pathToApp,'core/lib/processMd'));
 
 /*
  * Get html from response and parse contained Markdown markup
@@ -22,9 +23,7 @@ exports.process = function (req, res, next) {
             match = match.replace(/\t/g, '').replace(/ +(?= )/g, '');
 
             // render markdown
-            match = marked(match);
-
-            return match;
+            return processMd(match);
         });
 
         req.specData.renderedHtml = html;
