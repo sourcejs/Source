@@ -11,25 +11,29 @@ var renderer = new marked.Renderer();
 // Module configuration
 var globalConfig = global.opts.core && global.opts.core.processMd ? global.opts.core.processMd : {};
 var config = {
-    espaceCodeHTML: true
+    espaceCodeHTML: true,
+
+    marked: {
+        renderer: renderer
+    }
 };
 // Overwriting base options
 deepExtend(config, globalConfig);
 
-marked.setOptions({
-    renderer: renderer
-});
+marked.setOptions(config.marked);
 
 // Processing with native markdown renderer
 renderer.code = function (code, language) {
-    if (config.espaceCodeHTML) code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
     if (language === 'example') {
         return '<div class="source_example">' + code + '</div>';
-    } else if (language && language !== '') {
-        return '<code class="src-' + language + ' source_visible">' + code + '</code>';
     } else {
-        return '<pre><code class="lang-source_wide-code">' + code + '</code></pre>';
+        if (config.espaceCodeHTML) code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        if (language && language !== '') {
+            return '<code class="src-' + language + ' source_visible">' + code + '</code>';
+        } else {
+            return '<pre><code class="lang-source_wide-code">' + code + '</code></pre>';
+        }
     }
 };
 
