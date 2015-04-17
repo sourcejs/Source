@@ -87,6 +87,9 @@ exports.process = function (req, res, next) {
                         specData.removeChild(headHook);
                     }
 
+                    // make sure the body is not passed again once the head is removed
+                    specData = specData.getElementsByTagName('body')[0];
+
                     // final data object for the template
                     var templateJSON = {
                         content: specData.innerHTML,
