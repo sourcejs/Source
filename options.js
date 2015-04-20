@@ -57,8 +57,9 @@ module.exports = {
             },
 
             search: {
-                autoFocus: false,
-                autoFocusOnNavigationPage: true
+                autofocusOnNavigationPage: true,
+                autofocusOnSpecPage: false,
+                activateOnLoad: true
             }
         },
 
