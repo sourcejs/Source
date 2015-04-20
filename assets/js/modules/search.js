@@ -17,11 +17,7 @@ define([
 'use strict';
 
 var Search = function() {
-    this.header = $('.source_header');
     this.data = [];
-    this.activated = false;
-    this.targetField = $('#livesearch');
-
     this.options.modulesOptions.search = $.extend (true, {
         classes: {
             searchResult: "__search-res",
@@ -31,28 +27,37 @@ var Search = function() {
             searchResults: "Search results:",
             showAllButtonText: "Show all search results"
         },
-        suggestionsLimit: 4
+        suggestionsLimit: 4,
+        activateOnLoad: true
     }, this.options.modulesOptions.search);
 
-    this.initSearchField();
-
+    this.init();
     return this;
 };
 
-Search.prototype = module.createInstance();
 Search.prototype.constructor = Search;
+Search.prototype = module.createInstance();
+
+Search.prototype.init = function() {
+    this.activated = false;
+    this.targetField = $('#livesearch');
+    this.header = $('.source_header');
+
+    this.prepareAutoCompleteData();
+    this.initSearchField();
+};
 
 Search.prototype.prepareAutoCompleteData = function() {
+    this.data = this.data || [];
+    if (this.data.length) return;
+
     var AutocomleteDataItem = function (value, data) {
         this.value = value;
         this.data = data;
     };
 
-    this.data = [];
-
     var sort = JSON.parse(localStorage.getItem("source_enabledFilter")) || {"sortDirection": "forward", "sortType": "sortByAlph"};
     var pagesData = parseFileTree.getSortedCatalogsArray("", globalNav.getSortCondition(sort.sortType, sort.sortDirection));
-
 
     for (var page in pagesData) {
         if (pagesData.hasOwnProperty(page)) {
@@ -120,30 +125,49 @@ Search.prototype.activateAutocomplete = function() {
     this.activated = true;
 };
 
+function getActivationHandler(ctx) {
+    return function() {
+        ctx.header.addClass(ctx.activeClass);
+        if (!ctx.isActive) {
+            ctx.callback();
+        }
+    };
+}
+
 Search.prototype.initSearchField = function() {
     var isNavigation = $('meta[name=source-page-role]').attr('content') === 'navigation';
     var searchOptions = this.options.modulesOptions.search;
     var _this = this;
 
-    if (isNavigation && searchOptions.autoFocusOnNavigationPage ||  searchOptions.autoFocus) {
+    if (searchOptions.activateOnLoad) {
+        this.activateAutocomplete();
+    }
+
+    var autofocusOnNavEnabled = isNavigation && searchOptions.autofocusOnNavigationPage;
+    var autofocusOnSpecEnabled = !isNavigation && searchOptions.autofocusOnSpecPage;
+    if (autofocusOnNavEnabled || autofocusOnSpecEnabled) {
         setTimeout(function() { //First focus fix
             _this.targetField.focus();
         }, 1);
     }
 
+    var eventContext = {
+        header: _this.header,
+        activeClass: searchOptions.classes.headerFocus,
+        isActive: _this.activated,
+        callback: function() {
+            return _this.activateAutocomplete();
+        }
+    };
+
     //Unblur header on focus
     this.targetField.on({
-        'focus':function () {
-            _this.header.addClass(searchOptions.classes.headerFocus);
-            if (!_this.activated) {
-                _this.prepareAutoCompleteData();
-                _this.activateAutocomplete();
-            }
-        },
+        'focus': getActivationHandler(eventContext),
         'blur':function () {
             _this.header.removeClass(searchOptions.classes.headerFocus);
         }
     });
+    this.targetField.one('keyup', getActivationHandler(eventContext));
 };
 
 return new Search();
