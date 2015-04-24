@@ -31,7 +31,9 @@ global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
 // We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';
 
-global.pathToApp = __dirname;
+global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
+    return match.toLowerCase();
+});
 
 // Default logger
 var logger = require('./core/logger');
