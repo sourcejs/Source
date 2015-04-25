@@ -31,6 +31,7 @@ global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
 // We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';
 
+// Define absolute path to app, normalizing windows disk name
 global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
     return match.toLowerCase();
 });
