@@ -34,7 +34,6 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             modules: ["assets/js/modules/**/*.js"],
-            libs: ["assets/js/libs/**/*.js"],
             // routing files are added into exceptions to avoid adding extra rules for express framework
             core: ["core/**/*.js", "!core/routes/*.js"]
         },
