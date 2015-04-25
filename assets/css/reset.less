@@ -25,6 +25,8 @@
     color: #333;
     }
 
+
+
 /* Fonts
 -------------------------------------------------- */
 
@@ -49,23 +51,23 @@
 
 /* /Fonts */
 
-/* Text decorations
--------------------------------------------------- */
 
-.source_ul {
-	margin: 0; padding: 0;
-	margin-left: 18px;
-
-	list-style: outside disc;
-	}
-	.source_ul li {
-		margin: 5px 0;
-		}
-
-/* /Text decorations */
 
 /* Spec page resets
 -------------------------------------------------- */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-width: none;
+    max-width: none;
+    }
+
+@{cleaningClasses} {
+    background: none;
+    }
+
 .source-only(a,{
     color: #4792D2;
     text-decoration: none;
@@ -77,39 +79,52 @@
         text-decoration: underline;
         }
     });
-.source-only(div,{});
+
+.source-only(div,{
+    line-height: 1.5;
+    });
+
 .source-only(p,{
     font-family: @font-family-main;
     font-size: @fz-size-m;
     line-height: 1.5;
     margin: 15px 0;
     });
+
 .source-only(ul,{
     margin: 25px 0 25px 22px;
     });
+
 .source-only(ul ul,{
     margin-top: 0 !important;
     });
+
 .source-only(li,{
     font-size: @fz-size-m;
     line-height: 1.5;
     list-style: disc inside;
     });
+
 .source-only(ol,{
     margin: 25px 0 25px 22px;
     });
+
 .source-only(ol li,{
     list-style: decimal inside !important;
     });
+
 .source-only(ol ol,{
     margin-top: 0 !important;
     });
+
 .source-only(ul ol,{
     margin-top: 0 !important;
     });
+
 .source-only(ol ul,{
     margin-top: 0 !important;
     });
+
 .source-only(h1,{});
 .source-only(h2,{});
 .source-only(h3,{});
@@ -120,11 +135,18 @@
 .source-only(label,{});
 .source-only(q,{});
 .source-only(blockquote,{});
-.source-only(strong,{});
-.source-only(b,{});
+
+.source-only(strong,{
+    font-weight: 700;
+    });
+.source-only(b,{
+    font-weight: 700;
+    });
+
 .source-only(em,{});
 .source-only(i,{});
 .source-only(section,{});
+
 .source-only(table,{
     margin: 20px 0 30px;
     border-collapse: collapse;
@@ -157,18 +179,6 @@
 .source-only(nav,{});
 .source-only(aside,{});
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-width: none;
-    max-width: none;
-    }
-
-@{cleaningClasses} {
-    background: none;
-    }
-
 .source_main > .source_main_nav,
 .source_main > .source_deps,
 .source_main > .source_warn,
@@ -189,52 +199,6 @@ body {
 .source_main > p > a{
     .reset();
     }
-
-.source-section-reset(div, {
-    line-height: 1.5
-    });
-
-.source-section-reset(p, {
-    font-family: @font-family-main;
-    font-size: @fz-size-m;
-    line-height: 1.5;
-    margin: 15px 0;
-    });
-
-.source-section-reset(a, {
-    color: #4792D2;
-    text-decoration: none;
-    font-size: @fz-size-m;
-    line-height: 1.5;
-
-    &:hover {
-        color: #1c76c2;
-        text-decoration: underline;
-        }
-    });
-
-.source-section-reset(b, {
-    font-weight: 700;
-    });
-
-.source-section-reset(strong, {
-    font-weight: 700;
-    });
-
-.source-section-reset(ol, {
-    margin: 25px 0 25px 22px;
-    });
-
-.source-section-reset(~'ol > li', {
-    font-family: @font-family-main;
-    font-size: @fz-size-m;
-    line-height: 1.5;
-    list-style: outside decimal;
-    });
-
-//a {
-//    box-shadow: 1px 1px 1px red;
-//    }
 
 /* /Spec page resets */
 
