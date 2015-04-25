@@ -39,44 +39,6 @@ module.exports.parseSpecUrlPath = function(urlPath){
 };
 
 /**
- * Read Spec file from file system
- *
- * @param {String} pathToSpec - path to spec ("/base/btn/")
- * @param {String} [ext] - spec file extension, if omitted, we will try .src and .html
- *
- * @returns {String} Return a content of a file
- */
-module.exports.getSpecFile = function(pathToSpec, ext){
-    var output = '';
-    var allSpecsPath = global.app.get('user');
-    var basePath = path.join(allSpecsPath, pathToSpec);
-    var srcPath = path.join(basePath, 'index.src');
-    var htmlPath = path.join(basePath, 'index.html');
-
-    if (ext) {
-        var knownExtPath = path.join(basePath, 'index.' + ext);
-
-        try {
-            output = fs.readFileSync(knownExtPath, 'utf-8');
-        } catch (e) {
-            output = false;
-        }
-    } else {
-        try {
-            output = fs.readFileSync(srcPath, 'utf-8');
-        } catch (e) {
-            try {
-                output = fs.readFileSync(htmlPath, 'utf-8');
-            } catch (e) {
-                output = false;
-            }
-        }
-    }
-
-    return output;
-};
-
-/**
  * Parse spec ID from URL
  *
  * @param {String} urlToSpec - spec path or url ("/base/btn/")
