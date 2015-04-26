@@ -43,51 +43,87 @@ var prepareExcludesRegex = function(){
     return new RegExp(dirsForRegExp);
 };
 
-var getSpecMeta = module.exports.getSpecMeta = function(specPath){
-    var page = {};
-    var _specPath = specPath;
 
-    if (specPath && fs.existsSync(specPath)) {
-        _specPath = _specPath.replace(/\\/g, '/');
-    } else {
-        return page;
-    }
+/**
+ * Prepare relative path for web usage (like `/docs/spec`, `/specs/btn`) out of absolute path
+ *
+ * @param {String} path - absolute path to Spec directory or Spec file
+ *
+ * @returns {String} Return Spec file meta info (used in file-tree.json and in other places)
+ */
+var getRelativeSpecPath = module.exports.getRelativeSpecPath = function(absolutePath){
+    var relativeSpecPath;
 
-    var fileStats = fs.statSync(_specPath);
-    var targetFile = path.basename(_specPath);
-    var dirName = path.dirname(_specPath);
-    var d = new Date(fileStats.mtime);
+    if (absolutePath.lastIndexOf(config.specsRoot, 0) === 0) {
+        // If starts with root (specs)
 
-    var urlForJson;
-
-    // If starts with root (specs)
-    if (_specPath.lastIndexOf(config.specsRoot, 0) === 0) {
         // Cleaning path to specs root folder
-        urlForJson = _specPath.replace(config.specsRoot, '');
+        relativeSpecPath = absolutePath.replace(config.specsRoot, '');
     } else {
         // Cleaning path for included folders
-        urlForJson = _specPath.replace(normalizedPathToApp, '');
+
+        relativeSpecPath = absolutePath.replace(normalizedPathToApp, '');
     }
 
-    //Removing filename from path
-    urlForJson = urlForJson.split('/');
-    urlForJson.pop();
-    urlForJson = urlForJson.join('/');
+    return relativeSpecPath;
+};
 
-    page.id = urlForJson.substring(1);
-    page.url = urlForJson || '';
-    page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
-    page.lastmodSec = Date.parse(fileStats.mtime) || '';
-    page.fileName = targetFile || '';
-    page.thumbnail = false;
 
-    var thumbPath = path.join(dirName, 'thumbnail.png').replace(/\\/g, '/');
-    if (fs.existsSync(thumbPath)) {
-        // If starts with root (specs)
-        if (_specPath.lastIndexOf(config.specsRoot, 0) === 0) {
-            page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
-        } else {
-            page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
+/**
+ * Prepares Spec meta object from specs directory or Spec file path
+ *
+ * @param {String} specDirOrPath - path to Spec directory or Spec file
+ *
+ * @returns {Object} Return Spec file meta info (used in file-tree.json and in other places)
+ */
+var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
+    var page = {};
+
+    // Check if arg is provided and path exists
+    if ( !(specDirOrPath && fs.existsSync(specDirOrPath))) return page;
+
+    // Normalize windows URL and remove trailing slash
+    var _specDirOrPath = specDirOrPath.replace(/\\/g, '/').replace(/\/$/, '');
+    var isSpecPath = path.extname(_specDirOrPath) !== '';
+    var specPath;
+
+    // Try to get specPath
+    if (isSpecPath) {
+        specPath = _specDirOrPath;
+    } else {
+        specPath = specUtils.getSpecFromDir(_specDirOrPath);
+    }
+
+    var relativeSpecPath = getRelativeSpecPath(_specDirOrPath);
+
+    if (isSpecPath) {
+        relativeSpecPath = path.dirname(relativeSpecPath);
+    }
+
+    // Remove first slash for ID
+    page.id = relativeSpecPath.substring(1);
+    page.url = relativeSpecPath;
+
+    // If we have Spec, get additional meta
+    if (specPath) {
+        var fileStats = fs.statSync(specPath);
+        var targetFile = path.basename(specPath);
+        var dirName = path.dirname(specPath);
+        var d = new Date(fileStats.mtime);
+
+        page.lastmod = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') || '';
+        page.lastmodSec = Date.parse(fileStats.mtime) || '';
+        page.fileName = targetFile || '';
+        page.thumbnail = false;
+
+        var thumbPath = path.join(dirName, 'thumbnail.png').replace(/\\/g, '/');
+        if (fs.existsSync(thumbPath)) {
+            // If starts with root (specs)
+            if (specPath.lastIndexOf(config.specsRoot, 0) === 0) {
+                page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
+            } else {
+                page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
+            }
         }
     }
 
@@ -130,8 +166,7 @@ var fileTree = function (processingDir) {
             }
 
         } else if (targetFile.toLowerCase() === config.infoFile.toLowerCase()) {
-            var specPath = specUtils.getSpecFromDir(processingDir);
-            var pageMeta = getSpecMeta(specPath);
+            var pageMeta = getSpecMeta(processingDir);
 
             var infoJsonPath = processingDir + '/' + config.infoFile;
 
@@ -140,7 +175,7 @@ var fileTree = function (processingDir) {
                 try {
                     fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
                 } catch (e) {
-                    console.error("Error reading info.json: " + infoJsonPath);
+                    global.console.warn("Error reading info.json: " + infoJsonPath);
 
                     fileJSON = {
                         error: "Cannot parse the file",
@@ -165,7 +200,7 @@ var writeDataFile = function (data, callback) {
 
     fs.outputFile(outputFile, JSON.stringify(data, null, 4), function (err) {
         if (err) {
-            console.log('Error writing file tree: ', err);
+            global.console.warn('Error writing file tree: ', err);
             callback(err);
             return;
         }

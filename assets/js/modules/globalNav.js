@@ -48,7 +48,8 @@ define([
             "noDataAttr" : "Data-nav attr not set",
             "loading": "Loading...",
             "hidePreview": "Hide thumbnails",
-            "showPreview": "Show thumbnails"
+            "showPreview": "Show thumbnails",
+            "noSpec": "No Spec file defined"
         }
     };
 
@@ -322,6 +323,7 @@ define([
         var author = itemData.author
             ? " | " + navConfig.labels.author + ": " + itemData.author
             : "";
+        var lastMod = itemData.lastmod || navConfig.labels.noSpec;
 
         // fixing relative path due to server settings
         var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
@@ -337,7 +339,7 @@ define([
                 .prepend('<img class="'+ classes.catalogListImage +'" src="'+ imageUrl +'">');
         }
         result.find("." + classes.catalogListTitle).html(itemData.title);
-        result.find("." + classes.catalogListDate).html(itemData.lastmod + author);
+        result.find("." + classes.catalogListDate).html(lastMod + author);
 
         return result;
     };
