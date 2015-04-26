@@ -221,7 +221,7 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
         }, config.busyTimeout);
     } else {
         var prevData = {};
-        var dataStoragePath = global.opts.core.api.specsData;
+        var dataStoragePath = path.join(global.pathToApp, global.opts.core.api.specsData);
         callback = typeof callback === 'function' ? callback : function(){};
 
         if (unflattenData) {
