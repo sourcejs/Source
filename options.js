@@ -26,7 +26,8 @@ module.exports = {
             mainPageTrigger: false
         },
         watch: {
-            enabled: true
+            enabled: true,
+            foreverWatchEnabled: true
         }
     },
 

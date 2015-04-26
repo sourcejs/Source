@@ -164,7 +164,12 @@ try {
 
 // Watchers
 if (global.opts.core.watch.enabled && global.MODE === 'development') {
-    require('./core/watchNewSpecs');
+
+    if (global.opts.core.watch.foreverWatchEnabled) {
+        require('./core/watch');
+    } else {
+        require('./core/watch/childWatch');
+    }
 }
 
 /* /Includes */

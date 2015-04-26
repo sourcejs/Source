@@ -22,6 +22,7 @@
     "express-session": "^1.10.2",
     "extend": "~1.2.1",
     "flat": "^1.2.1",
+    "forever-monitor": "^1.5.2",
     "fs-extra": "~0.11.1",
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "~1.0.0",
