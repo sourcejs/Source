@@ -443,7 +443,7 @@ define([
                     console.log('Error updating navigation: ', err);
 
                     ntf.alert('Error updating navigation');
-                })
+                });
         });
     };
 
