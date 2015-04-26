@@ -104,11 +104,20 @@ if (global.opts.core.fileTree.mainPageTrigger && global.MODE !== 'presentation')
     global.app.use(function(req, res, next){
 
         // Updating navigation on each main page visit
-        if (req.url === "/") fileTree.scan();
+        if (req.url === '/') fileTree.scan();
 
         next();
     });
 }
+
+// Update file tree via api
+global.app.use('/api/updateFileTree', function(req, res){
+    fileTree.scan();
+
+    res.jsonp({
+        message: 'Navigation succesfully updated.'
+    });
+});
 
 
 // Middleware that loads spec content
