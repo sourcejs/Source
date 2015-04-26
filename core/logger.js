@@ -15,7 +15,11 @@ var config =  {
                 "type": "logLevelFilter",
                 "level": global.commander.log || (global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel),
                 "appender": {
-                    "type": "console"
+                    "type": "console",
+                    "layout": {
+                        "type": "pattern",
+                        "pattern": "%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] -%] %m"
+                    }
                 }
             },
             {
