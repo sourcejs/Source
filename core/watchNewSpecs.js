@@ -4,7 +4,6 @@ var deepExtend = require('deep-extend');
 var path = require('path');
 var fileTree = require(path.join(global.pathToApp, 'core/file-tree'));
 var watch = require('gulp-watch');
-var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
 var config = {
     enabled: true,
@@ -17,9 +16,8 @@ var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareData = function(data, targetFile){
     var dir = path.dirname(targetFile);
-    var specPath = specUtils.getSpecFromDir(dir);
 
-    return deepExtend(fileTree.getSpecMeta(specPath), data);
+    return deepExtend(fileTree.getSpecMeta(dir), data);
 };
 
 watch(global.pathToApp + '/**/info.json', function(vinyl){
@@ -29,7 +27,8 @@ watch(global.pathToApp + '/**/info.json', function(vinyl){
     var specID = path.dirname(cleanPath);
     var rawContents;
 
-    global.log.debug('file change', filePath);
+    global.log.debug('event', event);
+    global.log.debug('changed file', filePath);
 
     try {
         rawContents = JSON.parse(String(vinyl.contents));
