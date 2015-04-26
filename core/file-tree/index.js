@@ -8,6 +8,8 @@ var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 var globalOpts = global.opts.core;
+var prettyHrtime = require('pretty-hrtime');
+
 var busy = false;
 
 var config = {
@@ -297,10 +299,15 @@ var scan = module.exports.scan = function (callback) {
             scan(callback);
         }, config.busyTimeout);
     } else {
+        var start = process.hrtime();
+
         callback = typeof callback === 'function' ? callback : function () {};
 
         writeDataFile(fileTree(config.specsRoot), function(){
             callback();
+
+            var end = process.hrtime(start);
+            global.log.debug('Full file-tree scan took: ', prettyHrtime(end));
 
             setTimeout(function(){
                 busy = false;
