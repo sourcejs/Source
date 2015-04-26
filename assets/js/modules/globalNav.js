@@ -9,8 +9,9 @@ define([
     "sourceModules/module",
     "sourceModules/utils",
     "sourceModules/parseFileTree",
+    "sourceModules/ntf",
     "sourceLib/lodash"
-    ], function($, module, utils, parseFileTree, _) {
+    ], function($, module, utils, parseFileTree, ntf, _) {
     "use strict";
 
     /**
@@ -39,7 +40,8 @@ define([
             "catalogFilter" : "source_catalog-filter",
             "sourceSubhead" : "source_subhead",
             "catalogText": "source_catalog_tx",
-            "showPreview": "__show-preview"
+            "showPreview": "__show-preview",
+            "updateButton": "source_catalog_update-button"
         },
         "labels": {
             "noDataInCat": "No data in specified nav category",
@@ -49,6 +51,7 @@ define([
             "loading": "Loading...",
             "hidePreview": "Hide thumbnails",
             "showPreview": "Show thumbnails",
+            "updateButton": "Update navigation",
             "noSpec": "No Spec file defined"
         }
     };
@@ -78,23 +81,23 @@ define([
      * It uses lo-dash template function.
      */
     GlobalNav.prototype.templates = {
-        "catalogList": _.template([
+        catalogList: _.template([
             '<ul class="<%= classes.catalogList %>">',
                 '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
             '</ul>'
         ].join("")),
 
-        "catalogHeader": _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
+        catalogHeader: _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
 
-        "catalogMeta": _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
+        catalogMeta: _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
 
-        "catalogLinkToAll": _.template([
+        catalogLinkToAll: _.template([
             '<li class="<%= classes.catalogListItem %> <%= classes.catalogListAll %>">',
                 '<a class="<%= classes.catalogLinkToAll %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
             '</li>'
         ].join("")),
 
-        "navigationListItem": _.template([
+        navigationListItem: _.template([
             '<li class="<%= classes.catalogListItem %>">',
                 '<a class="<%= classes.catalogListLink %> source_a_g" href="#">',
                     '<span class="<%= classes.catalogListTitle %>"></span>',
@@ -103,11 +106,12 @@ define([
             '</li>'
         ].join("")),
 
-        "catalogFilter": _.template('<div class="<%= classes.catalogFilter %>"></div>'),
+        catalogFilter: _.template('<div class="<%= classes.catalogFilter %>"></div>'),
 
-        "togglePreviewLink": _.template('<a class="<%= classes.catalogImageThumbler %>" href="#"><%= togglePreviewLabel %></a>'),
+        togglePreviewLink: _.template('<button class="<%= classes.catalogImageThumbler %>"><%= togglePreviewLabel %></button>'),
+        updateButton: _.template('<button class="<%= classes.updateButton %>"><%= labels.updateButton %></button>'),
 
-        "sortList": _.template([
+        sortList: _.template([
             '<ul class="source_sort-list">',
                 '<li class="source_sort-list_li">Sort by&nbsp;</li>',
                 '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>',
@@ -370,7 +374,7 @@ define([
         }
         this.renderSortFilters();
         this.renderPreviewsToggler();
-
+        this.updateButton();
     };
 
     /**
@@ -407,6 +411,39 @@ define([
 
             $this.text(previewText);
             catalog.toggleClass(classes.showPreview);
+        });
+    };
+
+    /**
+     * @method updateButton. It draws link that allows to trigger page update.
+     */
+    GlobalNav.prototype.updateButton = function() {
+        var classes = this.options.modulesOptions.globalNav.classes;
+        var labels = this.options.modulesOptions.globalNav.labels;
+        var $filter = $("." + classes.catalogFilter);
+
+        $filter.append(
+            ' | ',
+            this.templates.updateButton({
+                classes: classes,
+                labels: labels
+            }
+        ));
+
+        $(document).on("click", "." + classes.updateButton, function(e) {
+            e.preventDefault();
+
+            $.get('/api/updateFileTree')
+                .done(function (data) {
+                    if (utils.isDevelopmentMode()) console.log('Navigation update done: ', data.message);
+
+                    location.reload();
+                })
+                .fail(function (err) {
+                    console.log('Error updating navigation: ', err);
+
+                    ntf.alert('Error updating navigation');
+                })
         });
     };
 
