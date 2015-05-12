@@ -2,7 +2,7 @@
   "author": "SourceJS contributors team",
   "description": "Living Style Guide Engine and Maintenance Environment for Front-end Components.",
   "name": "sourcejs",
-  "version": "0.5.3-dev",
+  "version": "0.5.3-bb",
   "repository": {
     "type": "git",
     "url": "https://github.com/sourcejs/Source.git"
