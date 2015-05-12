@@ -51,7 +51,7 @@
     "time-grunt": "~0.2.10"
   },
   "scripts": {
-    "postinstall": "node ./core/postInstall",
+    "postinstall": "grunt && node ./core/postInstall",
     "build": "npm i && grunt",
     "start": "node app",
     "test": "grunt test"

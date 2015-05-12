@@ -10,7 +10,7 @@ var pathToApp = __dirname.replace(/^\w:\\/, function (match) {
 
 var enginePath = path.join(pathToApp, '../');
 var userPath = path.join(enginePath, '../../');
-var internalUserPath = path.join(enginePath, 'user1');
+var internalUserPath = path.join(enginePath, 'user');
 var parentNodeModules = path.join(enginePath, '../');
 
 // check if sourcejs is installed as a node_package
