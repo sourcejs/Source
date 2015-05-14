@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var ejs = require('ejs');
 var jsdom = require('jsdom');
 var path = require('path');
@@ -102,6 +102,8 @@ exports.process = function (req, res, next) {
 
                     // render page and send it as response
                     req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+                    req.specData.renderedHtml += '<!-- SourceJS version: ' + global.engineVersion + ' -->';
 
                     next();
                 }

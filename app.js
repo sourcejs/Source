@@ -6,7 +6,7 @@
 
 var express = require('express');
 var colors = require('colors');
-var fs = require('fs');
+var fs = require('fs-extra');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
@@ -36,6 +36,8 @@ global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
     return match.toLowerCase();
 });
 
+global.engineVersion = fs.readJsonSync(global.pathToApp + '/package.json', {throws: false}).version;
+
 // Default logger
 var logger = require('./core/logger');
 var log = logger.log;
@@ -47,6 +49,12 @@ if (commander.port) global.opts.core.common.port = parseInt(commander.port);
 
 
 /* App config */
+
+// Version
+app.use(function (req, res, next) {
+    res.header('X-powered-by', 'SourceJS ' + global.engineVersion);
+    next();
+});
 
 // Optimization
 global.app.use(require('compression')());
