@@ -18,9 +18,9 @@ global.opts = loadOptions();
 
 // Arguments parse */
 commander
-    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
-    .option('--html', 'Turn on HTML parser on app start')
+    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ').', global.opts.core.common.port)
+    .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .parse(process.argv);
 
 global.commander = commander;
@@ -150,7 +150,13 @@ require('./core/routes');
 require('./core/api');
 
 global.app.use('/api/options', function(req, res){
-    res.jsonp(loadOptions().assets);
+    var options = loadOptions();
+    var assetsOptions = options.assets;
+
+    // TODO: https://github.com/sourcejs/Source/issues/142
+    assetsOptions.plugins = options.plugins;
+
+    res.jsonp(assetsOptions);
 });
 
 // User extenstions

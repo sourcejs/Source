@@ -19,9 +19,6 @@ module.exports = {
             specsTestData: 'test/data/api-test-specs.json',
             htmlTestData: 'test/data/api-test-html.json'
         },
-        parseHTML: {
-            onStart: false
-        },
         fileTree: {
             mainPageTrigger: false
         },
@@ -89,6 +86,9 @@ module.exports = {
     },
 
     plugins: {
+        htmlParser: {
+            enabled: false
+        }
     },
 
     /*

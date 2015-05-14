@@ -6,7 +6,7 @@
  *
  * */
 
-// TODO: wrap as requirejs module, and combine with phantom-runner.js
+// TODO: wrap as requirejs module, and combine with phantomRunner.js
 
 function SourceGetSections() {
     // Defining strict inside func, because PhantomJS stops evaluating this script if it's on top

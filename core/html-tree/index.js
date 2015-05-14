@@ -2,42 +2,16 @@
 
 var path = require('path');
 var fs = require('fs-extra');
-var async = require('async');
-var phantom = require('phantomjs');
-var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var deepExtend = require('deep-extend');
-var childProcess = require('child_process');
+
 var logger = require(path.join(global.pathToApp,'core/logger'));
-var ParseData = require(path.join(global.pathToApp,'core/api/parseData'));
 var flattenTillSpec = require(path.join(global.pathToApp,'core/lib/flattenTillSpec'));
 
-var processFlagNotExec = true;
-
-var config = {
-    // Run all specs HTML parser on app start
-    onStart: true,
-    cron: false,
-    cronProd: true,
-    cronRepeatTime: 600000,
-
-    // PhantomJS retry limit
-    errorLimit: 2,
-    asyncPhantomCallLimit: 5,
-
-    specsFilter: {
-        filterOut: {
-            cats: ['docs'],
-            tags: ['parse-problems']
-        }
-    },
-
-    // Path to HTML data otput
-    pathToSpecs: path.join(global.pathToApp, global.opts.core.api.specsData)
-};
+var config = {};
 
 // Overwriting base options
-if (global.opts.core.parseHTML) deepExtend(config, global.opts.core.parseHTML);
+if (global.opts.core.htmlTree) deepExtend(config, global.opts.core.htmlTree);
 
 // Custom API logging config
 var apiLog = (function(){
@@ -73,27 +47,6 @@ var apiLog = (function(){
 
     return logger.log4js.getLogger('api');
 })();
-
-/**
- * Get list of specs for parsing with PhantomJS
- *
- * @returns {Array} Returns array with spec URLs
- */
-var getSpecsList = function() {
-    var parseSpecs = new ParseData({
-        scope: 'specs',
-        path: require.resolve(config.pathToSpecs)
-    });
-
-    var specs = parseSpecs.getFilteredData(config.specsFilter, true);
-
-    // Preparing data for specs iteration
-    specs = specs.map(function(item){
-        return item.url.substring(1);
-    });
-
-    return specs;
-};
 
 /**
  * Remove all objects from data, that has lower priority (doesn't have forcedSave flag)
@@ -257,128 +210,3 @@ module.exports.deleteFromDataFile = function(dataPath, removeID, callback) {
         if (typeof callback === 'function') callback('No ID provided', null);
     }
 };
-
-/**
- * PhantomJS async runner, calls writeDataFile on finish
- *
- * @param {Array} specs - array with URL list, that will be passed to PhantomJS
- *
- * @param {Function} [callback] - callback function
- * @param {Object} callback.outputData - Passes output data to callback
- */
-var processSpecs = module.exports.processSpecs = function(specs, callback){
-    if (processFlagNotExec) {
-        apiLog.info('HTML API update started');
-
-        var _specs = specs || getSpecsList();
-        var specsLeft = _specs.slice(0);
-        var PhantomPath = phantom.path;
-        var outputHTML = {};
-        var errorCounter = {};
-        var specLength = _specs.length;
-        var doneCounter = 0;
-        var phExecCommand = PhantomPath + " " + path.join(global.pathToApp, 'core/api/parseHTML/phantom-runner.js');
-
-        processFlagNotExec = false;
-
-        apiLog.trace('Processing ' + specLength + ' specs.');
-
-        async.mapLimit(_specs, config.asyncPhantomCallLimit, function (spec, next) {
-            var n = _specs.indexOf(spec) + 1;
-
-            apiLog.trace('Starts...' + n, spec);
-
-            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
-                handler(error, stdout, stderr, spec);
-                next();
-            });
-        });
-
-        var handler = function(error, stdout, stderr, spec) {
-            if (error) {
-                if (typeof errorCounter[spec] !== 'number') {
-                     errorCounter[spec] = 0;
-                }
-
-                errorCounter[spec]++;
-
-                // If limit is not reached, try again
-                if (errorCounter[spec] <= config.errorLimit) {
-                    apiLog.debug('Rerun', spec);
-
-                    childProcess.exec(phExecCommand + " " + spec, function (error, stdout, stderr) {
-                        handler(error, stdout, stderr, spec, writeCallback);
-                    });
-                    return;
-                }
-
-                apiLog.error('Exec error on spec ' + spec + ': '+ error);
-                apiLog.debug('Error info: ', JSON.stringify({
-                    spec: spec,
-                    error: error,
-                    stdount: stdout,
-                    stderr: stderr
-                }));
-            } else {
-                var parsedStdout = [];
-
-                try {
-                    parsedStdout = JSON.parse(stdout);
-                } catch(e) {
-                    apiLog.debug('HTML Parser stdout parse error: ', e, stdout);
-                    apiLog.debug('Error from Phantom parser: ', stdout);
-                    parsedStdout = {
-                        message: "Stdout parse error"
-                    };
-                }
-
-                apiLog.debug('Spec done: ', JSON.stringify({
-                    spec: spec,
-                    error: error,
-                    stderr: stderr
-                }));
-
-                // Writing contents to common obj
-                outputHTML[spec+'/specFile/contents'] = parsedStdout.contents;
-                outputHTML[spec+'/specFile/headResources'] = parsedStdout.headResources;
-                outputHTML[spec+'/specFile/bodyResources'] = parsedStdout.bodyResources;
-            }
-
-            apiLog.debug((doneCounter/specLength*100).toFixed(2),'%...Done', spec);
-
-            // Logging specs queen
-            specsLeft.splice(specsLeft.indexOf(spec), 1);
-            if (specsLeft.length < 5 && specsLeft.length !== 0) {
-                apiLog.trace('Specs queen', specsLeft);
-            }
-
-            doneCounter++;
-
-            // We handled all requested specs
-            if (doneCounter === specLength) {
-                var outputData = unflatten(outputHTML, { delimiter: '/', overwrite: 'root' });
-
-                // Callback is passed to writeDataFile
-                var writeCallback = function() {
-                    apiLog.info('HTML API successfully updated');
-                    processFlagNotExec = true;
-
-                    if (typeof callback === 'function') callback(outputData);
-                };
-
-                writeDataFile(outputData, true, false, writeCallback);
-            }
-        };
-    }
-};
-
-// Running processSpecs by cron
-if (config.cron || (global.MODE === 'production' && config.cronProd)) {
-    setInterval(function () {
-        processSpecs();
-    }, config.cronRepeatTime);
-}
-
-if (config.onStart) {
-    setTimeout(processSpecs, 100);
-}
