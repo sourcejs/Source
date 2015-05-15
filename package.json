@@ -1,6 +1,6 @@
 {
-  "author": "SourceJS contributors team",
-  "description": "Living Style Guide Engine and Maintenance Environment for Front-end Components.",
+  "author": "SourceJS",
+  "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
   "name": "sourcejs",
   "version": "0.5.3-bb",
   "repository": {
@@ -26,6 +26,7 @@
     "fs-extra": "~0.11.1",
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "~1.0.0",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-cssmin": "~0.6.2",
@@ -41,7 +42,6 @@
     "lodash": "^2.4.1",
     "log4js": "~0.6.20",
     "marked": "^0.3.2",
-    "node-fs-extra": "^0.8.1",
     "path": "^0.4.9",
     "phantomjs": "1.9.7-15",
     "pretty-hrtime": "^1.0.0",
@@ -51,7 +51,7 @@
   },
   "scripts": {
     "postinstall": "grunt && node ./core/postInstall",
-    "build": "npm i && grunt",
+    "build": "npm i",
     "start": "node app",
     "test": "grunt test"
   },

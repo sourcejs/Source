@@ -9,6 +9,8 @@ var assert = require('assert');
 var request = require('supertest');
 var jsdom = require('jsdom');
 
+var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
+global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 
 describe('Clarify test /docs/spec?clarify=true', function () {
@@ -167,104 +169,106 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                 });
         });
 
-        it('should return all sections', function (done) {
-            request(urlFromApi)
-                .get()
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var sectionHeaders = $('.source_section_h');
-                            var examples = $('.source_example');
-
-                            sectionHeaders.length.should.be.greaterThan(1);
-                            examples.length.should.be.greaterThan(0);
-
-                            done();
+        if (global.opts.plugins && global.opts.plugins.htmlParser && global.opts.plugins.htmlParser.enabled) {
+            it('should return all sections', function (done) {
+                request(urlFromApi)
+                    .get()
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            throw err;
                         }
+
+                        jsdom.env({
+                            html: res.text,
+                            src: [jq],
+                            done: function (errors, window) {
+                                var $ = window.$;
+                                var sectionHeaders = $('.source_section_h');
+                                var examples = $('.source_example');
+
+                                sectionHeaders.length.should.be.greaterThan(1);
+                                examples.length.should.be.greaterThan(0);
+
+                                done();
+                            }
+                        });
                     });
-                });
-        });
+            });
 
-        it('should return one example', function (done) {
-            request(urlFromApi)
-                .get('&sections=1.1')
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
-
-                            examples.length.should.equal(1);
-
-                            done();
+            it('should return one example', function (done) {
+                request(urlFromApi)
+                    .get('&sections=1.1')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            throw err;
                         }
+
+                        jsdom.env({
+                            html: res.text,
+                            src: [jq],
+                            done: function (errors, window) {
+                                var $ = window.$;
+                                var examples = $('.source_example');
+
+                                examples.length.should.equal(1);
+
+                                done();
+                            }
+                        });
                     });
-                });
-        });
+            });
 
-        it('should have injected resources', function (done) {
-            request(urlFromApi)
-                .get('&sections=1.1')
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-
-                            $('[href*="bootstrap.css"]').length.should.equal(1);
-                            $('body > style').length.should.be.greaterThan(0);
-                            $('body > script').length.should.be.greaterThan(0);
-
-                            done();
+            it('should have injected resources', function (done) {
+                request(urlFromApi)
+                    .get('&sections=1.1')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            throw err;
                         }
+
+                        jsdom.env({
+                            html: res.text,
+                            src: [jq],
+                            done: function (errors, window) {
+                                var $ = window.$;
+
+                                $('[href*="bootstrap.css"]').length.should.equal(1);
+                                $('body > style').length.should.be.greaterThan(0);
+                                $('body > script').length.should.be.greaterThan(0);
+
+                                done();
+                            }
+                        });
                     });
-                });
-        });
+            });
 
-        it('should change template', function (done) {
-            request(urlFromApi)
-                .get('&tpl=clear')
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
-
-                            $('.__clear').length.should.equal(1);
-                            examples.length.should.equal(0);
-
-                            done();
+            it('should change template', function (done) {
+                request(urlFromApi)
+                    .get('&tpl=clear')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            throw err;
                         }
+
+                        jsdom.env({
+                            html: res.text,
+                            src: [jq],
+                            done: function (errors, window) {
+                                var $ = window.$;
+                                var examples = $('.source_example');
+
+                                $('.__clear').length.should.equal(1);
+                                examples.length.should.equal(0);
+
+                                done();
+                            }
+                        });
                     });
-                });
-        });
+            });
+        }
     });
 });

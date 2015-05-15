@@ -2,10 +2,10 @@
 
 var express = require('express');
 var path = require('path');
-var parseData = require('./parseData');
+var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
 var pathToApp = path.dirname(require.main.filename);
 var deepExtend = require('deep-extend');
-var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
+var htmlTree = require(path.join(global.pathToApp, 'core/html-tree'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 
 var config = {
@@ -145,7 +145,7 @@ var postHTML = function (req, res, dataPath) {
         data = unflatten(data, { delimiter: '/', overwrite: 'root' });
     }
 
-    parseHTML.writeDataFile(data, true, dataPath, function(err, finalData){
+    htmlTree.writeDataFile(data, true, dataPath, function(err, finalData){
         if (err || !finalData) {
             res.status(config.statusCodes.error).json({
                 message: err
@@ -171,7 +171,7 @@ var deleteHTML = function (req, res, dataPath) {
     var body = req.body;
     var reqID = body.id || req.query.id;
 
-    parseHTML.deleteFromDataFile(dataPath, reqID, function(err, finalData){
+    htmlTree.deleteFromDataFile(dataPath, reqID, function(err, finalData){
         if (err || !finalData) {
             res.status(config.statusCodes.error).json({
                 message: err

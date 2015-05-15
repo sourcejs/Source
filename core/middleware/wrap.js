@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var ejs = require('ejs');
 // var jsdom = require('jsdom');
 var path = require('path');

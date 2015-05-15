@@ -2,12 +2,18 @@
     <div class="source_clarify_panel_i">
         <h2 class="source_clarify_panel_h2">Select sections</h2>
         <select class="source_clarify_panel_sections js-source_clarify_panel_sections" multiple>
+            <% _.forEach(sectionsIDList, function(section) { %>
+            <option data-section="<%- section.id %>"><%- section.visualID %>. <%- section.header %></option>
+            <% }); %>
         </select>
     </div>
     <div class="source_clarify_panel_i">
         <h2 class="source_clarify_panel_h2">Select template</h2>
         <label>
             <select class="source_clarify_panel_select js-source_clarify_panel_select-tpl">
+                <% _.forEach(tplList, function(tpl) { %>
+                <option data-tpl-name="<%- tpl %>"><%- tpl %></option>
+                <% }); %>
             </select>
         </label>
     </div>
@@ -15,19 +21,23 @@
         <h2 class="source_clarify_panel_h2">Options</h2>
         <div class="source_clarify_panel_options">
             <ul class="source_clarify_panel_option-list">
+                <% if (showApiTargetOption) { %>
+                    <li class="source_clarify_panel_option-item">
+                        <label>
+                            <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="fromApi"> Get HTML From API
+                        </label>
+                    </li>
+                <% } %>
+                <% if (htmlParser) { %>
+                    <li class="source_clarify_panel_option-item">
+                        <label>
+                            <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="apiUpdate"> Update Spec HTML API on each Clarify call
+                        </label>
+                    </li>
+                <% } %>
                 <li class="source_clarify_panel_option-item">
                     <label>
-                        <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="fromApi"> Get HTML From API
-                    </label>
-                </li>
-                <li class="source_clarify_panel_option-item">
-                    <label>
-                        <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="apiUpdate"> Update Spec HTML API on each Clarify call
-                    </label>
-                </li>
-                <li class="source_clarify_panel_option-item">
-                    <label>
-                        <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="nojs"> Turn Off JavaScript
+                        <input type="checkbox" class="source_clarify_panel_option-checkbox js-source_clarify_panel_option-checkbox" name="nojs"> Remove JS scripts
                     </label>
                 </li>
             </ul>
@@ -35,6 +45,6 @@
     </div>
     <div class="source_clarify_panel_i">
         <button class="source_clarify_panel_go js-source_clarify_panel_go">Update view</button>
-        <a class="source_clarify_panel_return-link js-source_clarify_return-link" href="">Return to Spec</a>
+        <a class="source_clarify_panel_return-link js-source_clarify_return-link" href="<%- specUrl %>">Return to Spec</a>
     </div>
 </div>

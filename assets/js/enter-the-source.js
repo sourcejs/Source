@@ -9,7 +9,7 @@ require([
     "source/load-options", // TODO: remove when all modules inherit Module()
     "sourceModules/browser",
     "sourceModules/moduleLoader",
-    'sourceModules/auth',
+    'sourceModules/auth'
     ], function ($, options, browser, Loader, Auth) {
         if (options && options.modulesEnabled && options.modulesEnabled.auth === true) {
             new Auth({

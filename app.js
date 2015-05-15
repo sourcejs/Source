@@ -6,7 +6,7 @@
 
 var express = require('express');
 var colors = require('colors');
-var fs = require('fs');
+var fs = require('fs-extra');
 var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
@@ -18,9 +18,9 @@ global.opts = loadOptions();
 
 // Arguments parse */
 commander
-    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
-    .option('--html', 'Turn on HTML parser on app start')
+    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ').', global.opts.core.common.port)
+    .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .parse(process.argv);
 
 global.commander = commander;
@@ -36,6 +36,8 @@ global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
     return match.toLowerCase();
 });
 
+global.engineVersion = fs.readJsonSync(global.pathToApp + '/package.json', {throws: false}).version;
+
 // Default logger
 var logger = require('./core/logger');
 var log = logger.log;
@@ -47,6 +49,12 @@ if (commander.port) global.opts.core.common.port = parseInt(commander.port);
 
 
 /* App config */
+
+// Version
+app.use(function (req, res, next) {
+    res.header('X-powered-by', 'SourceJS ' + global.engineVersion);
+    next();
+});
 
 // Optimization
 global.app.use(require('compression')());
@@ -150,7 +158,13 @@ require('./core/routes');
 require('./core/api');
 
 global.app.use('/api/options', function(req, res){
-    res.jsonp(loadOptions().assets);
+    var options = loadOptions();
+    var assetsOptions = options.assets;
+
+    // TODO: https://github.com/sourcejs/Source/issues/142
+    assetsOptions.plugins = options.plugins;
+
+    res.jsonp(assetsOptions);
 });
 
 // User extenstions
