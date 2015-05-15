@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var ejs = require('ejs');
-var jsdom = require('jsdom');
+// var jsdom = require('jsdom');
 var path = require('path');
 var pathToApp = path.dirname(require.main.filename);
 var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
@@ -70,42 +70,58 @@ exports.process = function (req, res, next) {
             info.keywords = info.keywords ? info.keywords : "";
 
             // TODO: remove JSDom
-            jsdom.env(
-                '<html id="data">'+data+'</html>',
-                function (errors, window) {
-                    // get header and footer
-                    var headerFooterHTML = getHeaderAndFooter();
+            // jsdom.env(
+            //     '<html id="data">'+data+'</html>',
+            //     function (errors, window) {
+            //         // get header and footer
+            //         var headerFooterHTML = getHeaderAndFooter();
 
-                    // get head contents from spec file source
-                    var headHook = window.document.getElementsByTagName('head')[0];
-                    var specData = window.document.getElementById('data');
-                    var head = '';
+            //         // get head contents from spec file source
+            //         var headHook = window.document.getElementsByTagName('head')[0];
+            //         var specData = window.document.getElementById('data');
+            //         var head = '';
 
-                    if (headHook) {
-                        head = headHook.innerHTML;
+            //         if (headHook) {
+            //             head = headHook.innerHTML;
 
-                        specData.removeChild(headHook);
-                    }
+            //             specData.removeChild(headHook);
+            //         }
 
-                    // make sure the body is not passed again once the head is removed
-                    specData = specData.getElementsByTagName('body')[0];
+            //         // make sure the body is not passed again once the head is removed
+            //         specData = specData.getElementsByTagName('body')[0];
 
-                    // final data object for the template
-                    var templateJSON = {
-                        content: specData.innerHTML,
-                        head: head,
-                        header: headerFooterHTML.header,
-                        footer: headerFooterHTML.footer,
-                        info: info,
-                        filename: templatePath
-                    };
+            //         // final data object for the template
+            //         var templateJSON = {
+            //             content: specData.innerHTML,
+            //             head: head,
+            //             header: headerFooterHTML.header,
+            //             footer: headerFooterHTML.footer,
+            //             info: info,
+            //             filename: templatePath
+            //         };
 
-                    // render page and send it as response
-                    req.specData.renderedHtml = ejs.render(template, templateJSON);
+            //         // render page and send it as response
+            //         req.specData.renderedHtml = ejs.render(template, templateJSON);
 
-                    next();
-                }
-            );
+            //         next();
+            //     }
+            // );
+
+
+            var headerFooterHTML = getHeaderAndFooter();
+
+            var templateJSON = {
+                content: data,
+                head: '',
+                header: headerFooterHTML.header,
+                footer: headerFooterHTML.footer,
+                info: info,
+                filename: templatePath
+            };
+
+            req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+            next();
         });
     } else {
         // proceed to next middleware
