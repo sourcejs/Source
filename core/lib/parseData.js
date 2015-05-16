@@ -6,7 +6,7 @@ var path = require('path');
 var flattenTillSpec = require(path.join(global.pathToApp, 'core/lib/flattenTillSpec'));
 
 /**
- * ParseData Constructor
+ * ParseData Constructor for working with Specs File tree and HTML tree
  *
  * @class ParseData
  * @constructor

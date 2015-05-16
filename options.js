@@ -2,16 +2,31 @@
 
 module.exports = {
 
-    // Restart app after changing core options
+    // Restart the app after changing core options
     core : {
         common: {
-            pathToUser: 'user',
+            port: 8080,
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
-            port: 8080,
+
+            pathToUser: 'user',
             infoFile: 'info.json',
             specPaths: ['specs'],
-            specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html']
+            specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html'],
+            views: {
+                defaultViewPaths: [
+                    '$(user)/core/views',
+                    '$(sourcejs)/core/views'
+                ],
+                spec: [
+                    '$(user)/core/views/spec.ejs',
+                    '$(sourcejs)/core/views/spec.ejs'
+                ],
+                navigation: [
+                    '$(user)/core/views/navigation.ejs',
+                    '$(sourcejs)/core/views/navigation.ejs'
+                ]
+            }
         },
         api: {
             specsData: 'core/api/data/pages-tree.json',
@@ -20,6 +35,8 @@ module.exports = {
             htmlTestData: 'test/data/api-test-html.json'
         },
         fileTree: {
+            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+            cron: false,
             mainPageTrigger: false
         },
         watch: {
@@ -28,7 +45,6 @@ module.exports = {
         }
     },
 
-    // Run `grunt` after changing assets options. Or use`grunt watch-all`.
     assets: {
         // Core modules
         modulesEnabled : {
@@ -51,7 +67,7 @@ module.exports = {
 
         modulesOptions : {
             navHighlight: {
-                updateHash: false, // Hash update on scroll turned off because of performance issues
+                updateHash: false // Hash update on scroll turned off because of performance issues
             },
 
             search: {

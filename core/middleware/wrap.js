@@ -4,31 +4,8 @@ var fs = require('fs-extra');
 var ejs = require('ejs');
 var jsdom = require('jsdom');
 var path = require('path');
-var pathToApp = path.dirname(require.main.filename);
-var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
-var userTemplatesDir = global.app.get('user') + "/core/views/";
-var coreTemplatesDir = pathToApp + "/core/views/";
-
-/**
- * Get full path to template: default or user-defined if it exists.
- *
- *
- * @param {string} name - Template name
- * @returns {string}
- * */
-function getTemplateFullPath (name) {
-    var output;
-
-    if (fs.existsSync(userTemplatesDir + name)) {
-        output = userTemplatesDir + name;
-    } else if (fs.existsSync(coreTemplatesDir + name)) {
-        output = coreTemplatesDir + name;
-    } else {
-        output = name;
-    }
-
-    return output;
-}
+var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
+var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)
@@ -47,19 +24,20 @@ exports.process = function (req, res, next) {
         // get spec info
         var info = req.specData.info;
 
-        // choose the proper template, depending on page type
-        var template, templatePath;
+        // choose the proper template, depending on page type or defined path
+        var viewParam = 'spec';
+
         if (info.template) {
-            templatePath = getTemplateFullPath(info.template + ".ejs");
+            viewParam = info.template;
         } else if (info.role === 'navigation') {
-            templatePath = getTemplateFullPath("navigation.ejs");
-        } else {
-            templatePath = getTemplateFullPath("spec.ejs");
+            viewParam = 'navigation';
         }
 
-        template = fs.readFile(templatePath, "utf-8", function(err, template){
+        var templatePath = viewResolver(viewParam, global.opts.core.common.views) || viewParam;
+
+        fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {
-                res.send('EJS template "' + templatePath + '" not found in `core/views` and `user/core/views`.');
+                res.send('EJS template "' + templatePath + '" not found. Please check view configuration.');
 
                 return;
             }
