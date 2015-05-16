@@ -21,14 +21,13 @@ var config = {
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
     specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
-    busyTimeout: 300,
-
-    // Files from parser get info
-    infoFile: "info.json"
+    busyTimeout: 300
 };
+
 // Overwriting base options
 deepExtend(config, global.opts.core.fileTree);
 
+var infoFile = global.opts.core.common.infoFile;
 var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareExcludesRegex = function(){
@@ -36,9 +35,9 @@ var prepareExcludesRegex = function(){
     var i = 1;
     config.excludedDirs.forEach(function (exlDir) {
         if (i < config.excludedDirs.length) {
-            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir + "|";
+            dirsForRegExp = dirsForRegExp + '^' + config.specsRoot + '\/' + exlDir + '|';
         } else {
-            dirsForRegExp = dirsForRegExp + "^" + config.specsRoot + "\/" + exlDir;
+            dirsForRegExp = dirsForRegExp + '^' + config.specsRoot + '\/' + exlDir;
         }
         i++;
     });
@@ -167,20 +166,20 @@ var fileTree = function (processingDir) {
                 outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
             }
 
-        } else if (targetFile.toLowerCase() === config.infoFile.toLowerCase()) {
+        } else if (targetFile.toLowerCase() === infoFile.toLowerCase()) {
             var pageMeta = getSpecMeta(processingDir);
 
-            var infoJsonPath = processingDir + '/' + config.infoFile;
+            var infoJsonPath = path.join(processingDir, infoFile);
 
             if (fs.existsSync(infoJsonPath)) {
                 var fileJSON;
                 try {
-                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, "utf8"));
+                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, 'utf8'));
                 } catch (e) {
-                    global.console.warn("Error reading info.json: " + infoJsonPath);
+                    global.console.warn('Error reading '+ infoFile +': ' + infoJsonPath);
 
                     fileJSON = {
-                        error: "Cannot parse the file",
+                        error: 'Cannot parse the file',
                         path: infoJsonPath
                     };
                 }
@@ -207,7 +206,7 @@ var writeDataFile = function (data, callback) {
             return;
         }
 
-        global.log.trace("Pages tree JSON saved to " + outputFile);
+        global.log.trace('Pages tree JSON saved to ' + outputFile);
 
         callback();
     });
