@@ -9,7 +9,8 @@ module.exports = {
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
 
-            pathToUser: 'user',
+            includedDirs: ['docs'],
+            pathToUser: 'user', // Can't be overridden on user level
             infoFile: 'info.json',
             specPaths: ['specs'],
             specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html'],

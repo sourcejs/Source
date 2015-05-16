@@ -7,27 +7,26 @@ var path = require('path');
 var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
-var globalOpts = global.opts.core;
+var coreOpts = global.opts.core;
 var prettyHrtime = require('pretty-hrtime');
 
 var busy = false;
 
 var config = {
-    // Add directory name for exclude, write path from root ( Example: ['core','docs/base'] )
-    includedDirs: ['docs'],
-    excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+    includedDirs: coreOpts.common.includedDirs,
+    excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea', 'bower_components'],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
-    specsRoot: path.join(global.pathToApp, globalOpts.common.pathToUser).replace(/\\/g, '/'),
+    specsRoot: path.join(global.pathToApp, coreOpts.common.pathToUser).replace(/\\/g, '/'),
     busyTimeout: 300
 };
 
 // Overwriting base options
-deepExtend(config, global.opts.core.fileTree);
+deepExtend(config, coreOpts.fileTree);
 
-var infoFile = global.opts.core.common.infoFile;
+var infoFile = coreOpts.common.infoFile;
 var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareExcludesRegex = function(){
@@ -220,7 +219,7 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
         }, config.busyTimeout);
     } else {
         var prevData = {};
-        var dataStoragePath = path.join(global.pathToApp, global.opts.core.api.specsData);
+        var dataStoragePath = path.join(global.pathToApp, coreOpts.api.specsData);
         callback = typeof callback === 'function' ? callback : function(){};
 
         if (unflattenData) {
