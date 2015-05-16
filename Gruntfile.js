@@ -1,7 +1,10 @@
 'use strict';
 var path = require('path');
-var loadOptions = require('./core/loadOptions');
+
 var pathToApp = path.resolve('./');
+global.pathToApp = pathToApp;
+
+var loadOptions = require('./core/loadOptions');
 
 module.exports = function(grunt) {
     // load all grunt tasks matching the `grunt-*` pattern

@@ -8,10 +8,11 @@ var pathResolver = require(path.join(global.pathToApp + '/core/lib/pathResolver.
  *
  * @param {String} typeOrPath - define type of view (spec/navigation), relative path to default views dir or absolute path
  * @param {Object} viewsOptions - view options (global.opts.core.common.views)
+ * @param {String} [context] - folder dir, to define $(context) resolver
  *
  * @returns {String} Return full path to view template of undefined
  */
-module.exports = function(typeOrPath, viewsOptions){
+module.exports = function(typeOrPath, viewsOptions, context){
     if (!typeOrPath) return;
 
     var type;
@@ -27,15 +28,15 @@ module.exports = function(typeOrPath, viewsOptions){
         // check short path definition
         if (!type) {
             var assumedPath = path.extname(typeOrPath) === '.ejs' ? typeOrPath : typeOrPath + '.ejs';
-            var assumedPathLocation = pathResolver.checkExistence(viewsOptions.defaultViewPaths, assumedPath);
+            var assumedPathLocation = pathResolver.checkExistence(viewsOptions.defaultViewPaths, assumedPath, context);
 
             if (!!assumedPathLocation) {
                 return assumedPathLocation;
             }
         } else if (viewsOptions[type] && viewsOptions[type].length > 0){
-            return pathResolver.resolve(pathResolver.checkExistence(viewsOptions[type]));
+            return pathResolver.checkExistence(viewsOptions[type], null, context);
         }
     }
 
-    return pathResolver.checkExistence([pathResolver.resolve(typeOrPath)]);
+    return pathResolver.checkExistence([typeOrPath], null, context);
 };

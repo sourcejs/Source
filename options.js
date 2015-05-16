@@ -10,6 +10,7 @@ module.exports = {
             defaultProdLogLevel: 'ERROR',
 
             includedDirs: ['docs'],
+            bundleOptions: 'sourcejs-options.js',
             pathToUser: 'user', // Can't be overridden on user level
             infoFile: 'info.json',
             specPaths: ['specs'],

@@ -28,17 +28,23 @@ module.exports.prepareClientNpmPlugins = function(pathToUser) {
 };
 
 var getBundleOptionsList = module.exports.getBundleOptionsList = function(startPath, fileName) {
-    return finder.in(startPath).lookUp(global.pathToApp).findFiles('/' + fileName);;
+    return finder.in(startPath).lookUp(global.pathToApp).findFiles('/' + fileName);
 };
 
 var resolveViewsPaths = module.exports.resolveViewsPaths = function(options, context) {
-    for (var opt in options.core.common.views) {
-        var optItem = options.core.common.views[opt];
+    var updateArr = function(optItem){
+        return optItem.map(function (item) {
+            return pathResolver.resolve(item, context);
+        });
+    };
 
-        if (nodeUtils.isArray(optItem)) {
-            options.core.common.views[opt] = optItem.map(function(item){
-                return pathResolver.resolve(item, context);
-            });
+    for (var opt in options.core.common.views) {
+        if (options.core.common.views.hasOwnProperty(opt)) {
+            var optItem = options.core.common.views[opt];
+
+            if (nodeUtils.isArray(optItem)) {
+                options.core.common.views[opt] = updateArr(optItem);
+            }
         }
     }
 };
@@ -67,7 +73,7 @@ module.exports.getMergedOptions = function(startPath, fileName, defaultOptions) 
     });
 
     optionsArr.forEach(function(path){
-       deepExtend(output, processOptions(path))
+       deepExtend(output, processOptions(path));
     });
 
     return output;

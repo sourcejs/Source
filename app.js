@@ -7,13 +7,19 @@
 var express = require('express');
 var colors = require('colors');
 var fs = require('fs-extra');
-var loadOptions = require('./core/loadOptions');
 var commander = require('commander');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 
 /* Globals */
+// Define absolute path to app, normalizing windows disk name
+global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
+    return match.toLowerCase();
+});
+
 global.app = express();
+
+var loadOptions = require('./core/loadOptions');
 global.opts = loadOptions();
 
 // Arguments parse */
@@ -30,11 +36,6 @@ global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
 
 // We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';
-
-// Define absolute path to app, normalizing windows disk name
-global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
-    return match.toLowerCase();
-});
 
 global.engineVersion = fs.readJsonSync(global.pathToApp + '/package.json', {throws: false}).version;
 

@@ -5,10 +5,9 @@ var path = require('path');
 var url = require('url');
 var ejs = require('ejs');
 var pathToApp = path.dirname(require.main.filename);
+var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
-var config = {
-    includedDirs: ['docs']
-};
+//var config = {};
 
 /**
  * Handling Spec request
@@ -56,15 +55,8 @@ var handleSpec = function(req, res, next) {
 
             var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
             var parsedUrl = url.parse(req.url);
-            var urlPath = parsedUrl.pathname.replace(/\\/g, '/');
-            var specPath = path.join(global.app.get('user'), urlPath).replace(/\\/g, '/');
-
-            // Including non-standard paths, outside default static route
-            config.includedDirs.forEach(function(item){
-                if (urlPath.split('/')[1] === item) {
-                    specPath = specPath.replace('/'+ global.opts.core.common.pathToUser + '/', '/');
-                }
-            });
+            var urlPath = parsedUrl.pathname;
+            var specPath = specUtils.getFullPathToSpec(urlPath);
 
             // Pre-render Spec contents with EJS
             if (!info.noEjs) {

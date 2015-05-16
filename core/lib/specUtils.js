@@ -87,3 +87,17 @@ module.exports.getSpecFromDir = function(dirPath) {
 
     return specPath;
 };
+
+
+module.exports.getFullPathToSpec = function(urlPath){
+    var specPath = path.join(global.app.get('user'), urlPath).replace(/\\/g, '/');
+
+    // Including non-standard paths, outside default static route
+    global.opts.core.common.includedDirs.forEach(function(item){
+        if (urlPath.split('/')[1] === item) {
+            specPath = specPath.replace('/'+ global.opts.core.common.pathToUser + '/', '/');
+        }
+    });
+
+    return specPath;
+};

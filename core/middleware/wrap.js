@@ -3,9 +3,12 @@
 var fs = require('fs-extra');
 var ejs = require('ejs');
 var jsdom = require('jsdom');
+var url = require('url');
 var path = require('path');
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
+var configUtils = require(path.join(global.pathToApp + '/core/lib/configUtils'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
+var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)
@@ -18,6 +21,11 @@ exports.process = function (req, res, next) {
 
     // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
+        var parsedUrl = url.parse(req.url, true);
+        var urlPath = parsedUrl.pathname;
+        var specDir = path.dirname(specUtils.getFullPathToSpec(urlPath));
+        var mergedOptions = configUtils.getMergedOptions(specDir, global.opts.core.common.bundleOptions, global.opts);
+
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
 
@@ -26,14 +34,16 @@ exports.process = function (req, res, next) {
 
         // choose the proper template, depending on page type or defined path
         var viewParam = 'spec';
+        var context;
 
         if (info.template) {
             viewParam = info.template;
+            context = specDir;
         } else if (info.role === 'navigation') {
             viewParam = 'navigation';
         }
 
-        var templatePath = viewResolver(viewParam, global.opts.core.common.views) || viewParam;
+        var templatePath = viewResolver(viewParam, mergedOptions.core.common.views, context) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {
