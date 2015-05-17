@@ -13,6 +13,7 @@ module.exports = {
             bundleOptions: 'sourcejs-options.js',
             pathToUser: 'user', // Can't be overridden on user level
             infoFile: 'info.json',
+            infoFileOptions: 'sourcejs',
             specPaths: ['specs'],
             specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html'],
             views: {

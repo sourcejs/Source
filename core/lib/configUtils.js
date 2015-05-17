@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var deepExtend = require('deep-extend');
 var path = require('path');
 var finder = require('fs-finder');
@@ -139,6 +139,14 @@ module.exports.getContextOptions = function(refUrl, defaultOpts) {
     var refUrlPath = parsedRefUrl.pathname;
 
     var specDir = specUtils.getFullPathToSpec(refUrlPath);
+    var contextOptions = getMergedOptions(specDir, _defaultOpts);
 
-    return getMergedOptions(specDir, _defaultOpts);
+    var infoFilePath = path.join(specDir, contextOptions.core.common.infoFile);
+    var infoOptions = fs.readJsonFileSync(infoFilePath, {throws: false}) || {};
+
+    contextOptions.info = infoOptions;
+
+    deepExtend(contextOptions, infoOptions[contextOptions.core.common.infoFileOptions]);
+
+    return contextOptions;
 };
