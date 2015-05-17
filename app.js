@@ -157,16 +157,7 @@ require('./core/routes');
 
 // API
 require('./core/api');
-
-global.app.use('/api/options', function(req, res){
-    var options = loadOptions();
-    var assetsOptions = options.assets;
-
-    // TODO: https://github.com/sourcejs/Source/issues/142
-    assetsOptions.plugins = options.plugins;
-
-    res.jsonp(assetsOptions);
-});
+require('./core/api/OptionsApi');
 
 // User extenstions
 require("./core/loadPlugins.js");
