@@ -220,6 +220,8 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
             updateFileTree(data, unflattenData, callback);
         }, config.busyTimeout);
     } else {
+        busy = true;
+
         var prevData = {};
         var dataStoragePath = path.join(global.pathToApp, coreOpts.api.specsData);
         callback = typeof callback === 'function' ? callback : function(){};
@@ -236,8 +238,6 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
         }
 
         var dataToWrite = extendTillSpec(prevData, data);
-
-        busy = true;
 
         writeDataFile(dataToWrite, function(){
             callback();
@@ -258,6 +258,7 @@ var deleteFromFileTree = module.exports.deleteFromFileTree = function (specID) {
     } else {
         fs.readJSON(config.outputFile, function (err, data) {
             if (err) return;
+            busy = true;
 
             var pathSplit = specID.split('/');
 
@@ -280,7 +281,6 @@ var deleteFromFileTree = module.exports.deleteFromFileTree = function (specID) {
 
             var processedData = processPath(pathSplit, data);
 
-            busy = true;
             writeDataFile(processedData, function () {
                 global.log.trace('Deleted object from file tree: ', specID);
 

@@ -324,7 +324,7 @@ define([
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
         var lastMod = itemData.lastmod || '';
-        var author = itemData.author ? navConfig.labels.author + ": " + itemData.author : '';
+        var author = itemData.author ? navConfig.labels.author + ": " + itemData.author : '&nbsp;';
         var metaInfo = lastMod !== '' ? lastMod + ' | ' + author : author;
 
         // fixing relative path due to server settings
