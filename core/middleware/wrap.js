@@ -23,8 +23,8 @@ exports.process = function (req, res, next) {
     if (req.specData && req.specData.renderedHtml) {
         var parsedUrl = url.parse(req.url, true);
         var urlPath = parsedUrl.pathname;
-        var specDir = path.dirname(specUtils.getFullPathToSpec(urlPath));
-        var mergedOptions = configUtils.getMergedOptions(specDir, global.opts.core.common.bundleOptions, global.opts);
+        var specDir = specUtils.getFullPathToSpec(urlPath);
+        var contextOpts = configUtils.getMergedOptions(specDir, global.opts);
 
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
@@ -43,7 +43,7 @@ exports.process = function (req, res, next) {
             viewParam = 'navigation';
         }
 
-        var templatePath = viewResolver(viewParam, mergedOptions.core.common.views, context) || viewParam;
+        var templatePath = viewResolver(viewParam, contextOpts.core.common.views, context) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {

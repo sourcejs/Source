@@ -15,13 +15,13 @@ var parseSpecData = new parseData({
 /**
  * Parse clean path to spec from URL
  *
- * @param {String} urlPath - raw url ("/base/spec/index.src"
+ * @param {String} urlPath - raw url ("/base/spec/index.src")
  *
  * @returns {Object} output
  * @returns {String} output.ext - file extension, if exists
  * @returns {String} output.pathToSpec - path to Spec
  */
-module.exports.parseSpecUrlPath = function(urlPath){
+var parseSpecUrlPath = module.exports.parseSpecUrlPath = function(urlPath){
     // TODO: add any type of url parsing, including parameters
 
     var output = {};
@@ -88,9 +88,17 @@ module.exports.getSpecFromDir = function(dirPath) {
     return specPath;
 };
 
-
+/**
+ * Get absolute path to Spec dir
+ *
+ * @param {String} urlPath - relative URL (web) to spec
+ *
+ * @returns {String} Return absolute path to Spec dir
+ */
 module.exports.getFullPathToSpec = function(urlPath){
-    var specPath = path.join(global.app.get('user'), urlPath).replace(/\\/g, '/');
+    var pathToSpec = parseSpecUrlPath(urlPath).pathToSpec;
+
+    var specPath = path.join(global.app.get('user'), pathToSpec).replace(/\\/g, '/');
 
     // Including non-standard paths, outside default static route
     global.opts.core.common.includedDirs.forEach(function(item){
@@ -99,5 +107,6 @@ module.exports.getFullPathToSpec = function(urlPath){
         }
     });
 
-    return specPath;
+    // remove trailing slash
+    return specPath.replace(/\/+$/, "");
 };

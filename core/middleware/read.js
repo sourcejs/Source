@@ -1,11 +1,12 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 var url = require('url');
 var ejs = require('ejs');
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
+var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 
 //var config = {};
 
@@ -15,8 +16,9 @@ var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
  * @param {object} req - Request object
  * @param {object} res - Response object
  * @param {function} next - The callback function
+ * @param {object} contextOpts - SourceJS options object
  * */
-var handleSpec = function(req, res, next) {
+var handleSpec = function(req, res, next, contextOpts) {
     // Filled during middleware processing
     req.specData = {};
 
@@ -32,7 +34,7 @@ var handleSpec = function(req, res, next) {
     var extension = path.extname(physicalPath).replace(".", "");
     var directory = path.dirname(physicalPath); // get the dir of a requested file
 
-    var infoJson = directory + '/' + global.opts.core.common.infoFile;
+    var infoJson = path.join(directory, contextOpts.core.common.infoFile);
 
     fs.readFile(physicalPath, 'utf8', function (err, data) {
         if (err) {
@@ -99,14 +101,28 @@ exports.process = function(req, res, next) {
     // Extension of a requested file
     var extension = path.extname(physicalPath).replace(".", "");
 
-    // Check if folder is requested
-    if (extension === "") {
-        var requestedDir = req.path;
-        var specFiles = global.opts.core.common.specFiles;
+    var apiRe = new RegExp('^/api/');
+    var sourceRe = new RegExp('^/sourcejs/');
+
+    // Check if folder is requested but on reserved namespaces
+    if (extension === "" && !apiRe.test(req.path) && !sourceRe.test(req.path)) {
+        var parsedUrl = url.parse(req.url, true);
+        var urlPath = parsedUrl.pathname;
+
+        var specDir = specUtils.getFullPathToSpec(urlPath);
+        var contextOpts = configUtils.getMergedOptions(specDir, global.opts);
+
+        var customSpecFile;
+        try {
+            customSpecFile = fs.readJsonSync(path.join(specDir, contextOpts.core.common.infoFile)).specFile;
+        } catch(e){}
+        
+        var requestedPath = req.path;
+        var specFiles = customSpecFile ? [customSpecFile] : contextOpts.core.common.specFiles;
 
         // Append trailing slash
-        if (requestedDir.slice(-1) !== '/') {
-            requestedDir += '/';
+        if (requestedPath.slice(-1) !== '/') {
+            requestedPath += '/';
         }
 
         var noSpecFound = true;
@@ -118,10 +134,10 @@ exports.process = function(req, res, next) {
                 var paramsString = urlParams ? '?' + urlParams : '';
 
                 // Modifying url and saving params string
-                req.url = requestedDir + supportedIndexFormat + paramsString;
+                req.url = requestedPath + supportedIndexFormat + paramsString;
 
                 // Recursive call
-                handleSpec(req, res, next);
+                handleSpec(req, res, next, contextOpts);
 
                 noSpecFound = false;
             }
