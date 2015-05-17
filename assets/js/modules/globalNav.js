@@ -51,8 +51,7 @@ define([
             "loading": "Loading...",
             "hidePreview": "Hide thumbnails",
             "showPreview": "Show thumbnails",
-            "updateButton": "Update navigation",
-            "noSpec": "No Spec file defined"
+            "updateButton": "Update navigation"
         }
     };
 
@@ -324,10 +323,9 @@ define([
 
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
-        var author = itemData.author
-            ? " | " + navConfig.labels.author + ": " + itemData.author
-            : "";
-        var lastMod = itemData.lastmod || navConfig.labels.noSpec;
+        var lastMod = itemData.lastmod || '';
+        var author = itemData.author ? navConfig.labels.author + ": " + itemData.author : '';
+        var metaInfo = lastMod !== '' ? lastMod + ' | ' + author : author;
 
         // fixing relative path due to server settings
         var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
@@ -343,7 +341,7 @@ define([
                 .prepend('<img class="'+ classes.catalogListImage +'" src="'+ imageUrl +'">');
         }
         result.find("." + classes.catalogListTitle).html(itemData.title);
-        result.find("." + classes.catalogListDate).html(lastMod + author);
+        result.find("." + classes.catalogListDate).html(metaInfo);
 
         return result;
     };
