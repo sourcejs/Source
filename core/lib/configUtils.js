@@ -5,8 +5,10 @@ var deepExtend = require('deep-extend');
 var path = require('path');
 var finder = require('fs-finder');
 var nodeUtils = require('util');
+var url = require('url');
 var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var pathResolver = require(path.join(global.pathToApp, 'core/lib/pathResolver'));
+var specUtils = require(path.join(global.pathToApp, 'core/lib/specUtils'));
 
 /**
  * Searches sourcejs-plugins in node_modules of specified folder
@@ -101,7 +103,7 @@ var processOptions = module.exports.processOptions = function(optionsPath) {
  *
  * @returns {Object} Returns a merged options object
  */
-module.exports.getMergedOptions = function(startPath, defaultOptions) {
+var getMergedOptions = module.exports.getMergedOptions = function(startPath, defaultOptions) {
     var _defaultOptions = defaultOptions || {};
     var output = deepExtend({}, _defaultOptions);
     var optionsArr = getBundleOptionsList(startPath);
@@ -121,4 +123,22 @@ module.exports.getMergedOptions = function(startPath, defaultOptions) {
     });
 
     return output;
+};
+
+/**
+ * Get context options using ref URL
+ *
+ * @param {String} refUrl - referer URL
+ * @param {Object} [defaultOpts] - default options object to merge in
+ *
+ * @returns {Object} Returns a context options object
+ */
+module.exports.getContextOptions = function(refUrl, defaultOpts) {
+    var _defaultOpts = defaultOpts || global.opts;
+    var parsedRefUrl = url.parse(refUrl);
+    var refUrlPath = parsedRefUrl.pathname;
+
+    var specDir = specUtils.getFullPathToSpec(refUrlPath);
+
+    return getMergedOptions(specDir, _defaultOpts);
 };

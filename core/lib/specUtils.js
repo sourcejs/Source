@@ -3,13 +3,7 @@
 var path = require('path');
 var fs = require('fs-extra');
 var pathToApp = path.dirname(require.main.filename);
-
 var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
-var specsDataPath = path.join(pathToApp, global.opts.core.api.specsData);
-var parseSpecData = new parseData({
-    scope: 'specs',
-    path: specsDataPath
-});
 
 
 /**
@@ -59,6 +53,11 @@ var getSpecIDFromUrl = module.exports.getSpecIDFromUrl = function(urlToSpec){
  * @returns {Object} Return single info object of the spec
  */
 module.exports.getSpecInfo = function(pathToSpec) {
+    var specsDataPath = path.join(pathToApp, global.opts.core.api.specsData);
+    var parseSpecData = new parseData({
+        scope: 'specs',
+        path: specsDataPath
+    });
     var specID = pathToSpec.charAt(0) === '/' ? getSpecIDFromUrl(pathToSpec) : pathToSpec;
 
     return parseSpecData.getByID(specID);

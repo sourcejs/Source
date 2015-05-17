@@ -108,15 +108,14 @@ exports.process = function(req, res, next) {
     if (extension === "" && !apiRe.test(req.path) && !sourceRe.test(req.path)) {
         var parsedUrl = url.parse(req.url, true);
         var urlPath = parsedUrl.pathname;
-
         var specDir = specUtils.getFullPathToSpec(urlPath);
-        var contextOpts = configUtils.getMergedOptions(specDir, global.opts);
+        var contextOpts = configUtils.getContextOptions(req.url);
 
         var customSpecFile;
         try {
             customSpecFile = fs.readJsonSync(path.join(specDir, contextOpts.core.common.infoFile)).specFile;
         } catch(e){}
-        
+
         var requestedPath = req.path;
         var specFiles = customSpecFile ? [customSpecFile] : contextOpts.core.common.specFiles;
 
