@@ -29,6 +29,13 @@ var fileTree = require(path.join(global.pathToApp, 'core/file-tree'));
 
 var config = {
     enabled: true,
+    verbose: false,
+    glob: [
+        '!**/.*/**',
+        '!**/bower_components/**',
+        '!**/node_modules/**',
+        global.pathToApp + '/**/' + global.opts.core.common.infoFile
+    ],
     ignoreHiddenFiles: true
 };
 // Overwriting base options
@@ -41,7 +48,9 @@ var prepareData = function(data, targetFile){
 };
 
 if (config.enabled){
-    watch(global.pathToApp + '/**/info.json', function(vinyl){
+    watch(config.glob, {
+        verbose: config.verbose
+    }, function(vinyl){
         var filePath = vinyl.path.replace(/\\/g, '/');
         var event = vinyl.event;
         var cleanPath = filePath.replace(global.pathToApp + '/', '').replace(global.opts.core.common.pathToUser +'/', '');
