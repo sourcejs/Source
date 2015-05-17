@@ -16,6 +16,7 @@ global.app.use('/api/options', function(req, res){
 
     // TODO: https://github.com/sourcejs/Source/issues/142
     assetsOptions.plugins = contextOpts.plugins;
+    assetsOptions.info = contextOpts.info;
 
     res.jsonp(assetsOptions);
 });
