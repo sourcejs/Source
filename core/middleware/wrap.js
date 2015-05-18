@@ -3,10 +3,8 @@
 var fs = require('fs-extra');
 var ejs = require('ejs');
 var jsdom = require('jsdom');
-var url = require('url');
 var path = require('path');
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
-var configUtils = require(path.join(global.pathToApp + '/core/lib/configUtils'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
@@ -21,10 +19,8 @@ exports.process = function (req, res, next) {
 
     // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
-        var parsedUrl = url.parse(req.url, true);
-        var urlPath = parsedUrl.pathname;
-        var specDir = specUtils.getFullPathToSpec(urlPath);
-        var contextOpts = configUtils.getContextOptions(req.url);
+        var specDir = specUtils.getFullPathToSpec(req.url);
+        var contextOptions = req.specData.contextOptions;
 
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
@@ -43,7 +39,7 @@ exports.process = function (req, res, next) {
             viewParam = 'navigation';
         }
 
-        var templatePath = viewResolver(viewParam, contextOpts.core.common.views, context) || viewParam;
+        var templatePath = viewResolver(viewParam, contextOptions.core.common.views, context) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {
@@ -51,11 +47,6 @@ exports.process = function (req, res, next) {
 
                 return;
             }
-
-            // if the following fields are not set, set them to defaults
-            info.title = info.title ? info.title : "New spec";
-            info.author = info.author ? info.author : "Anonymous";
-            info.keywords = info.keywords ? info.keywords : "";
 
             // TODO: remove JSDom
             jsdom.env(

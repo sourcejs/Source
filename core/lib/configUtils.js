@@ -142,11 +142,11 @@ module.exports.getContextOptions = function(refUrl, defaultOpts) {
     var contextOptions = getMergedOptions(specDir, _defaultOpts);
 
     var infoFilePath = path.join(specDir, contextOptions.core.common.infoFile);
-    var infoOptions = fs.readJsonFileSync(infoFilePath, {throws: false}) || {};
+    var infoOptionsKey = contextOptions.core.common.infoFileOptions;
 
-    contextOptions.info = infoOptions;
+    contextOptions.info = fs.readJsonFileSync(infoFilePath, {throws: false});
 
-    deepExtend(contextOptions, infoOptions[contextOptions.core.common.infoFileOptions]);
+    if (contextOptions.info && contextOptions.info[infoOptionsKey]) deepExtend(contextOptions, contextOptions.info[infoOptionsKey]);
 
     return contextOptions;
 };

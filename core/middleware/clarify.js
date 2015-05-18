@@ -317,9 +317,7 @@ module.exports = function(req, res, next) {
                 res.send('Clarify did not found any of requested sections.');
             }
         }).fail(function(errData) {
-            var errTrace = errData.err ? ': ' + errData.err : '';
-
-            global.log.warn('Clarify: ' + (errData.msg || 'Error in data preparation'), errTrace);
+            global.log.warn('Clarify: ' + (errData.msg || 'Error in data preparation'), errData);
 
             res.status(500).send(errData.msg);
         });
