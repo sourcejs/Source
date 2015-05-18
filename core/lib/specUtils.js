@@ -2,7 +2,6 @@
 
 var path = require('path');
 var fs = require('fs-extra');
-var pathToApp = path.dirname(require.main.filename);
 var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
 
 
@@ -40,25 +39,25 @@ var parseSpecUrlPath = module.exports.parseSpecUrlPath = function(urlPath){
  * @returns {String} Return a parsed Spec ID
  */
 var getSpecIDFromUrl = module.exports.getSpecIDFromUrl = function(urlToSpec){
-    // TODO: improve parsing to many cases
+    urlToSpec = urlToSpec.replace(/^\//, '').replace(/\/+$/, '');
 
-    return urlToSpec.slice(1, urlToSpec.length - 1);
+    return urlToSpec;
 };
 
 /**
  * Get information about defined specSpec
  *
- * @param {String} pathToSpec - spec id ("base/btn") or url ("/base/btn/")
+ * @param {String} urlSpecPath - spec path from url
  *
  * @returns {Object} Return single info object of the spec
  */
-module.exports.getSpecInfo = function(pathToSpec) {
-    var specsDataPath = path.join(pathToApp, global.opts.core.api.specsData);
+module.exports.getSpecInfo = function(urlSpecPath) {
+    var specsDataPath = path.join(global.pathToApp, global.opts.core.api.specsData);
     var parseSpecData = new parseData({
         scope: 'specs',
         path: specsDataPath
     });
-    var specID = pathToSpec.charAt(0) === '/' ? getSpecIDFromUrl(pathToSpec) : pathToSpec;
+    var specID = getSpecIDFromUrl(urlSpecPath);
 
     return parseSpecData.getByID(specID);
 };
@@ -67,12 +66,16 @@ module.exports.getSpecInfo = function(pathToSpec) {
  * Get Spec name from defined directory
  *
  * @param {String} dirPath - Spec directory
+ * @param {Array} [specFiles] - list of spec files to check
  *
- * @returns {String} Return Spec file path or undefined
+ * @returns {String} Return first found Spec file path or undefined
  */
-module.exports.getSpecFromDir = function(dirPath) {
-    var dirContent = fs.readdirSync(dirPath);
-    var supportedSpecNames = global.opts.core.common.specFiles;
+module.exports.getSpecFromDir = function(dirPath, specFiles) {
+    var dirContent = fs.existsSync(dirPath) ? fs.readdirSync(dirPath) : undefined;
+
+    if (!dirContent) return;
+
+    var supportedSpecNames = specFiles || global.opts.core.common.specFiles;
     var specPath;
 
     for (var i=0; i < supportedSpecNames.length; i++) {
@@ -107,5 +110,5 @@ module.exports.getFullPathToSpec = function(urlPath){
     });
 
     // remove trailing slash
-    return specPath.replace(/\/+$/, "");
+    return specPath.replace(/\/+$/, '');
 };
