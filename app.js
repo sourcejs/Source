@@ -157,7 +157,7 @@ require('./core/routes');
 
 // API
 require('./core/api');
-require('./core/api/OptionsApi');
+require('./core/api/optionsApi');
 
 // User extenstions
 require("./core/loadPlugins.js");
