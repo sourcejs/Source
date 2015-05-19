@@ -34,6 +34,14 @@ exports.process = function(req, res, next) {
             return;
         }
 
+        // Passing req params
+        var urlParams = req.url.split('?')[1];
+        var paramsString = urlParams ? '?' + urlParams : '';
+
+        // Modifying url and saving params string
+        // TODO: remove in next non-patch release https://github.com/sourcejs/Source/issues/147
+        req.url = path.join(req.path, specFile) + paramsString;
+
         fs.readFile(physicalPath, 'utf8', function (err, data) {
             if (err) {
                 res.send(err);
