@@ -20,7 +20,7 @@ if (config.enabled) {
     var child = new (forever.Monitor)(path.join(global.pathToApp, 'core/watch/childWatch.js'), config.forever);
 
     child.on('start', function() {
-        global.log.info('Specs watcher process started.');
+        global.log.info('Specs watcher process started with forever.');
     });
 
     child.on('stderr', function() {

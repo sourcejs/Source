@@ -31,10 +31,12 @@ var config = {
     enabled: true,
     verbose: false,
     glob: [
-        '!**/.*/**',
-        '!**/bower_components/**',
-        '!**/node_modules/**',
-        global.pathToApp + '/**/' + global.opts.core.common.infoFile
+        '!' + global.pathToApp + '/**/.*/**',
+        '!' + global.pathToApp + '/**/bower_components/**',
+        '!' + global.pathToApp + '/**/node_modules/**',
+
+        global.pathToApp + '/**/' + global.opts.core.common.infoFile,
+        global.pathToApp + '/' + global.opts.core.common.pathToUser + '/**/' + global.opts.core.common.infoFile
     ],
     ignoreHiddenFiles: true
 };
@@ -48,6 +50,10 @@ var prepareData = function(data, targetFile){
 };
 
 if (config.enabled){
+    if (!global.opts.core.watch.foreverWatchEnabled) {
+        global.log.info('Specs watcher process started.');
+    }
+
     watch(config.glob, {
         verbose: config.verbose
     }, function(vinyl){
