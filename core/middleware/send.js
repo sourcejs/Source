@@ -1,5 +1,7 @@
 'use strict';
 
+var prettyHrtime = require('pretty-hrtime');
+
 /**
  * In case if request contains rendered html, then send it as response and stop spec content post-processing.
  *
@@ -9,6 +11,8 @@
  * */
 exports.process = function (req, res, next) {
     if (req.specData && req.specData.renderedHtml) {
+        global.log.trace('Spec loading time: ', prettyHrtime(process.hrtime(global.specLoadTime)));
+
         res.send(req.specData.renderedHtml);
     } else {
         next();

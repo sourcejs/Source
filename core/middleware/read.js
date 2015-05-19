@@ -16,12 +16,21 @@ var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
  * @param {function} next - The callback function
  * */
 exports.process = function(req, res, next) {
-    var apiRe = new RegExp('^/api/');
-    var sourceRe = new RegExp('^/sourcejs/');
     var reqExt = path.extname(req.path);
 
+    // Skip static resources, and dirs witout trailing slash
+    if (reqExt !== "" || (reqExt === "" && req.path.slice(-1) !== '/')) {
+        next();
+        return;
+    }
+
+    var apiRe = new RegExp('^/api/');
+    var sourceRe = new RegExp('^/sourcejs/');
+
     // Check if folder is requested but not the reserved namespaces
-    if (reqExt === "" && !apiRe.test(req.path) && !sourceRe.test(req.path)) {
+    if (!apiRe.test(req.path) && !sourceRe.test(req.path)) {
+        global.specLoadTime = process.hrtime();
+
         var specPath = specUtils.getFullPathToSpec(req.path);
         var contextOptions = configUtils.getContextOptions(req.path);
         var specFiles = contextOptions.info && contextOptions.info.specFile ? [contextOptions.info.specFile] : contextOptions.core.common.specFiles;
