@@ -135,11 +135,12 @@ var getMergedOptions = module.exports.getMergedOptions = function(startPath, def
  */
 module.exports.getContextOptions = function(refUrl, defaultOpts) {
     var _defaultOpts = defaultOpts || global.opts;
+
     var parsedRefUrl = url.parse(refUrl);
     var refUrlPath = parsedRefUrl.pathname;
-
     var specDir = specUtils.getFullPathToSpec(refUrlPath);
-    var contextOptions = getMergedOptions(specDir, _defaultOpts);
+
+    var contextOptions = global.opts.core.common.contextOptions ? getMergedOptions(specDir, _defaultOpts) : _defaultOpts;
 
     var infoFilePath = path.join(specDir, contextOptions.core.common.infoFile);
     var infoOptionsKey = contextOptions.core.common.infoFileOptions;
