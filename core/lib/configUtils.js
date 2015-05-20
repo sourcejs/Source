@@ -48,7 +48,7 @@ var getBundleOptionsList = module.exports.getBundleOptionsList = function(startP
 
     if (!checkPath) return [];
 
-    return finder.in(startPath).lookUp(global.app.get('user')).findFiles('/' + global.opts.core.common.bundleOptions);
+    return finder.in(startPath).lookUp(global.app.get('user')).findFiles(path.sep + global.opts.core.common.bundleOptions);
 };
 
 /**
@@ -107,6 +107,11 @@ var getMergedOptions = module.exports.getMergedOptions = function(startPath, def
     var _defaultOptions = defaultOptions || {};
     var output = deepExtend({}, _defaultOptions);
     var optionsArr = getBundleOptionsList(startPath);
+
+    // Normalize  windows paths
+    optionsArr = optionsArr.map(function(item){
+        return item.replace(/\\/g, '/');
+    });
 
     optionsArr = optionsArr.sort(function (a, b) {
         var al = a.split('/').length;
