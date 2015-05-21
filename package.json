@@ -24,6 +24,7 @@
     "flat": "^1.2.1",
     "forever-monitor": "^1.5.2",
     "fs-extra": "~0.11.1",
+    "fs-finder": "git://github.com/operatino/node-fs-finder#develop",
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "~1.0.0",
     "grunt-cli": "^0.1.13",
