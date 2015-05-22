@@ -55,7 +55,8 @@
     "postinstall": "grunt && node ./core/postInstall",
     "build": "npm i",
     "start": "node app",
-    "test": "grunt test"
+    "test": "grunt test",
+    "ci": "grunt ci"
   },
   "devDependencies": {
     "assert": "~1.1.1",

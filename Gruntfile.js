@@ -176,6 +176,9 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 src: ['test/**/*.js']
+            },
+            noApp: {
+                src: ['test/specs/lib/**/*.js']
             }
         }
     });
@@ -275,6 +278,12 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
+
+    grunt.registerTask('ci', [
+        'default',
+        'build',
+        'mochaTest:noApp'
+    ]);
 
     /*
     *
