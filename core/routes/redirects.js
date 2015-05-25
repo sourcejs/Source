@@ -1,3 +1,5 @@
+'use strict';
+
 /*
 *
 * This file contains default redirects, to add custom redirects user /user/core/routes/index.js

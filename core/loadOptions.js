@@ -5,7 +5,7 @@ var deepExtend = require('deep-extend');
 var path = require('path');
 var configUtils = require('./lib/configUtils');
 var utils = require('./lib/utils');
-var colors = require('colors');
+var colors = require('colors'); // jshint ignore:line
 
 var silent;
 

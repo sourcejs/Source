@@ -4,8 +4,10 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
+'use strict';
+
 var express = require('express');
-var colors = require('colors');
+var colors = require('colors'); // jshint ignore:line
 var fs = require('fs-extra');
 var path = require('path');
 var commander = require('commander');
@@ -18,7 +20,7 @@ global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
     return match.toLowerCase();
 });
 
-global.app = express();
+var app = global.app = express();
 
 var loadOptions = require('./core/loadOptions');
 global.opts = loadOptions();
@@ -32,11 +34,11 @@ commander
 
 global.commander = commander;
 
-global.app.set('views', path.join(__dirname, 'core/views'));
-global.app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
+app.set('views', path.join(__dirname, 'core/views'));
+app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
 
 // We support `development` (default), `production` and `presentation` (for demos)
-global.MODE = process.env.NODE_ENV || 'development';
+var MODE = global.MODE = process.env.NODE_ENV || 'development';
 
 global.engineVersion = fs.readJsonSync(path.join(global.pathToApp, '/package.json'), {throws: false}).version;
 
@@ -59,11 +61,11 @@ app.use(function (req, res, next) {
 });
 
 // Optimization
-global.app.use(require('compression')());
+app.use(require('compression')());
 
 // Cookies
-global.app.use(require('cookie-parser')());
-global.app.use(require('express-session')({
+app.use(require('cookie-parser')());
+app.use(require('express-session')({
     secret: (function() {
         var d = new Date().getTime();
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -84,7 +86,7 @@ app.use(function (req, res, next) {
 });
 
 // Favicon
-var faviconPath = path.join(global.app.get('user'), 'favicon.ico');
+var faviconPath = path.join(app.get('user'), 'favicon.ico');
 if (fs.existsSync(faviconPath)){
     app.use(favicon(faviconPath));
 }
@@ -101,7 +103,7 @@ var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
 // Clarify
-global.app.use(require('./core/middleware/clarify'));
+app.use(require('./core/middleware/clarify'));
 
 // File tree module
 var fileTree = require('./core/file-tree');
@@ -111,7 +113,7 @@ fileTree.scan();
 
 // Run file tree scan on main page visit
 if (global.opts.core.fileTree.mainPageTrigger && global.MODE !== 'presentation') {
-    global.app.use(function(req, res, next){
+    app.use(function(req, res, next){
 
         // Updating navigation on each main page visit
         if (req.url === '/') fileTree.scan();
@@ -121,7 +123,7 @@ if (global.opts.core.fileTree.mainPageTrigger && global.MODE !== 'presentation')
 }
 
 // Update file tree via api
-global.app.use('/api/updateFileTree', function(req, res){
+app.use('/api/updateFileTree', function(req, res){
     fileTree.scan();
 
     res.jsonp({
@@ -132,20 +134,20 @@ global.app.use('/api/updateFileTree', function(req, res){
 
 // Middleware that loads spec content
 var read = require("./core/middleware/read");
-global.app.use(read.process);
+app.use(read.process);
 
 // Markdown
-global.app.use(require("./core/middleware/md").process);
-global.app.use(require("./core/middleware/mdTag").process);
+app.use(require("./core/middleware/md").process);
+app.use(require("./core/middleware/mdTag").process);
 
 // Load user defined middleware, that processes spec content
 require("./core/middleware/userMiddleware");
 
 // Middleware that wraps spec with Source template
-global.app.use(require("./core/middleware/wrap").process);
+app.use(require("./core/middleware/wrap").process);
 
 // Middleware that sends final spec response
-global.app.use(require("./core/middleware/send").process);
+app.use(require("./core/middleware/send").process);
 
 /* /Middlewares */
 
@@ -165,7 +167,7 @@ require("./core/loadPlugins.js");
 
 try {
     // User additional functionality
-    require(global.app.get('user') + "/core/app.js");
+    require(app.get('user') + "/core/app.js");
 } catch(e){}
 
 
@@ -187,10 +189,10 @@ if (global.opts.core.watch.enabled && global.MODE === 'development') {
 var headerFooter = require('./core/headerFooter');
 
 // Static content
-global.app.use(express.static(global.app.get('user')));
+app.use(express.static(app.get('user')));
 
 // Page 404
-global.app.use(function(req, res){
+app.use(function(req, res){
 
 	if (req.accepts('html')) {
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
@@ -223,7 +225,7 @@ var logErrors = function(err, req, res, next) {
     }
 };
 
-global.app.use(logErrors);
+app.use(logErrors);
 /* /Error handling */
 
 
@@ -232,7 +234,7 @@ global.app.use(logErrors);
 if (!module.parent) {
     var port = global.opts.core.common.port;
 
-    global.app.listen(port);
+    app.listen(port);
     var portString = port.toString();
 
     log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
