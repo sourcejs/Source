@@ -191,8 +191,6 @@ module.exports = function(grunt) {
     *
     * */
 
-    grunt.loadTasks("grunt/tasks");
-
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
             grunt.file.exists('build/last-run') &&
