@@ -52,7 +52,7 @@
     "tinyforever": "0.0.3"
   },
   "scripts": {
-    "postinstall": "grunt && node ./core/postInstall",
+    "postinstall": "grunt update && node ./core/postInstall",
     "build": "npm i",
     "start": "node app",
     "test": "grunt test",
