@@ -7,6 +7,7 @@
 var express = require('express');
 var colors = require('colors');
 var fs = require('fs-extra');
+var path = require('path');
 var commander = require('commander');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
@@ -31,8 +32,8 @@ commander
 
 global.commander = commander;
 
-global.app.set('views', __dirname + '/core/views');
-global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
+global.app.set('views', path.join(__dirname, 'core/views'));
+global.app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
 
 // We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';

@@ -3,6 +3,7 @@
 var fs = require('fs-extra');
 var deepExtend = require('deep-extend');
 var path = require('path');
+var os = require('os');
 var finder = require('fs-finder');
 var nodeUtils = require('util');
 var url = require('url');
@@ -45,10 +46,12 @@ module.exports.prepareClientNpmPlugins = function(pathToUser) {
  */
 var getBundleOptionsList = module.exports.getBundleOptionsList = function(startPath) {
     var checkPath = fs.existsSync(startPath);
+    var searchStopPath = global.app.get('user');
+    var fileToFind = path.sep + global.opts.core.common.bundleOptions;
 
     if (!checkPath) return [];
 
-    return finder.in(startPath).lookUp(global.app.get('user')).findFiles(path.sep + global.opts.core.common.bundleOptions);
+    return finder.in(startPath).lookUp(searchStopPath).findFiles(fileToFind);
 };
 
 /**
