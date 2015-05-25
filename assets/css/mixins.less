@@ -21,6 +21,12 @@
     .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_info > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
 
+    .source_note > @{selector},
+    .source_note > *@{notCleaningClasses} > @{selector},
+    .source_note > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_note > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_note > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+
     .source_doc > @{selector},
     .source_doc > *@{notCleaningClasses} > @{selector},
     .source_doc > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
@@ -38,6 +44,19 @@
     .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
     .source_deps > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector} {
+        & when (@reset = true) {
+            .reset();
+        }
+        @rules();
+        }
+    }
+
+.source-main-only(@selector, @rules, @reset: true) {
+    .source_main > @{selector},
+    .source_main > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector},
+    .source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > *@{notCleaningClasses} > @{selector} {
         & when (@reset = true) {
             .reset();
         }

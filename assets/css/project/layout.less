@@ -54,11 +54,8 @@
 		}
 	}
 
-    //TDOO: move those kind of classes to seperate auto-generated module
-.source_main_h1, /* for custom cases */
-.source_main > h1,
-.source_subhead > h1 {
-    margin: 0;
+.source_main_h1 {
+	margin: 0;
     padding: 10px 0 0 0;
 
     font-size: 36px;
@@ -69,6 +66,13 @@
     line-height: 1.5;
     color: @black;
     }
+
+.source-main-only(h1,{
+    .source_main_h1;
+    });
+
+/* for custom cases */
+
 
 .source_subhead {
     position: relative;

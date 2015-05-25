@@ -12,15 +12,9 @@
     color: #07A;
     }
 
-.source_main > code:not(:empty),
-.source_main > *@{notCleaningClasses} > code:not(:empty),
-.source_main > *@{notCleaningClasses} > *@{notCleaningClasses} > code:not(:empty),
-.source_section > code:not(:empty),
-.source_section > table code:not(:empty),
-.source_section > *@{notCleaningClasses} > code:not(:empty),
-.source_section > *@{notCleaningClasses} > *@{notCleaningClasses} > code:not(:empty) {
+.source-only(code,{
     &:extend(.source_code);
-    }
+    });
 
 .lang-source_wide-code {
     padding: 10px !important;
