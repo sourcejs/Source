@@ -9,7 +9,7 @@ var config = {
     forever: {
         silent: false,
         max: 10,
-        minUptime: 10000,
+        minUptime: 1000,
         args: ['--log='+global.commander.log, '--root=../../']
     }
 };
@@ -35,5 +35,9 @@ if (config.enabled) {
         global.log.error('Specs watcher stopped. Re-run app to activate navigation watcher.');
     });
 
-    child.start();
+    var childObj = child.start();
+
+    process.on('exit', function () {
+        process.kill(childObj.child.pid, 'SIGKILL');
+    });
 }
