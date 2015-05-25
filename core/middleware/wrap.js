@@ -48,31 +48,34 @@ exports.process = function (req, res, next) {
                 return;
             }
 
-            var $ = cheerio.load(data);
+            var $ = cheerio.load(data, {decodeEntities: false});
 
             var head = '';
-            var headHook = $('head');
+            var $headHook = $('head');
 
-            if (headHook.length > 0) {
-                // cheerio hack to hack cyrillic symbols https://github.com/cheeriojs/cheerio/issues/711
-                head = cheerio.load(headHook.html()).html({decodeEntities: false});
+            if ($headHook.length > 0) {
+                head = $headHook.html();
 
                 $('head').remove();
             }
 
-            var $content = $;
+            var content = '';
+            var $body = $('body');
+            var $html = $('html');
 
-            if ($('body').length > 0) {
-                $content = cheerio.load($('body').html())
-            } else if ($('html').length > 0) {
-                $content = cheerio.load($('html').html())
+            if ($body.length > 0) {
+                content = $body.html();
+            } else if ($html.length > 0) {
+                content = $html.html();
+            } else {
+                content = $.html();
             }
 
             var headerFooterHTML = getHeaderAndFooter();
 
             // final data object for the template
             var templateJSON = {
-                content: $content.html({decodeEntities: false}),
+                content: content,
                 head: head,
                 header: headerFooterHTML.header,
                 footer: headerFooterHTML.footer,
@@ -83,7 +86,7 @@ exports.process = function (req, res, next) {
             // render page and send it as response
             req.specData.renderedHtml = ejs.render(template, templateJSON);
 
-            req.specData.renderedHtml += '<!-- SourceJS version: ' + global.engineVersion + ' -->';
+            req.specData.renderedHtml += '\n<!-- SourceJS version: ' + global.engineVersion + ' -->';
 
             next();
         });
