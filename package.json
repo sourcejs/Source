@@ -22,7 +22,6 @@
     "express-session": "^1.10.2",
     "extend": "~1.2.1",
     "flat": "^1.2.1",
-    "forever-monitor": "^1.5.2",
     "fs-extra": "~0.11.1",
     "fs-finder": "git://github.com/operatino/node-fs-finder#develop",
     "grunt": "~0.4.5",
@@ -49,7 +48,8 @@
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
-    "time-grunt": "~0.2.10"
+    "time-grunt": "~0.2.10",
+    "tinyforever": "0.0.3"
   },
   "scripts": {
     "postinstall": "grunt && node ./core/postInstall",

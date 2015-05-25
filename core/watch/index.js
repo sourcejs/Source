@@ -1,6 +1,6 @@
 'use strict';
 
-var forever = require('forever-monitor');
+var forever = require('tinyforever');
 var path = require('path');
 var deepExtend = require('deep-extend');
 
@@ -35,9 +35,9 @@ if (config.enabled) {
         global.log.error('Specs watcher stopped. Re-run app to activate navigation watcher.');
     });
 
-    var childObj = child.start();
+    child.start();
 
     process.on('exit', function () {
-        process.kill(childObj.child.pid, 'SIGKILL');
+        child.stop();
     });
 }
