@@ -33,7 +33,8 @@ exports.process = function(req, res, next) {
 
         var specPath = specUtils.getFullPathToSpec(req.path);
         var contextOptions = configUtils.getContextOptions(req.path);
-        var specFiles = contextOptions.info && contextOptions.info.specFile ? [contextOptions.info.specFile] : contextOptions.core.common.specFiles;
+
+        var specFiles = contextOptions.specInfo && contextOptions.specInfo.specFile ? [contextOptions.specInfo.specFile] : contextOptions.rendering.specFiles;
 
         var physicalPath = specUtils.getSpecFromDir(specPath, specFiles);
         var specFile = typeof physicalPath === 'string' ? path.basename(physicalPath) : undefined;
@@ -60,7 +61,7 @@ exports.process = function(req, res, next) {
             // Filled during middleware processing
             req.specData = {};
 
-            var infoJson = contextOptions.info || {
+            var specInfo = contextOptions.specInfo || {
                 title: 'No '+ contextOptions.core.common.infoFile +' defined'
             };
 
@@ -70,10 +71,10 @@ exports.process = function(req, res, next) {
             data = data.replace(/^\s+|\s+$/g, '');
 
             // Pre-render Spec contents with EJS
-            if (!infoJson.noEjs) {
+            if (!specInfo.noEjs) {
                 try {
                     data = ejs.render(data, {
-                        info: infoJson,
+                        info: specInfo,
                         filename: physicalPath
                     });
                 } catch(err){
@@ -82,7 +83,7 @@ exports.process = function(req, res, next) {
             }
 
             req.specData["is" + capitalizedExtension] = true;
-            req.specData.info = infoJson; // add spec info object to request
+            req.specData.info = specInfo; // add spec info object to request
             req.specData.contextOptions = contextOptions; // add context options to request
             req.specData.renderedHtml = data; // add spec content to request
 

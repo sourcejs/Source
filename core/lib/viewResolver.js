@@ -7,7 +7,7 @@ var pathResolver = require(path.join(global.pathToApp + '/core/lib/pathResolver.
  * Get information about defined specSpec
  *
  * @param {String} typeOrPath - define type of view (spec/navigation), relative path to default views dir or absolute path
- * @param {Object} viewsOptions - view options (global.opts.core.common.views)
+ * @param {Object} viewsOptions - view options (global.opts.rendering.views)
  * @param {String} [context] - folder dir, to define $(context) resolver
  *
  * @returns {String} Return full path to view template of undefined

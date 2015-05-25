@@ -37,18 +37,18 @@ module.exports.prepareClientNpmPlugins = function(pathToUser) {
 };
 
 /**
- * Search up the tree for bundle options paths
+ * Search up the tree for context options paths
  *
  * @param {String} startPath - path to dir from where to start searching
  *
  * @returns {Array} Returns list of paths with found options files
  */
-var getBundleOptionsList = module.exports.getBundleOptionsList = function(startPath) {
+var getContextOptionsList = module.exports.getContextOptionsList = function(startPath) {
     var checkPath = fs.existsSync(startPath);
     if (!checkPath) return [];
 
     var searchStopPath = global.app.get('user');
-    var fileToFind = path.sep + global.opts.core.common.bundleOptions;
+    var fileToFind = path.sep + global.opts.core.common.contextOptionsFile;
 
     return finder.in(startPath).lookUp(searchStopPath).findFiles(fileToFind);
 };
@@ -59,21 +59,23 @@ var getBundleOptionsList = module.exports.getBundleOptionsList = function(startP
  * @param {Object} options - options object to process
  * @param {String} [context] - path to context folder for resolving $(context)
  *
- * @returns {Object} Returns processed options object
+ * @returns {Object} Returns processed options object or undefined
  */
 var processOptionsViewPaths = module.exports.processOptionsViewPaths = function(options, context) {
+    if (!options) return;
+
     var updateArr = function(optItem){
         return optItem.map(function (item) {
             return pathResolver.resolve(item, context);
         });
     };
 
-    for (var opt in options.core.common.views) {
-        if (options.core.common.views.hasOwnProperty(opt)) {
-            var optItem = options.core.common.views[opt];
+    for (var opt in options.rendering.views) {
+        if (options.rendering.views.hasOwnProperty(opt)) {
+            var optItem = options.rendering.views[opt];
 
             if (nodeUtils.isArray(optItem)) {
-                options.core.common.views[opt] = updateArr(optItem);
+                options.rendering.views[opt] = updateArr(optItem);
             }
         }
     }
@@ -85,22 +87,40 @@ var processOptionsViewPaths = module.exports.processOptionsViewPaths = function(
  * Process options object
  *
  * @param {String} optionsPath - path to options file
+ * @param {Object} [optionsObj] - options file content
  *
  * @returns {Object} Returns processed options object
  */
-var processOptions = module.exports.processOptions = function(optionsPath) {
+var processOptions = module.exports.processOptions = function(optionsPath, optionsObj) {
     var optionsDir = path.dirname(optionsPath);
-    var options = utils.requireUncached(optionsPath);
+    var options = optionsObj || utils.requireUncached(optionsPath);
 
-    if (options.core && options.core.common && options.core.common.views) processOptionsViewPaths(options, optionsDir);
+    if (options.rendering && options.rendering.views) processOptionsViewPaths(options, optionsDir);
 
     return options;
 };
 
+var extendContextOptions = module.exports.extendContextOptions = function(defaultOptions, newOptionsPath, newOptionsObj) {
+    var output = defaultOptions || {};
+
+    var contextOptionsItem = processOptions(newOptionsPath, newOptionsObj);
+
+    if (contextOptionsItem.core) {
+        global.log.warn('Core options could not be overridden from context options, check ' + newOptionsPath);
+    }
+
+    // Override default options with context options items
+    if (output.assets) deepExtend(output.assets, contextOptionsItem.assets);
+    if (output.rendering) deepExtend(output.rendering, contextOptionsItem.rendering);
+    if (output.plugins) deepExtend(output.plugins, contextOptionsItem.plugins);
+
+    return output;
+};
+
 /**
- * Get merged options object, with merged bundle level options
+ * Get merged options object, with merged context level options
  *
- * @param {String} startPath - path from where to start searching for bundle options (ends at user path)
+ * @param {String} startPath - path from where to start searching for context options (ends at user path)
  * @param {Object} [defaultOptions] - SourceJS options object (global.opts)
  *
  * @returns {Object} Returns a merged options object
@@ -108,7 +128,7 @@ var processOptions = module.exports.processOptions = function(optionsPath) {
 var getMergedOptions = module.exports.getMergedOptions = function(startPath, defaultOptions) {
     var _defaultOptions = defaultOptions || {};
     var output = deepExtend({}, _defaultOptions);
-    var optionsArr = getBundleOptionsList(startPath);
+    var optionsArr = getContextOptionsList(startPath);
 
     // Normalize  windows paths
     optionsArr = optionsArr.map(function(item){
@@ -125,8 +145,8 @@ var getMergedOptions = module.exports.getMergedOptions = function(startPath, def
         return 0;
     });
 
-    optionsArr.forEach(function(path){
-       deepExtend(output, processOptions(path));
+    optionsArr.forEach(function(newOptionsPath){
+        extendContextOptions(output, newOptionsPath);
     });
 
     return output;
@@ -142,19 +162,24 @@ var getMergedOptions = module.exports.getMergedOptions = function(startPath, def
  */
 module.exports.getContextOptions = function(refUrl, defaultOpts) {
     var _defaultOpts = defaultOpts || global.opts;
+    var contextOptionsEnabled = global.opts.core.common.contextOptions;
 
     var parsedRefUrl = url.parse(refUrl);
     var refUrlPath = parsedRefUrl.pathname;
     var specDir = specUtils.getFullPathToSpec(refUrlPath);
 
-    var contextOptions = global.opts.core.common.contextOptions ? getMergedOptions(specDir, _defaultOpts) : _defaultOpts;
+    var contextOptions = contextOptionsEnabled ? getMergedOptions(specDir, _defaultOpts) : _defaultOpts;
 
-    var infoFilePath = path.join(specDir, contextOptions.core.common.infoFile);
-    var infoOptionsKey = contextOptions.core.common.infoFileOptions;
+    var infoFilePath = path.join(specDir, global.opts.core.common.infoFile);
+    var infoOptionsKey = global.opts.core.common.infoFileOptions;
 
-    contextOptions.info = fs.readJsonFileSync(infoFilePath, {throws: false});
+    // Extent context options object with info.json contents
+    contextOptions.specInfo = fs.readJsonFileSync(infoFilePath, {throws: false});
 
-    if (contextOptions.info && contextOptions.info[infoOptionsKey]) deepExtend(contextOptions, contextOptions.info[infoOptionsKey]);
+    // Override local options
+    if (contextOptionsEnabled && contextOptions.specInfo && contextOptions.specInfo[infoOptionsKey]) {
+        extendContextOptions(contextOptions, infoFilePath, contextOptions.specInfo[infoOptionsKey]);
+    }
 
     return contextOptions;
 };

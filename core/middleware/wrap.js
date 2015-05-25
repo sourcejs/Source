@@ -39,7 +39,7 @@ exports.process = function (req, res, next) {
             viewParam = 'navigation';
         }
 
-        var templatePath = viewResolver(viewParam, contextOptions.core.common.views, context) || viewParam;
+        var templatePath = viewResolver(viewParam, contextOptions.rendering.views, context) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {

@@ -53,6 +53,7 @@ var config =  {
         ]
     }
 };
+
 if (global.opts.core.logger) deepExtend(config, global.opts.core.logger);
 
 var reloadConf = function(currentConf){
@@ -86,6 +87,8 @@ prepareLogDir(config.prepareLogPath);
 // Configuring log4js
 reloadConf(config.log4js);
 
+var logger = log4js.getLogger('app');
+
 // Example
 // logger.trace('trace');
 // logger.debug('debug');
@@ -95,12 +98,16 @@ reloadConf(config.log4js);
 // logger.error('error');
 // logger.fatal('fatal');
 
+if (global.logQueue) global.logQueue.forEach(function(item){
+    logger[item.level](item.msg);
+});
+
 module.exports = {
     addAppenders: addAppenders,
     prepareLogDir: prepareLogDir,
 
     // Default logger
-    log: log4js.getLogger('app'),
+    log: logger,
 
     // Configured log4js
     log4js: log4js

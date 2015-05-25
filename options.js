@@ -1,36 +1,31 @@
-// Default options for core and assets
+// Default SourceJS engine configuration
 
 module.exports = {
 
-    // Restart the app after changing core options
+    // Restart the app after changing core (back-end) options
+    // Core options could be only redefined from user/options.js, context options are not supported
     core : {
         common: {
             port: 8080,
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
-
             includedDirs: ['docs'],
-            contextOptions: true,
-            bundleOptions: 'sourcejs-options.js',
-            pathToUser: 'user', // Can't be overridden on user level
-            infoFile: 'info.json',
-            infoFileOptions: 'sourcejs',
             specPaths: ['specs'],
-            specFiles: ['index.src', 'index.src.html', 'index.jade', 'index.haml', 'index.md', 'readme.md', 'README.md', 'index.html'],
-            views: {
-                defaultViewPaths: [
-                    '$(user)/core/views',
-                    '$(sourcejs)/core/views'
-                ],
-                spec: [
-                    '$(user)/core/views/spec.ejs',
-                    '$(sourcejs)/core/views/spec.ejs'
-                ],
-                navigation: [
-                    '$(user)/core/views/navigation.ejs',
-                    '$(sourcejs)/core/views/navigation.ejs'
-                ]
-            }
+
+            // Turn on context level setting
+            contextOptions: true,
+
+            // Name of context level settings file
+            contextOptionsFile: 'sourcejs-options.js',
+
+            // Path to your SourceJS configuration folder
+            pathToUser: 'user',
+
+            // Name of spec meta info file
+            infoFile: 'info.json',
+
+            // Name of options field in info.json, used to override configuration per spec
+            infoFileOptions: 'sourcejs'
         },
         api: {
             specsData: 'core/api/data/pages-tree.json',
@@ -38,9 +33,16 @@ module.exports = {
             specsTestData: 'test/data/api-test-specs.json',
             htmlTestData: 'test/data/api-test-html.json'
         },
+
+        // Spec catalogs navigation tree
         fileTree: {
+            // Excluded folder names from navigation tree parsing
             excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+
+            // Update navigation tree by cron task (setTimeout)
             cron: false,
+
+            // Update navigation tree when somebody visits main page
             mainPageTrigger: false
         },
         watch: {
@@ -49,38 +51,39 @@ module.exports = {
         }
     },
 
+    // Page rendering configuration (redefinable from context options)
+    rendering: {
+        // Define priority of spec file source
+        specFiles: [
+            'index.src',
+            'index.src.html',
+            'index.jade', // https://www.npmjs.com/package/sourcejs-jade
+            'index.jsx', // https://www.npmjs.com/package/sourcejs-react
+            'index.md',
+            'readme.md',
+            'README.md',
+            'index.html'
+        ],
+
+        // Define views for rendering SourceJS pages (array order define priority)
+        views: {
+            defaultViewPaths: [
+                '$(user)/core/views',
+                '$(sourcejs)/core/views'
+            ],
+            spec: [
+                '$(user)/core/views/spec.ejs',
+                '$(sourcejs)/core/views/spec.ejs'
+            ],
+            navigation: [
+                '$(user)/core/views/navigation.ejs',
+                '$(sourcejs)/core/views/navigation.ejs'
+            ]
+        }
+    },
+
+    // Client-side options (redefinable from context options)
     assets: {
-        // Core modules
-        modulesEnabled : {
-            clarifyInSpec: true,
-            htmlAPISync: true,
-            headerFooter: true,
-            specDecorations: true,
-            codeSource: true,
-            sectionFolding: true,
-            innerNavigation: true,
-            trimSpaces: false, //trimspaces in example sections to emulate HTML minify, off by default
-            scrollToHash: true,
-            sections: true,
-            globalNav: true,
-            search: true,
-            loadEvents: true,
-            navHighlight: true,
-            auth: false
-        },
-
-        modulesOptions : {
-            navHighlight: {
-                updateHash: false // Hash update on scroll turned off because of performance issues
-            },
-
-            search: {
-                autofocusOnNavigationPage: true,
-                autofocusOnSpecPage: false,
-                activateOnLoad: true
-            }
-        },
-
         // Page classes
         containerClass : 'source_container',
         headerClass : 'source_header',
@@ -89,8 +92,44 @@ module.exports = {
         exampleCleanClass : 'source_clean',
         mainClass : 'source_main',
         mainNav : 'source_main_nav',
-
         colMain : 'source_col-main',
+
+        // Core modules
+        modulesEnabled : {
+            // Enable clarify helper links in spec
+            clarifyInSpec: true,
+            htmlAPISync: true,
+            headerFooter: true,
+            specDecorations: true,
+            codeSource: true,
+            sectionFolding: true,
+            innerNavigation: true,
+
+            // Trims paces in example sections to emulate HTML minify, off by default
+            trimSpaces: false,
+            scrollToHash: true,
+            sections: true,
+            globalNav: true,
+            search: true,
+            loadEvents: true,
+            navHighlight: true,
+
+            // Enable github auth toolbar links
+            auth: false
+        },
+
+        modulesOptions : {
+            navHighlight: {
+                // Hash update on scroll turned off because of performance issues
+                updateHash: false
+            },
+
+            search: {
+                autofocusOnNavigationPage: true,
+                autofocusOnSpecPage: false,
+                activateOnLoad: true
+            }
+        },
 
         // Landing page options for moduleLoader (override without extend)
         navPageModulesBuild: {
@@ -105,14 +144,17 @@ module.exports = {
         }
     },
 
+    // External plugins options (are also exposed to client-side
     plugins: {
+        // PhantomJS HTML API parser will be moved to plugin at v.0.6
         htmlParser: {
             enabled: false
         }
     },
 
     /*
-     * Please pay your attention. This is demo github applicatio key.
+     * Please pay your attention. This is DEMO github applicatio key.
+     *
      * To get your own one please use github applications service.
      * Please visit this link to get more information:
      * https://developer.github.com/guides/basics-of-authentication/#registering-your-app

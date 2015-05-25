@@ -19,7 +19,7 @@ global.commander = global.commander || commander;
 global.pathToApp = global.pathToApp || path.join(__dirname, commander.root).replace(/\\/g, '/').replace(/\/$/, '');
 
 var loadOptions = require(path.join(global.pathToApp, 'core/loadOptions'));
-global.opts = global.opts || loadOptions(path.resolve(global.pathToApp));
+global.opts = global.opts || loadOptions(path.resolve(global.pathToApp), true);
 
 var logger = require(path.join(global.pathToApp, 'core/logger'));
 var log = logger.log;

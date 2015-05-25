@@ -75,7 +75,7 @@ module.exports.getSpecFromDir = function(dirPath, specFiles) {
 
     if (!dirContent) return;
 
-    var supportedSpecNames = specFiles || global.opts.core.common.specFiles;
+    var supportedSpecNames = specFiles || global.opts.rendering.specFiles;
     var specPath;
 
     for (var i=0; i < supportedSpecNames.length; i++) {

@@ -27,6 +27,8 @@ var getTpl = function(tpl) {
     var deferred = Q.defer();
 
     var templateName = tpl ? tpl : 'default';
+
+    // TODO: use view resolver
     var pathToTemplate = path.join(global.pathToApp, 'core/views/clarify', templateName + '.ejs');
     var userPathToTemplate = path.join(global.app.get('user'), 'core/views/clarify', templateName + '.ejs');
 

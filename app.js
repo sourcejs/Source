@@ -38,7 +38,7 @@ global.app.set('user', path.join(__dirname, global.opts.core.common.pathToUser))
 // We support `development` (default), `production` and `presentation` (for demos)
 global.MODE = process.env.NODE_ENV || 'development';
 
-global.engineVersion = fs.readJsonSync(global.pathToApp + '/package.json', {throws: false}).version;
+global.engineVersion = fs.readJsonSync(path.join(global.pathToApp, '/package.json'), {throws: false}).version;
 
 // Default logger
 var logger = require('./core/logger');
@@ -84,7 +84,7 @@ app.use(function (req, res, next) {
 });
 
 // Favicon
-var faviconPath = global.app.get('user') + '/favicon.ico';
+var faviconPath = path.join(global.app.get('user'), 'favicon.ico');
 if (fs.existsSync(faviconPath)){
     app.use(favicon(faviconPath));
 }
@@ -194,7 +194,7 @@ global.app.use(function(req, res){
 
 	if (req.accepts('html')) {
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
-		res.status(404).render(__dirname + '/core/views/404.ejs', {
+		res.status(404).render(path.join(__dirname, '/core/views/404.ejs'), {
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
 		});
