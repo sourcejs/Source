@@ -30,6 +30,7 @@ commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
     .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ').', global.opts.core.common.port)
     .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
+    .option('--test', 'Run app with tests.')
     .parse(process.argv);
 
 global.commander = commander;
@@ -238,4 +239,19 @@ if (!module.parent) {
     var portString = port.toString();
 
     log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+
+    if (commander.test) {
+        var spawn = require('cross-spawn');
+
+        spawn('./node_modules/grunt-cli/bin/grunt', ['ci'], {stdio: 'inherit'})
+            .on('close', function (code) {
+                if (code === 0) {
+                    log.info('Test successful');
+                    process.exit(0);
+                } else {
+                    log.error('Test failed');
+                    process.exit(1);
+                }
+            });
+    }
 }

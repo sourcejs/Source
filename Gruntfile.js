@@ -280,9 +280,10 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-all', ['update','watch']);
 
     grunt.registerTask('ci', [
-        'default',
+        'jshint',
         'build',
-        'mochaTest:noApp'
+        'update',
+        'test'
     ]);
 
     /*

@@ -55,11 +55,11 @@
     "postinstall": "grunt update && node ./core/postInstall",
     "build": "npm i",
     "start": "node app",
-    "test": "grunt test",
-    "ci": "grunt ci"
+    "test": "node app.js --test"
   },
   "devDependencies": {
     "assert": "~1.1.1",
+    "cross-spawn": "^0.4.0",
     "grunt-mocha-test": "^0.12.4",
     "mocha": "^2.0.1",
     "should": "~4.0.4",
