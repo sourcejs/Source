@@ -324,8 +324,23 @@ define([
         var navConfig = this.options.modulesOptions.globalNav;
         var classes = navConfig.classes;
         var lastMod = itemData.lastmod || '';
-        var author = itemData.author ? navConfig.labels.author + ": " + itemData.author : '&nbsp;';
-        var metaInfo = lastMod !== '' ? lastMod + ' | ' + author : author;
+        var author = itemData.author ? navConfig.labels.author + ": " + itemData.author : '';
+        var metaInfo = '';
+
+        var addToMeta = function(data){
+            if (data === '') return;
+
+            if (metaInfo === '') {
+                metaInfo = data;
+            } else {
+                metaInfo += ' | ' + data;
+            }
+        };
+
+        addToMeta(lastMod);
+        addToMeta(author);
+
+        if (metaInfo === '') metaInfo = '&nbsp;';
 
         // fixing relative path due to server settings
         var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
