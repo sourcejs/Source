@@ -65,8 +65,13 @@ exports.process = function(req, res, next) {
                 title: 'No '+ contextOptions.core.common.infoFile +' defined'
             };
 
-            var specFileExtension = path.extname(physicalPath).replace(".", "");
-            var capitalizedExtension = specFileExtension.charAt(0).toUpperCase() + specFileExtension.slice(1);
+            var capitalizedExtension;
+            if (/.src.html$/.test(physicalPath)) {
+                capitalizedExtension = 'Src';
+            } else {
+                var specFileExtension = path.extname(physicalPath).replace(".", "");
+                capitalizedExtension = specFileExtension.charAt(0).toUpperCase() + specFileExtension.slice(1);
+            }
 
             data = data.replace(/^\s+|\s+$/g, '');
 
