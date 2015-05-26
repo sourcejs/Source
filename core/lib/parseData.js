@@ -31,8 +31,6 @@ ParseData.prototype.updateData = function(withCategories) {
     try {
         this.data = JSON.parse(fs.readFileSync(this.dataPath, 'utf8'));
     } catch(e) {
-        console.warn('Parse Data: Api data of ' + this.scope + ' does not exist, please update HTML API data.');
-        console.warn('Error: ', e);
         return false;
     }
 
@@ -250,7 +248,10 @@ ParseData.prototype.getByID = function(id) {
     var dataExists = this.updateData();
     var targetData = this.data[id];
 
-    return dataExists && targetData ? targetData : undefined;
+    if (!dataExists) return undefined;
+    if (!targetData) return null;
+
+    return targetData;
 };
 
 /**
