@@ -36,8 +36,10 @@
 
 	counter-reset: h2;
 
-	.source_page.__spec & {
-		padding-right: @layout_spec--inner-margin-right;
+    @media @media_min-step-m {
+		.source_page.__spec & {
+			padding-right: @layout_spec--inner-margin-right;
+			}
 		}
 
 	&.__loading:after {
