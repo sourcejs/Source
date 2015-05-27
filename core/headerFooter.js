@@ -18,10 +18,24 @@ exports.getHeaderAndFooter = function () {
     var userFooterTplPath = path.join(userTemplatePath, footerFile);
     var footerTplPath = fs.existsSync(userFooterTplPath) ? userFooterTplPath : path.join(defaultTemplatePath, footerFile);
 
-    output.header = ejs.render(fs.readFileSync(headerTplPath, 'utf-8'));
-    output.footer = ejs.render(fs.readFileSync(footerTplPath, 'utf-8'), {
-        engineVersion: global.engineVersion
-    });
+    var headerTpl = fs.readFileSync(headerTplPath, 'utf-8');
+    var footerTpl = fs.readFileSync(footerTplPath, 'utf-8');
+
+    try {
+        output.header = ejs.render(headerTpl);
+    } catch(e){
+        global.log.warn('Error rendering header template `' + headerTplPath + '`\n', e);
+        output.header = headerTpl;
+    }
+
+    try {
+        output.footer = ejs.render(footerTpl, {
+            engineVersion: global.engineVersion
+        });
+    } catch(e){
+        global.log.warn('Error rendering footer template `' + footerTplPath + '`\n', e);
+        output.footer = footerTpl;
+    }
 
     return output;
 };
