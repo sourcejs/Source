@@ -1,5 +1,6 @@
 # SourceJS - Living Style Guide Platform
 
+[![Build Status](https://travis-ci.org/sourcejs/Source.svg)](https://travis-ci.org/sourcejs/Source)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
