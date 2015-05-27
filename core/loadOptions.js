@@ -10,7 +10,10 @@ var colors = require('colors'); // jshint ignore:line
 var silent;
 
 var legacyOptionsWarn = function(path, oldStruct, newStruct){
-    var msg = 'You are using old options structure in ' + path.bold + ', please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
+    // Shout warn message only once
+    if (global.legacyOptionsWarnOnce && global.legacyOptionsWarnOnce.indexOf(oldStruct) > -1) return;
+
+    var msg = 'You are using old options structure in `' + path + '`, please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
 
     if (global.log) {
         global.log.warn(msg);
@@ -22,6 +25,9 @@ var legacyOptionsWarn = function(path, oldStruct, newStruct){
             msg: msg
         });
     }
+
+    global.legacyOptionsWarnOnce = global.legacyOptionsWarnOnce || [];
+    global.legacyOptionsWarnOnce.push(oldStruct);
 };
 
 var legacyOptionsChecker = function(options, optionsPath){
@@ -30,7 +36,7 @@ var legacyOptionsChecker = function(options, optionsPath){
 
         if (!silent) legacyOptionsWarn(optionsPath, 'options.core.common.specFiles', 'options.rendering.specFiles');
 
-        options.rendering.views = options.rendering.specFiles || options.core.common.specFiles;
+        options.rendering.specFiles = options.rendering.specFiles || options.core.common.specFiles;
     }
 
     return options;
