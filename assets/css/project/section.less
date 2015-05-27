@@ -5,7 +5,13 @@
 	padding-left: @layout_spec--inner-padding;
 	counter-reset: h3;
 
-    @media @media_min-step-m { margin-right: @layout_spec--inner-margin-right; }
+    @media @media_min-step-m {
+		// Legacy
+		margin-right: @layout_spec--inner-margin-right;
+
+		// New spec page modifier
+		.source_page.__spec & { margin-right: 0; }
+		}
 
     & > h2:first-child {
 		margin-left: -@layout_spec--inner-padding !important;

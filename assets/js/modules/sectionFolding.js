@@ -103,7 +103,7 @@ define([
             }
 
             // TODO: remove mustache check from core
-            if (options.pluginsOptions.mustache) {
+            if (options.pluginsOptions && options.pluginsOptions.mustache) {
                 // Need to use absolute path to get same scope with requires from inline scripts
                 require(['/plugins/mustache/js/mustache.js'], function(templater){
                     if (typeof templater.PostponedTemplates !== 'undefined') {

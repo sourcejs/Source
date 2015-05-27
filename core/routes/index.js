@@ -1,3 +1,5 @@
+'use strict';
+
 // Core routes
 require("./redirects.js");
 

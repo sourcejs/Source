@@ -1,92 +1,12 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
-var url = require('url');
 var ejs = require('ejs');
-var pathToApp = path.dirname(require.main.filename);
+var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
+var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 
-var config = {
-    includedDirs: ['docs']
-};
-
-/**
- * Handling Spec request
- *
- * @param {object} req - Request object
- * @param {object} res - Response object
- * @param {function} next - The callback function
- * */
-var handleSpec = function(req, res, next) {
-    // Filled during middleware processing
-    req.specData = {};
-
-    // Get the physical path of a requested file
-    var physicalPath = path.join(global.app.get('user'), req.path);
-
-    // TODO: move to config with array of exclusions
-    if (req.path.lastIndexOf('/docs/', 0) === 0) {
-        physicalPath = pathToApp + req.path;
-    }
-
-    // Extension of a requested file
-    var extension = path.extname(physicalPath).replace(".", "");
-    var directory = path.dirname(physicalPath); // get the dir of a requested file
-
-    var infoJson = directory + '/' + global.opts.core.common.infoFile;
-
-    fs.readFile(physicalPath, 'utf8', function (err, data) {
-        if (err) {
-            res.send(err);
-            return;
-        }
-
-        data = data.replace(/^\s+|\s+$/g, '');
-
-        fs.readFile(infoJson, 'utf8', function (err, info) {
-            if (err) {
-                info = {
-                    title: "New spec",
-                    author: "Anonymous",
-                    keywords: ""
-                };
-            } else {
-                info = JSON.parse(info);
-            }
-
-            var capitalizedExtension = extension.charAt(0).toUpperCase() + extension.slice(1);
-            var parsedUrl = url.parse(req.url);
-            var urlPath = parsedUrl.pathname.replace(/\\/g, '/');
-            var specPath = path.join(global.app.get('user'), urlPath).replace(/\\/g, '/');
-
-            // Including non-standard paths, outside default static route
-            config.includedDirs.forEach(function(item){
-                if (urlPath.split('/')[1] === item) {
-                    specPath = specPath.replace('/'+ global.opts.core.common.pathToUser + '/', '/');
-                }
-            });
-
-            // Pre-render Spec contents with EJS
-            if (!info.noEjs) {
-
-                try {
-                    data = ejs.render(data, {
-                        info: info,
-                        filename: specPath
-                    });
-                } catch(err){
-                    global.log.warn('Could not pre-render spec with EJS: ' + urlPath, err);
-                }
-            }
-
-            req.specData["is" + capitalizedExtension] = true;
-            req.specData.info = info; // add spec info object to request
-            req.specData.renderedHtml = data; // add spec content to request
-
-            next();
-        });
-    });
-};
+//var config = {};
 
 /**
  * Checking if Spec is requested
@@ -96,58 +16,84 @@ var handleSpec = function(req, res, next) {
  * @param {function} next - The callback function
  * */
 exports.process = function(req, res, next) {
-    // Get the physical path of a requested file
-    var physicalPath = global.app.get('user') + req.path;
+    var reqExt = path.extname(req.path);
 
-    // TODO: move to config with array of exclusions
-    if (req.path.lastIndexOf('/docs/', 0) === 0) {
-        physicalPath = pathToApp + req.path;
+    // Skip static resources, and dirs witout trailing slash
+    if (reqExt !== "" || (reqExt === "" && req.path.slice(-1) !== '/')) {
+        next();
+        return;
     }
 
-    // Extension of a requested file
-    var extension = path.extname(physicalPath).replace(".", "");
+    var apiRe = new RegExp('^/api/');
+    var sourceRe = new RegExp('^/sourcejs/');
 
-    // Check if folder is requested
-    if (extension === "") {
-        var requestedDir = req.path;
-        var specFiles = global.opts.core.common.specFiles;
+    // Check if folder is requested but not the reserved namespaces
+    if (!apiRe.test(req.path) && !sourceRe.test(req.path)) {
+        global.specLoadTime = process.hrtime();
 
-        // Append trailing slash
-        if (requestedDir.slice(-1) !== '/') {
-            requestedDir += '/';
+        var specPath = specUtils.getFullPathToSpec(req.path);
+        var contextOptions = configUtils.getContextOptions(req.path);
+
+        var specFiles = contextOptions.specInfo && contextOptions.specInfo.specFile ? [contextOptions.specInfo.specFile] : contextOptions.rendering.specFiles;
+
+        var physicalPath = specUtils.getSpecFromDir(specPath, specFiles);
+        var specFile = typeof physicalPath === 'string' ? path.basename(physicalPath) : undefined;
+
+        if (specFile === 'index.html' || !physicalPath) {
+            next();
+            return;
         }
 
-        var noSpecFound = true;
-        var checkingSpecFile = function(supportedIndexFormat){
-            // Skip index.html and check if file exists
-            if (supportedIndexFormat !== 'index.html' && fs.existsSync(physicalPath + supportedIndexFormat)) {
-                // Passing req params
-                var urlParams = req.url.split('?')[1];
-                var paramsString = urlParams ? '?' + urlParams : '';
+        // Passing req params
+        var urlParams = req.url.split('?')[1];
+        var paramsString = urlParams ? '?' + urlParams : '';
 
-                // Modifying url and saving params string
-                req.url = requestedDir + supportedIndexFormat + paramsString;
+        // Modifying url and saving params string
+        // TODO: remove in next non-patch release https://github.com/sourcejs/Source/issues/147
+        req.url = path.join(req.path, specFile) + paramsString;
 
-                // Recursive call
-                handleSpec(req, res, next);
-
-                noSpecFound = false;
+        fs.readFile(physicalPath, 'utf8', function (err, data) {
+            if (err) {
+                res.send(err);
+                return;
             }
-        };
 
-        // First check if any supported file exists in dir
-        for (var j = 0; j < specFiles.length; j++) {
-            if (noSpecFound) {
-                var supportedIndexFormat = specFiles[j];
+            // Filled during middleware processing
+            req.specData = {};
 
-                checkingSpecFile(supportedIndexFormat);
+            var specInfo = contextOptions.specInfo || {
+                title: 'No '+ contextOptions.core.common.infoFile +' defined'
+            };
+
+            var capitalizedExtension;
+            if (/.src.html$/.test(physicalPath)) {
+                capitalizedExtension = 'Src';
             } else {
-                break;
+                var specFileExtension = path.extname(physicalPath).replace(".", "");
+                capitalizedExtension = specFileExtension.charAt(0).toUpperCase() + specFileExtension.slice(1);
             }
-        }
 
-        if (noSpecFound) next();
+            data = data.replace(/^\s+|\s+$/g, '');
 
+            // Pre-render Spec contents with EJS
+            if (!specInfo.noEjs) {
+                try {
+                    data = ejs.render(data, {
+                        info: specInfo,
+                        filename: physicalPath
+                    });
+                } catch(err){
+                    global.log.warn('Could not pre-render spec with EJS: ' + req.path, err);
+                }
+            }
+
+            req.specData["is" + capitalizedExtension] = true;
+            req.specData.info = specInfo; // add spec info object to request
+            req.specData.contextOptions = contextOptions; // add context options to request
+            req.specData.renderedHtml = data; // add spec content to request
+
+            next();
+        });
     } else {
         next();
     }

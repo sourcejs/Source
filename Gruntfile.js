@@ -1,7 +1,10 @@
 'use strict';
 var path = require('path');
-var loadOptions = require('./core/loadOptions');
+
 var pathToApp = path.resolve('./');
+global.pathToApp = pathToApp;
+
+var loadOptions = require('./core/loadOptions');
 
 module.exports = function(grunt) {
     // load all grunt tasks matching the `grunt-*` pattern
@@ -34,9 +37,10 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             modules: ["assets/js/modules/**/*.js"],
-            libs: ["assets/js/libs/**/*.js"],
-            // routing files are added into exceptions to avoid adding extra rules for express framework
-            core: ["core/**/*.js", "!core/routes/*.js"]
+            core: [
+                "app.js",
+                "core/**/*.js"
+            ]
         },
 
         copy: {
@@ -174,6 +178,9 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 src: ['test/**/*.js']
+            },
+            noApp: {
+                src: ['test/specs/lib/**/*.js']
             }
         }
     });
@@ -183,8 +190,6 @@ module.exports = function(grunt) {
     * Custom tasks
     *
     * */
-
-    grunt.loadTasks("grunt/tasks");
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
@@ -273,6 +278,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
+
+    grunt.registerTask('ci', [
+        'jshint',
+        'build',
+        'update',
+        'test'
+    ]);
 
     /*
     *

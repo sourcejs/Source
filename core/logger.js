@@ -15,7 +15,11 @@ var config =  {
                 "type": "logLevelFilter",
                 "level": global.commander.log || (global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel),
                 "appender": {
-                    "type": "console"
+                    "type": "console",
+                    "layout": {
+                        "type": "pattern",
+                        "pattern": "%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] -%] %m"
+                    }
                 }
             },
             {
@@ -49,6 +53,7 @@ var config =  {
         ]
     }
 };
+
 if (global.opts.core.logger) deepExtend(config, global.opts.core.logger);
 
 var reloadConf = function(currentConf){
@@ -82,6 +87,8 @@ prepareLogDir(config.prepareLogPath);
 // Configuring log4js
 reloadConf(config.log4js);
 
+var logger = log4js.getLogger('app');
+
 // Example
 // logger.trace('trace');
 // logger.debug('debug');
@@ -91,12 +98,16 @@ reloadConf(config.log4js);
 // logger.error('error');
 // logger.fatal('fatal');
 
+if (global.logQueue) global.logQueue.forEach(function(item){
+    logger[item.level](item.msg);
+});
+
 module.exports = {
     addAppenders: addAppenders,
     prepareLogDir: prepareLogDir,
 
     // Default logger
-    log: log4js.getLogger('app'),
+    log: logger,
 
     // Configured log4js
     log4js: log4js

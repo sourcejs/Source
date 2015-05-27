@@ -1,34 +1,12 @@
 'use strict';
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var ejs = require('ejs');
 var jsdom = require('jsdom');
 var path = require('path');
-var pathToApp = path.dirname(require.main.filename);
-var getHeaderAndFooter = require(pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
-var userTemplatesDir = global.app.get('user') + "/core/views/";
-var coreTemplatesDir = pathToApp + "/core/views/";
-
-/**
- * Get full path to template: default or user-defined if it exists.
- *
- *
- * @param {string} name - Template name
- * @returns {string}
- * */
-function getTemplateFullPath (name) {
-    var output;
-
-    if (fs.existsSync(userTemplatesDir + name)) {
-        output = userTemplatesDir + name;
-    } else if (fs.existsSync(coreTemplatesDir + name)) {
-        output = coreTemplatesDir + name;
-    } else {
-        output = name;
-    }
-
-    return output;
-}
+var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
+var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
+var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)
@@ -41,33 +19,34 @@ exports.process = function (req, res, next) {
 
     // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
+        var specDir = specUtils.getFullPathToSpec(req.url);
+        var contextOptions = req.specData.contextOptions;
+
         // get spec content
         var data = req.specData.renderedHtml.replace(/^\s+|\s+$/g, '');
 
         // get spec info
         var info = req.specData.info;
 
-        // choose the proper template, depending on page type
-        var template, templatePath;
+        // choose the proper template, depending on page type or defined path
+        var viewParam = 'spec';
+        var context;
+
         if (info.template) {
-            templatePath = getTemplateFullPath(info.template + ".ejs");
+            viewParam = info.template;
+            context = specDir;
         } else if (info.role === 'navigation') {
-            templatePath = getTemplateFullPath("navigation.ejs");
-        } else {
-            templatePath = getTemplateFullPath("spec.ejs");
+            viewParam = 'navigation';
         }
 
-        template = fs.readFile(templatePath, "utf-8", function(err, template){
+        var templatePath = viewResolver(viewParam, contextOptions.rendering.views, context) || viewParam;
+
+        fs.readFile(templatePath, "utf-8", function(err, template){
             if (err) {
-                res.send('EJS template "' + templatePath + '" not found in `core/views` and `user/core/views`.');
+                res.send('EJS template "' + templatePath + '" not found. Please check view configuration.');
 
                 return;
             }
-
-            // if the following fields are not set, set them to defaults
-            info.title = info.title ? info.title : "New spec";
-            info.author = info.author ? info.author : "Anonymous";
-            info.keywords = info.keywords ? info.keywords : "";
 
             // TODO: remove JSDom
             jsdom.env(
@@ -87,6 +66,9 @@ exports.process = function (req, res, next) {
                         specData.removeChild(headHook);
                     }
 
+                    // make sure the body is not passed again once the head is removed
+                    specData = specData.getElementsByTagName('body')[0];
+
                     // final data object for the template
                     var templateJSON = {
                         content: specData.innerHTML,
@@ -99,6 +81,8 @@ exports.process = function (req, res, next) {
 
                     // render page and send it as response
                     req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+                    req.specData.renderedHtml += '<!-- SourceJS version: ' + global.engineVersion + ' -->';
 
                     next();
                 }

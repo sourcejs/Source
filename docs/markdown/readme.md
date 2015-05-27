@@ -4,9 +4,9 @@ SourceJS supports markdown as pure `.md` files and renders it in any other exten
 
 ## Basics
 
-Engine treats `index.md` and `readme.md` as main Spec files. Readme file is taken with lowest priority after `index.src`, `index.md` and others.
+Engine treats `index.md` and `readme.md` as main Spec files. Readme file is taken with lowest priority after `index.src.html`, `index.md` and others.
 
-In case if Spec folder contains `index.src` and `index.md`, first one will have higher priority.
+In case if Spec folder contains `index.src.html` and `index.md`, first one will have higher priority.
 
 ## Markup examples
 

@@ -1,29 +1,41 @@
 'use strict';
 
 var fs = require('fs');
-var path = require('path');
-var pathToApp = path.dirname(require.main.filename);
 var ejs = require('ejs');
+var path = require('path');
 
 exports.getHeaderAndFooter = function () {
-    var defaultTemplatePath = pathToApp + "/assets/templates/";
-    var userTemplatePath = global.app.get('user') + "/assets/templates/";
-    var headerFile = "header.inc.html";
-    var footerFile = "footer.inc.html";
+    var defaultTemplatePath = path.join(global.pathToApp, 'assets/templates');
+    var userTemplatePath = path.join(global.app.get('user'), 'assets/templates');
+    var headerFile = 'header.inc.html';
+    var footerFile = 'footer.inc.html';
 
-    var data = {};
+    var output = {};
 
-    if(fs.existsSync(userTemplatePath + headerFile)) {
-        data.header = ejs.render(fs.readFileSync(userTemplatePath + headerFile, "utf-8"));
-    } else {
-        data.header = ejs.render(fs.readFileSync(defaultTemplatePath + headerFile, "utf-8"));
+    var userHeaderTplPath = path.join(userTemplatePath, headerFile);
+    var headerTplPath = fs.existsSync(userHeaderTplPath) ? userHeaderTplPath : path.join(defaultTemplatePath, headerFile);
+
+    var userFooterTplPath = path.join(userTemplatePath, footerFile);
+    var footerTplPath = fs.existsSync(userFooterTplPath) ? userFooterTplPath : path.join(defaultTemplatePath, footerFile);
+
+    var headerTpl = fs.readFileSync(headerTplPath, 'utf-8');
+    var footerTpl = fs.readFileSync(footerTplPath, 'utf-8');
+
+    try {
+        output.header = ejs.render(headerTpl);
+    } catch(e){
+        global.log.warn('Error rendering header template `' + headerTplPath + '`\n', e);
+        output.header = headerTpl;
     }
 
-    if(fs.existsSync(userTemplatePath + footerFile)) {
-        data.footer = ejs.render(fs.readFileSync(userTemplatePath + footerFile, "utf-8"));
-    } else {
-        data.footer = ejs.render(fs.readFileSync(defaultTemplatePath + footerFile, "utf-8"));
+    try {
+        output.footer = ejs.render(footerTpl, {
+            engineVersion: global.engineVersion
+        });
+    } catch(e){
+        global.log.warn('Error rendering footer template `' + footerTplPath + '`\n', e);
+        output.footer = footerTpl;
     }
 
-    return data;
+    return output;
 };

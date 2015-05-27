@@ -1,8 +1,8 @@
 {
-  "author": "SourceJS contributors team",
-  "description": "Living Style Guide Engine and Maintenance Environment for Front-end Components.",
-  "name": "SourceJS",
-  "version": "0.5.2",
+  "author": "SourceJS",
+  "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
+  "name": "sourcejs",
+  "version": "0.5.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/sourcejs/Source.git"
@@ -23,13 +23,15 @@
     "extend": "~1.2.1",
     "flat": "^1.2.1",
     "fs-extra": "~0.11.1",
+    "fs-finder": "operatino/node-fs-finder#fix-windows-find-up",
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "~1.0.0",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-cssmin": "~0.6.2",
     "grunt-contrib-htmlmin": "~0.3.0",
-    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-less": "~0.11.0",
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-contrib-watch": "~0.5.3",
@@ -41,21 +43,23 @@
     "lodash": "^2.4.1",
     "log4js": "~0.6.20",
     "marked": "^0.3.2",
-    "node-fs-extra": "^0.8.1",
     "path": "^0.4.9",
     "phantomjs": "1.9.7-15",
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
-    "time-grunt": "~0.2.10"
+    "time-grunt": "~0.2.10",
+    "tinyforever": "0.0.3"
   },
   "scripts": {
-    "build": "npm i && grunt",
+    "postinstall": "grunt update && node ./core/postInstall",
+    "build": "npm i",
     "start": "node app",
-    "test": "grunt test"
+    "test": "node app.js --test"
   },
   "devDependencies": {
     "assert": "~1.1.1",
+    "cross-spawn": "^0.4.0",
     "grunt-mocha-test": "^0.12.4",
     "mocha": "^2.0.1",
     "should": "~4.0.4",
