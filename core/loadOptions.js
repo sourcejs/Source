@@ -39,11 +39,23 @@ var legacyOptionsChecker = function(options, optionsPath){
         options.rendering.specFiles = options.rendering.specFiles || options.core.common.specFiles;
     }
 
-    return options;
-};
+    // Legacy options support, add *.src.html if not defined
+    if (
+        options.rendering && options.rendering.specFiles &&
+        options.rendering.specFiles.indexOf('index.src') > -1 &&
+        options.rendering.specFiles.indexOf('index.src.html') === -1
+    ) {
+        for (var i=0; i < options.rendering.specFiles.length; i++) {
+            var currentItem = options.rendering.specFiles[i];
 
-var getOptions = function(path){
-    return legacyOptionsChecker(utils.requireUncached(path), path);
+            if (currentItem === 'index.src') {
+                options.rendering.specFiles.splice(i + 1, 0, 'index.src.html');
+                break;
+            }
+        }
+    }
+
+    return options;
 };
 
 module.exports = function(basePath, _silent){
@@ -51,25 +63,25 @@ module.exports = function(basePath, _silent){
 
     var pathToApp = basePath || path.dirname(require.main.filename);
 
-    var coreSettings = getOptions(path.join(pathToApp, 'options'));
-    var pathToUser = path.join(pathToApp, coreSettings.core.common.pathToUser);
+    var mergedOptions = utils.requireUncached(path.join(pathToApp, 'options'));
+    var pathToUser = path.join(pathToApp, mergedOptions.core.common.pathToUser);
 
     // Using specific path to specs parsing, because we don't have global.opts yet
     var userSettingsFile = path.join(pathToUser, 'options.js');
     var userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
 
     // Adding assets npm plugin list to options
-    deepExtend(coreSettings, configUtils.prepareClientNpmPlugins(pathToUser));
+    deepExtend(mergedOptions, configUtils.prepareClientNpmPlugins(pathToUser));
 
     // If user settings file is present, override core settings
     if(fs.existsSync(userSettingsFile)) {
-        deepExtend(coreSettings, getOptions(userSettingsFile));
+        deepExtend(mergedOptions, utils.requireUncached(userSettingsFile));
     }
 
     // If local settings file is present, override core settings
     if(fs.existsSync(userLocalSettingsFile)) {
-        deepExtend(coreSettings, getOptions(userLocalSettingsFile));
+        deepExtend(mergedOptions, utils.requireUncached(userLocalSettingsFile));
     }
 
-    return coreSettings;
+    return legacyOptionsChecker(mergedOptions);
 };
