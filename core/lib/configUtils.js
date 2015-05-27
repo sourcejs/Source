@@ -10,6 +10,8 @@ var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var pathResolver = require(path.join(global.pathToApp, 'core/lib/pathResolver'));
 var specUtils = require(path.join(global.pathToApp, 'core/lib/specUtils'));
 
+var coreOptionsInContextWarnOnce = [];
+
 /**
  * Searches sourcejs-plugins in node_modules of specified folder
  *
@@ -49,6 +51,9 @@ var getContextOptionsList = module.exports.getContextOptionsList = function(star
 
     var searchStopPath = global.app.get('user');
     var fileToFind = path.sep + global.opts.core.common.contextOptionsFile;
+
+    // Skip if start path is behind stop path
+    if ((new RegExp(/^..\//)).test(path.relative(searchStopPath, startPath))) return [];
 
     return finder.in(startPath).lookUp(searchStopPath).findFiles(fileToFind);
 };
@@ -105,8 +110,10 @@ var extendContextOptions = module.exports.extendContextOptions = function(defaul
 
     var contextOptionsItem = processOptions(newOptionsPath, newOptionsObj);
 
-    if (contextOptionsItem.core) {
+    if (contextOptionsItem.core && coreOptionsInContextWarnOnce.indexOf(newOptionsPath) === -1) {
         global.log.warn('Core options could not be overridden from context options, check ' + newOptionsPath);
+
+        coreOptionsInContextWarnOnce.push(newOptionsPath);
     }
 
     // Override default options with context options items
