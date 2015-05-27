@@ -51,7 +51,7 @@ var prepareData = function(data, targetFile){
 
 if (config.enabled){
     if (!global.opts.core.watch.foreverWatchEnabled) {
-        global.log.info('Specs watcher process started.');
+        global.log.debug('Specs watcher process started.');
     }
 
     watch(config.glob, {
