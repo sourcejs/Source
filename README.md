@@ -33,7 +33,7 @@ To clear some confusion around Living Style Guide Platforms comparison, let us d
 
 ### CSS Documentation parser
 
-Engine is based on gathering special documentation templates (`index.src`, `readme.md` and others), where you leave your HTML examples, template includes and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
+Engine is based on gathering special documentation templates (`index.src.html`, `readme.md` and others), where you leave your HTML examples, template includes and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
 
 **But** you can use official SourceJS plugin based on DSS, CSS Documentation parser - https://github.com/sourcejs/sourcejs-contrib-dss.
 

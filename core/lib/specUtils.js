@@ -8,7 +8,7 @@ var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
 /**
  * Parse clean path to spec from URL
  *
- * @param {String} urlPath - raw url ("/base/spec/index.src")
+ * @param {String} urlPath - raw url ("/base/spec/index.src.html")
  *
  * @returns {Object} output
  * @returns {String} output.ext - file extension, if exists
