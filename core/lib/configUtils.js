@@ -53,7 +53,7 @@ var getContextOptionsList = module.exports.getContextOptionsList = function(star
     var fileToFind = path.sep + global.opts.core.common.contextOptionsFile;
 
     // Skip if start path is behind stop path
-    if ((new RegExp(/^..\//)).test(path.relative(searchStopPath, startPath))) return [];
+    if ((new RegExp(/^..\//)).test(path.relative(searchStopPath, startPath).replace(/\\/g, '/'))) return [];
 
     return finder.in(startPath).lookUp(searchStopPath).findFiles(fileToFind);
 };
