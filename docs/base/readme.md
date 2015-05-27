@@ -9,7 +9,7 @@ SourceJS documentation is rendered by the engine itself and is shipped together 
 Before you start, please make sure that [Git](http://git-scm.com/downloads) and [Node.js](http://nodejs.org/download/) are already installed on your system. Then install these NMP packages:
 
 ```html
-npm install -g grunt-cli yo generator-sourcejs
+npm install -g yo generator-sourcejs
 ```
 
 Having all dependencies in-place you will get a special `yo sourcejs` generator available for new instance initialization:
@@ -59,7 +59,7 @@ git pull && npm run build
 
 ## Creating First Spec
 
-Specs are the main content files in SourceJS engine, in them you define all your component description and UI code for rendered examples. Originally we use `*.src` and `*.md` file templates with custom flavoured syntax. It is also possible to configure other technologies for writing Specs using plugins like [Jade](https://github.com/sourcejs/sourcejs-jade).
+Specs are the main content files in SourceJS engine, in them you define all your component description and UI code for rendered examples. Originally we use `*.src.html` and `*.md` file templates with custom flavoured syntax. It is also possible to configure other technologies for writing Specs using plugins like [Jade](https://github.com/sourcejs/sourcejs-jade).
 
 We treat Spec files as an interface, you can construct Spec page in many ways following only few simple rules. Each Spec folder must contain `info.json` with it's meta information and SourceJS compliant markup file. As an essential markup, engine requires only few hooks like `.source_section`, `.source_example` to define content sections and the rest is plain semantic HTML.
 
@@ -100,7 +100,9 @@ Inspect [Sourcejs.com source code](https://github.com/sourcejs/Sourcejs.com) to 
 
 To show you how SourceJS based documentation pages could be configured, we prepared a [Bootstrap demo bundle](https://github.com/sourcejs/example-bootstrap-bundle). It represents a recommended way of structuring UI components, keeping all module related technologies in one place.
 
-Read our how-to articles, to get more insights on the [SourceJS catalog set-up](https://github.com/sourcejs/blog-howto/tree/master/catalog-setup).
+We highly encourage you setting up Bootstrap bundle on your SourceJS instance, and use it for experimenting and demoing documentation pages. Pull Requests are very welcome, adding more examples to this bundle, you will help yourself and other users getting more insights on how SourceJS specs could be organized.
+
+Read our how-to articles, to get more information about the [SourceJS catalog set-up](https://github.com/sourcejs/blog-howto/tree/master/catalog-setup).
 
 ### Specs Showcase
 
@@ -110,42 +112,20 @@ Showcase includes both native Specs examples, and ones that are rendered with pl
 
 <a href="/docs/spec" class="source_a_hl">Also check the SourceJS Spec page documentation.</a>
 
+### Style Guide Driven Development
+
+To get more insights about recommended workflow within Style Guide platform check [this example bundle](https://www.youtube.com/watch?v=KeR8Qhgyb6M) together with short screencast.
+
+<div style="max-width: 600px;"><div style="position: relative; padding-bottom: 56.25%;">
+<iframe width="100%" height="100%" style="position: absolute;" src="https://www.youtube.com/embed/KeR8Qhgyb6M" frameborder="0" allowfullscreen></iframe>
+</div></div>
+
+
 ## Configuration
 
-All default options for `assets` (front-end) and `core` (back-end) are located in `sourcejs/options.js`. To overwrite basic options, use your own `sourcejs/user/options.js` file in SourceJS instance home directory.
+SourceJS engine is highly configurable and allows to override almost any options from your instance set-up using personal configuration file `sourcejs/user/options.js`. All default, and safe to change options are described in base configuration file `sourcejs/options.js`.
 
-### Page level overrides
-
-All client-side options can be overridden from within any page using the following approach:
-
-```html
-<script>
-    define('sourceModules/inlineOptions', {
-        modulesOptions : {
-            globalNav : {
-                pageLimit: 6
-            }
-        }
-    })
-</script>
-```
-
-### Patching core assets
-
-<div class="source_warn">
-    Patching is not recommended approach, it's supposed to be used only for edge cases, before your changes will be merged in SourceJS core.
-</div>
-
-To extend core Front-end assets, that are stored in `sourcejs/assets` we provide a patching feature.
-
-To use your own version of any core assets, all you need is to place your new files to `sourcejs/user/core/assets` folder. Custom routing will handle the rest:
-
-```html
-sourcejs/assets/js/modules/ntf.js < sourcejs/user/source/assets/js/modules/ntf.js
-sourcejs/assets/js/modules/css.js < sourcejs/user/source/assets/js/modules/css.js
-```
-
-In this example, on request for `localhost:8080/source/assets/js/modules/ntf.js` engine will provide version from `sourcejs/user/source/assets` folder, instead of version from core `sourcejs/assets`.
+With version 0.5.3 we also introduced context level options `sourcejs-options.js`, which allows to configure any catalog specifically for your needs. Read more about it, and other configuration capabilities in [Engine Configuration](/docs/configuration) doc.
 
 ## Plugins
 
@@ -155,6 +135,8 @@ Plugins are working in the same way as core modules, but are kept outside the ma
 
 Here is a list of official plugins:
 
+* [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
+* [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
 * [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)
@@ -164,7 +146,7 @@ Here is a list of official plugins:
 * [sourcejs-spec-dependencies](https://github.com/sourcejs/sourcejs-spec-dependencies)
 * [sourcejs-smiles](https://github.com/sourcejs/sourcejs-smiles)
 
-These extensions are able to extend both front-end and back-end part of the engine. To install any of official plugin, just use `npm install` in your `sourcejs/user` folder (note that some of them needs additional dependencies like [MongoDB](http://www.mongodb.org/) or [CouchDB](http://couchdb.apache.org/)).
+These modules are able to extend both front-end and back-end part of the engine. To install any of official plugin, just use `npm install` in your `sourcejs/user` folder (note that some of them needs additional dependencies like [MongoDB](http://www.mongodb.org/) or [CouchDB](http://couchdb.apache.org/)).
 
 Follow [this guide](/docs/api/plugins) to learn how to develop own plugins for SourceJS Platform.
 

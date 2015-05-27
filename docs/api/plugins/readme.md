@@ -116,7 +116,7 @@ Middlewares are automatically loaded after installation, and are evaluated on ea
 
 `wrap.js` is wrapping `index.src` contents in a pre-defined a view template from `sourcejs/core/views` or user custom path `sourcejs/user/core/views` using [EJS](http://www.embeddedjs.com/).
 
-`send.js` is used in case when we modify Spec contents, as we do with `*.src` and all other middlewares. Modified Spec content is passed through `req.specData.renderedHtml` object, which each middleware can modify during the request handling process and which then is sent to the client's browser.
+`send.js` is used in case when we modify Spec contents, as we do with `*.src.html` and all other middlewares. Modified Spec content is passed through `req.specData.renderedHtml` object, which each middleware can modify during the request handling process and which then is sent to the client's browser.
 
 ### Modifying Spec contents
 
