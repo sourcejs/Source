@@ -45,6 +45,8 @@ Many teams are already using SourceJS for building and managing Front-end compon
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
 
 ## Updates
+* 28.05.15 [0.5.3](https://github.com/sourcejs/Source/releases/tag/0.5.3) context options support, source-as-npm package, CI integration, watcher stability improvements and other great features
+* 28.05.15 [0.5.3-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.3-no-jsdom) special release without JSDom for Windows users
 * 28.03.15 [0.5.2](https://github.com/sourcejs/Source/releases/tag/0.5.2) patch release with improved markdown support and `index.src.html`
 * 28.03.15 [0.5.1](https://github.com/sourcejs/Source/releases/tag/0.5.1) patch release with EJS pre-rendering and various bugfixes
 * 28.03.15. SourceJS [Bootstrap example bundle](https://github.com/sourcejs/example-bootstrap-bundle) and [How-to articles blog](https://github.com/sourcejs/blog-howto)
