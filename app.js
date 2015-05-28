@@ -104,7 +104,7 @@ var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
 // Clarify
-app.use(require('./core/middleware/clarify'));
+//app.use(require('./core/middleware/clarify'));
 
 // File tree module
 var fileTree = require('./core/file-tree');
