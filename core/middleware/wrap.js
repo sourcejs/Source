@@ -2,11 +2,11 @@
 
 var fs = require('fs-extra');
 var ejs = require('ejs');
-var jsdom = require('jsdom');
 var path = require('path');
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
+var cheerio = require('cheerio');
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)
@@ -48,45 +48,47 @@ exports.process = function (req, res, next) {
                 return;
             }
 
-            // TODO: remove JSDom
-            jsdom.env(
-                '<html id="data">'+data+'</html>',
-                function (errors, window) {
-                    // get header and footer
-                    var headerFooterHTML = getHeaderAndFooter();
+            var $ = cheerio.load(data, {decodeEntities: false});
 
-                    // get head contents from spec file source
-                    var headHook = window.document.getElementsByTagName('head')[0];
-                    var specData = window.document.getElementById('data');
-                    var head = '';
+            var head = '';
+            var $headHook = $('head');
 
-                    if (headHook) {
-                        head = headHook.innerHTML;
+            if ($headHook.length > 0) {
+                head = $headHook.html();
 
-                        specData.removeChild(headHook);
-                    }
+                $('head').remove();
+            }
 
-                    // make sure the body is not passed again once the head is removed
-                    specData = specData.getElementsByTagName('body')[0];
+            var content = '';
+            var $body = $('body');
+            var $html = $('html');
 
-                    // final data object for the template
-                    var templateJSON = {
-                        content: specData.innerHTML,
-                        head: head,
-                        header: headerFooterHTML.header,
-                        footer: headerFooterHTML.footer,
-                        info: info,
-                        filename: templatePath
-                    };
+            if ($body.length > 0) {
+                content = $body.html();
+            } else if ($html.length > 0) {
+                content = $html.html();
+            } else {
+                content = $.html();
+            }
 
-                    // render page and send it as response
-                    req.specData.renderedHtml = ejs.render(template, templateJSON);
+            var headerFooterHTML = getHeaderAndFooter();
 
-                    req.specData.renderedHtml += '<!-- SourceJS version: ' + global.engineVersion + ' -->';
+            // final data object for the template
+            var templateJSON = {
+                content: content,
+                head: head,
+                header: headerFooterHTML.header,
+                footer: headerFooterHTML.footer,
+                info: info,
+                filename: templatePath
+            };
 
-                    next();
-                }
-            );
+            // render page and send it as response
+            req.specData.renderedHtml = ejs.render(template, templateJSON);
+
+            req.specData.renderedHtml += '\n<!-- SourceJS version: ' + global.engineVersion + ' -->';
+
+            next();
         });
     } else {
         // proceed to next middleware
