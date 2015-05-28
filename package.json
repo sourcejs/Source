@@ -1,8 +1,9 @@
 {
-  "author": "SourceJS",
-  "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
   "name": "sourcejs",
+  "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
+  "author": "SourceJS",
   "version": "0.5.3",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/sourcejs/Source.git"
