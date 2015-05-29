@@ -9,11 +9,11 @@ var colors = require('colors'); // jshint ignore:line
 
 var silent;
 
-var legacyOptionsWarn = function(path, oldStruct, newStruct){
+var legacyOptionsWarn = function(oldStruct, newStruct){
     // Shout warn message only once
     if (global.legacyOptionsWarnOnce && global.legacyOptionsWarnOnce.indexOf(oldStruct) > -1) return;
 
-    var msg = 'You are using old options structure in `' + path + '`, please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
+    var msg = 'You are using old options structure in `options.js` conf file, please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
 
     if (global.log) {
         global.log.warn(msg);
@@ -30,11 +30,11 @@ var legacyOptionsWarn = function(path, oldStruct, newStruct){
     global.legacyOptionsWarnOnce.push(oldStruct);
 };
 
-var legacyOptionsChecker = function(options, optionsPath){
+var legacyOptionsChecker = function(options){
     if (options.core && options.core.common && options.core.common.specFiles) {
         options.rendering = options.rendering || {};
 
-        if (!silent) legacyOptionsWarn(optionsPath, 'options.core.common.specFiles', 'options.rendering.specFiles');
+        if (!silent) legacyOptionsWarn('options.core.common.specFiles', 'options.rendering.specFiles');
 
         options.rendering.specFiles = options.rendering.specFiles || options.core.common.specFiles;
     }
