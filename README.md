@@ -6,7 +6,7 @@
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
 
-🚀[**Quick Start**](http://sourcejs.com/docs/base)
+🚀 [**Quick Start**](http://sourcejs.com/docs/base)
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
