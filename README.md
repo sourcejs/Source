@@ -1,9 +1,12 @@
 # SourceJS - Living Style Guide Platform
 
+[![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
 [![Build Status](https://travis-ci.org/sourcejs/Source.svg?branch=master)](https://travis-ci.org/sourcejs/Source)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
+
+🚀[**Quick Start**](http://sourcejs.com/docs/base)
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
@@ -16,7 +19,7 @@ Our main goal is to provide flexible, modular environment for managing reusable 
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Quick Start**](http://sourcejs.com/docs/base) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**How-to's**](https://github.com/sourcejs/blog-howto)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**How-to's**](https://github.com/sourcejs/blog-howto)
 
 ___
 
@@ -36,7 +39,7 @@ To clear some confusion around Living Style Guide Platforms comparison, let us d
 
 Engine is based on gathering special documentation templates (`index.src.html`, `readme.md` and others), where you leave your HTML examples, template includes and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
 
-**But** you can use official SourceJS plugin based on DSS, CSS Documentation parser - https://github.com/sourcejs/sourcejs-contrib-dss.
+**But** you can use official SourceJS plugin based on DSS, CSS Documentation parser - [github.com/sourcejs/sourcejs-contrib-dss](https://github.com/sourcejs/sourcejs-contrib-dss).
 
 ## Join the community
 
@@ -72,11 +75,11 @@ Respecting open source community, we track all our tasks publicly on GitHub. Fol
 
 List of few global upcoming features
 
-* Refactored code snippets API
+* Remove JSDom dependency, for making engine faster and easier to install
+* SourceJS as npm module official support
+* Refactored code snippets API and tab view
 * Integrations with JSDoc and drop-in replacement setup for other Style Guide tools like KSS/Pattern Lab
 * More screencasts and engine usage demos
-* Wider support of multiple documentation projects in one environment
-* Full documentation stack for core API for writing plugins
 
 SourceJS follows semantic versioning and we do our best to keep as less breaking changes as possible.
 
