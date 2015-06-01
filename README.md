@@ -1,6 +1,6 @@
 # SourceJS - Living Style Guide Platform
 
-[![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
+[![npm version](https://badge.fury.io/js/sourcejs.svg)](https://www.npmjs.com/package/sourcejs)
 [![Build Status](https://travis-ci.org/sourcejs/Source.svg?branch=master)](https://travis-ci.org/sourcejs/Source)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 

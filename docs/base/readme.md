@@ -47,7 +47,7 @@ mkdir sourcejs && cd sourcejs
 yo sourcejs --branch 0.5.3-no-jsdom
 ```
 
-Please note that Clarify feature is not available in `no-jsdom` version and you will need to have latest `generator-sourcejs` version - run `npm update -g generator-sourcejs`.
+Please note that Clarify feature is not available in `no-jsdom` version. If you had generator installed before, run `npm update -g generator-sourcejs` (v.0.4.2+ required).
 
 And instaling same build from NPM:
 
