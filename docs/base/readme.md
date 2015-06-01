@@ -19,9 +19,43 @@ mkdir sourcejs && cd sourcejs
 yo sourcejs
 ```
 
-To set-up a new engine instance chose the first option `Init SourceJS in this folder`. Generator also allows to bootstrap new Spec pages or plugins.
+To set-up a new engine instance chose the first option `Init SourceJS in this folder`. Generator also helps to bootstrap new Spec pages or plugins.
 
-If you're running Windows and have some issues with [jsdom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
+### From NPM
+
+[![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
+
+With v.0.5.3 we [introduced](https://github.com/sourcejs/Source/releases/tag/0.5.3) NPM support, and now it's possible to install and run SourceJS engine right from the `node_modules` folder.
+
+```html
+git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
+npm install sourcejs --save
+node ./node_modules/sourcejs/app
+```
+
+Starting from 0.6.0 we're planning to change official install path to one with NPM packages. Yeoman generator will be also replaced by [sourcejs-cli](https://github.com/sourcejs/sourcejs-cli) with commands like `run`, `install` (plugin), `init`, `create`.
+
+### Installing On Windows
+
+If you're running Windows and have some issues with [JSDom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
+
+Alternitevly with 0.5.3 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
+
+```html
+npm install -g yo generator-sourcejs
+mkdir sourcejs && cd sourcejs
+yo sourcejs --branch 0.5.3-no-jsdom
+```
+
+Please note that Clarify feature is not available in `no-jsdom` version and you will need to have latest `generator-sourcejs` version - run `npm update -g generator-sourcejs`.
+
+And instaling same build from NPM:
+
+```html
+git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
+npm install sourcejs@0.5.3-no-jsdom --save
+node .\node_modules\sourcejs\app
+```
 
 ## Commands
 
@@ -33,7 +67,9 @@ Installation wizard will offer to start SourceJS right after initialization. To 
 node app
 ```
 
-To set an alternative server port, pass `-p 8081` flag. Other configuration arguments are described in the help section:
+To set an alternative server port, pass `-p 8081` option.
+
+Other configuration arguments are described in the help section:
 
 ```html
 node app -h
@@ -54,7 +90,7 @@ It will trigger `npm i` and `grunt default` commands for updating dependencies a
 For updating SourceJS to a newer version, just pull the latest changes and trigger build:
 
 ```html
-git pull && npm run build
+git pull && npm install
 ```
 
 ## Creating First Spec
@@ -137,7 +173,7 @@ Here is a list of official plugins:
 
 * [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
 * [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
-* [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss)
+* [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) (new)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)
 * [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade)
@@ -152,4 +188,8 @@ Follow [this guide](/docs/api/plugins) to learn how to develop own plugins for S
 
 ## Contact us
 
-Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub. Or [request a consultation](mailto:r@rhr.me) from SourceJS founders.
+Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub orr [request a consultation](mailto:r@rhr.me) from SourceJS founders.
+
+If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
