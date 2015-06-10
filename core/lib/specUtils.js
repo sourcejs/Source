@@ -81,9 +81,18 @@ module.exports.getSpecFromDir = function(dirPath, specFiles) {
     for (var i=0; i < supportedSpecNames.length; i++) {
         var item = supportedSpecNames[i];
 
-        if (dirContent.indexOf(item) > -1) {
-            specPath = path.join(dirPath, item);
-            break;
+        // Support folders inside names, e.g. 'docs/index.html'
+        if (item.indexOf('/') !== -1) {
+            var filename = path.join(dirPath, item);
+            if (fs.existsSync(filename)) {
+                specPath = filename;
+                break;
+            }
+        } else {
+            if (dirContent.indexOf(item) > -1) {
+                specPath = path.join(dirPath, item);
+                break;
+            }
         }
     }
 
