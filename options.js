@@ -36,8 +36,11 @@ module.exports = {
 
         // Spec catalogs navigation tree
         fileTree: {
-            // Excluded folder names from navigation tree parsing
-            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+            // Exclude files from file-tree indexing (first level, in user folder)
+            excludedDirs: ['node_modules', 'bower_components', 'data', 'plugins', '.git', '.idea'],
+
+            // Exclude files from file-tree indexing (on any level, by folder name)
+            excludedDirsGlobal: ['node_modules', 'bower_components', '.git', '.idea'],
 
             // Update navigation tree by cron task (setTimeout)
             cron: false,
