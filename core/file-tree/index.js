@@ -14,7 +14,10 @@ var busy = false;
 
 var config = {
     includedDirs: coreOpts.common.includedDirs,
-    excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea', 'bower_components'],
+    excludedDirs: ['node_modules', 'bower_components', '.git', '.idea'],
+
+    // TODO: merge with `excludedDirs` in next major release.
+    excludedDirsGlobal: ['node_modules', 'bower_components', '.git', '.idea'],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
@@ -161,6 +164,8 @@ var fileTree = function (processingDir) {
         var fileStats = fs.statSync(pathToFile);
 
         if (fileStats.isDirectory()) {
+            if (config.excludedDirsGlobal.indexOf(targetFile) > -1) return;
+
             // Going deeper
             var childObj = fileTree(pathToFile);
             if (Object.getOwnPropertyNames(childObj).length !== 0) {
