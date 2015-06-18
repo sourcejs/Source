@@ -141,7 +141,10 @@ module.exports = {
             },
             pluginsEnabled: {},
             npmPluginsEnabled: {}
-        }
+        },
+        
+        // Legacy options object support for some older plugins (todo:remove with next major release)
+        pluginsOptions: {}
     },
 
     // External plugins options (are also exposed to client-side
