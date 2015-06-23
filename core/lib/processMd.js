@@ -12,20 +12,22 @@ var renderer = new marked.Renderer();
 var globalConfig = global.opts.core && global.opts.core.processMd ? global.opts.core.processMd : {};
 var config = {
     espaceCodeHTML: true,
+    languageRenderers: {
+        example: function (code) {
+            return '<div class="source_example">' + code + '</div>';
+        }
+    },
 
-    marked: {
-        renderer: renderer
-    }
+    // Define marked module options
+    marked: {}
 };
 // Overwriting base options
 deepExtend(config, globalConfig);
 
-marked.setOptions(config.marked);
-
 // Processing with native markdown renderer
 renderer.code = function (code, language) {
-    if (language === 'example') {
-        return '<div class="source_example">' + code + '</div>';
+    if (config.languageRenderers.hasOwnProperty(language)) {
+        return config.languageRenderers[language](code);
     } else {
         if (config.espaceCodeHTML) code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -42,6 +44,11 @@ renderer.heading = function (text, level) {
 
     return '<h' + level + ' id="' + escapedText + '">' + text + '</h' + level + '>';
 };
+
+// Extend re-defined renderer
+config.marked.renderer = deepExtend(renderer, config.marked.renderer);
+
+marked.setOptions(config.marked);
 
 module.exports = function (markdown) {
     var input = markdown;
