@@ -1,0 +1,20 @@
+# AppVeyor file
+# http://www.appveyor.com/docs/appveyor-yml
+
+environment:
+  matrix:
+    - nodejs_version: 0.10
+    - nodejs_version: 0.12
+    - nodejs_version: 1
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install
+
+before_test: "git clone https://github.com/sourcejs/init.git user"
+
+test_script:
+  # Output useful info for debugging.
+  - node --version && npm --version
+  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
+  - cmd: npm test
