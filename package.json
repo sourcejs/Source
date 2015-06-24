@@ -28,7 +28,7 @@
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "~1.0.0",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-cssmin": "~0.6.2",
     "grunt-contrib-htmlmin": "~0.3.0",
@@ -56,7 +56,7 @@
     "postinstall": "grunt update && node ./core/postInstall",
     "build": "npm i",
     "start": "node app",
-    "test": "node app.js --test"
+    "test": "grunt ci-pre-run && node app.js --test"
   },
   "devDependencies": {
     "assert": "~1.1.1",
