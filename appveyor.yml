@@ -11,6 +11,8 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
 
+build: off
+
 before_test: "git clone https://github.com/sourcejs/init.git user"
 
 test_script:
@@ -18,3 +20,11 @@ test_script:
   - node --version && npm --version
   - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
   - cmd: npm test
+
+matrix:
+  fast_finish: true
+
+cache:
+  - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
+  - C:\Users\appveyor\AppData\Roaming\npm-cache -> package.json         # npm cache
+  - node_modules -> package.json                                        # local npm modules
