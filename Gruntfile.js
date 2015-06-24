@@ -26,13 +26,7 @@ module.exports = function(grunt) {
 
         // clean files after build
         clean: {
-            options: {
-                'no-write': true
-            },
-            build: [
-                'build/**/*.*',
-                'build'
-            ]
+            build: ['build']
         },
 
         jshint: {
@@ -283,10 +277,13 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
 
-    grunt.registerTask('ci', [
+    grunt.registerTask('ci-pre-run', [
         'jshint',
         'build',
-        'update',
+        'update'
+    ]);
+
+    grunt.registerTask('ci-post-run', [
         'test'
     ]);
 
