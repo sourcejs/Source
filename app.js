@@ -243,7 +243,7 @@ if (!module.parent) {
     if (commander.test) {
         var spawn = require('cross-spawn');
 
-        spawn('./node_modules/grunt-cli/bin/grunt', ['ci'], {stdio: 'inherit'})
+        spawn('./node_modules/grunt-cli/bin/grunt', ['ci-post-run'], {stdio: 'inherit'})
             .on('close', function (code) {
                 if (code === 0) {
                     log.info('Test successful');
