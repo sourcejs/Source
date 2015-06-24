@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/sourcejs.svg)](https://www.npmjs.com/package/sourcejs)
 [![Build Status](https://travis-ci.org/sourcejs/Source.svg?branch=master)](https://travis-ci.org/sourcejs/Source)
+[![Build status](https://ci.appveyor.com/api/projects/status/ctvr9lsiaxpbhecm/branch/master?svg=true)](https://ci.appveyor.com/project/operatino/source/branch/master)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
