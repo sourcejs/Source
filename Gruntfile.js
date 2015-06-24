@@ -27,6 +27,7 @@ module.exports = function(grunt) {
         // clean files after build
         clean: {
             build: [
+                'build/**/*.*',
                 'build'
             ]
         },
