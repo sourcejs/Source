@@ -3,7 +3,6 @@
 [![npm version](https://badge.fury.io/js/sourcejs.svg)](https://www.npmjs.com/package/sourcejs)
 [![Build Status](https://travis-ci.org/sourcejs/Source.svg?branch=master)](https://travis-ci.org/sourcejs/Source)
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/ctvr9lsiaxpbhecm/branch/master?svg=true)](https://ci.appveyor.com/project/operatino/source/branch/master)
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
 
@@ -26,7 +25,9 @@ ___
 
 SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
 
-[Materials for presentations](https://github.com/sourcejs/pres).
+Have questions? Just reach our community through Gitter Chat:
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
 
 ## SourceJS is NOT
 
@@ -47,6 +48,8 @@ Engine is based on gathering special documentation templates (`index.src.html`, 
 Many teams are already using SourceJS for building and managing Front-end components libraries for themselves and their clients. To join the community, you just need to follow few simple rules - check our docs about [Maintaining](MAINTAINING.md) and [Contribution](CONTRIBUTING.md).
 
 If you notice some bugs, or need to help finding a better solution in your process, feel free to create an issue, and we will solve your problem together.
+
+[Materials for presentations](https://github.com/sourcejs/pres).
 
 ## Updates
 * 28.05.15 [0.5.3](https://github.com/sourcejs/Source/releases/tag/0.5.3) context options support, source-as-npm package, CI integration, watcher stability improvements and other great features
