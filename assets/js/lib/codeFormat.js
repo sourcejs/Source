@@ -26,7 +26,9 @@ define([
                 ;
 
             var indentCode = function (line) {
-                return new Array(tabs + 1).join(' ') + line;
+                var _tabs = tabs < 0 ? 0 : tabs;
+
+                return new Array(_tabs + 1).join(' ') + line;
             };
 
             if (code.length > 0) {
