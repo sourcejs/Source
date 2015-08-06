@@ -1,5 +1,5 @@
 "{%= grunt.file.read('assets/js/lib/require.js') %}"
-"{%= grunt.file.read('assets/js/lib/jquery-1.11.1.js') %}"
+"{%= grunt.file.read('assets/js/lib/jquery-2.1.4.min.js') %}"
 "{%= grunt.file.read('assets/js/require-config.js') %}"
 
 // Extending base js config with npm packages list
