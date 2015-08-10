@@ -6,7 +6,6 @@ module.exports = {
     // Core options could be only redefined from user/options.js, context options are not supported
     core : {
         common: {
-            port: 8080,
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
             includedDirs: ['docs'],
@@ -27,6 +26,13 @@ module.exports = {
             // Name of options field in info.json, used to override configuration per spec
             infoFileOptions: 'sourcejs'
         },
+
+        // Server options are passed to app.listen (https://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)
+        server: {
+            port: 8080,
+            hostname: undefined
+        },
+
         api: {
             specsData: 'core/api/data/pages-tree.json',
             htmlData: 'core/api/data/html.json',
@@ -145,7 +151,7 @@ module.exports = {
             pluginsEnabled: {},
             npmPluginsEnabled: {}
         },
-        
+
         // Legacy options object support for some older plugins (todo:remove with next major release)
         pluginsOptions: {}
     },

@@ -28,7 +28,8 @@ global.opts = loadOptions();
 // Arguments parse */
 commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ').', global.opts.core.common.port)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + ').')
+    .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
     .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .option('--test', 'Run app with tests.')
     .parse(process.argv);
@@ -49,7 +50,8 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) global.opts.core.parseHTML.onStart = true;
-if (commander.port) global.opts.core.common.port = parseInt(commander.port);
+if (commander.port) global.opts.core.server.port = parseInt(commander.port);
+if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
 /* /Globals */
 
 
@@ -233,12 +235,11 @@ app.use(logErrors);
 
 // Server start
 if (!module.parent) {
-    var port = global.opts.core.common.port;
+    var serverOpts = global.opts.core.server;
+    var port = serverOpts.port;
 
-    app.listen(port);
-    var portString = port.toString();
-
-    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    app.listen(port, serverOpts.hostname, serverOpts.backlog, serverOpts.callback);
+    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + (port.toString()).red + ' in '.blue + MODE.blue + ' mode...'.blue);
 
     if (commander.test) {
         var spawn = require('cross-spawn');

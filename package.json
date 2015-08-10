@@ -41,7 +41,7 @@
     "gulp-watch": "^4.1.1",
     "jsdom": "^1.2.1",
     "load-grunt-tasks": "~0.3.0",
-    "lodash": "^2.4.1",
+    "lodash": "^3.10.1",
     "log4js": "~0.6.20",
     "marked": "^0.3.2",
     "path": "^0.4.9",

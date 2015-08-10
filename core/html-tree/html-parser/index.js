@@ -99,7 +99,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             global.log.trace('Starts...' + n, spec);
 
-            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
+            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.server.port, function (error, stdout, stderr) {
                 handler(error, stdout, stderr, spec);
                 next();
             });
