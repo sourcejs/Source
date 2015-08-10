@@ -9,7 +9,9 @@ var colors = require('colors'); // jshint ignore:line
 
 var silent;
 
-var legacyOptionsWarn = function(oldStruct, newStruct){
+var legacyOptionsWarn = function(oldStruct, newStruct, fileName){
+    var _fileName = fileName || 'options.js';
+
     // Shout warn message only once
     if (global.legacyOptionsWarnOnce && global.legacyOptionsWarnOnce.indexOf(oldStruct) > -1) return;
 
