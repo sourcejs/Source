@@ -23,13 +23,13 @@ var config = {
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
     specsRoot: path.join(global.pathToApp, coreOpts.common.pathToUser).replace(/\\/g, '/'),
-    busyTimeout: 300
+    busyTimeout: 300,
+    thumbnail: 'thumbnail.png'
 };
 
 // Overwriting base options
 deepExtend(config, coreOpts.fileTree);
 
-var infoFile = coreOpts.common.infoFile;
 var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareExcludesRegex = function(){
@@ -71,6 +71,84 @@ var getRelativeSpecPath = module.exports.getRelativeSpecPath = function(absolute
     return relativeSpecPath;
 };
 
+var getSpecLocation = function(specDirOrPath){
+    // Normalize windows URL and remove trailing slash
+    var _specDirOrPath = specDirOrPath.replace(/\\/g, '/').replace(/\/$/, '');
+    var isSpecPath = path.extname(_specDirOrPath) !== '';
+    var specDir;
+    var specPath;
+    var relativeSpecPath = getRelativeSpecPath(_specDirOrPath);
+
+    if (isSpecPath) {
+        relativeSpecPath = path.dirname(relativeSpecPath);
+    }
+
+    // Try to get specPath
+    if (isSpecPath) {
+        specDir = path.dirname(_specDirOrPath);
+        specPath = _specDirOrPath;
+    } else {
+        specDir = _specDirOrPath;
+        specPath = specUtils.getSpecFromDir(_specDirOrPath);
+    }
+
+    return {
+        relativeSpecPath: relativeSpecPath,
+        isSpecPath: isSpecPath,
+        specDir: specDir,
+        specPath: specPath
+    };
+};
+
+/**
+ * Get spec thumbnail image path
+ *
+ * @param {String} specDir - absolute path to spec dir
+ * @param {String} [customThumbnailPath] - override default relative thumbnail path
+ *
+ * @returns {String} Return web url to spec thumbnail or undefined
+ */
+var getThumbnailPath = module.exports.getThumbnailPath = function(specDir, customThumbnailPath){
+    if (!specDir) return;
+
+    var thumbnail;
+    var thumbnailPathFromSpecDir = customThumbnailPath || config.thumbnail;
+
+    var absoluteThumbNailPath = path.join(specDir, thumbnailPathFromSpecDir).replace(/\\/g, '/');
+    if (fs.existsSync(absoluteThumbNailPath)) {
+        thumbnail = path.join(getRelativeSpecPath(specDir), thumbnailPathFromSpecDir);
+    }
+
+    return thumbnail;
+};
+
+/**
+ * Get contents of spec info file
+ *
+ * @param {String} specDir - absolute path to spec dir
+ *
+ * @returns {Object} Return spec info file object
+ */
+var getSpecInfoFile = module.exports.getSpecInfoFile = function(specDir){
+    var infoFileName = coreOpts.common.infoFile;
+    var infoJsonPath = path.join(specDir, infoFileName);
+    var infoContents = {};
+
+    if (!fs.existsSync(infoJsonPath)) return infoContents;
+
+    try {
+        infoContents = JSON.parse(fs.readFileSync(infoJsonPath, 'utf8'));
+    } catch (e) {
+        global.console.warn('Error reading ' + infoFileName + ': ' + infoJsonPath);
+
+        infoContents = {
+            error: 'Cannot parse the file',
+            path: infoJsonPath
+        };
+    }
+
+    return infoContents;
+};
 
 /**
  * Prepares Spec meta object from specs directory or Spec file path
@@ -85,41 +163,14 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     // Check if arg is provided and path exists
     if ( !(specDirOrPath && fs.existsSync(specDirOrPath))) return page;
 
-    // Normalize windows URL and remove trailing slash
-    var _specDirOrPath = specDirOrPath.replace(/\\/g, '/').replace(/\/$/, '');
-    var isSpecPath = path.extname(_specDirOrPath) !== '';
-    var specDir;
-    var specPath;
-
-    // Try to get specPath
-    if (isSpecPath) {
-        specDir = path.dirname(_specDirOrPath);
-        specPath = _specDirOrPath;
-    } else {
-        specDir = _specDirOrPath;
-        specPath = specUtils.getSpecFromDir(_specDirOrPath);
-    }
-
-    var relativeSpecPath = getRelativeSpecPath(_specDirOrPath);
-
-    if (isSpecPath) {
-        relativeSpecPath = path.dirname(relativeSpecPath);
-    }
+    var specLocation = getSpecLocation(specDirOrPath);
+    var specPath = specLocation.specPath;
+    var specDir = specLocation.specDir;
+    var relativeSpecPath = specLocation.relativeSpecPath;
 
     // Remove first slash for ID
     page.id = relativeSpecPath.substring(1);
     page.url = relativeSpecPath;
-
-    page.thumbnail = false;
-    var thumbPath = path.join(specDir, 'thumbnail.png').replace(/\\/g, '/');
-    if (fs.existsSync(thumbPath)) {
-        // If starts with root (specs)
-        if (specDir.lastIndexOf(config.specsRoot, 0) === 0) {
-            page.thumbnail = thumbPath.replace(config.specsRoot + '/','');
-        } else {
-            page.thumbnail = thumbPath.replace(normalizedPathToApp  + '/','');
-        }
-    }
 
     // If we have Spec, get additional meta
     if (specPath) {
@@ -131,6 +182,12 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
         page.lastmodSec = Date.parse(fileStats.mtime) || '';
         page.fileName = targetFile || '';
     }
+
+    var specInfo = getSpecInfoFile(specDir);
+    page.thumbnail = getThumbnailPath(specDir, specInfo.thumbnailPath) || false;
+
+    // Apply info file contents on top
+    deepExtend(page, specInfo);
 
     return page;
 };
@@ -156,6 +213,7 @@ var fileTree = function (processingDir) {
         // Path is excluded
         if (excludes.test(processingDir)) return;
 
+        var infoFileName = coreOpts.common.infoFile;
         var targetFile = path.basename(pathToFile);
 
         // Normalizing path for windows
@@ -172,28 +230,8 @@ var fileTree = function (processingDir) {
                 outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
             }
 
-        } else if (targetFile.toLowerCase() === infoFile.toLowerCase()) {
-            var pageMeta = getSpecMeta(processingDir);
-
-            var infoJsonPath = path.join(processingDir, infoFile);
-
-            if (fs.existsSync(infoJsonPath)) {
-                var fileJSON;
-                try {
-                    fileJSON = JSON.parse(fs.readFileSync(infoJsonPath, 'utf8'));
-                } catch (e) {
-                    global.console.warn('Error reading '+ infoFile +': ' + infoJsonPath);
-
-                    fileJSON = {
-                        error: 'Cannot parse the file',
-                        path: infoJsonPath
-                    };
-                }
-
-                deepExtend(pageMeta, fileJSON);
-            }
-
-            outputJSON['specFile'] = pageMeta;
+        } else if (targetFile.toLowerCase() === infoFileName.toLowerCase()) {
+            outputJSON['specFile'] = getSpecMeta(processingDir);
         }
     });
 

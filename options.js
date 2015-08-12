@@ -52,7 +52,10 @@ module.exports = {
             cron: false,
 
             // Update navigation tree when somebody visits main page
-            mainPageTrigger: false
+            mainPageTrigger: false,
+
+            // Default thumbnail file path (relative to each spec)
+            thumbnail: 'thumbnail.png'
         },
         watch: {
             enabled: true,

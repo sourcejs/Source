@@ -344,7 +344,7 @@ define([
 
         // fixing relative path due to server settings
         var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
-        var imageUrl = itemData.thumbnail ? "/" + itemData.thumbnail : undefined;
+        var imageUrl = itemData.thumbnail;
         if (!this.renderNavTreeItem.template) {
             this.renderNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }

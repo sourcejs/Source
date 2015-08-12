@@ -15,6 +15,7 @@ List of used options in `info.json`:
     "role": "navigation",
     "template": ["custom" | "$(context)/template.ejs"],
     "specFile": "index.custom.hmtl",
+    "thumbnailPath": "custom-thumbnail.png"
     "sourcejs": { "assets" :{} }
 }
 ```
@@ -24,6 +25,7 @@ List of used options in `info.json`:
 * `tag` - tags are used for search, filtering through [API](/docs/api) and [auto-generated navigation](/docs/data-nav)
 * `info` - spec description
 * `role` - set the page role ("navigation" or "spec"), used for setting different `*.src.html` files templates
+* `thumbnailPath` - custom relative path to spec page preview image
 
 Feel free to add any custom meta information to `info.json` file for your needs as well. This info will be then available from [Spec API](/docs/api), in middleware-plugins (`req.specData.info`) and for adding custom [ESJ templating](/docs/base/#server-side-templating-engines).
 
