@@ -51,18 +51,27 @@ config.marked.renderer = deepExtend(renderer, config.marked.renderer);
 marked.setOptions(config.marked);
 
 module.exports = function (markdown) {
-    var input = markdown;
-
-    var $ = cheerio.load('<div id="content">' + marked(input) + '</div>');
+    var $ = cheerio.load('<div id="content">' + marked(markdown) + '</div>');
+    var $content = $('#content').first();
 
     // Spec description
-    var $H1 = $('#content > h1');
-    var $afterH1 = $H1.nextUntil('h2');
-    $afterH1.remove();
-    $H1.after('<div class="source_info">' + $afterH1 + '</div>');
+    var $startElement;
+    var $H1 = $content.children('h1').first();
+
+    if ($H1.length > 0) {
+        $startElement = $H1;
+    } else {
+        $content.prepend('<div id="sourcejs-start-element"></div>');
+        $startElement = $content.children('#sourcejs-start-element').first();
+    }
+
+    var $description = $startElement.nextUntil('h2');
+    $description.remove();
+    $startElement.after('<div class="source_info">' + $description + '</div>');
+    $content.children('#sourcejs-start-element').first().remove();
 
     // Spec sections
-    $('#content > h2').each(function () {
+    $content.children('h2').each(function () {
         var $this = $(this);
         var $filteredElems = $('');
 
@@ -86,5 +95,5 @@ module.exports = function (markdown) {
         ].join(''));
     });
 
-    return $('#content').html();
+    return $content.html();
 };
