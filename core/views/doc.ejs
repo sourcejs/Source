@@ -24,7 +24,10 @@
 <body class="source_page __spec">
     <div class="source_container">
         <%- header %>
-        <div class="source_main source_col-main" role="main"><%- content %></div>
+        <div class="source_main source_col-main" role="main">
+            <h1><%= info.title %></h1>
+            <%- content %>
+        </div>
         <%- footer %>
     </div>
 </body>

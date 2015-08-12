@@ -1,5 +1,3 @@
-# Markdown Support
-
 SourceJS supports markdown as pure `.md` files and renders it in any other extension files using `<markdown>` HTML tag.
 
 ## Basics
