@@ -1,22 +1,12 @@
 'use strict';
 
 var fs = require('fs');
-var _ = require('lodash');
 var path = require('path');
 var configUtils = require('./lib/configUtils');
 var utils = require('./lib/utils');
 var colors = require('colors'); // jshint ignore:line
 
 var silent;
-
-var extendOptions = function(to, from){
-    // Don't merge arrays
-    _.merge(to, from, function (a, b) {
-        if (_.isArray(a)) {
-            return b;
-        }
-    });
-};
 
 var legacyOptionsWarn = function(oldStruct, newStruct, fileName){
     var _fileName = fileName || 'options.js';
@@ -95,16 +85,16 @@ module.exports = function(basePath, _silent){
     var userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
 
     // Adding assets npm plugin list to options
-    extendOptions(mergedOptions, configUtils.prepareClientNpmPlugins(pathToUser));
+    utils.extendOptions(mergedOptions, configUtils.prepareClientNpmPlugins(pathToUser));
 
     // If user settings file is present, override core settings
     if(fs.existsSync(userSettingsFile)) {
-        extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userSettingsFile)), 'options.js');
+        utils.extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userSettingsFile)), 'options.js');
     }
 
     // If local settings file is present, override core settings
     if(fs.existsSync(userLocalSettingsFile)) {
-        extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userLocalSettingsFile)), 'local-options.js');
+        utils.extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userLocalSettingsFile)), 'local-options.js');
     }
 
     return mergedOptions;
