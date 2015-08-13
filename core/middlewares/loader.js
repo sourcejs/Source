@@ -68,6 +68,8 @@ var sortMiddlewares = function(groupsOrder, list){
         var group = value.group || 'default';
         var middleware = value;
 
+        if (!middleware.enabled) return;
+
         middleware.name = middleware.name || key;
 
         groupedList[group] = groupedList[group] || [];
@@ -81,7 +83,7 @@ var sortMiddlewares = function(groupsOrder, list){
 
     // Concat groups by order
     groupsOrder.forEach(function(item){
-        output = output.concat(groupedList[item]);
+        if (groupedList[item]) output = output.concat(groupedList[item]);
     });
 
     return output;
@@ -93,7 +95,7 @@ var loadMiddlewares = function(listArr, app){
     log.debug('loading', listArr);
 
     listArr.forEach(function(item){
-        if (typeof item.process === 'function') {
+        if (item && typeof item.process === 'function') {
             app.use(item.process);
         }
     });
@@ -110,31 +112,37 @@ module.exports.process = function(app, globalOptions){
         ],
         list: {
             md: {
+                enabled: true,
                 order: -1,
                 group: 'pre-html',
                 process: require(path.join(appRoot, 'core/middlewares/md')).process
             },
             mdTag: {
+                enabled: true,
                 order: 0,
                 group: 'html',
                 process: require(path.join(appRoot, 'core/middlewares/mdTag')).process
             },
             clarify: {
+                enabled: true,
                 order: -2,
                 group: 'request',
                 process: require(path.join(appRoot, 'core/middlewares/clarify'))
             },
             read: {
+                enabled: true,
                 order: -1,
                 group: 'request',
                 process: require(path.join(appRoot, 'core/middlewares/read')).process
             },
             send: {
+                enabled: true,
                 order: -1,
                 group: 'response',
                 process: require(path.join(appRoot, 'core/middlewares/send')).process
             },
             wrap: {
+                enabled: true,
                 order: -1,
                 group: 'html',
                 process: require(path.join(appRoot, 'core/middlewares/wrap')).process
