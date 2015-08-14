@@ -21,6 +21,8 @@ exports.process = function (req, res, next) {
         var end = process.hrtime(start);
         global.log.debug('Markdown processing took: ', prettyHrtime(end));
 
+        req.specData.isMd = false;
+
         next();
     } else {
         next();

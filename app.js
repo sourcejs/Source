@@ -99,14 +99,15 @@ app.use(bodyParser.json());
 
 
 
-/* Middlewares */
+/* Includes */
+
+// Middlewares
+require('./core/middlewares/loader').process(app, global.opts);
 
 // Auth initializing
 var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
-// Clarify
-app.use(require('./core/middleware/clarify'));
 
 // File tree module
 var fileTree = require('./core/file-tree');
@@ -134,29 +135,6 @@ app.use('/api/updateFileTree', function(req, res){
     });
 });
 
-
-// Middleware that loads spec content
-var read = require("./core/middleware/read");
-app.use(read.process);
-
-// Markdown
-app.use(require("./core/middleware/md").process);
-app.use(require("./core/middleware/mdTag").process);
-
-// Load user defined middleware, that processes spec content
-require("./core/middleware/userMiddleware");
-
-// Middleware that wraps spec with Source template
-app.use(require("./core/middleware/wrap").process);
-
-// Middleware that sends final spec response
-app.use(require("./core/middleware/send").process);
-
-/* /Middlewares */
-
-
-
-/* Includes */
 
 // Routes
 require('./core/routes');
@@ -233,7 +211,7 @@ app.use(logErrors);
 
 
 
-// Server start
+/* Server start */
 if (!module.parent) {
     var serverOpts = global.opts.core.server;
     var port = serverOpts.port;
@@ -256,3 +234,4 @@ if (!module.parent) {
             });
     }
 }
+/* Server start */

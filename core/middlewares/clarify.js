@@ -229,7 +229,7 @@ var getSectionsIDList = function(sections) {
     return output;
 };
 
-module.exports = function(req, res, next) {
+module.exports.process = function(req, res, next) {
 	var parsedUrl = url.parse(req.url, true);
 
     // Query params
