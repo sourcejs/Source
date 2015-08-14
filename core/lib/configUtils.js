@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs-extra');
-var deepExtend = require('deep-extend');
 var path = require('path');
 var finder = require('fs-finder');
 var nodeUtils = require('util');
@@ -117,9 +116,9 @@ var extendContextOptions = module.exports.extendContextOptions = function(defaul
     }
 
     // Override default options with context options items
-    if (output.assets) deepExtend(output.assets, contextOptionsItem.assets);
-    if (output.rendering) deepExtend(output.rendering, contextOptionsItem.rendering);
-    if (output.plugins) deepExtend(output.plugins, contextOptionsItem.plugins);
+    if (output.assets) utils.extendOptions(output.assets, contextOptionsItem.assets);
+    if (output.rendering) utils.extendOptions(output.rendering, contextOptionsItem.rendering);
+    if (output.plugins) utils.extendOptions(output.plugins, contextOptionsItem.plugins);
 
     return output;
 };
@@ -134,7 +133,7 @@ var extendContextOptions = module.exports.extendContextOptions = function(defaul
  */
 var getMergedOptions = module.exports.getMergedOptions = function(startPath, defaultOptions) {
     var _defaultOptions = defaultOptions || {};
-    var output = deepExtend({}, _defaultOptions);
+    var output = utils.extendOptions({}, _defaultOptions);
     var optionsArr = getContextOptionsList(startPath);
 
     // Normalize  windows paths
