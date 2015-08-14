@@ -215,8 +215,9 @@ define([
 
         this.catalog.each(function () {
             var catalog = $(this);
-            var navListDir = catalog.attr("data-nav");
+            var navListDir = _this.processDefinedTargetCatalogue(catalog.attr("data-nav"));
             var navListCat = catalog.attr("data-tag");
+
             // Catalog has no data about category
             var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir) || {};
 
@@ -300,10 +301,10 @@ define([
         if (specifications.length > lengthLimit) {
             navigationItemsList.appendChild(
                 $(this.templates.catalogLinkToAll({
-                    "classes": classes,
-                    "labels": labels,
-                    "url": catalogUrl,
-                    "length": specifications.length
+                    classes: classes,
+                    labels: labels,
+                    url: catalogUrl,
+                    length: specifications.length
                 })).get(0)
             );
         }
@@ -532,6 +533,18 @@ define([
             if(a === b) return 0;
             return multiplexer * ((a > b) ? -1 : 1);
         };
+    };
+
+    GlobalNav.prototype.processDefinedTargetCatalogue = function(targetCatalogue) {
+        var endTarget = targetCatalogue;
+        var relativeRegExt = new RegExp(/^.\//);
+
+        // If relative with `./`
+        if (relativeRegExt.test(endTarget)) {
+            endTarget = endTarget.replace(relativeRegExt, utils.getPathToPage() + '/');
+        }
+
+        return endTarget;
     };
 
     return new GlobalNav();

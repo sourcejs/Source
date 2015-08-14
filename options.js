@@ -132,7 +132,7 @@ module.exports = {
 
         modulesOptions : {
             navHighlight: {
-                // Hash update on scroll turned off because of performance issues
+                // Page navigation hash update on scroll turned off because of performance issues
                 updateHash: false
             },
 
