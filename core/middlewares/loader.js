@@ -22,9 +22,10 @@ var gatherMiddlewares = function(dest, filterRegExp, mainJS){
                 var pluginIndexPath = path.join(dest, dir, _mainJS);
                 if (fs.existsSync(pluginIndexPath)) {
                     output[middlewareName] = {
+                        enabled: true,
                         order: 0,
                         group: 'default',
-                        process: require(pluginIndexPath).process
+                        indexPath: pluginIndexPath
                     };
 
                     // Load middleware options
@@ -95,8 +96,8 @@ var loadMiddlewares = function(listArr, app){
     log.debug('loading', listArr);
 
     listArr.forEach(function(item){
-        if (item && typeof item.process === 'function') {
-            app.use(item.process);
+        if (item && fs.existsSync(item.indexPath)) {
+            app.use(require(item.indexPath).process);
         }
     });
 };
@@ -115,37 +116,37 @@ module.exports.process = function(app, globalOptions){
                 enabled: true,
                 order: -1,
                 group: 'pre-html',
-                process: require(path.join(appRoot, 'core/middlewares/md')).process
+                indexPath: path.join(appRoot, 'core/middlewares/md.js')
             },
             mdTag: {
                 enabled: true,
                 order: 0,
                 group: 'html',
-                process: require(path.join(appRoot, 'core/middlewares/mdTag')).process
+                indexPath: path.join(appRoot, 'core/middlewares/mdTag.js')
             },
             clarify: {
                 enabled: true,
                 order: -2,
                 group: 'request',
-                process: require(path.join(appRoot, 'core/middlewares/clarify'))
+                indexPath: path.join(appRoot, 'core/middlewares/clarify.js')
             },
             read: {
                 enabled: true,
                 order: -1,
                 group: 'request',
-                process: require(path.join(appRoot, 'core/middlewares/read')).process
+                indexPath: path.join(appRoot, 'core/middlewares/read.js')
             },
             send: {
                 enabled: true,
                 order: -1,
                 group: 'response',
-                process: require(path.join(appRoot, 'core/middlewares/send')).process
+                indexPath: path.join(appRoot, 'core/middlewares/send.js')
             },
             wrap: {
                 enabled: true,
                 order: -1,
                 group: 'html',
-                process: require(path.join(appRoot, 'core/middlewares/wrap')).process
+                indexPath: path.join(appRoot, 'core/middlewares/wrap.js')
             }
         }
     };
