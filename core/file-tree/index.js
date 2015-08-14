@@ -193,8 +193,16 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     return page;
 };
 
-var fileTree = function (processingDir) {
+var fileTree = function (workingDir) {
+    var processingDir = workingDir;
     var outputJSON = {};
+
+    // Allow to run app without existing specsRoot
+    if (!fs.existsSync(workingDir) && workingDir === config.specsRoot) {
+        global.log.warn('Running SourceJS without user dir. This set-up should be used only for running tests.');
+        processingDir = global.pathToApp;
+    }
+
     var dirContent = fs.readdirSync(processingDir);
     var excludes = prepareExcludesRegex();
 

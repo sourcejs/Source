@@ -174,15 +174,18 @@ app.use(express.static(app.get('user')));
 
 // Page 404
 app.use(function(req, res){
-
 	if (req.accepts('html')) {
+        if (req.url === '/') {
+            res.redirect('/docs');
+            return;
+        }
+
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
 		res.status(404).render(path.join(__dirname, '/core/views/404.ejs'), {
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
 		});
 	}
-
 });
 /* /Serving content */
 
