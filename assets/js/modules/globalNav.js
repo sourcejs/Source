@@ -20,6 +20,7 @@ define([
      */
     var defaults = {
         "filterEnabled": true,
+        "useHeaderUrlForNavigation": true,
         "showPreviews": false,
         "sortType": "sortByDate",
         "sortDirection":"forward",
@@ -250,6 +251,7 @@ define([
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-tag");
+        var catalogHeaderURL = catalog.find("." + navOptions.classes.catalogListTitle + '>a').attr('href');
 
         var filter = function(spec) {
             var isInIgnoreList = !spec || !spec.title || !spec.url || !!~$.inArray(spec.title, navOptions.ignorePages);
@@ -263,7 +265,9 @@ define([
         }
 
         if(target && target.length === 1) {
-            var itemsDocFragment = this.getNavigationItemsList(data, navListDir, filter);
+            var url = catalogHeaderURL && catalogHeaderURL.length && navOptions.useHeaderUrlForNavigation
+                ? catalogHeaderURL : navListDir;
+            var itemsDocFragment = this.getNavigationItemsList(data, url, filter);
             target.html(itemsDocFragment);
         }
     };
