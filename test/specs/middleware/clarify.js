@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
-var jq = fs.readFileSync(path.join(pathToMasterApp,'assets/js/lib/jquery-1.11.1.js'), "utf-8");
+var jq = fs.readFileSync(path.join(pathToMasterApp,'assets/js/lib/jquery-2.1.4.min.js'), "utf-8");
 
 var should = require('should');
 var assert = require('assert');
