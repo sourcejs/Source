@@ -2,7 +2,7 @@
 
 var forever = require('tinyforever');
 var path = require('path');
-var deepExtend = require('deep-extend');
+var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 
 var config = {
     enabled: true,
@@ -14,7 +14,7 @@ var config = {
     }
 };
 // Overwriting base options
-deepExtend(config, global.opts.core.watch);
+utils.extendOptions(config, global.opts.core.watch);
 
 if (config.enabled) {
     var child = new (forever.Monitor)(path.join(global.pathToApp, 'core/watch/childWatch.js'), config.forever);

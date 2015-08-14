@@ -5,6 +5,7 @@ var marked = require('marked');
 var cheerio = require('cheerio');
 var deepExtend = require('deep-extend');
 var translit = require(path.join(global.pathToApp,'core/lib/translit'));
+var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 
 var renderer = new marked.Renderer();
 
@@ -22,7 +23,7 @@ var config = {
     marked: {}
 };
 // Overwriting base options
-deepExtend(config, globalConfig);
+utils.extendOptions(config, globalConfig);
 
 // Processing with native markdown renderer
 renderer.code = function (code, language) {

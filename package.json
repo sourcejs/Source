@@ -56,7 +56,7 @@
     "postinstall": "grunt update && node ./core/postInstall",
     "build": "npm i",
     "start": "node app",
-    "test": "grunt ci-pre-run && node app.js --test"
+    "test": "grunt ci-pre-run && node app.js --test -l trace"
   },
   "devDependencies": {
     "assert": "~1.1.1",

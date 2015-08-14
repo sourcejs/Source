@@ -3,8 +3,8 @@
 var express = require('express');
 var path = require('path');
 var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
+var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var pathToApp = path.dirname(require.main.filename);
-var deepExtend = require('deep-extend');
 var htmlTree = require(path.join(global.pathToApp, 'core/html-tree'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 
@@ -16,7 +16,7 @@ var config = {
     }
 };
 // Overwriting base options
-deepExtend(config, global.opts.core.api);
+utils.extendOptions(config, global.opts.core.api);
 
 var specsDataPath = path.join(pathToApp, config.specsData);
 var htmlDataPath = path.join(pathToApp, config.htmlData);

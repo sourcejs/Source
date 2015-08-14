@@ -7,6 +7,7 @@ var path = require('path');
 var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
+var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 var coreOpts = global.opts.core;
 var prettyHrtime = require('pretty-hrtime');
 
@@ -28,7 +29,7 @@ var config = {
 };
 
 // Overwriting base options
-deepExtend(config, coreOpts.fileTree);
+utils.extendOptions(config, coreOpts.fileTree);
 
 var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
