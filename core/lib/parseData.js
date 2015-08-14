@@ -242,7 +242,7 @@ ParseData.prototype.getFilteredData = function(filterConf, array, data) {
  *
  * @param {String} id - Request some item by id (for example "base/btn")
  *
- * @returns {Object} Return single object by requested ID or undefined
+ * @returns {Object} Return single object by requested ID, null (no id found) or undefined (no data found)
  */
 ParseData.prototype.getByID = function(id) {
     var dataExists = this.updateData();

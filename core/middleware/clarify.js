@@ -7,11 +7,12 @@ var Q = require('q');
 var _ = require('lodash');
 var jsdom = require('jsdom');
 var ejs = require('ejs');
-var specUtils = require(path.join(global.pathToApp, 'core/lib/specUtils'));
-var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
+
 var pathToApp = path.dirname(require.main.filename);
-var htmlParser = require(path.join(global.pathToApp, 'core/html-tree/html-parser'));
-var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
+var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
+var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
+var htmlParser = require(path.join(pathToApp, 'core/html-tree/html-parser'));
+
 
 var htmlDataPath = path.join(pathToApp, global.opts.core.api.htmlData);
 var parseHTMLData = new parseData({
@@ -29,7 +30,7 @@ var getTpl = function(tpl) {
     var templateName = tpl ? tpl : 'default';
 
     // TODO: use view resolver
-    var pathToTemplate = path.join(global.pathToApp, 'core/views/clarify', templateName + '.ejs');
+    var pathToTemplate = path.join(pathToApp, 'core/views/clarify', templateName + '.ejs');
     var userPathToTemplate = path.join(global.app.get('user'), 'core/views/clarify', templateName + '.ejs');
 
     // First we check user tempalte, then core
@@ -56,7 +57,7 @@ var getTpl = function(tpl) {
 var getTplList = function(){
     var deferred = Q.defer();
 
-    var pathToTemplates = path.join(global.pathToApp, 'core/views/clarify');
+    var pathToTemplates = path.join(pathToApp, 'core/views/clarify');
     var userPathToTemplates = path.join(global.app.get('user'), 'core/views/clarify');
 
     var templatesList = [];
@@ -249,6 +250,11 @@ module.exports = function(req, res, next) {
         var specInfo = specUtils.getSpecInfo(parsedPath.pathToSpec);
         var specID = specUtils.getSpecIDFromUrl(parsedPath.pathToSpec);
         var specHasHTMLAPIData = !!parseHTMLData.getByID(specID);
+
+        if (!specInfo) {
+            res.send('Clarify did not found any information about requested spec, please check URL or update file-tree restarting the app.');
+            return;
+        }
 
         if (!specHasHTMLAPIData) apiUpdate = true;
 
