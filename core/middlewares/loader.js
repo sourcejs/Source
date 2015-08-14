@@ -60,7 +60,7 @@ var gatherMiddlewares = function(dest, filterRegExp, mainJS){
 var sortMiddlewares = function(groupsOrder, list){
     var output = [];
 
-    if (!_.isArray(groupsOrder) && !list) return output;
+    if (!(groupsOrder && _.isArray(groupsOrder) && list)) return output;
 
     var groupedList = {};
 
@@ -96,7 +96,7 @@ var loadMiddlewares = function(listArr, app){
     log.debug('loading', listArr);
 
     listArr.forEach(function(item){
-        if (item && fs.existsSync(item.indexPath)) {
+        if (item && item.indexPath && fs.existsSync(item.indexPath)) {
             app.use(require(item.indexPath).process);
         }
     });
