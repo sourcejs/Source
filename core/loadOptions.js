@@ -35,6 +35,7 @@ var legacyOptionsChecker = function(options, fileName){
     var haveCommon = options.core && options.core.common;
 
     // Server options
+    options.core = options.core || {};
     options.core.server = options.core.server || {};
     if (haveCommon && options.core.common.port) {
         if (!silent) legacyOptionsWarn('options.core.common.port', 'options.core.server.port', fileName);
