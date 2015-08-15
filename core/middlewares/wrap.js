@@ -2,6 +2,7 @@
 
 var fs = require('fs-extra');
 var ejs = require('ejs');
+var _ = require('lodash');
 var path = require('path');
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
@@ -71,20 +72,44 @@ exports.process = function (req, res, next) {
                 content = $.html();
             }
 
-            var headerFooterHTML = getHeaderAndFooter();
+            var heagerFooter = getHeaderAndFooter();
 
             // final data object for the template
             var templateJSON = {
+                engineVersion: global.engineVersion,
                 content: content,
                 head: head,
-                header: headerFooterHTML.header,
-                footer: headerFooterHTML.footer,
                 info: info,
                 filename: templatePath
             };
 
+            try {
+                templateJSON.header = ejs.render(heagerFooter.header, _.merge({}, templateJSON, {
+                    filename: heagerFooter.headerPath
+                }));
+            } catch(err){
+                var headerMsg = 'Error: EJS could render header template: ' + heagerFooter.headerPath;
+                templateJSON.header = headerMsg;
+                global.log.warn(headerMsg, err.stack);
+            }
+
+            try {
+                templateJSON.footer = ejs.render(heagerFooter.footer, _.merge({}, templateJSON, {
+                    filename: heagerFooter.footerPath
+                }));
+            } catch(err){
+                var footerMsg = 'Error: EJS could render footer template: ' + heagerFooter.footerPath;
+                templateJSON.footer = footerMsg;
+                global.log.warn(footerMsg, err.stack);
+            }
+
             // render page and send it as response
-            req.specData.renderedHtml = ejs.render(template, templateJSON);
+            try {
+                req.specData.renderedHtml = ejs.render(template, templateJSON);
+            } catch(err){
+                req.specData.renderedHtml = 'Error rendering Spec with EJS: ' + template;
+            }
+
 
             req.specData.renderedHtml += '\n<!-- SourceJS version: ' + global.engineVersion + ' -->';
 
