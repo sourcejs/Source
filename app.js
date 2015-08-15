@@ -50,7 +50,10 @@ var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
 
-if (commander.html) global.opts.core.parseHTML.onStart = true;
+if (commander.html) {
+    global.opts.plugins.htmlParser.enabled = true;
+    global.opts.plugins.htmlParser.onStart = true;
+}
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
 if (!commander.watch) global.opts.core.watch.enabled = false;
