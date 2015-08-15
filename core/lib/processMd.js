@@ -51,25 +51,28 @@ config.marked.renderer = deepExtend(renderer, config.marked.renderer);
 
 marked.setOptions(config.marked);
 
-module.exports = function (markdown) {
+module.exports = function (markdown, options) {
+    var _options = options || {};
     var $ = cheerio.load('<div id="content">' + marked(markdown) + '</div>');
     var $content = $('#content').first();
 
-    // Spec description
-    var $startElement;
-    var $H1 = $content.children('h1').first();
+    if (_options.wrapDescription) {
+        // Spec description
+        var $startElement;
+        var $H1 = $content.children('h1').first();
 
-    if ($H1.length > 0) {
-        $startElement = $H1;
-    } else {
-        $content.prepend('<div id="sourcejs-start-element"></div>');
-        $startElement = $content.children('#sourcejs-start-element').first();
+        if ($H1.length > 0) {
+            $startElement = $H1;
+        } else {
+            $content.prepend('<div id="sourcejs-start-element"></div>');
+            $startElement = $content.children('#sourcejs-start-element').first();
+        }
+
+        var $description = $startElement.nextUntil('h2');
+        $description.remove();
+        $startElement.after('<div class="source_info">' + $description + '</div>');
+        $content.children('#sourcejs-start-element').first().remove();
     }
-
-    var $description = $startElement.nextUntil('h2');
-    $description.remove();
-    $startElement.after('<div class="source_info">' + $description + '</div>');
-    $content.children('#sourcejs-start-element').first().remove();
 
     // Spec sections
     $content.children('h2').each(function () {
