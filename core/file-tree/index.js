@@ -15,10 +15,10 @@ var busy = false;
 
 var config = {
     includedDirs: coreOpts.common.includedDirs,
-    excludedDirs: ['node_modules', 'bower_components', '.git', '.idea'],
+    excludedDirs: [],
 
     // TODO: merge with `excludedDirs` in next major release.
-    excludedDirsGlobal: ['node_modules', 'bower_components', '.git', '.idea'],
+    excludedDirsGlobal: [],
     cron: false,
     cronProd: true,
     cronRepeatTime: 60000,
