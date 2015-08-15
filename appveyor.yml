@@ -17,7 +17,7 @@ before_test: "git clone https://github.com/sourcejs/init.git user"
 test_script:
   - node --version && npm --version
   - ps: "npm run ci-test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: "npm run ci-test"
+  - cmd: "npm run ci-test-nw" # Run without watch because of CI bug
 
 matrix:
   fast_finish: true

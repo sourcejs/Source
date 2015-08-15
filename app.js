@@ -32,6 +32,7 @@ commander
     .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
     .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .option('--test', 'Run app with tests.')
+    .option('--no-watch', 'Run with disabled watcher.')
     .parse(process.argv);
 
 global.commander = commander;
@@ -52,6 +53,7 @@ global.log = log;
 if (commander.html) global.opts.core.parseHTML.onStart = true;
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
+if (!commander.watch) global.opts.core.watch.enabled = false;
 /* /Globals */
 
 
