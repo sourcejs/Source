@@ -1,4 +1,5 @@
 {
     "keywords": "api, rest",
-    "title": "REST API"
+    "title": "REST API",
+    "template": "doc"
 }

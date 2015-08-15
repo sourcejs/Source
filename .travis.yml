@@ -3,8 +3,10 @@ node_js:
   - "0.10"
   - "0.11"
   - "0.12"
+sudo: false
 notifications:
   email:
     on_success: never
     on_failure: always
 before_script: "git clone https://github.com/sourcejs/init.git user"
+script: npm run ci-test

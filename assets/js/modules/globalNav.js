@@ -20,6 +20,7 @@ define([
      */
     var defaults = {
         "filterEnabled": true,
+        "useHeaderUrlForNavigation": true,
         "showPreviews": false,
         "sortType": "sortByDate",
         "sortDirection":"forward",
@@ -215,8 +216,9 @@ define([
 
         this.catalog.each(function () {
             var catalog = $(this);
-            var navListDir = catalog.attr("data-nav");
+            var navListDir = _this.processDefinedTargetCatalogue(catalog.attr("data-nav"));
             var navListCat = catalog.attr("data-tag");
+
             // Catalog has no data about category
             var targetCatalog = parseFileTree.getCurrentCatalogSpec(navListDir) || {};
 
@@ -249,6 +251,7 @@ define([
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-tag");
+        var catalogHeaderURL = catalog.find("." + navOptions.classes.catalogListTitle + '>a').attr('href');
 
         var filter = function(spec) {
             var isInIgnoreList = !spec || !spec.title || !spec.url || !!~$.inArray(spec.title, navOptions.ignorePages);
@@ -262,7 +265,9 @@ define([
         }
 
         if(target && target.length === 1) {
-            var itemsDocFragment = this.getNavigationItemsList(data, navListDir, filter);
+            var url = catalogHeaderURL && catalogHeaderURL.length && navOptions.useHeaderUrlForNavigation
+                ? catalogHeaderURL : navListDir;
+            var itemsDocFragment = this.getNavigationItemsList(data, url, filter);
             target.html(itemsDocFragment);
         }
     };
@@ -300,10 +305,10 @@ define([
         if (specifications.length > lengthLimit) {
             navigationItemsList.appendChild(
                 $(this.templates.catalogLinkToAll({
-                    "classes": classes,
-                    "labels": labels,
-                    "url": catalogUrl,
-                    "length": specifications.length
+                    classes: classes,
+                    labels: labels,
+                    url: catalogUrl,
+                    length: specifications.length
                 })).get(0)
             );
         }
@@ -344,7 +349,7 @@ define([
 
         // fixing relative path due to server settings
         var itemDataUrl = itemData.url.charAt(0) === "/" ? itemData.url : "/" + itemData.url;
-        var imageUrl = itemData.thumbnail ? "/" + itemData.thumbnail : undefined;
+        var imageUrl = itemData.thumbnail;
         if (!this.renderNavTreeItem.template) {
             this.renderNavTreeItem.template = this.templates.navigationListItem(navConfig);
         }
@@ -532,6 +537,18 @@ define([
             if(a === b) return 0;
             return multiplexer * ((a > b) ? -1 : 1);
         };
+    };
+
+    GlobalNav.prototype.processDefinedTargetCatalogue = function(targetCatalogue) {
+        var endTarget = targetCatalogue;
+        var relativeRegExt = new RegExp(/^.\//);
+
+        // If relative with `./`
+        if (relativeRegExt.test(endTarget)) {
+            endTarget = endTarget.replace(relativeRegExt, utils.getPathToPage() + '/');
+        }
+
+        return endTarget;
     };
 
     return new GlobalNav();

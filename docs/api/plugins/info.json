@@ -1,4 +1,5 @@
 {
     "keywords": "plugins, middlewares",
-    "title": "Writing SourceJS Plugins and Middlewares"
+    "title": "Writing SourceJS Plugins and Middlewares",
+    "template": "doc"
 }

@@ -1,6 +1,4 @@
-﻿# Spec Load Event
-
-Spec load event API helps to organize Spec loading flow, and define the final load event of all content, modules and plugins.
+﻿Spec load event API helps to organize Spec loading flow, and define the final load event of all content, modules and plugins.
 
 ## The Problem
 

@@ -1,5 +1,3 @@
-# Using GitHub Auth
-
 ## Quick Start
 
 Before you start, please make sure that you have referenced GitHub App registered. Please visit [this link](https://developer.github.com/guides/basics-of-authentication/#registering-your-app) to get more information.

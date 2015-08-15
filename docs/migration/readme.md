@@ -1,5 +1,3 @@
-# Migration instructions
-
 Here you will find migration instructions from different Source versions
 
 ## From 0.4.0-beta to 0.4.0-rc

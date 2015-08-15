@@ -79,6 +79,7 @@ exports.process = function(req, res, next) {
             if (!specInfo.noEjs) {
                 try {
                     data = ejs.render(data, {
+                        engineVersion: global.engineVersion,
                         info: specInfo,
                         filename: physicalPath
                     });
