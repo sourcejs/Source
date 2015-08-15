@@ -27,7 +27,7 @@ SourceJS component management engine was originally developed in [OK.ru](http://
 
 Have questions? Just reach our community through Gitter Chat:
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
+[![Gitter chat](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg)](https://gitter.im/sourcejs/Source)
 
 ## SourceJS is NOT
 
