@@ -2,7 +2,7 @@
   "name": "sourcejs",
   "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
   "author": "SourceJS",
-  "version": "0.5.4-dev",
+  "version": "0.5.4",
   "license": "MIT",
   "repository": {
     "type": "git",
