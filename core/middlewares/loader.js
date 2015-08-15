@@ -4,7 +4,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 
-var appRoot = path.resolve('./');
+var appRoot = global.pathToApp;
 var utils = require(path.join(appRoot, 'core/lib/utils'));
 var log = require(path.join(appRoot, 'core/logger')).log;
 
