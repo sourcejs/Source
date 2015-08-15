@@ -95,6 +95,7 @@ As SourceJS back-end uses [ExpressJS](http://expressjs.com), it's recommended to
 
 ### Examples
 
+* [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) - rendering React components in specs
 * [sourcejs-bubble](https://github.com/sourcejs/sourcejs-bubble) - comments for examples (have client-side and back-end features)
 * [sourcejs-spec-dependencies](https://github.com/sourcejs/sourcejs-spec-dependencies) - exposing Spec Dependencies (have client-side and back-end features)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)

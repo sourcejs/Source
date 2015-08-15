@@ -191,4 +191,4 @@ Leave your questions and feedback as [issues](https://github.com/sourcejs/Source
 
 If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
+[![Gitter chat](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg)](https://gitter.im/sourcejs/Source)

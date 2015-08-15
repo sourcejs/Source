@@ -93,10 +93,9 @@ var sortMiddlewares = function(groupsOrder, list){
 var loadMiddlewares = function(listArr, app){
     if (!_.isArray(listArr) && !app) return;
 
-    log.debug('loading', listArr);
-
     listArr.forEach(function(item){
         if (item && item.indexPath && fs.existsSync(item.indexPath)) {
+            log.debug('require middleware', item.indexPath);
             app.use(require(item.indexPath).process);
         }
     });

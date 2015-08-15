@@ -10,11 +10,14 @@ $ grunt build
 
 $ grunt watch-css
 $ grunt watch-all
+
+$ grunt test
 ```
 
 * `grunt update` - same as `grunt` (default), runs dev build
 * `grunt build` - runs production build with all assets minification
 * `grunt watch-css`, `grunt watch-all` - watch helper tasks for Source development
+* `grunt test` - runs all mocha tests
 
 ## Custom tasks
 
