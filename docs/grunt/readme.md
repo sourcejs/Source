@@ -1,5 +1,3 @@
-# Build Tasks With Grunt
-
 ## Intro
 
 [Grunt](http://gruntjs.com/) tasks are used to build dev and production assets for Source.

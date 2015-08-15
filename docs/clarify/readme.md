@@ -1,5 +1,3 @@
-# Clarify - Spec Section Testing Environment
-
 SourceJS middleware, that allows to open separate documentation examples in custom or clean environment for component testing and development.
 
 ## General information

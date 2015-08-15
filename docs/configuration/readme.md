@@ -1,5 +1,3 @@
-# Engine Configuration
-
 SourceJS engine is highly configurable and allows to override almost any options for your special needs.
 
 ## Configuration Hierarchy

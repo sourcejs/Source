@@ -1,5 +1,3 @@
-# Writing SourceJS Plugins and Middlewares
-
 SourceJS core contains only default APIs for most common use cases, all specific features we move to plugins, that could contain back-end and client-side improvements.
 
 ## Starting Templates

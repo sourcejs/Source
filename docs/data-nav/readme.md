@@ -1,5 +1,3 @@
-# Auto-generated Navigation
-
 Navigation blocks in SourceJS are automatically generated on client-side, replacing a defined HTML hook with hand-crafted configuration.
 
 ## Embedding

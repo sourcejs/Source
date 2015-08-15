@@ -1,5 +1,3 @@
-# Main Engine Documentation
-
 This page contains main information about SourceJS engine and it's set-up.
 
 SourceJS documentation is rendered by the engine itself and is shipped together with each instance.
@@ -171,6 +169,7 @@ Plugins are working in the same way as core modules, but are kept outside the ma
 
 Here is a list of official plugins:
 
+* [sourcejs-md-react](https://www.npmjs.com/package/sourcejs-md-react) (new)
 * [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
 * [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
 * [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) (new)

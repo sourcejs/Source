@@ -1,5 +1,3 @@
-# Info.json - Spec Description
-
 `info.json` file in spec folder is used for defining page meta information and local options set-up. Use it for customizing global navigation or with your custom fields.
 
 ## Used options

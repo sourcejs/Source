@@ -1,4 +1,5 @@
 {
     "keywords": "events, spec loaded",
-    "title": "Spec Load Event"
+    "title": "Spec Load Event",
+    "template": "doc"
 }
