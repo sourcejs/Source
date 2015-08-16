@@ -59,7 +59,6 @@ casper.test.begin('Code source', 2, function suite(test) {
         this.waitForSelector(codeSource,
             function pass() {
                 test.assertExists(codeSource, 'Code source is shown');
-                this.capture('test.png');
             },
             function fail() {
                 test.fail(codeSource);
