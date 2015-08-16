@@ -26,7 +26,7 @@ urlsToCheck.forEach(function(item){
 
         casper.start(item).then(function(response) {
 
-            casper.wait(300, function(){
+            casper.wait(500, function(){
                 // Slow down a bit, because of strange API bug
             });
 
