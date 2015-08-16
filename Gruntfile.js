@@ -295,8 +295,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('ci-post-run', [
-        'test',
-        'test-func'
+        'test'
     ]);
 
     grunt.registerTask('ci-post-run-win', [
