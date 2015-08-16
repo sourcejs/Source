@@ -9,20 +9,27 @@ var urlsToCheck = [
     url + '/docs/'
 ];
 
+var error = {};
+
+casper.on("page.error", function(msg, trace) {
+    error.msg = msg;
+
+    this.echo("Error:    " + msg, "ERROR");
+    this.echo("file:     " + trace[0].file, "WARNING");
+    this.echo("line:     " + trace[0].line, "WARNING");
+    this.echo("function: " + trace[0]["function"], "WARNING");
+});
+
 urlsToCheck.forEach(function(item){
     casper.test.begin('Check availability and JS errors on ' + item, 2, function(test) {
-        var error = {};
-
-        casper.once("page.error", function onError(msg, trace) {
-            error.msg = msg;
-
-            this.echo("Error:    " + msg, "ERROR");
-            this.echo("file:     " + trace[0].file, "WARNING");
-            this.echo("line:     " + trace[0].line, "WARNING");
-            this.echo("function: " + trace[0]["function"], "WARNING");
-        });
+        error = {};
 
         casper.start(item).then(function(response) {
+
+            casper.wait(300, function(){
+                // Slow down a bit, because of strange API bug
+            });
+
             if (response.status !== 200) {
                 test.fail("Page load error, expected status 200, got " + response.status);
             } else {
@@ -34,10 +41,6 @@ urlsToCheck.forEach(function(item){
             } else {
                 test.pass("No JS errors");
             }
-
-            casper.wait(200, function(){
-                // Slow down a bit, because of strange API bug
-            });
 
         }).run(function() { test.done() }).clear();
     });
