@@ -33,6 +33,7 @@ commander
     .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .option('--test', 'Run app with tests.')
     .option('--no-watch', 'Run with disabled watcher.')
+    .option('--post-grunt [string]', 'Define Grunt command to run after app start', 'ci-post-run')
     .parse(process.argv);
 
 global.commander = commander;
@@ -230,7 +231,7 @@ if (!module.parent) {
     if (commander.test) {
         var spawn = require('cross-spawn');
 
-        spawn('./node_modules/grunt-cli/bin/grunt', ['ci-post-run'], {stdio: 'inherit'})
+        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port='+port], {stdio: 'inherit'})
             .on('close', function (code) {
                 if (code === 0) {
                     log.info('Test successful');

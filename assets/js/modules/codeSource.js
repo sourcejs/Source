@@ -222,7 +222,7 @@ define([
             };
 
             if ($('[class*="src-"]:not(.source_visible)')[0]) {
-                innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode);
+                innerNavigation.addMenuItem(RES_TOGGLER_SHOW_CODE, showAllCode, hideAllCode, 'source_source-code_action-item');
             }
 
             showStaticCode();

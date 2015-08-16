@@ -2,7 +2,7 @@
   "name": "sourcejs",
   "description": "Living Style Guide Engine for Managing and Developing Front-end Components.",
   "author": "SourceJS",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -53,16 +53,17 @@
     "tinyforever": "0.0.3"
   },
   "scripts": {
-    "postinstall": "grunt update && node ./core/postInstall",
+    "postinstall": "node ./core/postInstall && grunt update",
     "build": "npm i",
     "start": "node app",
     "test": "grunt ci-pre-run && node app.js --test",
     "ci-test": "grunt ci-pre-run && node app.js --test --log trace",
-    "ci-test-nw": "grunt ci-pre-run && node app.js --test --log trace --no-watch"
+    "ci-test-win": "grunt ci-pre-run && node app.js --post-grunt ci-post-run-win --test --log trace --no-watch"
   },
   "devDependencies": {
     "assert": "~1.1.1",
     "cross-spawn": "^0.4.0",
+    "grunt-casperjs": "^2.1.0",
     "grunt-mocha-test": "^0.12.4",
     "mocha": "^2.0.1",
     "should": "~4.0.4",

@@ -26,9 +26,9 @@ To set-up a new engine instance chose the first option `Init SourceJS in this fo
 To install SourceJS as a NPM package, first clone clean `user` configuration folder and then execute `npm install`.
 
 ```html
-git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
+git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
 npm install sourcejs --save
-node ./node_modules/sourcejs/app
+npm start
 ```
 
 Starting from 0.6.0 we're planning to change official install path to one with NPM packages. Yeoman generator will be also replaced by [sourcejs-cli](https://github.com/sourcejs/sourcejs-cli) with commands like `run`, `install` (plugin), `init`, `create`.
@@ -37,12 +37,12 @@ Starting from 0.6.0 we're planning to change official install path to one with N
 
 If you're running Windows and have some issues with [JSDom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
 
-Alternatively with 0.5.4 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
+Alternatively with 0.5.5 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
 
 ```html
 npm install -g yo generator-sourcejs
 mkdir sourcejs && cd sourcejs
-yo sourcejs --branch 0.5.4-no-jsdom
+yo sourcejs --branch 0.5.5-no-jsdom
 ```
 
 Please note that Clarify feature is not available in `no-jsdom` version. If you had generator installed before, run `npm update -g generator-sourcejs` (v.0.4.2+ required).
@@ -50,27 +50,27 @@ Please note that Clarify feature is not available in `no-jsdom` version. If you 
 And installing same build from NPM:
 
 ```html
-git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
-npm install sourcejs@0.5.4-no-jsdom --save
-node .\node_modules\sourcejs\app
+git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
+npm install sourcejs@0.5.5-no-jsdom --save
+npm start
 ```
 
 ## Commands
 
 ### Run
 
-Installation wizard will offer to start SourceJS right after initialization. To run it manually, trigger this command in newly created folder:
+Installation wizard will offer to start SourceJS right after initialization. To run it manually, trigger this command in newly created folder with SourceJS app:
 
 ```html
-node app
+npm start
 ```
 
-To set an alternative server port, pass `-p 8081` option.
+To set an alternative server port, pass `-- -p 8081` option.
 
 Other configuration arguments are described in the help section:
 
 ```html
-node app -h
+npm start -- -h
 ```
 
 ### Build
@@ -88,7 +88,7 @@ It will trigger `npm i` and `grunt default` commands for updating dependencies a
 For updating SourceJS to a newer version, just pull the latest changes and trigger build:
 
 ```html
-git pull && npm install
+git pull && npm run build
 ```
 
 ## Creating First Spec

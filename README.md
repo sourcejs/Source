@@ -52,6 +52,7 @@ If you notice some bugs, or need to help finding a better solution in your proce
 [Materials for presentations](https://github.com/sourcejs/pres).
 
 ## Updates
+* 16.08.15 [0.5.5](https://github.com/sourcejs/Source/releases/tag/0.5.5) and  [0.5.5-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.5-no-jsdom) patch release with `<markdown>` tag fix and set of functional tests
 * 15.08.15 [0.5.4](https://github.com/sourcejs/Source/releases/tag/0.5.4) and  [0.5.4-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.4-no-jsdom) with middleware loader, relative paths in navigation support and other improvements
 * 28.05.15 [0.5.3](https://github.com/sourcejs/Source/releases/tag/0.5.3) context options support, source-as-npm package, CI integration, watcher stability improvements and other great features
 * 28.05.15 [0.5.3-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.3-no-jsdom) special release without JSDom for Windows users

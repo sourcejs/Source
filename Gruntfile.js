@@ -7,6 +7,8 @@ global.pathToApp = pathToApp;
 var loadOptions = require('./core/loadOptions');
 
 module.exports = function(grunt) {
+    var appPort = grunt.option('app-port') || 8080;
+
     // load all grunt tasks matching the `grunt-*` pattern
     require('load-grunt-tasks')(grunt);
 
@@ -177,11 +179,18 @@ module.exports = function(grunt) {
 
         mochaTest: {
             test: {
-                src: ['test/**/*.js']
+                src: ['test/specs/**/*.js']
             },
             noApp: {
                 src: ['test/specs/lib/**/*.js']
             }
+        },
+
+        casperjs: {
+            options: {
+                casperjsOptions: ['--app-port='+appPort]
+            },
+            files: ['test/casperjs/**/*.js']
         }
     });
 
@@ -286,6 +295,11 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('ci-post-run', [
+        'test',
+        'test-func'
+    ]);
+
+    grunt.registerTask('ci-post-run-win', [
         'test'
     ]);
 
@@ -297,14 +311,23 @@ module.exports = function(grunt) {
 
     // Test task. Execute with running app
     grunt.registerTask('test', 'Run ALL tests or specified by second param', function () {
+        // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
         var spec = grunt.option('spec');
-
         if (spec) {
-            // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
             grunt.config.set('mochaTest.test.src', [spec]);
-            grunt.task.run('mochaTest');
-        } else {
-            grunt.task.run('mochaTest');
         }
+
+        grunt.task.run('mochaTest');
+    });
+
+    // Test task. Execute with running app
+    grunt.registerTask('test-func', 'Run ALL functional tests or specified by second param', function () {
+        // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
+        var spec = grunt.option('spec');
+        if (spec) {
+            grunt.config.set('casperjs.files', [spec]);
+        }
+
+        grunt.task.run('casperjs');
     });
 };
