@@ -58,7 +58,7 @@
     "start": "node app",
     "test": "grunt ci-pre-run && node app.js --test",
     "ci-test": "grunt ci-pre-run && node app.js --test --log trace",
-    "ci-test-nw": "grunt ci-pre-run && node app.js --test --log trace --no-watch"
+    "ci-test-win": "grunt ci-pre-run && node app.js --post-grunt ci-post-run-win --test --log trace --no-watch"
   },
   "devDependencies": {
     "assert": "~1.1.1",
