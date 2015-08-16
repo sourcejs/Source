@@ -70,7 +70,15 @@ module.exports = {
         },
 
         // Limits EJS includes, allowing only files in project root
-        sandboxIncludes: true
+        sandboxIncludes: true,
+
+        middlewares: {
+            list: {
+                clarify: {
+                    enabled: false
+                }
+            }
+        }
     },
 
     // Page rendering configuration (redefinable from context options)
@@ -119,7 +127,7 @@ module.exports = {
         // Core modules
         modulesEnabled : {
             // Enable clarify helper links in spec
-            clarifyInSpec: true,
+            clarifyInSpec: false,
             htmlAPISync: true,
             headerFooter: true,
             specDecorations: true,
