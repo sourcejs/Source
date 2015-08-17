@@ -2,7 +2,7 @@
 
 var path = require('path');
 var log4js = require('log4js');
-var deepExtend = require('deep-extend');
+var utils = require('./lib/utils');
 var fs = require('fs-extra');
 
 var logRootDir = global.pathToApp || __dirname;
@@ -54,7 +54,7 @@ var config =  {
     }
 };
 
-if (global.opts.core.logger) deepExtend(config, global.opts.core.logger);
+if (global.opts.core.logger) utils.extendOptions(config, global.opts.core.logger);
 
 var reloadConf = function(currentConf){
     log4js.configure(currentConf);

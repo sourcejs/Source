@@ -5,6 +5,7 @@ var marked = require('marked');
 var cheerio = require('cheerio');
 var deepExtend = require('deep-extend');
 var translit = require(path.join(global.pathToApp,'core/lib/translit'));
+var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 
 var renderer = new marked.Renderer();
 
@@ -12,20 +13,22 @@ var renderer = new marked.Renderer();
 var globalConfig = global.opts.core && global.opts.core.processMd ? global.opts.core.processMd : {};
 var config = {
     espaceCodeHTML: true,
+    languageRenderers: {
+        example: function (code) {
+            return '<div class="source_example">' + code + '</div>';
+        }
+    },
 
-    marked: {
-        renderer: renderer
-    }
+    // Define marked module options
+    marked: {}
 };
 // Overwriting base options
-deepExtend(config, globalConfig);
-
-marked.setOptions(config.marked);
+utils.extendOptions(config, globalConfig);
 
 // Processing with native markdown renderer
 renderer.code = function (code, language) {
-    if (language === 'example') {
-        return '<div class="source_example">' + code + '</div>';
+    if (config.languageRenderers.hasOwnProperty(language)) {
+        return config.languageRenderers[language](code);
     } else {
         if (config.espaceCodeHTML) code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -43,19 +46,36 @@ renderer.heading = function (text, level) {
     return '<h' + level + ' id="' + escapedText + '">' + text + '</h' + level + '>';
 };
 
-module.exports = function (markdown) {
-    var input = markdown;
+// Extend re-defined renderer
+config.marked.renderer = deepExtend(renderer, config.marked.renderer);
 
-    var $ = cheerio.load('<div id="content">' + marked(input) + '</div>');
+marked.setOptions(config.marked);
 
-    // Spec description
-    var $H1 = $('#content > h1');
-    var $afterH1 = $H1.nextUntil('h2');
-    $afterH1.remove();
-    $H1.after('<div class="source_info">' + $afterH1 + '</div>');
+module.exports = function (markdown, options) {
+    var _options = options || {};
+    var $ = cheerio.load('<div id="content">' + marked(markdown) + '</div>');
+    var $content = $('#content').first();
+
+    if (_options.wrapDescription) {
+        // Spec description
+        var $startElement;
+        var $H1 = $content.children('h1').first();
+
+        if ($H1.length > 0) {
+            $startElement = $H1;
+        } else {
+            $content.prepend('<div id="sourcejs-start-element"></div>');
+            $startElement = $content.children('#sourcejs-start-element').first();
+        }
+
+        var $description = $startElement.nextUntil('h2');
+        $description.remove();
+        $startElement.after('<div class="source_info">' + $description + '</div>');
+        $content.children('#sourcejs-start-element').first().remove();
+    }
 
     // Spec sections
-    $('#content > h2').each(function () {
+    $content.children('h2').each(function () {
         var $this = $(this);
         var $filteredElems = $('');
 
@@ -79,5 +99,5 @@ module.exports = function (markdown) {
         ].join(''));
     });
 
-    return $('#content').html();
+    return $content.html();
 };

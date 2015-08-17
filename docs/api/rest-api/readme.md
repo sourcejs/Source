@@ -1,6 +1,4 @@
-﻿# SourceJS REST API
-
-From 0.4.0 version, SourceJS started to grow own REST API for flexible plugins development and easy side services integration. API provides full access to Spec contents, navigation tree and other useful features.
+﻿From 0.4.0 version, SourceJS started to grow own REST API for flexible plugins development and easy side services integration. API provides full access to Spec contents, navigation tree and other useful features.
 
 ## GET Specs
 

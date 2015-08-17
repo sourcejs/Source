@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var deepExtend = require('deep-extend');
 var path = require('path');
 var configUtils = require('./lib/configUtils');
 var utils = require('./lib/utils');
@@ -9,11 +8,13 @@ var colors = require('colors'); // jshint ignore:line
 
 var silent;
 
-var legacyOptionsWarn = function(oldStruct, newStruct){
+var legacyOptionsWarn = function(oldStruct, newStruct, fileName){
+    var _fileName = fileName || 'options.js';
+
     // Shout warn message only once
     if (global.legacyOptionsWarnOnce && global.legacyOptionsWarnOnce.indexOf(oldStruct) > -1) return;
 
-    var msg = 'You are using old options structure in `options.js` conf file, please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
+    var msg = 'You are using an old options structure in `' + _fileName + '` conf file, please change ' + oldStruct.red + ' to ' + newStruct.green + '. Old options support will be deprecated in next major release.';
 
     if (global.log) {
         global.log.warn(msg);
@@ -30,16 +31,30 @@ var legacyOptionsWarn = function(oldStruct, newStruct){
     global.legacyOptionsWarnOnce.push(oldStruct);
 };
 
-var legacyOptionsChecker = function(options){
-    if (options.core && options.core.common && options.core.common.specFiles) {
-        options.rendering = options.rendering || {};
+var legacyOptionsChecker = function(options, fileName){
+    var haveCommon = options.core && options.core.common;
 
-        if (!silent) legacyOptionsWarn('options.core.common.specFiles', 'options.rendering.specFiles');
+    // Server options
+    options.core = options.core || {};
+    options.core.server = options.core.server || {};
+    if (haveCommon && options.core.common.port) {
+        if (!silent) legacyOptionsWarn('options.core.common.port', 'options.core.server.port', fileName);
+
+        options.core.server.port = options.core.server.port || options.core.common.port;
+
+        // Update old conf path with new (for legacy support)
+        options.core.common.port = options.core.server.port;
+    }
+
+    // Rendering options
+    options.rendering = options.rendering || {};
+    if (haveCommon && options.core.common.specFiles) {
+        if (!silent) legacyOptionsWarn('options.core.common.specFiles', 'options.rendering.specFiles', fileName);
 
         options.rendering.specFiles = options.rendering.specFiles || options.core.common.specFiles;
     }
 
-    // Legacy options support, add *.src.html if not defined
+    // Add *.src.html if not defined
     if (
         options.rendering && options.rendering.specFiles &&
         options.rendering.specFiles.indexOf('index.src') > -1 &&
@@ -71,17 +86,17 @@ module.exports = function(basePath, _silent){
     var userLocalSettingsFile = path.join(pathToUser, 'local-options.js');
 
     // Adding assets npm plugin list to options
-    deepExtend(mergedOptions, configUtils.prepareClientNpmPlugins(pathToUser));
+    utils.extendOptions(mergedOptions, configUtils.prepareClientNpmPlugins(pathToUser));
 
     // If user settings file is present, override core settings
     if(fs.existsSync(userSettingsFile)) {
-        deepExtend(mergedOptions, utils.requireUncached(userSettingsFile));
+        utils.extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userSettingsFile)), 'options.js');
     }
 
     // If local settings file is present, override core settings
     if(fs.existsSync(userLocalSettingsFile)) {
-        deepExtend(mergedOptions, utils.requireUncached(userLocalSettingsFile));
+        utils.extendOptions(mergedOptions, legacyOptionsChecker(utils.requireUncached(userLocalSettingsFile)), 'local-options.js');
     }
 
-    return legacyOptionsChecker(mergedOptions);
+    return mergedOptions;
 };

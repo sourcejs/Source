@@ -25,6 +25,7 @@ var logger = require(path.join(global.pathToApp, 'core/logger'));
 var log = logger.log;
 global.log = log;
 
+var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var fileTree = require(path.join(global.pathToApp, 'core/file-tree'));
 
 var config = {
@@ -41,7 +42,7 @@ var config = {
     ignoreHiddenFiles: true
 };
 // Overwriting base options
-deepExtend(config, global.opts.core.watch);
+utils.extendOptions(config, global.opts.core.watch);
 
 var prepareData = function(data, targetFile){
     var dir = path.dirname(targetFile);

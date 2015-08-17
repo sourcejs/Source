@@ -15,10 +15,9 @@ build: off
 before_test: "git clone https://github.com/sourcejs/init.git user"
 
 test_script:
-  # Output useful info for debugging.
   - node --version && npm --version
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
+  - ps: "npm run ci-test-win # PowerShell" # Pass comment to PS for easier debugging
+  - cmd: "npm run ci-test-win" # Run without watch because of CI bug
 
 matrix:
   fast_finish: true

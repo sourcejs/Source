@@ -2,12 +2,12 @@
 
 var path = require('path');
 var async = require('async');
-var deepExtend = require('deep-extend');
 var ParseData = require(path.join(global.pathToApp,'core/lib/parseData'));
 var phantom = require('phantomjs');
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var childProcess = require('child_process');
 var htmlTree = require(path.join(global.pathToApp,'core/html-tree'));
+var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 
 var processFlagNotExec = true;
 
@@ -36,8 +36,8 @@ var config = {
 };
 
 // Overwriting base options
-if (global.opts.core.parseHTML) deepExtend(config, global.opts.core.parseHTML); // Legacy support
-if (global.opts.plugins && global.opts.plugins.htmlParser) deepExtend(config, global.opts.plugins.htmlParser);
+if (global.opts.core.parseHTML) utils.extendOptions(config, global.opts.core.parseHTML); // Legacy support
+if (global.opts.plugins && global.opts.plugins.htmlParser) utils.extendOptions(config, global.opts.plugins.htmlParser);
 
 /**
  * Get list of specs for parsing with PhantomJS
@@ -99,7 +99,7 @@ var processSpecs = module.exports.processSpecs = function(specs, callback){
 
             global.log.trace('Starts...' + n, spec);
 
-            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.common.port, function (error, stdout, stderr) {
+            childProcess.exec(phExecCommand + " " + spec + " " + global.opts.core.server.port, function (error, stdout, stderr) {
                 handler(error, stdout, stderr, spec);
                 next();
             });

@@ -17,7 +17,7 @@ define([
     ], function ($, module, data, allSpecs) {
 
     function ParseFileTree() {
-        this.json = $.parseJSON(data.toString());
+        this.json = JSON.parse(data);
     }
 
     ParseFileTree.prototype = module.createInstance();

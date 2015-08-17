@@ -16,10 +16,14 @@ exports.process = function (req, res, next) {
         var start = process.hrtime();
         var plainMarkdown = req.specData.renderedHtml;
 
-        req.specData.renderedHtml = processMd(plainMarkdown);
+        req.specData.renderedHtml = processMd(plainMarkdown, {
+            wrapDescription: true
+        });
 
         var end = process.hrtime(start);
         global.log.debug('Markdown processing took: ', prettyHrtime(end));
+
+        req.specData.isMd = false;
 
         next();
     } else {

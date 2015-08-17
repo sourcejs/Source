@@ -1,5 +1,3 @@
-# Main Engine Documentation
-
 This page contains main information about SourceJS engine and it's set-up.
 
 SourceJS documentation is rendered by the engine itself and is shipped together with each instance.
@@ -25,12 +23,12 @@ To set-up a new engine instance chose the first option `Init SourceJS in this fo
 
 [![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
 
-With v.0.5.3 we [introduced](https://github.com/sourcejs/Source/releases/tag/0.5.3) NPM support, and now it's possible to install and run SourceJS engine right from the `node_modules` folder.
+To install SourceJS as a NPM package, first clone clean `user` configuration folder and then execute `npm install`.
 
 ```html
-git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
+git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
 npm install sourcejs --save
-node ./node_modules/sourcejs/app
+npm start
 ```
 
 Starting from 0.6.0 we're planning to change official install path to one with NPM packages. Yeoman generator will be also replaced by [sourcejs-cli](https://github.com/sourcejs/sourcejs-cli) with commands like `run`, `install` (plugin), `init`, `create`.
@@ -39,40 +37,40 @@ Starting from 0.6.0 we're planning to change official install path to one with N
 
 If you're running Windows and have some issues with [JSDom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
 
-Alternitevly with 0.5.3 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
+Alternatively with 0.5.5 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
 
 ```html
 npm install -g yo generator-sourcejs
 mkdir sourcejs && cd sourcejs
-yo sourcejs --branch 0.5.3-no-jsdom
+yo sourcejs --branch 0.5.5-no-jsdom
 ```
 
 Please note that Clarify feature is not available in `no-jsdom` version. If you had generator installed before, run `npm update -g generator-sourcejs` (v.0.4.2+ required).
 
-And instaling same build from NPM:
+And installing same build from NPM:
 
 ```html
-git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
-npm install sourcejs@0.5.3-no-jsdom --save
-node .\node_modules\sourcejs\app
+git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
+npm install sourcejs@0.5.5-no-jsdom --save
+npm start
 ```
 
 ## Commands
 
 ### Run
 
-Installation wizard will offer to start SourceJS right after initialization. To run it manually, trigger this command in newly created folder:
+Installation wizard will offer to start SourceJS right after initialization. To run it manually, trigger this command in newly created folder with SourceJS app:
 
 ```html
-node app
+npm start
 ```
 
-To set an alternative server port, pass `-p 8081` option.
+To set an alternative server port, pass `-- -p 8081` option.
 
 Other configuration arguments are described in the help section:
 
 ```html
-node app -h
+npm start -- -h
 ```
 
 ### Build
@@ -90,7 +88,7 @@ It will trigger `npm i` and `grunt default` commands for updating dependencies a
 For updating SourceJS to a newer version, just pull the latest changes and trigger build:
 
 ```html
-git pull && npm install
+git pull && npm run build
 ```
 
 ## Creating First Spec
@@ -171,6 +169,7 @@ Plugins are working in the same way as core modules, but are kept outside the ma
 
 Here is a list of official plugins:
 
+* [sourcejs-md-react](https://www.npmjs.com/package/sourcejs-md-react) (new)
 * [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
 * [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
 * [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) (new)
@@ -192,4 +191,4 @@ Leave your questions and feedback as [issues](https://github.com/sourcejs/Source
 
 If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/sourcejs/Source)
+[![Gitter chat](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg)](https://gitter.im/sourcejs/Source)

@@ -39,12 +39,18 @@ Search.prototype.constructor = Search;
 Search.prototype = module.createInstance();
 
 Search.prototype.init = function() {
+    var _this = this;
+
     this.activated = false;
     this.targetField = $('#livesearch');
     this.header = $('.source_header');
 
     this.prepareAutoCompleteData();
     this.initSearchField();
+
+    setTimeout(function() {
+        _this.targetField.attr('data-initialized', 'true');
+    }, 1);
 };
 
 Search.prototype.prepareAutoCompleteData = function() {

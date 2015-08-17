@@ -6,7 +6,6 @@ module.exports = {
     // Core options could be only redefined from user/options.js, context options are not supported
     core : {
         common: {
-            port: 8080,
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
             includedDirs: ['docs'],
@@ -27,6 +26,13 @@ module.exports = {
             // Name of options field in info.json, used to override configuration per spec
             infoFileOptions: 'sourcejs'
         },
+
+        // Server options are passed to app.listen (https://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)
+        server: {
+            port: 8080,
+            hostname: undefined
+        },
+
         api: {
             specsData: 'core/api/data/pages-tree.json',
             htmlData: 'core/api/data/html.json',
@@ -36,14 +42,20 @@ module.exports = {
 
         // Spec catalogs navigation tree
         fileTree: {
-            // Excluded folder names from navigation tree parsing
-            excludedDirs: ['data', 'plugins', 'node_modules', '.git', '.idea'],
+            // Exclude files from file-tree indexing (first level, in user folder)
+            excludedDirs: ['node_modules', 'bower_components', 'data', 'plugins', '.git', '.idea'],
+
+            // Exclude files from file-tree indexing (on any level, by folder name)
+            excludedDirsGlobal: ['node_modules', '.git', '.idea'],
 
             // Update navigation tree by cron task (setTimeout)
             cron: false,
 
             // Update navigation tree when somebody visits main page
-            mainPageTrigger: false
+            mainPageTrigger: false,
+
+            // Default thumbnail file path (relative to each spec)
+            thumbnail: 'thumbnail.png'
         },
         watch: {
             enabled: true,
@@ -120,7 +132,7 @@ module.exports = {
 
         modulesOptions : {
             navHighlight: {
-                // Hash update on scroll turned off because of performance issues
+                // Page navigation hash update on scroll turned off because of performance issues
                 updateHash: false
             },
 
@@ -142,7 +154,7 @@ module.exports = {
             pluginsEnabled: {},
             npmPluginsEnabled: {}
         },
-        
+
         // Legacy options object support for some older plugins (todo:remove with next major release)
         pluginsOptions: {}
     },

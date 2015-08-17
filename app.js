@@ -28,9 +28,12 @@ global.opts = loadOptions();
 // Arguments parse */
 commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ').', global.opts.core.common.port)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + ').')
+    .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
     .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .option('--test', 'Run app with tests.')
+    .option('--no-watch', 'Run with disabled watcher.')
+    .option('--post-grunt [string]', 'Define Grunt command to run after app start', 'ci-post-run')
     .parse(process.argv);
 
 global.commander = commander;
@@ -48,8 +51,13 @@ var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
 
-if (commander.html) global.opts.core.parseHTML.onStart = true;
-if (commander.port) global.opts.core.common.port = parseInt(commander.port);
+if (commander.html) {
+    global.opts.plugins.htmlParser.enabled = true;
+    global.opts.plugins.htmlParser.onStart = true;
+}
+if (commander.port) global.opts.core.server.port = parseInt(commander.port);
+if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
+if (!commander.watch) global.opts.core.watch.enabled = false;
 /* /Globals */
 
 
@@ -97,14 +105,15 @@ app.use(bodyParser.json());
 
 
 
-/* Middlewares */
+/* Includes */
+
+// Middlewares
+require('./core/middlewares/loader').process(app, global.opts);
 
 // Auth initializing
 var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
-// Clarify
-app.use(require('./core/middleware/clarify'));
 
 // File tree module
 var fileTree = require('./core/file-tree');
@@ -132,29 +141,6 @@ app.use('/api/updateFileTree', function(req, res){
     });
 });
 
-
-// Middleware that loads spec content
-var read = require("./core/middleware/read");
-app.use(read.process);
-
-// Markdown
-app.use(require("./core/middleware/md").process);
-app.use(require("./core/middleware/mdTag").process);
-
-// Load user defined middleware, that processes spec content
-require("./core/middleware/userMiddleware");
-
-// Middleware that wraps spec with Source template
-app.use(require("./core/middleware/wrap").process);
-
-// Middleware that sends final spec response
-app.use(require("./core/middleware/send").process);
-
-/* /Middlewares */
-
-
-
-/* Includes */
 
 // Routes
 require('./core/routes');
@@ -194,15 +180,18 @@ app.use(express.static(app.get('user')));
 
 // Page 404
 app.use(function(req, res){
-
 	if (req.accepts('html')) {
+        if (req.url === '/') {
+            res.redirect('/docs');
+            return;
+        }
+
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
 		res.status(404).render(path.join(__dirname, '/core/views/404.ejs'), {
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
 		});
 	}
-
 });
 /* /Serving content */
 
@@ -231,19 +220,18 @@ app.use(logErrors);
 
 
 
-// Server start
+/* Server start */
 if (!module.parent) {
-    var port = global.opts.core.common.port;
+    var serverOpts = global.opts.core.server;
+    var port = serverOpts.port;
 
-    app.listen(port);
-    var portString = port.toString();
-
-    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    app.listen(port, serverOpts.hostname, serverOpts.backlog, serverOpts.callback);
+    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + (port.toString()).red + ' in '.blue + MODE.blue + ' mode...'.blue);
 
     if (commander.test) {
         var spawn = require('cross-spawn');
 
-        spawn('./node_modules/grunt-cli/bin/grunt', ['ci-post-run'], {stdio: 'inherit'})
+        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port='+port], {stdio: 'inherit'})
             .on('close', function (code) {
                 if (code === 0) {
                     log.info('Test successful');
@@ -255,3 +243,4 @@ if (!module.parent) {
             });
     }
 }
+/* Server start */

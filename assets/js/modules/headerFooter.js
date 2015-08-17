@@ -1,10 +1,13 @@
-define(["source/load-options"], function(options) {
+define(['source/load-options'], function(options) {
 
     'use strict';
 
+    var $header = $(".source_header");
+    var $footer = $(".source_footer");
+
     if(options.modulesEnabled.headerFooter) {
-        var headerExists = $(".source_header").length;
-        var footerExists = $(".source_footer").length;
+        var headerExists = $header.length > 0;
+        var footerExists = $footer.length > 0;
 
         //Header and Footer injection
         var source_container = $('.source_container');
@@ -73,20 +76,20 @@ define(["source/load-options"], function(options) {
     }
 
     //click on header - go up
-    $('.source_header').on({
-        'mouseover' : function(e){
+    $header.on({
+        mouseover: function(e){
             if(e.target === this){
                 $('.source_header').css('cursor', 'pointer');
             }else {
                 $('.source_header').css('cursor', 'inherit');
             }
         },
-        'click' : function(e){
+        click: function(e){
             if(e.target === this){
                 window.scrollTo(0, 0);
             }
         },
-        'mouseout' : function(e){
+        mouseout : function(){
             $('.source_header').css('cursor', 'inherit');
         }
     });

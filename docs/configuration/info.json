@@ -1,4 +1,5 @@
 {
     "title": "Engine Configuration",
-    "keywords": "options, options.js, sourcejs-options, context"
+    "keywords": "options, options.js, sourcejs-options, context",
+    "template": "doc"
 }

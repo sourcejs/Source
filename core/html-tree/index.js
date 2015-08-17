@@ -2,16 +2,16 @@
 
 var path = require('path');
 var fs = require('fs-extra');
-var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
-var deepExtend = require('deep-extend');
 
+var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var logger = require(path.join(global.pathToApp,'core/logger'));
+var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 var flattenTillSpec = require(path.join(global.pathToApp,'core/lib/flattenTillSpec'));
 
 var config = {};
 
 // Overwriting base options
-if (global.opts.core.htmlTree) deepExtend(config, global.opts.core.htmlTree);
+if (global.opts.core.htmlTree) utils.extendOptions(config, global.opts.core.htmlTree);
 
 // Custom API logging config
 var apiLog = (function(){

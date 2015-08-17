@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var ejs = require('ejs');
 var path = require('path');
 
 exports.getHeaderAndFooter = function () {
@@ -13,29 +12,13 @@ exports.getHeaderAndFooter = function () {
     var output = {};
 
     var userHeaderTplPath = path.join(userTemplatePath, headerFile);
-    var headerTplPath = fs.existsSync(userHeaderTplPath) ? userHeaderTplPath : path.join(defaultTemplatePath, headerFile);
+    output.headerPath = fs.existsSync(userHeaderTplPath) ? userHeaderTplPath : path.join(defaultTemplatePath, headerFile);
 
     var userFooterTplPath = path.join(userTemplatePath, footerFile);
-    var footerTplPath = fs.existsSync(userFooterTplPath) ? userFooterTplPath : path.join(defaultTemplatePath, footerFile);
+    output.footerPath = fs.existsSync(userFooterTplPath) ? userFooterTplPath : path.join(defaultTemplatePath, footerFile);
 
-    var headerTpl = fs.readFileSync(headerTplPath, 'utf-8');
-    var footerTpl = fs.readFileSync(footerTplPath, 'utf-8');
-
-    try {
-        output.header = ejs.render(headerTpl);
-    } catch(e){
-        global.log.warn('Error rendering header template `' + headerTplPath + '`\n', e);
-        output.header = headerTpl;
-    }
-
-    try {
-        output.footer = ejs.render(footerTpl, {
-            engineVersion: global.engineVersion
-        });
-    } catch(e){
-        global.log.warn('Error rendering footer template `' + footerTplPath + '`\n', e);
-        output.footer = footerTpl;
-    }
+    output.header = fs.readFileSync(output.headerPath, 'utf-8');
+    output.footer = fs.readFileSync(output.footerPath, 'utf-8');
 
     return output;
 };
