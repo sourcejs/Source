@@ -60,6 +60,13 @@ module.exports = {
         watch: {
             enabled: true,
             foreverWatchEnabled: true
+        },
+        middlewares: {
+            list: {
+                clarify: {
+                    enabled: false
+                }
+            }
         }
     },
 
@@ -109,7 +116,7 @@ module.exports = {
         // Core modules
         modulesEnabled : {
             // Enable clarify helper links in spec
-            clarifyInSpec: true,
+            clarifyInSpec: false,
             htmlAPISync: true,
             headerFooter: true,
             specDecorations: true,
