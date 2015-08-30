@@ -104,7 +104,7 @@ var parseSpec = function(sections, pathToSpec) {
 
     // Parsing spec with JSdom
     jsdom.env(
-        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec,
+        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
         ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
         function (err, window) {
             if (err) {
