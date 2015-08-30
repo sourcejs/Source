@@ -50,6 +50,8 @@ exports.process = function(req, res, next) {
 
         // Modifying url and saving params string
         // TODO: remove in next non-patch release https://github.com/sourcejs/Source/issues/147
+        req.originalUrl = req.url;
+        req.originalPath = req.path;
         req.url = path.join(req.path, specFile) + paramsString;
 
         fs.readFile(physicalPath, 'utf8', function (err, data) {
