@@ -314,7 +314,10 @@ module.exports.process = function(req, res, next) {
                         html = msg;
                     }
 
-                    trackStats.page('clarify', req.sessionID);
+                    trackStats.page({
+                        pageName: 'clarify',
+                        sessionID: trackStats.getSessionID(req)
+                    });
 
                     res.send(html);
                 }).fail(function(err) {

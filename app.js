@@ -54,7 +54,10 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) {
-    trackStats.staticEvent('features', 'enabled html parser');
+    trackStats.event({
+        group: 'features',
+        event: 'enabled html parser'
+    });
 
     global.opts.plugins.htmlParser.enabled = true;
     global.opts.plugins.htmlParser.onStart = true;
@@ -62,7 +65,10 @@ if (commander.html) {
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
 if (!commander.watch) {
-    trackStats.staticEvent('features', 'disabled watch');
+    trackStats.event({
+        group: 'features',
+        event: 'disabled watch'
+    });
     global.opts.core.watch.enabled = false;
 }
 /* /Globals */
@@ -97,7 +103,15 @@ app.use(require('express-session')({
 app.use(function (req, res, next) {
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
-    // keep executing the router middleware
+    next();
+});
+
+var shortid = require('shortid');
+app.use(function (req, res, next) {
+    if (req.cookies && !req.cookies['source-track']) {
+        res.cookie('source-track', shortid.generate(), { maxAge: 3600000, httpOnly: true });
+    }
+
     next();
 });
 
@@ -250,9 +264,15 @@ if (!module.parent) {
             });
     } else {
         if (global.opts.core.common.trackAnonymusStatistics) {
-            trackStats.staticEvent('start', 'default');
+            trackStats.event({
+                group: 'start',
+                event: 'default'
+            });
         } else {
-            trackStats.staticEvent('start', 'no stats', true);
+            trackStats.event({
+                group: 'start',
+                event: 'no stats'
+            }, true);
         }
     }
 }

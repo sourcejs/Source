@@ -13,9 +13,15 @@ var options = global.opts = loadOptions(enginePath);
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 
 if (options && options.core.common && options.core.common.trackAnonymusStatistics) {
-    trackStats.staticEvent('install', 'default');
+    trackStats.event({
+        group: 'install',
+        event: 'default'
+    });
 
-    console.log('\n[SOURCEJS] Note: engine tracks anonymous usage statistics. To disable it, edit `core.common.trackAnonymusStatistics` configuration.\n');
+    console.log('[SOURCEJS] Note: engine tracks anonymous usage statistics. To disable it, edit `core.common.trackAnonymusStatistics` configuration.\n');
 } else {
-    trackStats.staticEvent('install', 'no stats', true);
+    trackStats.event({
+        group: 'install',
+        event: 'no stats'
+    }, true);
 }

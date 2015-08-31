@@ -52,6 +52,7 @@
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
+    "shortid": "^2.2.2",
     "time-grunt": "~0.2.10",
     "tinyforever": "0.0.3",
     "universal-analytics": "^0.3.9"
