@@ -6,6 +6,9 @@ var utils = require('./lib/utils');
 var fs = require('fs-extra');
 
 var logRootDir = global.pathToApp || __dirname;
+var customLogLevel = global.commander && global.commander.log ? global.commander.log : undefined;
+var defaultLogLevel = global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel;
+var logLevel = customLogLevel || defaultLogLevel;
 
 var config =  {
     prepareLogPath: 'log',
@@ -13,7 +16,7 @@ var config =  {
         "appenders": [
             {
                 "type": "logLevelFilter",
-                "level": global.commander.log || (global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel),
+                "level": logLevel,
                 "appender": {
                     "type": "console",
                     "layout": {

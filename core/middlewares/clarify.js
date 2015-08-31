@@ -8,6 +8,7 @@ var _ = require('lodash');
 var jsdom = require('jsdom');
 var ejs = require('ejs');
 
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
@@ -104,7 +105,7 @@ var parseSpec = function(sections, pathToSpec) {
 
     // Parsing spec with JSdom
     jsdom.env(
-        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec,
+        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
         ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
         function (err, window) {
             if (err) {
@@ -312,6 +313,11 @@ module.exports.process = function(req, res, next) {
 
                         html = msg;
                     }
+
+                    trackStats.page({
+                        pageName: 'clarify',
+                        sessionID: trackStats.getSessionID(req)
+                    });
 
                     res.send(html);
                 }).fail(function(err) {

@@ -38,6 +38,8 @@ commander
 
 global.commander = commander;
 
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
+
 app.set('views', path.join(__dirname, 'core/views'));
 app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
 
@@ -52,12 +54,23 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) {
+    trackStats.event({
+        group: 'features',
+        event: 'enabled html parser'
+    });
+
     global.opts.plugins.htmlParser.enabled = true;
     global.opts.plugins.htmlParser.onStart = true;
 }
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
-if (!commander.watch) global.opts.core.watch.enabled = false;
+if (!commander.watch) {
+    trackStats.event({
+        group: 'features',
+        event: 'disabled watch'
+    });
+    global.opts.core.watch.enabled = false;
+}
 /* /Globals */
 
 
@@ -90,7 +103,15 @@ app.use(require('express-session')({
 app.use(function (req, res, next) {
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
-    // keep executing the router middleware
+    next();
+});
+
+var shortid = require('shortid');
+app.use(function (req, res, next) {
+    if (req.cookies && !req.cookies['source-track']) {
+        res.cookie('source-track', shortid.generate(), { maxAge: 3600000, httpOnly: true });
+    }
+
     next();
 });
 
@@ -241,6 +262,18 @@ if (!module.parent) {
                     process.exit(1);
                 }
             });
+    } else {
+        if (global.opts.core.common.trackAnonymusStatistics) {
+            trackStats.event({
+                group: 'start',
+                event: 'default'
+            });
+        } else {
+            trackStats.event({
+                group: 'start',
+                event: 'no stats'
+            }, true);
+        }
     }
 }
 /* Server start */
