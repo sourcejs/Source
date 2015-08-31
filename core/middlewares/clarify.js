@@ -8,6 +8,7 @@ var _ = require('lodash');
 var jsdom = require('jsdom');
 var ejs = require('ejs');
 
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
@@ -312,6 +313,8 @@ module.exports.process = function(req, res, next) {
 
                         html = msg;
                     }
+
+                    trackStats.page('clarify', req.sessionID);
 
                     res.send(html);
                 }).fail(function(err) {

@@ -38,6 +38,8 @@ commander
 
 global.commander = commander;
 
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
+
 app.set('views', path.join(__dirname, 'core/views'));
 app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
 
@@ -52,12 +54,17 @@ var log = logger.log;
 global.log = log;
 
 if (commander.html) {
+    trackStats.staticEvent('features', 'enabled html parser');
+
     global.opts.plugins.htmlParser.enabled = true;
     global.opts.plugins.htmlParser.onStart = true;
 }
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
-if (!commander.watch) global.opts.core.watch.enabled = false;
+if (!commander.watch) {
+    trackStats.staticEvent('features', 'disabled watch');
+    global.opts.core.watch.enabled = false;
+}
 /* /Globals */
 
 
@@ -241,6 +248,12 @@ if (!module.parent) {
                     process.exit(1);
                 }
             });
+    } else {
+        if (global.opts.core.common.trackAnonymusStatistics) {
+            trackStats.staticEvent('start', 'default');
+        } else {
+            trackStats.staticEvent('start', 'no stats', true);
+        }
     }
 }
 /* Server start */
