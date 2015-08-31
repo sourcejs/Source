@@ -66,7 +66,7 @@ If there is no description, or you want to leave custom text, just use this extr
 
 ## Filtering by tag
 
-As it's possible to define different tags for specs in `info.json` files (more in [docs](/docs/info-json/)), we can use them to filter custom navigation tree.
+As it's possible to define different tags for specs in `info.json` files (more in [docs](/docs/info-json/)), we can use them to filter custom navigation tree. It is also possible to define more than one tag for each spec. You can use "," as a delimeter, e.g. `templates,navigation`. Delimeter is also configurable (you can change it in `globalNav` options object).
 
 
 ```html
