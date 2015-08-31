@@ -84,7 +84,7 @@ define([
      * It uses lo-dash template function.
      */
     GlobalNav.prototype.initTemplates = function() {
-        return this.templates = $.extend(true, {
+        this.templates = $.extend(true, {
             catalogList: _.template([
                 '<ul class="<%= classes.catalogList %>">',
                     '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
@@ -259,7 +259,7 @@ define([
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-tag");
-        var navListCat = navListCat && !!~navListCat.indexOf(delimeter) ? navListCat.split(delimeter) : navListCat;
+        navListCat = navListCat && !!~navListCat.indexOf(delimeter) ? navListCat.split(delimeter) : navListCat;
         var catalogHeaderURL = catalog.find("." + navOptions.classes.catalogListTitle + '>a').attr('href');
 
         var filter = function(spec) {
