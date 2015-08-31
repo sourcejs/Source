@@ -8,7 +8,7 @@ var ua = require('universal-analytics');
 var log = require(path.join(global.pathToApp, 'core/logger')).log;
 var crypto = require('crypto');
 
-if (process.env.CI) {
+if (process.env.CI || (global.commander && global.commander.test)) {
     global.opts.core.common.trackAnonymusStatistics = false;
     console.log('Running in CI.');
 }
