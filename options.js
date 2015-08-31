@@ -26,7 +26,7 @@ module.exports = {
             // Name of options field in info.json, used to override configuration per spec
             infoFileOptions: 'sourcejs',
 
-            trackAnonymusStatistics: false
+            trackAnonymusStatistics: true
         },
 
         // Server options are passed to app.listen (https://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)
