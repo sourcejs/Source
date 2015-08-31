@@ -271,7 +271,7 @@ if (!module.parent) {
         } else {
             trackStats.event({
                 group: 'start',
-                event: 'no stats'
+                event: 'disabled tracking'
             }, true);
         }
     }

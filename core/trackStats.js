@@ -8,8 +8,9 @@ var ua = require('universal-analytics');
 var log = require(path.join(global.pathToApp, 'core/logger')).log;
 var crypto = require('crypto');
 
-if (global.commander && global.commander.test) {
+if (process.env.CI) {
     global.opts.core.common.trackAnonymusStatistics = false;
+    console.log('Running in CI.');
 }
 
 var generateMachineID = function(){
@@ -43,6 +44,8 @@ var _trackPage = function(opts){
 
 // Track host-initiated events (by unique machine id)
 var _trackEvent = function(opts, force){
+    force = process.env.CI ? false : force;
+
     if (!force && !global.opts.core.common.trackAnonymusStatistics || !opts.event) return;
 
     var visitor = opts.sessionID ? ua('UA-66924051-1', opts.sessionID, {strictCidFormat: false}) : hostVisitor;

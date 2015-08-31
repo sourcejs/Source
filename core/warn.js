@@ -12,6 +12,10 @@ var options = global.opts = loadOptions(enginePath);
 
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 
+if (process.env.CI) {
+    global.opts.core.common.trackAnonymusStatistics = false;
+}
+
 if (options && options.core.common && options.core.common.trackAnonymusStatistics) {
     trackStats.event({
         group: 'install',
@@ -22,6 +26,6 @@ if (options && options.core.common && options.core.common.trackAnonymusStatistic
 } else {
     trackStats.event({
         group: 'install',
-        event: 'no stats'
+        event: 'disabled tracking'
     }, true);
 }
