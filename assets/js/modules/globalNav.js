@@ -149,10 +149,11 @@ define([
      * @returns {Boolean} true if spec shoud be skipped.
      */
     var skipSpec = function(navListCat, obj) {
+        obj = obj || {};
         // obj["cat"] is an array; if cat has needed value
         var inArray = !!obj["tag"] && typeof(navListCat) === "string"
             ? !!~obj["tag"].indexOf(navListCat)
-            : _.reduce(navListCat, function(inArray, item) { return inArray && !!~obj['tag'].indexOf(item);}, true);
+            : !!obj["tag"] && _.reduce(navListCat, function(inArray, item) { return inArray && !!~obj['tag'].indexOf(item); }, true);
         // without-cat mode, showing all specs without cat field in info.json defined or
         var isWithoutCat = navListCat === "without-tag" && (!obj["tag"] || obj["tag"].length === 0);
         return !inArray && !isWithoutCat;
