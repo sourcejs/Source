@@ -24,7 +24,7 @@ define([
         "showPreviews": false,
         "sortType": "sortByDate",
         "sortDirection":"forward",
-        "delimeter": " ",
+        "delimeter": ",",
         "pageLimit": 999,
         "ignorePages": [],
         "thumbnailName": "thumbnail.png",
