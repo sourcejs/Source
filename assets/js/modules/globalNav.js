@@ -143,17 +143,21 @@ define([
      * @private
      * @method skipSpec. Filtering by specified catalogue
      *
-     * @param {String} navListCat catalogue type
+     * @param {String|Array} navListCat catalogue type
      * @param {Object} obj - object to filter
      *
      * @returns {Boolean} true if spec shoud be skipped.
      */
     var skipSpec = function(navListCat, obj) {
         obj = obj || {};
+
         // obj["cat"] is an array; if cat has needed value
-        var inArray = !!obj["tag"] && typeof(navListCat) === "string"
+        var isSingleTag = !!obj["tag"] && typeof(navListCat) === "string";
+        var inArray = isSingleTag
             ? !!~obj["tag"].indexOf(navListCat)
-            : !!obj["tag"] && _.reduce(navListCat, function(inArray, item) { return inArray && !!~obj['tag'].indexOf(item); }, true);
+            : !!obj["tag"] && _.reduce(navListCat, function(inArray, item) {
+                return inArray && !!~obj['tag'].indexOf(item);
+            }, true);
         // without-cat mode, showing all specs without cat field in info.json defined or
         var isWithoutCat = navListCat === "without-tag" && (!obj["tag"] || obj["tag"].length === 0);
         return !inArray && !isWithoutCat;
@@ -260,6 +264,7 @@ define([
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-tag");
+        navListCat = typeof(navListCat) === "string" ? navListCat.split(' ').join('') : navListCat;
         navListCat = navListCat && !!~navListCat.indexOf(delimeter) ? navListCat.split(delimeter) : navListCat;
         var catalogHeaderURL = catalog.find("." + navOptions.classes.catalogListTitle + '>a').attr('href');
 
@@ -277,14 +282,11 @@ define([
         if(target && target.length === 1) {
             var url = catalogHeaderURL && catalogHeaderURL.length && navOptions.useHeaderUrlForNavigation
                 ? catalogHeaderURL : navListDir;
-            var itemsDocFragment = this.getNavigationItemsList(
-                _.reduce(data, function(result, item) {
-                    filter(item["specFile"]) && result.push(item);
-                    return result;
-                }, []),
-                url
-            );
-            target.html(itemsDocFragment);
+            var specs = _.reduce(data, function(result, item) {
+                filter(item["specFile"]) && result.push(item);
+                return result;
+            }, []);
+            target.html(this.getNavigationItemsList(specs, url));
         }
     };
 
