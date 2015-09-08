@@ -252,6 +252,11 @@ module.exports.process = function(req, res, next) {
         var specID = specUtils.getSpecIDFromUrl(parsedPath.pathToSpec);
         var specHasHTMLAPIData = !!parseHTMLData.getByID(specID);
 
+        trackStats.page({
+            pageName: 'clarify',
+            sessionID: trackStats.getSessionID(req)
+        });
+
         if (!specInfo) {
             res.send('Clarify did not found any information about requested spec, please check URL or update file-tree restarting the app.');
             return;
@@ -313,11 +318,6 @@ module.exports.process = function(req, res, next) {
 
                         html = msg;
                     }
-
-                    trackStats.page({
-                        pageName: 'clarify',
-                        sessionID: trackStats.getSessionID(req)
-                    });
 
                     res.send(html);
                 }).fail(function(err) {
