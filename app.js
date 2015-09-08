@@ -263,7 +263,7 @@ if (!module.parent) {
                 }
             });
     } else {
-        if (global.opts.core.common.trackAnonymusStatistics) {
+        if (global.opts.core.tracking.enabled) {
             trackStats.event({
                 group: 'start',
                 event: 'default'

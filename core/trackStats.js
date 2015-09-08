@@ -6,11 +6,21 @@ var path = require('path');
 var macaddress = require('macaddress');
 var ua = require('universal-analytics');
 var log = require(path.join(global.pathToApp, 'core/logger')).log;
+var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var crypto = require('crypto');
 
+var config = {
+    enabled: true,
+    trackingId: 'UA-66924051-2'
+};
+
+utils.extendOptions(
+    config,
+    global.opts.core.tracking
+);
+
 if (process.env.CI || (global.commander && global.commander.test)) {
-    global.opts.core.common.trackAnonymusStatistics = false;
-    console.log('Running in CI.');
+    config.enabled = false;
 }
 
 var generateMachineID = function(){
@@ -29,32 +39,55 @@ var generateMachineID = function(){
 };
 
 var machineID = generateMachineID();
-var hostVisitor = ua('UA-66924051-1', machineID, {strictCidFormat: false});
+var hostVisitor = ua(config.trackingId, machineID, {strictCidFormat: false});
 
 var _trackPage = function(opts){
-    if (!global.opts.core.common.trackAnonymusStatistics || !opts.pageName) return;
+    if (!config.enabled || !opts.pageName) return;
 
-    var visitor = opts.sessionID ? ua('UA-66924051-1', opts.sessionID, {strictCidFormat: false}) : hostVisitor;
+    var visitor = hostVisitor;
+    var uid = machineID;
+
+    if (opts.sessionID) {
+        uid = opts.sessionID;
+        visitor = ua(config.trackingId, uid, {strictCidFormat: false});
+    }
 
     log.trace('track page', opts.pageName);
     log.trace('as a visitor', visitor);
 
-    visitor.pageview(opts.pageName).send();
+    visitor.pageview({
+        dp: opts.pageName,
+        // Document referrer
+        dr: machineID,
+        uid: uid
+    }).send();
 };
 
 // Track host-initiated events (by unique machine id)
 var _trackEvent = function(opts, force){
     force = process.env.CI ? false : force;
 
-    if (!force && !global.opts.core.common.trackAnonymusStatistics || !opts.event) return;
+    if (!force && !config.enabled || !opts.event) return;
 
-    var visitor = opts.sessionID ? ua('UA-66924051-1', opts.sessionID, {strictCidFormat: false}) : hostVisitor;
+    var visitor = hostVisitor;
+    var uid = machineID;
     var group = opts.group || 'default';
+
+    if (opts.sessionID) {
+        uid = opts.sessionID;
+        visitor = ua(config.trackingId, uid, {strictCidFormat: false});
+    }
 
     log.trace('track event', group + ':' + opts.event);
     log.trace('as a visitor', visitor);
 
-    visitor.event(group, opts.event).send();
+    visitor.event({
+        ec: group,
+        ea: opts.event,
+        // Document referrer
+        dr: machineID,
+        uid: uid
+    }).send();
 };
 
 var getSessionID = module.exports.getSessionID = function(req) {

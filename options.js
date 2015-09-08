@@ -24,9 +24,7 @@ module.exports = {
             infoFile: 'info.json',
 
             // Name of options field in info.json, used to override configuration per spec
-            infoFileOptions: 'sourcejs',
-
-            trackAnonymusStatistics: true
+            infoFileOptions: 'sourcejs'
         },
 
         // Server options are passed to app.listen (https://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)
@@ -59,9 +57,16 @@ module.exports = {
             // Default thumbnail file path (relative to each spec)
             thumbnail: 'thumbnail.png'
         },
+
         watch: {
             enabled: true,
             foreverWatchEnabled: true
+        },
+
+        tracking: {
+            // Anonymous user statistics tracking.
+            // Used to get insights about the community and improve engine usage experience.
+            enabled: true
         }
     },
 
