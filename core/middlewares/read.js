@@ -82,8 +82,10 @@ exports.process = function(req, res, next) {
                 try {
                     data = ejs.render(data, {
                         engineVersion: global.engineVersion,
-                        info: specInfo,
-                        filename: physicalPath
+                        info: specInfo
+                    }, {
+                        filename: physicalPath,
+                        sandbox: global.pathToApp
                     });
                 } catch(err){
                     global.log.warn('Could not pre-render spec with EJS: ' + req.path, err);

@@ -312,7 +312,9 @@ module.exports.process = function(req, res, next) {
                     var html = '';
 
                     try {
-                        html = ejs.render(tpl, templateJSON);
+                        html = ejs.render(tpl, templateJSON, {
+                            sandbox: global.pathToApp
+                        });
                     } catch (err) {
                         var msg = 'Clarify: ERROR with EJS rendering failed';
 
