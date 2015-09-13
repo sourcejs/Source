@@ -49,7 +49,7 @@ var _trackPage = function(opts){
 
     if (opts.sessionID) {
         uid = opts.sessionID;
-        visitor = ua(config.trackingId, uid, {strictCidFormat: false}).debug();
+        visitor = ua(config.trackingId, uid, {strictCidFormat: false});
     }
 
     var payload = {
