@@ -251,10 +251,12 @@ module.exports.process = function(req, res, next) {
         var specInfo = specUtils.getSpecInfo(parsedPath.pathToSpec);
         var specID = specUtils.getSpecIDFromUrl(parsedPath.pathToSpec);
         var specHasHTMLAPIData = !!parseHTMLData.getByID(specID);
+        var ua = req.headers && req.headers['user-agent'] ? req.headers['user-agent'] : undefined;
 
         trackStats.page({
             pageName: 'clarify',
-            sessionID: trackStats.getSessionID(req)
+            sessionID: trackStats.getSessionID(req),
+            ua: ua
         });
 
         if (!specInfo) {

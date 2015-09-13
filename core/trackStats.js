@@ -35,7 +35,7 @@ var generateMachineID = function(){
         }
     });
 
-    return 'host_' + crypto.createHash('md5').update(unique).digest('hex').slice(0, 5);
+    return 'host-' + crypto.createHash('md5').update(unique).digest('hex').slice(0, 5);
 };
 
 var machineID = generateMachineID();
@@ -49,18 +49,23 @@ var _trackPage = function(opts){
 
     if (opts.sessionID) {
         uid = opts.sessionID;
-        visitor = ua(config.trackingId, uid, {strictCidFormat: false});
+        visitor = ua(config.trackingId, uid, {strictCidFormat: false}).debug();
     }
+
+    var payload = {
+        dp: opts.pageName,
+        ds: machineID,
+        cs: machineID,
+        cid: uid,
+        uid: uid
+    };
 
     log.trace('track page', opts.pageName);
     log.trace('as a visitor', visitor);
 
-    visitor.pageview({
-        dp: opts.pageName,
-        // Document referrer
-        dr: machineID,
-        uid: uid
-    }).send();
+    if (opts.ua) payload.ua = opts.ua;
+
+    visitor.pageview(payload).send();
 };
 
 // Track host-initiated events (by unique machine id)
@@ -84,8 +89,9 @@ var _trackEvent = function(opts, force){
     visitor.event({
         ec: group,
         ea: opts.event,
-        // Document referrer
-        dr: machineID,
+        ds: machineID,
+        cs: machineID,
+        cid: uid,
         uid: uid
     }).send();
 };
@@ -109,6 +115,7 @@ module.exports.specs = function(req) {
 
     var parsedUrl = url.parse(req.url, true);
     var q = parsedUrl.query || {};
+    var ua = req.headers && req.headers['user-agent'] ? req.headers['user-agent'] : undefined;
 
     if (q.internal) return;
 
@@ -120,7 +127,8 @@ module.exports.specs = function(req) {
 
     _trackPage({
         sessionID: getSessionID(req),
-        pageName: pageName
+        pageName: pageName,
+        ua: ua
     });
 };
 
