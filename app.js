@@ -101,6 +101,7 @@ app.use(require('express-session')({
 }));
 
 app.use(function (req, res, next) {
+    if (req.cookies) { req.cookies['source-mode'] = global.MODE; }
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
     next();
@@ -109,7 +110,10 @@ app.use(function (req, res, next) {
 var shortid = require('shortid');
 app.use(function (req, res, next) {
     if (req.cookies && !req.cookies['source-track']) {
-        res.cookie('source-track', shortid.generate(), { maxAge: 3600000, httpOnly: true });
+        var id = shortid.generate();
+
+        req.cookies['source-track'] = id;
+        res.cookie('source-track', id, { maxAge: 3600000, httpOnly: true });
     }
 
     next();
