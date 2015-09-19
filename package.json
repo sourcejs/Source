@@ -39,6 +39,7 @@
     "grunt-jsdoc": "^0.5.7",
     "grunt-newer": "~0.6.1",
     "gulp-watch": "^4.1.1",
+    "load-grunt-parent-tasks": "^0.1.1",
     "jsdom": "^1.2.1",
     "load-grunt-tasks": "~0.3.0",
     "lodash": "^3.10.1",

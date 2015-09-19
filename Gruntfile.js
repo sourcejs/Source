@@ -2,15 +2,27 @@
 var path = require('path');
 
 var pathToApp = path.resolve('./');
+var parentFolderName = path.basename(path.resolve('..'));
 global.pathToApp = pathToApp;
 
 var loadOptions = require('./core/loadOptions');
+
+function getLoaderPackageName() {
+    var packageName;
+    var isSubPackage = parentFolderName === 'node_modules';
+    if (isSubPackage) {
+        packageName = 'load-grunt-parent-tasks';
+    } else {
+        packageName = 'load-grunt-tasks';
+    }
+    return packageName;
+}
 
 module.exports = function(grunt) {
     var appPort = grunt.option('app-port') || 8080;
 
     // load all grunt tasks matching the `grunt-*` pattern
-    require('load-grunt-tasks')(grunt);
+    require(getLoaderPackageName())(grunt);
 
     // measuring processing time
     require('time-grunt')(grunt);
