@@ -1,20 +1,25 @@
 'use strict';
 var path = require('path');
+var fs = require('fs');
 
 var pathToApp = path.resolve('./');
-var parentFolderName = path.basename(path.resolve('..'));
 global.pathToApp = pathToApp;
 
 var loadOptions = require('./core/loadOptions');
 
+// NPM 3 compatibility fix
 var getLoaderPackageName = function() {
     var packageName;
+    var parentFolderName = path.basename(path.resolve('..'));
     var isSubPackage = parentFolderName === 'node_modules';
-    if (isSubPackage) {
+    var isLocalDepsAvailable = fs.existsSync('node_modules/grunt-autoprefixer') && fs.existsSync('node_modules/grunt-contrib-cssmin');
+
+    if (isSubPackage && !isLocalDepsAvailable) {
         packageName = 'load-grunt-parent-tasks';
     } else {
         packageName = 'load-grunt-tasks';
     }
+
     return packageName;
 };
 
