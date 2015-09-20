@@ -3,6 +3,7 @@
 var url = require('url');
 var _ = require('lodash');
 var path = require('path');
+var device = require('device');
 var macaddress = require('macaddress');
 var ua = require('universal-analytics');
 var log = require(path.join(global.pathToApp, 'core/logger')).log;
@@ -42,7 +43,11 @@ var machineID = generateMachineID();
 var hostVisitor = ua(config.trackingId, machineID, {strictCidFormat: false});
 
 var _trackPage = function(opts){
-    if (!config.enabled || !opts.pageName) return;
+    if (
+        !config.enabled ||
+        !opts.pageName ||
+        (opts.ua && device(opts.ua).is('bot'))
+    ) return;
 
     var visitor = hostVisitor;
     var uid = machineID;

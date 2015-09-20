@@ -4,8 +4,8 @@
   "author": "SourceJS",
   "version": "0.5.6-dev",
   "license": "MIT",
-  "engines" : {
-    "node" : ">=0.10.0 <4.0"
+  "engines": {
+    "node": ">=0.10.0 <4.0"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "compression": "~1.0.11",
     "cookie-parser": "~1.3.2",
     "deep-extend": "~0.2.11",
+    "device": "^0.3.2",
     "ejs": "operatino/ejs#2.3.4-sandbox-option",
     "everyauth": "^0.4.9",
     "express": "~4.8.3",
