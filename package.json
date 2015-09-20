@@ -63,6 +63,7 @@
   "scripts": {
     "postinstall": "node ./core/postInstall && grunt update && node ./core/trackInstall",
     "build": "npm i",
+    "lint": "grunt jshint",
     "start": "node app",
     "test": "grunt ci-pre-run && node app.js --test",
     "test:unit": "grunt test",

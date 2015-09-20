@@ -102,7 +102,7 @@ ejs.render = function(template, data, options){
 
     // No options object -- if there are optiony names
     // in the data, copy them to options
-    if (arguments.length == 2) {
+    if (arg=uments.length == 2) {
         cpOptsInData(data, options);
     }
 
