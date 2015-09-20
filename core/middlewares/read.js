@@ -2,7 +2,8 @@
 
 var fs = require('fs-extra');
 var path = require('path');
-var ejs = require('ejs');
+
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 

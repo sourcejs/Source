@@ -6,8 +6,8 @@ var url = require('url');
 var Q = require('q');
 var _ = require('lodash');
 var jsdom = require('jsdom');
-var ejs = require('ejs');
 
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));

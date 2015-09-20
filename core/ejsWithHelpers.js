@@ -40,7 +40,7 @@ var readFile = function (filePath, options) {
     return fs.readFileSync(filePath, 'utf-8');
 };
 
-var includeMD = module.exports.includeMD = function(data, options){
+var includeMD = function(data, options){
     return function(mdPath){
         if (!mdPath) return '';
 
@@ -64,7 +64,7 @@ var includeMD = module.exports.includeMD = function(data, options){
     };
 };
 
-var includeFiles = module.exports.includeFiles = function(data, options){
+var includeFiles = function(data, options){
     return function(pattern){
         if (!pattern) return '';
 
@@ -119,3 +119,6 @@ ejs.render = function(template, data, options){
 
     return originalRenderer(template, data, options);
 };
+
+// Export modified EJS
+module.exports = ejs;

@@ -1,12 +1,11 @@
 var path = require('path');
-var ejs = require('ejs');
 var expect = require('chai').expect;
 
 var pathToMasterApp = path.resolve('./');
+
+var ejs = require(path.join(pathToMasterApp, 'core/ejsWithHelpers.js'));
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
-
-require(path.join(pathToMasterApp, 'core/ejsHelpers'));
 
 describe('includeMD', function () {
     it('should properly include Markdown file', function (done) {

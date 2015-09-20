@@ -1,6 +1,6 @@
 var everyauth = require('everyauth');
 var fs = require('fs');
-var ejs = require('ejs');
+var ejs = require('./ejsWithHelpers.js');
 var path = require('path');
 
 module.exports = function(app) {

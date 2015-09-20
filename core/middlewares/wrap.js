@@ -1,12 +1,13 @@
 'use strict';
 
 var fs = require('fs-extra');
-var ejs = require('ejs');
 var path = require('path');
+var cheerio = require('cheerio');
+
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
-var cheerio = require('cheerio');
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)

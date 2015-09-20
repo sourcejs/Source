@@ -76,8 +76,6 @@ if (!commander.watch) {
 
 /* App config */
 
-require('./core/ejsHelpers');
-
 // Version
 app.use(function (req, res, next) {
     res.header('X-powered-by', 'SourceJS ' + global.engineVersion);
