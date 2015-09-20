@@ -37,12 +37,12 @@ Starting from 0.6.0 we're planning to change official install path to one with N
 
 If you're running Windows and have some issues with [JSDom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
 
-Alternatively with 0.5.5 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
+Alternatively with 0.5.6 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
 
 ```html
 npm install -g yo generator-sourcejs
 mkdir sourcejs && cd sourcejs
-yo sourcejs --branch 0.5.5-no-jsdom
+yo sourcejs --branch 0.5.6-no-jsdom
 ```
 
 Please note that Clarify feature is not available in `no-jsdom` version. If you had generator installed before, run `npm update -g generator-sourcejs` (v.0.4.2+ required).
@@ -51,7 +51,7 @@ And installing same build from NPM:
 
 ```html
 git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
-npm install sourcejs@0.5.5-no-jsdom --save
+npm install sourcejs@0.5.6-no-jsdom --save
 npm start
 ```
 
