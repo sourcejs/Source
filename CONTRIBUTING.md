@@ -21,16 +21,8 @@ Please read [this doc](MAINTAINING.md) for information on how we're running deve
 
 ## Team members
 
-All inquiries should be forwarded to [Robert Haritonov](https://github.com/operatino).
+All inquiries should be forwarded to [Robert Haritonov](mailto:r@rhr.me).
 
 Core contributors and maintainers:
 * [Robert Haritonov](https://github.com/operatino)
 * [Ilya Mikhailov](https://github.com/cheshirsky)
-* [Ivan Metelev](https://github.com/fromanywhere)
-* [Roman Alekseev](https://github.com/jesprider)
-* [Alexey Ostrovsky](https://github.com/ostroffsky)
-* [Dimitry Lapynov](https://github.com/Leikam)
-* [Daniel Mishcherin](https://github.com/mishcherin)
-* [Gennady Tsarinny](https://github.com/genson)
-* [Dennis Przendzinski](https://github.com/nightkin)
-* [Evgeniy Khoroshilov](https://github.com/XOP)

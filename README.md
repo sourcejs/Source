@@ -10,7 +10,7 @@
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
-Check out short video overview:
+🎥 Check out short video overview:
 
 [![image](http://d.pr/i/7Ax4+)](http://youtu.be/y4KHmX8vCc0)
 
@@ -41,7 +41,7 @@ To clear some confusion around Living Style Guide Platforms comparison, let us d
 
 Engine is based on gathering special documentation templates (`index.src.html`, `readme.md` and others), where you leave your HTML examples, template includes and description. All Specs are located in `sourcejs/user/specs` folder, and could contain any catalogue structure, with focus on component folders.
 
-**But** you can use official SourceJS plugin based on DSS, CSS Documentation parser - [github.com/sourcejs/sourcejs-contrib-dss](https://github.com/sourcejs/sourcejs-contrib-dss).
+**But you can use official SourceJS plugin based on DSS, CSS Documentation parser - [github.com/sourcejs/sourcejs-contrib-dss](https://github.com/sourcejs/sourcejs-contrib-dss).**
 
 ## Join the community
 
