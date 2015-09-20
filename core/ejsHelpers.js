@@ -102,7 +102,7 @@ ejs.render = function(template, data, options){
 
     // No options object -- if there are optiony names
     // in the data, copy them to options
-    if (arg=uments.length == 2) {
+    if (arguments.length === 2) {
         cpOptsInData(data, options);
     }
 
@@ -110,6 +110,12 @@ ejs.render = function(template, data, options){
         includeMD: includeMD(data, options),
         includeFiles: includeFiles(data, options)
     });
+
+    if (global.opts.core.sandboxIncludes) {
+        _.assign(options, {
+            sandbox: global.pathToApp
+        });
+    }
 
     return originalRenderer(template, data, options);
 };

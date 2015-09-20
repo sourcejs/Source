@@ -65,8 +65,6 @@ module.exports = function(app) {
 	app.get('/auth/stub', function (req, res) {
 		res.send(ejs.render(authTemplate, {
 			user: JSON.stringify({})
-		}, {
-			sandbox: global.pathToApp
 		}));
 	});
 
@@ -75,8 +73,6 @@ module.exports = function(app) {
 
 		res.send(ejs.render(authTemplate, {
 			user: JSON.stringify(getUser(currentUserId))
-		}, {
-			sandbox: global.pathToApp
 		}));
 	});
 

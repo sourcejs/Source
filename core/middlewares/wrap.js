@@ -82,10 +82,7 @@ exports.process = function (req, res, next) {
             };
 
             try {
-                templateJSON.header = ejs.render(heagerFooter.header, templateJSON, {
-                    filename: heagerFooter.headerPath,
-                    sandbox: global.pathToApp
-                });
+                templateJSON.header = ejs.render(heagerFooter.header, templateJSON);
             } catch(err){
                 var headerMsg = 'Error: EJS could render header template: ' + heagerFooter.headerPath;
                 templateJSON.header = headerMsg;
@@ -94,8 +91,7 @@ exports.process = function (req, res, next) {
 
             try {
                 templateJSON.footer = ejs.render(heagerFooter.footer, templateJSON, {
-                    filename: heagerFooter.footerPath,
-                    sandbox: global.pathToApp
+                    filename: heagerFooter.footerPath
                 });
             } catch(err){
                 var footerMsg = 'Error: EJS could render footer template: ' + heagerFooter.footerPath;
@@ -106,8 +102,7 @@ exports.process = function (req, res, next) {
             // render page and send it as response
             try {
                 req.specData.renderedHtml = ejs.render(template, templateJSON, {
-                    filename: templatePath,
-                    sandbox: global.pathToApp
+                    filename: templatePath
                 });
             } catch(err){
                 req.specData.renderedHtml = 'Error rendering Spec with EJS: ' + template;
