@@ -81,7 +81,7 @@ During the initial set-up, generator will build everything for you. To re-build 
 npm run build
 ```
 
-It will trigger `npm i` and `grunt default` commands for updating dependencies and building SourceJS assets. See the full list of [all Grunt tasks available](/docs/grunt).
+It will trigger `npm i` and default build task for updating dependencies and building SourceJS assets. See the full list of [all build tasks available](/docs/build-tasks).
 
 ### Update
 

@@ -65,6 +65,8 @@
     "build": "npm i",
     "lint": "grunt jshint",
     "start": "node app",
+    "watch": "grunt watch-all",
+    "watch:css": "grunt watch-css",
     "test": "grunt ci-pre-run && node app.js --test",
     "test:unit": "grunt test",
     "test:func": "grunt test-func",
