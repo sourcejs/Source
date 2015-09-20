@@ -19,7 +19,6 @@ $ npm run lint
 
 $ npm test
 $ npm run test:unit
-$ npm run test:func
 ```
 
 * `npm run build` - default build command for preparing SourceJS assets, used as a post-install hook and after plugin installation

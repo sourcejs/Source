@@ -19,8 +19,6 @@ var getLoaderPackageName = function() {
 };
 
 module.exports = function(grunt) {
-    var appPort = grunt.option('app-port') || 8080;
-
     // load all grunt tasks matching the `grunt-*` pattern
     require(getLoaderPackageName())(grunt);
 
@@ -196,13 +194,6 @@ module.exports = function(grunt) {
             noApp: {
                 src: ['test/unit/lib/**/*.js']
             }
-        },
-
-        casperjs: {
-            options: {
-                casperjsOptions: ['--app-port='+appPort]
-            },
-            files: ['test/functional/**/*.js']
         }
     });
 
@@ -307,8 +298,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('ci-post-run', [
-        'test',
-        'test-func'
+        'test'
     ]);
 
     grunt.registerTask('ci-post-run-win', [
@@ -331,16 +321,5 @@ module.exports = function(grunt) {
         } else {
             grunt.task.run('mochaTest');
         }
-    });
-
-    // Test task. Execute with running app
-    grunt.registerTask('test-func', 'Run ALL functional tests or specified by second param', function () {
-        // if custom mask set - `grunt test --spec=test/unit/middleware/**/*.js`
-        var spec = grunt.option('spec');
-        if (spec) {
-            grunt.config.set('casperjs.files', [spec]);
-        }
-
-        grunt.task.run('casperjs');
     });
 };

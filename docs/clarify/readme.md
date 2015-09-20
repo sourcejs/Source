@@ -1,3 +1,5 @@
+**NOTE: Clarify is not available in `no-jsdom` build**
+
 SourceJS middleware, that allows to open separate documentation examples in custom or clean environment for component testing and development.
 
 ## General information
