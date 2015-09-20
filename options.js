@@ -57,10 +57,20 @@ module.exports = {
             // Default thumbnail file path (relative to each spec)
             thumbnail: 'thumbnail.png'
         },
+
         watch: {
             enabled: true,
             foreverWatchEnabled: true
-        }
+        },
+
+        tracking: {
+            // Anonymous user statistics tracking.
+            // Used to get insights about the community and improve engine usage experience.
+            enabled: true
+        },
+
+        // Limits EJS includes, allowing only files in project root
+        sandboxIncludes: true
     },
 
     // Page rendering configuration (redefinable from context options)

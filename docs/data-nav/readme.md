@@ -34,7 +34,7 @@ Relative paths are also supported. During hook initialization, engine will repla
 &lt;div class="source_catalog" data-nav="./api">&lt;/div>
 ```
 
-If you put this HTML snippet in `localhost:8080/docs` page, it will be resolved to `/docs/api/` catalog, same as with absolute path.
+Putting this HTML snippet in `localhost:8080/docs` page, it will be resolved to `/docs/api/` catalog, same as with absolute path.
 
 This feature is especially useful for nested catalogs and stand-alone collections like [example-specs-showcase](https://github.com/sourcejs/example-specs-showcase/blob/master/index.src.html).
 
@@ -63,10 +63,9 @@ If there is no description, or you want to leave custom text, just use this extr
     <p>Custom description for catalogue.</p>
 </div>
 
-
 ## Filtering by tag
 
-As it's possible to define different tags for specs in `info.json` files (more in [docs](/docs/info-json/)), we can use them to filter custom navigation tree.
+As it's possible to define different tags for specs in `info.json` [files](/docs/info-json/)), they can be used for filtering custom navigation collection.
 
 
 ```html
@@ -77,4 +76,24 @@ As it's possible to define different tags for specs in `info.json` files (more i
     <h2>Specs with "templates" tag</h2>
 </div>
 
-To call all specs without a tags, you can filter by `"without-tag"` string.
+To call all specs without a tags, you can filter by `"without-tag"` string. Multiple tags filtering is also supported - `templates, navigation`.
+
+## Customizing Templates
+
+Navigation markup is created from templates. You can extend this templates using `options.js` and [Lodash](https://lodash.com) templates syntax:
+
+```js
+module.exports = {
+  core: { ... },
+  assets: {
+    ...
+    moduleOptions: {
+      globalNav: {
+        templates: {
+          catalogHeader: _.template('<h2 class="custom-class">&lt;%= catalogMeta.title %&gt;</h2>'),
+        }
+      }
+    }
+  }
+}
+```

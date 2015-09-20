@@ -1,6 +1,6 @@
 var everyauth = require('everyauth');
 var fs = require('fs');
-var ejs = require('ejs');
+var ejs = require('./ejsWithHelpers.js');
 var path = require('path');
 
 module.exports = function(app) {
@@ -63,8 +63,8 @@ module.exports = function(app) {
 	// application routes
 	var authTemplate = fs.readFileSync(path.join(global.pathToApp, '/core/views/auth-done.ejs'), "utf8");
 	app.get('/auth/stub', function (req, res) {
-		res.send(require('ejs').render(authTemplate, {
-			'user': JSON.stringify({})
+		res.send(ejs.render(authTemplate, {
+			user: JSON.stringify({})
 		}));
 	});
 
@@ -72,14 +72,14 @@ module.exports = function(app) {
 		req.session.authCache = req.session.auth;
 
 		res.send(ejs.render(authTemplate, {
-			'user':  JSON.stringify(getUser(currentUserId))
+			user: JSON.stringify(getUser(currentUserId))
 		}));
 	});
 
 	return {
-		'getUser': getUser,
-		'setUser': setUser,
-		'everyauth': everyauth
+		getUser: getUser,
+		setUser: setUser,
+		everyauth: everyauth
 	};
 
 };

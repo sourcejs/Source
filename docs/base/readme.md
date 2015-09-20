@@ -37,12 +37,12 @@ Starting from 0.6.0 we're planning to change official install path to one with N
 
 If you're running Windows and have some issues with [JSDom](https://github.com/tmpvar/jsdom) dependencies compilation, please check this [topic](https://github.com/sourcejs/Source/issues/23).
 
-Alternatively with 0.5.5 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
+Alternatively with 0.5.6 we prepared a special build without JSDom, until it's full removal from core at 0.6.0.
 
 ```html
 npm install -g yo generator-sourcejs
 mkdir sourcejs && cd sourcejs
-yo sourcejs --branch 0.5.5-no-jsdom
+yo sourcejs --branch 0.5.6-no-jsdom
 ```
 
 Please note that Clarify feature is not available in `no-jsdom` version. If you had generator installed before, run `npm update -g generator-sourcejs` (v.0.4.2+ required).
@@ -51,7 +51,7 @@ And installing same build from NPM:
 
 ```html
 git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
-npm install sourcejs@0.5.5-no-jsdom --save
+npm install sourcejs@0.5.6-no-jsdom --save
 npm start
 ```
 
@@ -81,7 +81,7 @@ During the initial set-up, generator will build everything for you. To re-build 
 npm run build
 ```
 
-It will trigger `npm i` and `grunt default` commands for updating dependencies and building SourceJS assets. See the full list of [all Grunt tasks available](/docs/grunt).
+It will trigger `npm i` and default build task for updating dependencies and building SourceJS assets. See the full list of [all build tasks available](/docs/build-tasks).
 
 ### Update
 
@@ -114,9 +114,11 @@ As we mentioned before, it's easy to use other server-side templating engines li
 By default all files are pre-processed with [EJS](http://ejs.co/), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript:
 
 ```html
-&lt;% include filename.html %&gt;
+&lt;%- include('filename.html') %&gt;
 &lt;% if (info.title === 'Title') {% &gt; Action! &lt;% } %&gt;
 ```
+
+<a href="/docs/spec-helpers" class="source_a_hl">Read more about Spec page generation helpers.</a>
 
 ### Client-side Templating Engines
 
@@ -167,11 +169,12 @@ As a Style Guide Platform we focus on flexibility and ease of integration. All S
 
 Plugins are working in the same way as core modules, but are kept outside the main platform, allowing to separate specific features.
 
-Here is a list of official plugins:
+Here is a list of available plugins:
 
-* [sourcejs-md-react](https://www.npmjs.com/package/sourcejs-md-react) (new)
+* [sourcejs-slm](https://github.com/venticco/sourcejs-slm) (new)
+* [sourcejs-md-react](https://github.com/mik01aj/sourcejs-md-react) (new)
 * [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
-* [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
+* [sourcejs-react](https://github.com/szarouski/sourcejs-react) (new)
 * [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) (new)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)

@@ -2,15 +2,27 @@
 var path = require('path');
 
 var pathToApp = path.resolve('./');
+var parentFolderName = path.basename(path.resolve('..'));
 global.pathToApp = pathToApp;
 
 var loadOptions = require('./core/loadOptions');
+
+var getLoaderPackageName = function() {
+    var packageName;
+    var isSubPackage = parentFolderName === 'node_modules';
+    if (isSubPackage) {
+        packageName = 'load-grunt-parent-tasks';
+    } else {
+        packageName = 'load-grunt-tasks';
+    }
+    return packageName;
+};
 
 module.exports = function(grunt) {
     var appPort = grunt.option('app-port') || 8080;
 
     // load all grunt tasks matching the `grunt-*` pattern
-    require('load-grunt-tasks')(grunt);
+    require(getLoaderPackageName())(grunt);
 
     // measuring processing time
     require('time-grunt')(grunt);
@@ -179,10 +191,10 @@ module.exports = function(grunt) {
 
         mochaTest: {
             test: {
-                src: ['test/specs/**/*.js']
+                src: ['test/unit/**/*.js']
             },
             noApp: {
-                src: ['test/specs/lib/**/*.js']
+                src: ['test/unit/lib/**/*.js']
             }
         },
 
@@ -190,7 +202,7 @@ module.exports = function(grunt) {
             options: {
                 casperjsOptions: ['--app-port='+appPort]
             },
-            files: ['test/casperjs/**/*.js']
+            files: ['test/functional/**/*.js']
         }
     });
 
@@ -311,18 +323,19 @@ module.exports = function(grunt) {
 
     // Test task. Execute with running app
     grunt.registerTask('test', 'Run ALL tests or specified by second param', function () {
-        // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
+        // if custom mask set - `grunt test --spec=test/unit/middleware/**/*.js`
         var spec = grunt.option('spec');
         if (spec) {
             grunt.config.set('mochaTest.test.src', [spec]);
+            grunt.task.run('mochaTest:test');
+        } else {
+            grunt.task.run('mochaTest');
         }
-
-        grunt.task.run('mochaTest');
     });
 
     // Test task. Execute with running app
     grunt.registerTask('test-func', 'Run ALL functional tests or specified by second param', function () {
-        // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
+        // if custom mask set - `grunt test --spec=test/unit/middleware/**/*.js`
         var spec = grunt.option('spec');
         if (spec) {
             grunt.config.set('casperjs.files', [spec]);

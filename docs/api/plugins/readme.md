@@ -72,7 +72,7 @@ define([
 
 As we mentioned above, when SourceJS plugin is installed through NPM, main client-side module of your plugin (`index.js`) is connected by default.
 
-To achieve this, we generate custom RequireJS configuration through default Grunt task and dynamically extend `options.js`, filling installed modules to `assets.npmPluginsEnabled` with `true`.
+To achieve this, we generate custom RequireJS configuration through default build task and dynamically extend `options.js`, filling installed modules to `assets.npmPluginsEnabled` with `true`.
 
 To disable client-side module of any installed npm Plugins, you can edit the module definition in `user/options.js`:
 

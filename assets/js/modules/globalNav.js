@@ -24,6 +24,7 @@ define([
         "showPreviews": false,
         "sortType": "sortByDate",
         "sortDirection":"forward",
+        "delimeter": ",",
         "pageLimit": 999,
         "ignorePages": [],
         "thumbnailName": "thumbnail.png",
@@ -53,7 +54,8 @@ define([
             "hidePreview": "Hide thumbnails",
             "showPreview": "Show thumbnails",
             "updateButton": "Update navigation"
-        }
+        },
+        "templates": {}
     };
 
     /**
@@ -68,7 +70,8 @@ define([
             this.options.modulesOptions.globalNav,
             JSON.parse(localStorage.getItem("source_enabledFilter")) || {}
         );
-        $(function(){
+        this.initTemplates();
+        $(function() {
             _this.init();
         });
     }
@@ -77,48 +80,50 @@ define([
     GlobalNav.prototype.constructor = GlobalNav;
 
     /**
-     * @Object templates. Contains basic navigation templates.
+     * @returns Object templates. Contains basic navigation templates.
      * It uses lo-dash template function.
      */
-    GlobalNav.prototype.templates = {
-        catalogList: _.template([
-            '<ul class="<%= classes.catalogList %>">',
-                '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
-            '</ul>'
-        ].join("")),
+    GlobalNav.prototype.initTemplates = function() {
+        this.templates = $.extend(true, {
+            catalogList: _.template([
+                '<ul class="<%= classes.catalogList %>">',
+                    '<img src="/source/assets/i/process.gif" alt="<%= labels.loading %>"/>',
+                '</ul>'
+            ].join("")),
 
-        catalogHeader: _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
+            catalogHeader: _.template('<h2 class="<%= classes.catalogListTitle %>"> <%= catalogMeta.title %></h2>'),
 
-        catalogMeta: _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
+            catalogMeta: _.template('<div class="<%= classes.catalogText %>"><%= catalogMeta.info %></div>'),
 
-        catalogLinkToAll: _.template([
-            '<li class="<%= classes.catalogListItem %> <%= classes.catalogListAll %>">',
-                '<a class="<%= classes.catalogLinkToAll %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
-            '</li>'
-        ].join("")),
+            catalogLinkToAll: _.template([
+                '<li class="<%= classes.catalogListItem %> <%= classes.catalogListAll %>">',
+                    '<a class="<%= classes.catalogLinkToAll %>" href="<%= url %>"><%= labels.linkToAllSpecs %> <%= length %> </a>',
+                '</li>'
+            ].join("")),
 
-        navigationListItem: _.template([
-            '<li class="<%= classes.catalogListItem %>">',
-                '<a class="<%= classes.catalogListLink %> source_a_g" href="#">',
-                    '<span class="<%= classes.catalogListTitle %>"></span>',
-                    '<div class="<%= classes.catalogListDate %>"></div>',
-                '</a>',
-            '</li>'
-        ].join("")),
+            navigationListItem: _.template([
+                '<li class="<%= classes.catalogListItem %>">',
+                    '<a class="<%= classes.catalogListLink %> source_a_g" href="#">',
+                        '<span class="<%= classes.catalogListTitle %>"></span>',
+                        '<div class="<%= classes.catalogListDate %>"></div>',
+                    '</a>',
+                '</li>'
+            ].join("")),
 
-        catalogFilter: _.template('<div class="<%= classes.catalogFilter %>"></div>'),
+            catalogFilter: _.template('<div class="<%= classes.catalogFilter %>"></div>'),
 
-        togglePreviewLink: _.template('<button class="<%= classes.catalogImageThumbler %>"><%= togglePreviewLabel %></button>'),
-        updateButton: _.template('<button class="<%= classes.updateButton %>"><%= labels.updateButton %></button>'),
+            togglePreviewLink: _.template('<button class="<%= classes.catalogImageThumbler %>"><%= togglePreviewLabel %></button>'),
+            updateButton: _.template('<button class="<%= classes.updateButton %>"><%= labels.updateButton %></button>'),
 
-        sortList: _.template([
-            '<ul class="source_sort-list">',
-                '<li class="source_sort-list_li">Sort by&nbsp;</li>',
-                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>',
-                '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>',
-                '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>',
-            '</ul>'
-        ].join(""))
+            sortList: _.template([
+                '<ul class="source_sort-list">',
+                    '<li class="source_sort-list_li">Sort by&nbsp;</li>',
+                    '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByAlph" href="#sort=alph">alphabet</a></li>',
+                    '<li class="source_sort-list_li">&nbsp;or&nbsp;</li>',
+                    '<li class="source_sort-list_li"><a class="source_sort-list_a" id="sortByDate" href="#sort=date">date</a></li>',
+                '</ul>'
+            ].join(""))
+        }, this.options.modulesOptions.globalNav.templates);
     };
 
     /**
@@ -138,14 +143,21 @@ define([
      * @private
      * @method skipSpec. Filtering by specified catalogue
      *
-     * @param {String} navListCat catalogue type
+     * @param {String|Array} navListCat catalogue type
      * @param {Object} obj - object to filter
      *
      * @returns {Boolean} true if spec shoud be skipped.
      */
     var skipSpec = function(navListCat, obj) {
+        obj = obj || {};
+
         // obj["cat"] is an array; if cat has needed value
-        var inArray = !!obj["tag"] && obj["tag"].indexOf(navListCat) > -1;
+        var isSingleTag = !!obj["tag"] && typeof(navListCat) === "string";
+        var inArray = isSingleTag
+            ? !!~obj["tag"].indexOf(navListCat)
+            : !!obj["tag"] && _.reduce(navListCat, function(inArray, item) {
+                return inArray && !!~obj['tag'].indexOf(item);
+            }, true);
         // without-cat mode, showing all specs without cat field in info.json defined or
         var isWithoutCat = navListCat === "without-tag" && (!obj["tag"] || obj["tag"].length === 0);
         return !inArray && !isWithoutCat;
@@ -248,9 +260,12 @@ define([
      */
     GlobalNav.prototype.renderNavigationList = function(catalog, data) {
         var navOptions = this.options.modulesOptions.globalNav;
+        var delimeter = navOptions.delimeter;
         var target = catalog.find("." + navOptions.classes.catalogList);
         var navListDir = catalog.attr("data-nav");
         var navListCat = catalog.attr("data-tag");
+        navListCat = typeof(navListCat) === "string" ? navListCat.split(' ').join('') : navListCat;
+        navListCat = navListCat && !!~navListCat.indexOf(delimeter) ? navListCat.split(delimeter) : navListCat;
         var catalogHeaderURL = catalog.find("." + navOptions.classes.catalogListTitle + '>a').attr('href');
 
         var filter = function(spec) {
@@ -267,8 +282,11 @@ define([
         if(target && target.length === 1) {
             var url = catalogHeaderURL && catalogHeaderURL.length && navOptions.useHeaderUrlForNavigation
                 ? catalogHeaderURL : navListDir;
-            var itemsDocFragment = this.getNavigationItemsList(data, url, filter);
-            target.html(itemsDocFragment);
+            var specs = _.reduce(data, function(result, item) {
+                filter(item["specFile"]) && result.push(item);
+                return result;
+            }, []);
+            target.html(this.getNavigationItemsList(specs, url));
         }
     };
 
@@ -281,9 +299,10 @@ define([
      *
      * @returns {Object} document fragment which contains list of navItems.
      */
-    GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl, isValid) {
+    GlobalNav.prototype.getNavigationItemsList = function(specifications, catalogUrl) {
         // temporary container to hold navigation items.
         var navigationItemsList = document.createDocumentFragment();
+        var self = this;
         var navOptions = this.options.modulesOptions.globalNav;
         var pageLimit = navOptions.pageLimit;
         var classes = navOptions.classes;
@@ -292,14 +311,10 @@ define([
             ? specifications.length
             : pageLimit;
 
-        for (var j = 0; j < lengthLimit; j++) {
-            var spec = specifications[j]["specFile"];
-            if (!isValid(spec)) {
-                continue;
-            }
-
-            navigationItemsList.appendChild(this.renderNavTreeItem(spec).get(0));
-        }
+        var specsToShow = specifications.slice(0, lengthLimit);
+        _.map(specsToShow, function(item) {
+            navigationItemsList.appendChild(self.renderNavTreeItem(item["specFile"]).get(0));
+        });
 
         // Go to cat page link
         if (specifications.length > lengthLimit) {

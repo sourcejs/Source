@@ -2,7 +2,8 @@
 
 var fs = require('fs-extra');
 var path = require('path');
-var ejs = require('ejs');
+
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 
@@ -50,6 +51,8 @@ exports.process = function(req, res, next) {
 
         // Modifying url and saving params string
         // TODO: remove in next non-patch release https://github.com/sourcejs/Source/issues/147
+        req.originalUrl = req.url;
+        req.originalPath = req.path;
         req.url = path.join(req.path, specFile) + paramsString;
 
         fs.readFile(physicalPath, 'utf8', function (err, data) {
@@ -80,7 +83,8 @@ exports.process = function(req, res, next) {
                 try {
                     data = ejs.render(data, {
                         engineVersion: global.engineVersion,
-                        info: specInfo,
+                        info: specInfo
+                    }, {
                         filename: physicalPath
                     });
                 } catch(err){

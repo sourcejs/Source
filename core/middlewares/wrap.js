@@ -1,13 +1,13 @@
 'use strict';
 
 var fs = require('fs-extra');
-var ejs = require('ejs');
-var _ = require('lodash');
 var path = require('path');
+var cheerio = require('cheerio');
+
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
 var getHeaderAndFooter = require(global.pathToApp + '/core/headerFooter.js').getHeaderAndFooter;
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
-var cheerio = require('cheerio');
 
 /**
  * Wrap rendered html from request with spec wrapper (header, footer, etc.)
@@ -79,14 +79,11 @@ exports.process = function (req, res, next) {
                 engineVersion: global.engineVersion,
                 content: content,
                 head: head,
-                info: info,
-                filename: templatePath
+                info: info
             };
 
             try {
-                templateJSON.header = ejs.render(heagerFooter.header, _.merge({}, templateJSON, {
-                    filename: heagerFooter.headerPath
-                }));
+                templateJSON.header = ejs.render(heagerFooter.header, templateJSON);
             } catch(err){
                 var headerMsg = 'Error: EJS could render header template: ' + heagerFooter.headerPath;
                 templateJSON.header = headerMsg;
@@ -94,9 +91,9 @@ exports.process = function (req, res, next) {
             }
 
             try {
-                templateJSON.footer = ejs.render(heagerFooter.footer, _.merge({}, templateJSON, {
+                templateJSON.footer = ejs.render(heagerFooter.footer, templateJSON, {
                     filename: heagerFooter.footerPath
-                }));
+                });
             } catch(err){
                 var footerMsg = 'Error: EJS could render footer template: ' + heagerFooter.footerPath;
                 templateJSON.footer = footerMsg;
@@ -105,7 +102,9 @@ exports.process = function (req, res, next) {
 
             // render page and send it as response
             try {
-                req.specData.renderedHtml = ejs.render(template, templateJSON);
+                req.specData.renderedHtml = ejs.render(template, templateJSON, {
+                    filename: templatePath
+                });
             } catch(err){
                 req.specData.renderedHtml = 'Error rendering Spec with EJS: ' + template;
             }

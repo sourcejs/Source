@@ -6,8 +6,9 @@ var url = require('url');
 var Q = require('q');
 var _ = require('lodash');
 var jsdom = require('jsdom');
-var ejs = require('ejs');
 
+var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
@@ -104,7 +105,7 @@ var parseSpec = function(sections, pathToSpec) {
 
     // Parsing spec with JSdom
     jsdom.env(
-        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec,
+        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
         ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
         function (err, window) {
             if (err) {
@@ -250,6 +251,13 @@ module.exports.process = function(req, res, next) {
         var specInfo = specUtils.getSpecInfo(parsedPath.pathToSpec);
         var specID = specUtils.getSpecIDFromUrl(parsedPath.pathToSpec);
         var specHasHTMLAPIData = !!parseHTMLData.getByID(specID);
+        var ua = req.headers && req.headers['user-agent'] ? req.headers['user-agent'] : undefined;
+
+        trackStats.page({
+            pageName: 'clarify',
+            sessionID: trackStats.getSessionID(req),
+            ua: ua
+        });
 
         if (!specInfo) {
             res.send('Clarify did not found any information about requested spec, please check URL or update file-tree restarting the app.');
