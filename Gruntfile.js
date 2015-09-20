@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     var appPort = grunt.option('app-port') || 8080;
 
     // load all grunt tasks matching the `grunt-*` pattern
-    require('load-grunt-tasks')(grunt);
+    //require('load-grunt-tasks')(grunt);
 
     // measuring processing time
     require('time-grunt')(grunt);
@@ -193,6 +193,20 @@ module.exports = function(grunt) {
             files: ['test/functional/**/*.js']
         }
     });
+
+    // Load plugins
+    grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-newer');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     /*
     *
