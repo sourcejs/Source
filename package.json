@@ -45,6 +45,7 @@
     "grunt-newer": "~0.6.1",
     "gulp-watch": "operatino/gulp-watch#4.3.5-latest-fsevents",
     "jsdom": "^1.2.1",
+    "load-grunt-parent-tasks": "^0.1.1",
     "load-grunt-tasks": "~0.3.0",
     "lodash": "^3.10.1",
     "log4js": "~0.6.20",
