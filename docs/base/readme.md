@@ -118,6 +118,8 @@ By default all files are pre-processed with [EJS](http://ejs.co/), so you're fre
 &lt;% if (info.title === 'Title') {% &gt; Action! &lt;% } %&gt;
 ```
 
+<a href="/docs/spec-helpers" class="source_a_hl">Read more about Spec page generation helpers.</a>
+
 ### Client-side Templating Engines
 
 For client-side templating you don't need any magic, just link Mustache or any other JS library to your page and use it whenever you want.
@@ -167,11 +169,12 @@ As a Style Guide Platform we focus on flexibility and ease of integration. All S
 
 Plugins are working in the same way as core modules, but are kept outside the main platform, allowing to separate specific features.
 
-Here is a list of official plugins:
+Here is a list of available plugins:
 
-* [sourcejs-md-react](https://www.npmjs.com/package/sourcejs-md-react) (new)
+* [sourcejs-slm](https://github.com/venticco/sourcejs-slm) (new)
+* [sourcejs-md-react](https://github.com/mik01aj/sourcejs-md-react) (new)
 * [sourcejs-contrib-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) (new)
-* [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) (new)
+* [sourcejs-react](https://github.com/szarouski/sourcejs-react) (new)
 * [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) (new)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)

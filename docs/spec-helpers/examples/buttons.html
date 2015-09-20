@@ -1,0 +1,11 @@
+<h2><%- info.title %></h2>
+
+<% var buttons = ['btn-group-lg', '', 'btn-group-sm', 'btn-group-xs'] %>
+
+<% buttons.forEach(function(modifier){ %>
+    <div class="btn-group <%= modifier %>" role="group" aria-label="Default button group">
+      <button type="button" class="btn btn-default">Left</button>
+      <button type="button" class="btn btn-default">Middle</button>
+      <button type="button" class="btn btn-default">Right</button>
+    </div><br><br>
+<% }); %>
