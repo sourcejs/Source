@@ -114,7 +114,7 @@ As we mentioned before, it's easy to use other server-side templating engines li
 By default all files are pre-processed with [EJS](http://ejs.co/), so you're free to use custom EJS features in any spec page - like includes or even plain JavaScript:
 
 ```html
-&lt;% include filename.html %&gt;
+&lt;%- include('filename.html') %&gt;
 &lt;% if (info.title === 'Title') {% &gt; Action! &lt;% } %&gt;
 ```
 
