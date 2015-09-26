@@ -119,11 +119,52 @@ Middlewares are automatically loaded after installation, and are evaluated on ea
 
 ### Modifying Spec contents
 
-We alredy mentioned before that Middlewares use `req.specData.renderedHtml` object to get processed Spec contents and modify them.
+We already mentioned before that Middlewares use `req.specData.renderedHtml` object to get processed Spec contents and modify them.
 
 As any other basic ExpressJS middleware, at the processing start, we get `req` object on input and pass it to the next handler on each request. This architecture allows us to modify `req` contents on each step.
 
-In 0.4.0 middlewares from plugins are connected one by one, sorted by alphabet. In nearest releases we will add a feature for controlling the queue.
+It's possible to define middleware group/order and control group execution sequence. By default all middlewares (and older plugins) will be placed in default group. Here's the default group execution order:
+
+```js
+loadGroupsOrder: [
+  'request',
+  'pre-html',
+  'default',
+  'html',
+  'response'
+]
+```
+
+####Example configurations
+
+In SourceJS core (configurable from `user/options.js`):
+```js
+{
+  core: {
+    middlewares: {
+        list: {
+          md: {
+            enabled: true,
+            order: -1,
+            group: 'pre-html',
+            indexPath: path.join(appRoot, 'core/middlewares/md.js')
+         }
+         'sourcejs-plugin-name': {
+           order: -2
+         }
+      }
+    }
+  }
+}
+```
+Plugin level configuration in `sourcejs-plugin-name/options.js`, will be merged on-top of defaults:
+```js
+module.exports = {
+  order: 1,
+  group: 'pre-html'
+};
+```
+To override core middlewares, changing their order or replacing with alternative plugins, user will need to modify his `options.js` file. For the security reason, plugin level options can't override core middlewares or set an execution order option lower than 0 (zero).
 
 ### Examples
 
