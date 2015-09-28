@@ -1,7 +1,7 @@
 'use strict';
 
 var cheerio = require('cheerio');
-var ParseData = new (require('./parseData'));
+var ParseData = new (require('./parseData'))();
 
 /**
  * Parse Spec page contents into HTML tree
@@ -10,7 +10,7 @@ var ParseData = new (require('./parseData'));
  *
  * @returns {Object} Return parsed Spec page object
  */
-var process = module.exports.process = function (specHTML) {
+module.exports.process = function (specHTML) {
     var output = {
         headResources: {},
         bodyResources: {},
