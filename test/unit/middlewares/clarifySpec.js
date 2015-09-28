@@ -7,6 +7,8 @@ var jq = fs.readFileSync(path.join(pathToMasterApp,'assets/js/lib/jquery-2.1.4.m
 var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
+
+// TODO: rewrite tests with cheerio
 var jsdom = require('jsdom');
 
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
@@ -19,7 +21,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         it('should return nothing (&sections=77)', function (done) {
             request(url)
                 .get('&sections=77')
-                .expect(200)
+                .expect(500)
                 .end(function (err, res) {
                     if (err) {
                         throw err;
@@ -90,7 +92,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                 });
         });
 
-        it('should have injected resources', function (done) {
+        xit('should have injected resources', function (done) {
             request(url)
                 .get('&sections=1.1')
                 .expect(200)

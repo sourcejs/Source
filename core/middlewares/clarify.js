@@ -12,7 +12,7 @@ var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
-var specsParser = require(path.join(pathToApp, 'core/lib/specsParser'));
+var specsParser = require(path.join(pathToApp, 'core/lib/specPageParser'));
 var htmlParser = require(path.join(pathToApp, 'core/html-tree/html-parser'));
 
 
@@ -100,7 +100,6 @@ var getTplList = function(){
     return deferred.promise;
 };
 
-// TODO: Move to standalone API, for fast JSDOM spec parsing
 var parseSpec = function(sections, pathToSpec) {
     var deferred = Q.defer();
 
@@ -121,13 +120,25 @@ var parseSpec = function(sections, pathToSpec) {
 
         //the whole response has been recieved, so we just print it out here
         response.on('end', function () {
-            deferred.resolve({
-                // whole json or by spec
-                output: specsParser(specHTML),
+            var output = {};
+            var allContents = specsParser.process(specHTML);
 
-                // whole json
-                allContents: specsParser(specHTML)
-            });
+            if (sections) {
+                output = specsParser.getBySection(allContents, sections);
+            } else {
+                output = allContents;
+            }
+
+            if (output) {
+                deferred.resolve({
+                    output: output,
+                    allContents: allContents
+                });
+            } else {
+                deferred.reject({
+                    msg: 'Requested sections HTML not found'
+                });
+            }
         });
     };
 
@@ -140,46 +151,6 @@ var parseSpec = function(sections, pathToSpec) {
     });
 
     request.end();
-
-
-    //// Parsing spec with JSdom
-    //jsdom.env(
-    //    'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
-    //    ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
-    //    function (err, window) {
-    //        if (err) {
-    //            deferred.reject({
-    //                err: err,
-    //                msg: 'JSDOM error'
-    //            });
-    //            return;
-    //        }
-    //
-    //        var output = {};
-    //
-    //        var SourceGetSections = window.SourceGetSections;
-    //
-    //        var parser = new SourceGetSections();
-    //        var allContents = parser.getSpecFull();
-    //
-    //        if (sections) {
-    //            output = parser.getSpecFull(sections);
-    //        } else {
-    //            output = allContents;
-    //        }
-    //
-    //        if (output) {
-    //            deferred.resolve({
-    //                output: output,
-    //                allContents: allContents
-    //            });
-    //        } else {
-    //            deferred.reject({
-    //                msg: 'Requested sections HTML not found'
-    //            });
-    //        }
-    //    }
-    //);
 
     return deferred.promise;
 };
@@ -313,8 +284,6 @@ module.exports.process = function(req, res, next) {
             getSpecData(),
             getTplList()
         ]).spread(function(_specData, tplList) {
-            console.log('_specData', JSON.stringify(_specData, null, 4));
-
             var specData = _specData.output;
             var sections = specData.contents ? specData.contents : [];
 

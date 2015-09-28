@@ -1,8 +1,16 @@
 'use strict';
 
 var cheerio = require('cheerio');
+var ParseData = new (require('./parseData'));
 
-module.exports = function (specHTML, sectionID) {
+/**
+ * Parse Spec page contents into HTML tree
+ *
+ * @param {String} specHTML - Full Spec page html (from request)
+ *
+ * @returns {Object} Return parsed Spec page object
+ */
+var process = module.exports.process = function (specHTML) {
     var output = {
         headResources: {},
         bodyResources: {},
@@ -63,4 +71,16 @@ module.exports = function (specHTML, sectionID) {
     });
 
     return output;
+};
+
+/**
+ * Get specific sections from parsed Spec page object
+ *
+ * @param {Object} specObject - Parsed Spec page object
+ * @param {Array} sections - Array of sections to return
+ *
+ * @returns {Object} Return object with specified sections HTML OR undefined
+ */
+module.exports.getBySection = function (specObject, sections) {
+    return ParseData.traverseSections(specObject, sections);
 };

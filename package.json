@@ -58,7 +58,8 @@
     "shortid": "^2.2.2",
     "time-grunt": "~0.2.10",
     "tinyforever": "0.0.3",
-    "universal-analytics": "^0.3.9"
+    "universal-analytics": "^0.3.9",
+    "jsdom": "^1.2.1"
   },
   "scripts": {
     "postinstall": "node ./core/postInstall && grunt update && node ./core/trackInstall",

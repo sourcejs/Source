@@ -15,6 +15,8 @@ var flattenTillSpec = require(path.join(global.pathToApp, 'core/lib/flattenTillS
  * @param {String} config.path - path do data
  */
 function ParseData(config) {
+    config = config || {};
+
     this.data = {};
     this.scope = config.scope;
     this.dataPath = config.path;
@@ -292,26 +294,36 @@ ParseData.prototype.flattenHTMLcontents = function(contents) {
 ParseData.prototype.getBySection = function(id, sections) {
     // Sections are defined only in html data storage
     if (this.scope === 'html' && Array.isArray(sections) && sections.length > 0) {
-        var specData = this.getByID(id);
+        return this.traverseSections(this.getByID(id), sections);
+    } else {
+        return undefined;
+    }
+};
 
-        if (specData) {
-            var specSections = this.flattenHTMLcontents(specData.contents);
+/**
+ * Traverse Spec page object sections
+ *
+ * @param {Object} specData - HTML data structure to parse
+ * @param {Array} sections - Array of sections to return
+ *
+ * @returns {Object} Return single object by requested ID with specified sections HTML OR undefined
+ */
+ParseData.prototype.traverseSections = function(specData, sections) {
+    if (specData && sections) {
+        var specSections = this.flattenHTMLcontents(specData.contents);
 
-            var pickedSections = [];
+        var pickedSections = [];
 
-            sections.forEach(function(id){
-                var objectToAdd = specSections[id];
+        sections.forEach(function(sectionID){
+            var objectToAdd = specSections[sectionID];
 
-                if (objectToAdd) pickedSections.push(objectToAdd);
-            });
+            if (objectToAdd) pickedSections.push(objectToAdd);
+        });
 
-            if (pickedSections.length !== 0) {
-                specData.contents = pickedSections;
+        if (pickedSections.length > 0) {
+            specData.contents = pickedSections;
 
-                return specData;
-            } else {
-                return undefined;
-            }
+            return specData;
         } else {
             return undefined;
         }

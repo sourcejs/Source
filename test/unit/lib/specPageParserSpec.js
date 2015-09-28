@@ -5,12 +5,12 @@ var pathToMasterApp = path.resolve('./');
 
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
-var specsParser = require(path.join(pathToMasterApp, 'core/lib/specsParser'));
+var specsParser = require(path.join(pathToMasterApp, 'core/lib/specPageParser'));
 var request = require(path.join(pathToMasterApp, 'core/lib/request'));
 
-describe('specsParser', function () {
+describe('specsParser.process', function () {
     it('it should return proper object structure', function (done) {
-        var result = specsParser('');
+        var result = specsParser.process('');
 
         expect(result).to.be.an('object');
         expect(result.headResources).to.be.an('object');
@@ -25,7 +25,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/simple/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result).to.deep.equal({
                     headResources: {},
@@ -51,7 +51,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/few-examples/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result).to.deep.equal({
                     headResources: {},
@@ -78,7 +78,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/nested/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result.contents[0].visualID).to.equal('1');
                 expect(result.contents[0].nested[0].visualID).to.equal('1.1');
@@ -100,7 +100,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/complex/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result.contents[0].nested[0].id).to.equal('custom-sub-id');
 
@@ -118,7 +118,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/complex/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result.contents[0].html[0]).to.equal('HTML example 1');
                 expect(result.contents[1].nested[0].html[0]).to.equal('HTML example 1.1');
@@ -137,7 +137,7 @@ describe('specsParser', function () {
             path: '/test/unit/partials/specs/nested/',
             internal: true,
             callback: function (response) {
-                var result = specsParser(response);
+                var result = specsParser.process(response);
 
                 expect(result).to.deep.equal({
                     headResources: {},
@@ -177,6 +177,30 @@ describe('specsParser', function () {
                         }]
                     }]
                 });
+
+                done();
+            }
+        });
+    });
+});
+
+describe('specsParser.getBySection', function () {
+    it('it should properly get by single section', function (done) {
+        request({
+            path: '/test/unit/partials/specs/nested/',
+            internal: true,
+            callback: function (response) {
+                var result = specsParser.process(response);
+                var assertOption = function (sections) {
+                    var endResult = specsParser.getBySection(result, sections);
+
+                    expect(endResult.contents.length).to.equal(1);
+                    expect(endResult.contents[0].id).to.equal(sections[0]);
+                };
+
+                assertOption(['1']);
+                assertOption(['custom-sub-id']);
+                assertOption(['1.1.1']);
 
                 done();
             }
