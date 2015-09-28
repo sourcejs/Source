@@ -6,7 +6,6 @@ var url = require('url');
 var Q = require('q');
 var _ = require('lodash');
 var http = require('http');
-var cheerio = require('cheerio');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));

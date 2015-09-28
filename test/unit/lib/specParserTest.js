@@ -35,8 +35,8 @@ describe('specsParser', function () {
                         html: [
                             'HTML example'
                         ],
-                        id: 1,
-                        visualID: 1,
+                        id: '1',
+                        visualID: '1',
                         header: 'Section header'
                     }]
                 });
@@ -62,8 +62,8 @@ describe('specsParser', function () {
                             'HTML example 1',
                             'HTML example 2'
                         ],
-                        id: 1,
-                        visualID: 1,
+                        id: '1',
+                        visualID: '1',
                         header: 'Section header'
                     }]
                 });
@@ -73,7 +73,7 @@ describe('specsParser', function () {
         });
     });
 
-    it.only('it should properly parse nested IDs', function (done) {
+    it('it should properly parse nested IDs', function (done) {
         request({
             path: '/test/unit/partials/specs/nested/',
             internal: true,
@@ -95,7 +95,44 @@ describe('specsParser', function () {
         });
     });
 
-    it('it should return nested spec object', function (done) {
+    it('it should properly parse multiple custom ID\'s', function (done) {
+        request({
+            path: '/test/unit/partials/specs/complex/',
+            internal: true,
+            callback: function (response) {
+                var result = specsParser(response);
+
+                expect(result.contents[0].nested[0].id).to.equal('custom-sub-id');
+
+                expect(result.contents[1].id).to.equal('custom-section');
+
+                expect(result.contents[1].nested[0].nested[0].id).to.equal('custom-h4');
+
+                done();
+            }
+        });
+    });
+
+    it('it should properly pass multiple HTML examples', function (done) {
+        request({
+            path: '/test/unit/partials/specs/complex/',
+            internal: true,
+            callback: function (response) {
+                var result = specsParser(response);
+
+                expect(result.contents[0].html[0]).to.equal('HTML example 1');
+                expect(result.contents[1].nested[0].html[0]).to.equal('HTML example 1.1');
+                expect(result.contents[1].nested[0].nested[0].html[0]).to.equal('HTML example 1.1.1');
+                expect(result.contents[1].nested[0].nested[0].html[1]).to.equal('HTML example 1.1.1');
+
+                expect(result.contents[1].nested[1].html[0]).to.equal('HTML example 1.2');
+
+                done();
+            }
+        });
+    });
+
+    it('it should return full nested spec object', function (done) {
         request({
             path: '/test/unit/partials/specs/nested/',
             internal: true,
@@ -118,16 +155,25 @@ describe('specsParser', function () {
                                 html: [
                                     'HTML example 1.1.1'
                                 ],
-                                id: 'custom-sub-id',
+                                id: '1.1.1',
                                 visualID: '1.1.1',
-                                header: 'Section header'
+                                header: 'Section sub-sub-header'
                             }],
                             html: [
                                 'HTML example 1.1'
                             ],
-                            id: '1.1',
+                            id: 'custom-sub-id',
                             visualID: '1.1',
-                            header: 'Section header'
+                            header: 'Section sub-header'
+                        },
+                        {
+                            nested: [],
+                            html: [
+                                'HTML example 1.2'
+                            ],
+                            id: '1.2',
+                            visualID: '1.2',
+                            header: 'Section sub-header'
                         }]
                     }]
                 });
