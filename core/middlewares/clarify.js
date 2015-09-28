@@ -5,13 +5,15 @@ var fs = require('fs-extra');
 var url = require('url');
 var Q = require('q');
 var _ = require('lodash');
-var jsdom = require('jsdom');
+var http = require('http');
+var cheerio = require('cheerio');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
+var specsParser = require(path.join(pathToApp, 'core/lib/specsParser'));
 var htmlParser = require(path.join(pathToApp, 'core/html-tree/html-parser'));
 
 
@@ -103,44 +105,82 @@ var getTplList = function(){
 var parseSpec = function(sections, pathToSpec) {
     var deferred = Q.defer();
 
-    // Parsing spec with JSdom
-    jsdom.env(
-        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
-        ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
-        function (err, window) {
-            if (err) {
-                deferred.reject({
-                    err: err,
-                    msg: 'JSDOM error'
-                });
-                return;
-            }
+    var options = {
+        host: '127.0.0.1',
+        port: global.opts.core.server.port,
+        path: pathToSpec + '?internal=true'
+    };
+    var fullUrl = url.resolve(options.host + ':' + options.port, options.path);
 
-            var output = {};
+    var callback = function (response) {
+        var specHTML = '';
 
-            var SourceGetSections = window.SourceGetSections;
+        //another chunk of data has been recieved, so append it to `str`
+        response.on('data', function (chunk) {
+            specHTML += chunk;
+        });
 
-            var parser = new SourceGetSections();
-            var allContents = parser.getSpecFull();
+        //the whole response has been recieved, so we just print it out here
+        response.on('end', function () {
+            deferred.resolve({
+                // whole json or by spec
+                output: specsParser(specHTML),
 
-            if (sections) {
-                output = parser.getSpecFull(sections);
-            } else {
-                output = allContents;
-            }
+                // whole json
+                allContents: specsParser(specHTML)
+            });
+        });
+    };
 
-            if (output) {
-                deferred.resolve({
-                    output: output,
-                    allContents: allContents
-                });
-            } else {
-                deferred.reject({
-                    msg: 'Requested sections HTML not found'
-                });
-            }
-        }
-    );
+    var request = http.request(options, callback);
+
+    request.on('error', function (e) {
+        deferred.reject({
+            msg: 'Failed loading spec ' + fullUrl
+        });
+    });
+
+    request.end();
+
+
+    //// Parsing spec with JSdom
+    //jsdom.env(
+    //    'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
+    //    ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
+    //    function (err, window) {
+    //        if (err) {
+    //            deferred.reject({
+    //                err: err,
+    //                msg: 'JSDOM error'
+    //            });
+    //            return;
+    //        }
+    //
+    //        var output = {};
+    //
+    //        var SourceGetSections = window.SourceGetSections;
+    //
+    //        var parser = new SourceGetSections();
+    //        var allContents = parser.getSpecFull();
+    //
+    //        if (sections) {
+    //            output = parser.getSpecFull(sections);
+    //        } else {
+    //            output = allContents;
+    //        }
+    //
+    //        if (output) {
+    //            deferred.resolve({
+    //                output: output,
+    //                allContents: allContents
+    //            });
+    //        } else {
+    //            deferred.reject({
+    //                msg: 'Requested sections HTML not found'
+    //            });
+    //        }
+    //    }
+    //);
 
     return deferred.promise;
 };
@@ -274,6 +314,8 @@ module.exports.process = function(req, res, next) {
             getSpecData(),
             getTplList()
         ]).spread(function(_specData, tplList) {
+            console.log('_specData', JSON.stringify(_specData, null, 4));
+
             var specData = _specData.output;
             var sections = specData.contents ? specData.contents : [];
 
