@@ -8,7 +8,7 @@ Clarify is an [expressJS](http://expressjs.com/) middleware built into SourceJS 
 http://localhost:8080/docs/spec/?clarify=true&sections=1.1
 ```
 
-When enabled, Clarify uses [JSdom](https://github.com/tmpvar/jsdom) for getting specified sections and wrap them in pre-defined or user templates. If you're using SourceJS HTML API, Clarify can be configured to take data directly from API storage as well.
+When enabled, Clarify uses [Cheerio](https://github.com/cheeriojs/cheerio) for getting specified sections and wrap them in pre-defined or user templates. If you're using SourceJS HTML API, Clarify can be configured to take data directly from API storage as well.
 
 Clarify page is enhanced with helper panel, where you can chose any option available:
 

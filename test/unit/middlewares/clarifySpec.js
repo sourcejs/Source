@@ -2,21 +2,19 @@ var fs = require('fs');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
-var jq = fs.readFileSync(path.join(pathToMasterApp,'assets/js/lib/jquery-2.1.4.min.js'), "utf-8");
 
 var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
 
-// TODO: rewrite tests with cheerio
-var jsdom = require('jsdom');
+var cheerio = require('cheerio');
 
 var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 
-describe('Clarify test /docs/spec?clarify=true', function () {
-    describe('GET from JSDOM /docs/spec?clarify=true...', function () {
+describe.only('Clarify test /docs/spec?clarify=true', function () {
+    describe('GET /docs/spec?clarify=true...', function () {
         var url = 'http://localhost:8080/docs/spec/?clarify=true';
         it('should return nothing (&sections=77)', function (done) {
             request(url)
@@ -27,18 +25,11 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+                    var examples = $('.source_example');
 
-                            examples.length.should.equal(0);
-
-                            done();
-                        }
-                    });
+                    examples.length.should.equal(0);
+                    done();
                 });
         });
 
@@ -51,20 +42,14 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var sectionHeaders = $('.source_section_h');
-                            var examples = $('.source_example');
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+                    var sectionHeaders = $('.source_section_h');
+                    var examples = $('.source_example');
 
-                            sectionHeaders.length.should.be.greaterThan(1);
-                            examples.length.should.be.greaterThan(0);
+                    sectionHeaders.length.should.be.greaterThan(1);
+                    examples.length.should.be.greaterThan(0);
 
-                            done();
-                        }
-                    });
+                    done();
                 });
         });
 
@@ -77,18 +62,10 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
-
-                            examples.length.should.equal(1);
-
-                            done();
-                        }
-                    });
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+                    var examples = $('.source_example');
+                    examples.length.should.equal(1);
+                    done();
                 });
         });
 
@@ -101,19 +78,12 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+                    $('[href*="bootstrap.css"]').length.should.equal(1);
+                    $('body > style').length.should.be.greaterThan(0);
+                    $('body > script').length.should.be.greaterThan(0);
 
-                            $('[href*="bootstrap.css"]').length.should.equal(1);
-                            $('body > style').length.should.be.greaterThan(0);
-                            $('body > script').length.should.be.greaterThan(0);
-
-                            done();
-                        }
-                    });
+                    done();
                 });
         });
 
@@ -126,19 +96,13 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
 
-                            $('.__clear').length.should.equal(1);
-                            examples.length.should.equal(0);
+                    var examples = $('.source_example');
 
-                            done();
-                        }
-                    });
+                    $('.__clear').length.should.equal(1);
+                    examples.length.should.equal(0);
+                    done();
                 });
         });
     });
@@ -156,18 +120,10 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                         throw err;
                     }
 
-                    jsdom.env({
-                        html: res.text,
-                        src: [jq],
-                        done: function (errors, window) {
-                            var $ = window.$;
-                            var examples = $('.source_example');
-
-                            examples.length.should.equal(0);
-
-                            done();
-                        }
-                    });
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+                    var examples = $('.source_example');
+                    examples.length.should.equal(0);
+                    done();
                 });
         });
 
@@ -181,20 +137,14 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                             throw err;
                         }
 
-                        jsdom.env({
-                            html: res.text,
-                            src: [jq],
-                            done: function (errors, window) {
-                                var $ = window.$;
-                                var sectionHeaders = $('.source_section_h');
-                                var examples = $('.source_example');
+                        var $ = cheerio.load(res.text, {decodeEntities: false});
+                        var sectionHeaders = $('.source_section_h');
+                        var examples = $('.source_example');
 
-                                sectionHeaders.length.should.be.greaterThan(1);
-                                examples.length.should.be.greaterThan(0);
+                        sectionHeaders.length.should.be.greaterThan(1);
+                        examples.length.should.be.greaterThan(0);
 
-                                done();
-                            }
-                        });
+                        done();
                     });
             });
 
@@ -207,18 +157,12 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                             throw err;
                         }
 
-                        jsdom.env({
-                            html: res.text,
-                            src: [jq],
-                            done: function (errors, window) {
-                                var $ = window.$;
-                                var examples = $('.source_example');
+                        var $ = cheerio.load(res.text, {decodeEntities: false});
+                        var examples = $('.source_example');
 
-                                examples.length.should.equal(1);
+                        examples.length.should.equal(1);
 
-                                done();
-                            }
-                        });
+                        done();
                     });
             });
 
@@ -231,19 +175,13 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                             throw err;
                         }
 
-                        jsdom.env({
-                            html: res.text,
-                            src: [jq],
-                            done: function (errors, window) {
-                                var $ = window.$;
+                        var $ = cheerio.load(res.text, {decodeEntities: false});
 
-                                $('[href*="bootstrap.css"]').length.should.equal(1);
-                                $('body > style').length.should.be.greaterThan(0);
-                                $('body > script').length.should.be.greaterThan(0);
+                        $('[href*="bootstrap.css"]').length.should.equal(1);
+                        $('body > style').length.should.be.greaterThan(0);
+                        $('body > script').length.should.be.greaterThan(0);
 
-                                done();
-                            }
-                        });
+                        done();
                     });
             });
 
@@ -256,19 +194,14 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                             throw err;
                         }
 
-                        jsdom.env({
-                            html: res.text,
-                            src: [jq],
-                            done: function (errors, window) {
-                                var $ = window.$;
-                                var examples = $('.source_example');
+                        var $ = cheerio.load(res.text, {decodeEntities: false});
 
-                                $('.__clear').length.should.equal(1);
-                                examples.length.should.equal(0);
+                        var examples = $('.source_example');
 
-                                done();
-                            }
-                        });
+                        $('.__clear').length.should.equal(1);
+                        examples.length.should.equal(0);
+
+                        done();
                     });
             });
         }
