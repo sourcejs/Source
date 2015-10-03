@@ -92,7 +92,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                 });
         });
 
-        xit('should have injected resources', function (done) {
+        it('should have injected resources', function (done) {
             request(url)
                 .get('&sections=1.1')
                 .expect(200)

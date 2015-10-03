@@ -4,20 +4,142 @@ var cheerio = require('cheerio');
 var ParseData = new (require('./parseData'))();
 
 /**
+ * Filter list of HTML nodes
+ *
+ * @param {Object} $ - cheerio root object
+ * @param {Array} $elements - nodelist to filter
+ * @param {Function} [customElFilter] - Additional filter for element
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Style containers OR undefined
+ */
+var filterResourceElements = function($, $elements, customElFilter, skipAttrFilters){
+    var filteredArr = [];
+    var defaultFilter = function () {
+        return true;
+    };
+    var _customElFilter = typeof customElFilter === 'function' ? customElFilter : defaultFilter;
+
+    // Checking some exceptions
+    var checkDataSet = function($el){
+        var elementAttrs = $el.attributes || $el.attribs;
+
+        if (skipAttrFilters) {
+            return true;
+        } else {
+            return !(
+                elementAttrs['data-nonclarify'] ||
+                elementAttrs['data-requiremodule'] ||
+                elementAttrs['data-source'] === 'core' ||
+                elementAttrs['data-source'] === 'plugin'
+            );
+        }
+    };
+
+    if ($elements && $elements.length > 0) {
+        $elements.each(function(){
+           var el = this;
+
+            if (_customElFilter(el) && checkDataSet(el)) {
+                // If not need to filter out, then push to output
+                filteredArr.push($.html($(el)));
+            }
+        });
+
+        return filteredArr.length > 0 ? filteredArr : undefined;
+    } else {
+        return undefined;
+    }
+};
+
+/**
+ * Parse CSS links from Spec
+ *
+ * @param {Object} $ - cheerio root object
+ * @param {Object} scope to search - body or head, defaults to root
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of CSS links OR undefined
+ */
+var getCssLinksHTML = module.exports.getCssLinksHTML = function($, scope, skipAttrFilters) {
+    var $scope = scope ? $(scope) : $.root();
+    var $links = $scope.find('link');
+
+    var customFilter = function(el){
+        var elementAttrs = el.attributes || el.attribs;
+
+        return elementAttrs.rel === 'stylesheet';
+    };
+
+    return filterResourceElements($, $links, customFilter, skipAttrFilters);
+};
+
+
+/**
+ * Parse Scripts from Spec
+ *
+ * @param {Object} $ - cheerio root object
+ * @param {Object} scope to search - body or head, defaults to root
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Scripts OR undefined
+ */
+var getScriptsHTML = module.exports.getScriptsHTML = function($, scope, skipAttrFilters) {
+    var $scope = scope ? $(scope) : $.root();
+    var $scripts = $scope.find('script');
+
+    return filterResourceElements($, $scripts, null, skipAttrFilters);
+};
+
+/**
+ * Parse Style containers from Spec
+ *
+ * @param {Object} $ - cheerio root object
+ * @param {Object} scope to search - body or head, defaults to root
+ * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
+ *
+ * @returns {Array} Returns array with HTML of Style containers OR undefined
+ */
+var getStyleContainersHTML = module.exports.getStyleContainersHTML = function($, scope, skipAttrFilters){
+    var $scope = scope ? $(scope) : $.root();
+    var $styles = $scope.find('style');
+
+    return filterResourceElements($, $styles, null, skipAttrFilters);
+};
+
+
+/**
+ * Getter for assets resources of the Spec
+ *
+ * @param {Object} $ - cheerio root object
+ * @param {String} $scope - cheerio DOM object
+ *
+ * @returns {Object} Returns object with HTML lists containing Spec assets resources OR undefined
+ */
+var getSpecResources = module.exports.getSpecResources = function ($, scope) {
+    var output = {};
+
+    output.cssLinks = getCssLinksHTML($, scope) || [];
+    output.scripts = getScriptsHTML($, scope) || [];
+    output.cssStyles = getStyleContainersHTML($, scope) || [];
+
+    return (output.cssLinks || output.scripts || output.cssStyles) ? output : undefined;
+};
+
+/**
  * Parse Spec page contents into HTML tree
  *
- * @param {String} specHTML - Full Spec page html (from request)
+ * @param {String} specHTML - Full Spec page html, including head section (from request)
  *
  * @returns {Object} Return parsed Spec page object
  */
 module.exports.process = function (specHTML) {
+    var $ = cheerio.load(specHTML, {decodeEntities: false});
     var output = {
-        headResources: {},
-        bodyResources: {},
+        headResources: getSpecResources($, 'head'),
+        bodyResources: getSpecResources($, 'body'),
         contents: []
     };
-
-    var $ = cheerio.load(specHTML, {decodeEntities: false});
 
     var parseBlock = function (elements, blockID, blockDefaultID, nesting) {
         nesting = nesting || 0;

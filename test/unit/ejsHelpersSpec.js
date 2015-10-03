@@ -9,7 +9,7 @@ global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 describe('includeMD', function () {
     it('should properly include Markdown file', function (done) {
-        var result = ejs.render('<%- includeMD("partials/markdown") %>', {
+        var result = ejs.render('<%- includeMD("../partials/markdown") %>', {
             filename: __filename
         });
 
@@ -19,7 +19,7 @@ describe('includeMD', function () {
     });
 
     it('should properly include Markdown file with EJS includes', function (done) {
-        var result = ejs.render('<%- includeMD("partials/markdown-ejs") %>', {
+        var result = ejs.render('<%- includeMD("../partials/markdown-ejs") %>', {
           world: 'world'
         }, {
             filename: __filename
@@ -31,7 +31,7 @@ describe('includeMD', function () {
     });
 
     it('should properly include Markdown with nested include', function (done) {
-        var result = ejs.render('<%- includeMD("partials/markdown-ejs-nested") %>', {
+        var result = ejs.render('<%- includeMD("../partials/markdown-ejs-nested") %>', {
           world: 'world'
         }, {
             filename: __filename
@@ -45,7 +45,7 @@ describe('includeMD', function () {
 
 describe('includeFiles', function () {
     it('should include one file by glob', function (done) {
-        var result = ejs.render('<%- includeFiles("partials/mask-one.html") %>', {
+        var result = ejs.render('<%- includeFiles("../partials/mask-one.html") %>', {
             filename: __filename
         });
 
@@ -55,7 +55,7 @@ describe('includeFiles', function () {
     });
 
     it('should include multiple files by glob', function (done) {
-        var result = ejs.render('<%- includeFiles("partials/mask-*.html") %>', {
+        var result = ejs.render('<%- includeFiles("../partials/mask-*.html") %>', {
             filename: __filename
         });
 

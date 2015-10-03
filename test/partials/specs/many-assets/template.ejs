@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%= info.title %></title>
+    <meta name="author" content="<%= info.author %>">
+    <% if (info.keywords !== '') {%>
+    <meta name="keywords" content="<%= info.keywords %>">
+    <% } %>
+
+    <!-- Your master-app styles -->
+        <link href="/docs/data/bootstrap-head.css" rel="stylesheet">
+        <script src="script-in-head.js"></script>
+        <style>.head{color:red}</style>
+
+        <link href="/docs/data/bootstrap-head.css" rel="stylesheet" data-nonclarify="true">
+        <script src="script-in-head.js" data-nonclarify="true"></script>
+        <style  data-nonclarify="true">.head{color:red}</style>
+    <!-- /Your master-app styles -->
+
+    <!-- Source default resources -->
+        <link href="/source/assets/css/source.css" rel="stylesheet" data-source="core">
+        <script src="/source/assets/js/require.bundle.js" data-source="core"></script>
+        <script src="/source/assets/js/enter-the-source.js" data-source="core"></script>
+    <!-- /Source default resources -->
+
+    <%- head %>
+</head>
+<body class="source_page __spec">
+    <link href="/docs/data/bootstrap-body.css" rel="stylesheet">
+    <div class="source_container">
+        <%- header %>
+        <div class="source_main source_col-main" role="main">
+            <h1><%= info.title %></h1>
+            <div class="source_header-meta">v.<%- engineVersion %></div>
+            <%- content %>
+        </div>
+        <%- footer %>
+        <style>.body{color:red}</style>
+    </div>
+    <script src="script-in-body.js"></script>
+
+    <link href="/docs/data/bootstrap-head.css" rel="stylesheet" data-nonclarify="true">
+    <script src="script-in-head.js" data-nonclarify="true"></script>
+    <style data-nonclarify="true">.body{color:red}</style>
+</body>
+</html>
