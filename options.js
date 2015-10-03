@@ -8,7 +8,7 @@ module.exports = {
         common: {
             defaultLogLevel: 'INFO',
             defaultProdLogLevel: 'ERROR',
-            includedDirs: ['docs'],
+            includedDirs: ['docs', 'test'],
             specPaths: ['specs'],
 
             // Turn on context level setting

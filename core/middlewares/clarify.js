@@ -5,13 +5,14 @@ var fs = require('fs-extra');
 var url = require('url');
 var Q = require('q');
 var _ = require('lodash');
-var jsdom = require('jsdom');
+var http = require('http');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
+var specsParser = require(path.join(pathToApp, 'core/lib/specPageParser'));
 var htmlParser = require(path.join(pathToApp, 'core/html-tree/html-parser'));
 
 
@@ -34,7 +35,7 @@ var getTpl = function(tpl) {
     var pathToTemplate = path.join(pathToApp, 'core/views/clarify', templateName + '.ejs');
     var userPathToTemplate = path.join(global.app.get('user'), 'core/views/clarify', templateName + '.ejs');
 
-    // First we check user tempalte, then core
+    // First we check user tempalate, then core
     fs.readFile(userPathToTemplate, 'utf-8', function(err, data){
         if (err) {
 
@@ -99,32 +100,31 @@ var getTplList = function(){
     return deferred.promise;
 };
 
-// TODO: Move to standalone API, for fast JSDOM spec parsing
 var parseSpec = function(sections, pathToSpec) {
     var deferred = Q.defer();
 
-    // Parsing spec with JSdom
-    jsdom.env(
-        'http://127.0.0.1:' + global.opts.core.server.port + pathToSpec + '?internal=true',
-        ['http://127.0.0.1:' + global.opts.core.server.port + '/source/assets/js/modules/sectionsParser.js'],
-        function (err, window) {
-            if (err) {
-                deferred.reject({
-                    err: err,
-                    msg: 'JSDOM error'
-                });
-                return;
-            }
+    var options = {
+        host: '127.0.0.1',
+        port: global.opts.core.server.port,
+        path: pathToSpec + '?internal=true'
+    };
+    var fullUrl = url.resolve(options.host + ':' + options.port, options.path);
 
+    var callback = function (response) {
+        var specHTML = '';
+
+        //another chunk of data has been recieved, so append it to `str`
+        response.on('data', function (chunk) {
+            specHTML += chunk;
+        });
+
+        //the whole response has been recieved, so we just print it out here
+        response.on('end', function () {
             var output = {};
-
-            var SourceGetSections = window.SourceGetSections;
-
-            var parser = new SourceGetSections();
-            var allContents = parser.getSpecFull();
+            var allContents = specsParser.process(specHTML);
 
             if (sections) {
-                output = parser.getSpecFull(sections);
+                output = specsParser.getBySection(_.merge({}, allContents), sections);
             } else {
                 output = allContents;
             }
@@ -139,8 +139,18 @@ var parseSpec = function(sections, pathToSpec) {
                     msg: 'Requested sections HTML not found'
                 });
             }
-        }
-    );
+        });
+    };
+
+    var request = http.request(options, callback);
+
+    request.on('error', function (e) {
+        deferred.reject({
+            msg: 'Failed loading spec ' + fullUrl
+        });
+    });
+
+    request.end();
 
     return deferred.promise;
 };

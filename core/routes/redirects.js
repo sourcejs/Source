@@ -35,5 +35,6 @@ global.app.use('/source/assets', express.static(path.join(pathToApp, 'assets')))
 
 // Custom routes
 global.app.use('/docs', express.static(path.join(pathToApp, '/docs')));
+global.app.use('/test', express.static(path.join(pathToApp, '/test')));
 global.app.use('/jsdoc', express.static(path.join(pathToApp, '/jsdoc')));
-global.app.use('/test', express.static(path.join(pathToApp, '/assets/test')));
+global.app.use('/jasmine-test', express.static(path.join(pathToApp, '/assets/test')));

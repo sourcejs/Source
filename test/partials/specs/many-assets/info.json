@@ -1,0 +1,5 @@
+{
+    "title": "Many Assets",
+    "template": "$(context)/template.ejs",
+    "tag": ["hidden"]
+}

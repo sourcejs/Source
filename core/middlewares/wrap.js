@@ -40,6 +40,17 @@ exports.process = function (req, res, next) {
             viewParam = 'navigation';
         }
 
+        // Check if we're working with included dirs
+        if (context) {
+            global.opts.core.common.includedDirs.forEach(function (includedDir) {
+                var pathToCheck = (path.join(global.app.get('user'), includedDir) + '/').replace(/\\/g, '/');
+
+                if (context.indexOf(pathToCheck) === 0) {
+                    context = context.replace(pathToCheck, path.join(global.pathToApp, includedDir) + '/');
+                }
+            });
+        }
+
         var templatePath = viewResolver(viewParam, contextOptions.rendering.views, context) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
