@@ -35,7 +35,7 @@ var getTpl = function(tpl) {
     var pathToTemplate = path.join(pathToApp, 'core/views/clarify', templateName + '.ejs');
     var userPathToTemplate = path.join(global.app.get('user'), 'core/views/clarify', templateName + '.ejs');
 
-    // First we check user tempalte, then core
+    // First we check user tempalate, then core
     fs.readFile(userPathToTemplate, 'utf-8', function(err, data){
         if (err) {
 
@@ -124,7 +124,7 @@ var parseSpec = function(sections, pathToSpec) {
             var allContents = specsParser.process(specHTML);
 
             if (sections) {
-                output = specsParser.getBySection(allContents, sections);
+                output = specsParser.getBySection(_.merge({}, allContents), sections);
             } else {
                 output = allContents;
             }
