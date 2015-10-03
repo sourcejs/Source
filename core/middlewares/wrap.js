@@ -46,7 +46,7 @@ exports.process = function (req, res, next) {
                 var pathToCheck = path.join(global.app.get('user'), includedDir) + '/';
 
                 if (context.indexOf(pathToCheck) === 0) {
-                    context = context.replace(pathToCheck, path.join(global.pathToApp, includedDir) + '/')
+                    context = context.replace(pathToCheck, path.join(global.pathToApp, includedDir) + '/');
                 }
             });
         }
