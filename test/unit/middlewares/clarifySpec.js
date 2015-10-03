@@ -1,10 +1,8 @@
-var fs = require('fs');
 var path = require('path');
 
 var pathToMasterApp = path.resolve('./');
 
 var should = require('should');
-var assert = require('assert');
 var request = require('supertest');
 
 var cheerio = require('cheerio');
@@ -13,9 +11,9 @@ var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 
-describe.only('Clarify test /docs/spec?clarify=true', function () {
+describe('Clarify test /docs/spec?clarify=true', function () {
     describe('GET /docs/spec?clarify=true...', function () {
-        var url = 'http://localhost:8080/docs/spec/?clarify=true';
+        var url = 'http://127.0.0.1:8080/docs/spec/?clarify=true';
         it('should return nothing (&sections=77)', function (done) {
             request(url)
                 .get('&sections=77')
@@ -63,8 +61,13 @@ describe.only('Clarify test /docs/spec?clarify=true', function () {
                     }
 
                     var $ = cheerio.load(res.text, {decodeEntities: false});
+
                     var examples = $('.source_example');
+                    var headers = $('.source_section_h');
+
                     examples.length.should.equal(1);
+                    headers.length.should.equal(1);
+
                     done();
                 });
         });
@@ -102,6 +105,27 @@ describe.only('Clarify test /docs/spec?clarify=true', function () {
 
                     $('.__clear').length.should.equal(1);
                     examples.length.should.equal(0);
+
+                    done();
+                });
+        });
+
+        it('should disable javascript', function (done) {
+            request(url)
+                .get('&nojs=true')
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    var $ = cheerio.load(res.text, {decodeEntities: false});
+
+                    var scripts = $('body script');
+
+                    // Only clarify script should remain
+                    scripts.length.should.be.equal(1);
+
                     done();
                 });
         });

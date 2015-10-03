@@ -340,7 +340,7 @@ module.exports = function(grunt) {
 
     // Test task. Execute with running app
     grunt.registerTask('test-func', 'Run ALL functional tests or specified by second param', function () {
-        // if custom mask set - `grunt test --spec=test/unit/**/*.js`
+        // if custom mask set - `grunt test --spec=test/functional/**/*.js`
         var spec = grunt.option('spec');
         if (spec) {
             grunt.config.set('casperjs.files', [spec]);
