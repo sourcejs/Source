@@ -4,7 +4,8 @@ var path = require('path');
 var fs = require('fs-extra');
 var link = require('./lib/createLink');
 
-var pathToApp = process.env.PWD.replace(/^\w:\\/, function (match) {
+var currentDir = process.env.PWD || __dirname;
+var pathToApp = currentDir.replace(/^\w:\\/, function (match) {
     return match.toLowerCase();
 });
 
