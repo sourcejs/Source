@@ -1,7 +1,6 @@
 'use strict';
 
 var path = require('path');
-var fs = require('fs');
 var link = require('./lib/createLink');
 
 var pathToApp = __dirname.replace(/^\w:\\/, function (match) {
@@ -15,8 +14,7 @@ var parentNodeModules = path.join(enginePath, '../');
 
 // check if sourcejs is installed as a node_package
 if (
-    path.relative(parentNodeModules, enginePath) === 'sourcejs' &&
-    fs.existsSync(path.join(userPath, 'options.js'))
+    path.relative(parentNodeModules, enginePath) === 'sourcejs'
 ) {
     link(userPath, internalUserPath, 'dir');
     console.log('SourceJS User folder symlink created.');

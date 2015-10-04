@@ -54,7 +54,7 @@
   },
   "scripts": {
     "postinstall": "node ./core/postInstall && grunt update && node ./core/trackInstall",
-    "build": "npm i",
+    "build": "node ./core/postInstall && grunt update",
     "lint": "grunt jshint",
     "start": "node app",
     "watch": "grunt watch-all",

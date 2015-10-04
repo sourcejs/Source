@@ -39,9 +39,11 @@ var parseSpecUrlPath = module.exports.parseSpecUrlPath = function(urlPath){
  * @returns {String} Return a parsed Spec ID
  */
 var getSpecIDFromUrl = module.exports.getSpecIDFromUrl = function(urlToSpec){
-    urlToSpec = urlToSpec.replace(/^\//, '').replace(/\/+$/, '');
-
-    return urlToSpec;
+    if (urlToSpec === '/') {
+        return urlToSpec;
+    } else {
+        return urlToSpec.replace(/^\//, '').replace(/\/+$/, '');
+    }
 };
 
 /**
@@ -57,6 +59,7 @@ module.exports.getSpecInfo = function(urlSpecPath) {
         scope: 'specs',
         path: specsDataPath
     });
+
     var specID = getSpecIDFromUrl(urlSpecPath);
 
     return parseSpecData.getByID(specID);

@@ -104,7 +104,8 @@ var parseSpec = function(sections, pathToSpec) {
         port: global.opts.core.server.port,
         path: pathToSpec + '?internal=true'
     };
-    var fullUrl = url.resolve(options.host + ':' + options.port, options.path);
+
+    var fullUrl = options.host + ':' + options.port + options.path;
 
     var callback = function (response) {
         var specHTML = '';

@@ -247,6 +247,9 @@ ParseData.prototype.getFilteredData = function(filterConf, array, data) {
  * @returns {Object} Return single object by requested ID, null (no id found) or undefined (no data found)
  */
 ParseData.prototype.getByID = function(id) {
+    // TODO: fix flat id's list, to remove this hack
+    if (id === '/') id = 'specFile';
+
     var dataExists = this.updateData();
     var targetData = this.data[id];
 
