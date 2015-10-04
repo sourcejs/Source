@@ -12,7 +12,7 @@ var getLoaderPackageName = function() {
     var packageName;
     var parentFolderName = path.basename(path.resolve('..'));
     var isSubPackage = parentFolderName === 'node_modules';
-    var isLocalDepsAvailable = fs.existsSync('node_modules/grunt-autoprefixer') && fs.existsSync('node_modules/grunt-contrib-cssmin');
+    var isLocalDepsAvailable = fs.existsSync('node_modules/grunt-autoprefixer') && fs.existsSync('node_modules/grunt-contrib-copy');
 
     if (isSubPackage && !isLocalDepsAvailable) {
         packageName = 'load-grunt-parent-tasks';
