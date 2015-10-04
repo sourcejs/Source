@@ -12,7 +12,6 @@
     "url": "https://github.com/sourcejs/Source.git"
   },
   "dependencies": {
-    "async": "~0.9.0",
     "body-parser": "~1.6.4",
     "cheerio": "^0.19.0",
     "colors": "0.6.x",
@@ -51,7 +50,6 @@
     "macaddress": "^0.2.8",
     "marked": "^0.3.2",
     "path": "^0.4.9",
-    "phantomjs": "1.9.7-15",
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",

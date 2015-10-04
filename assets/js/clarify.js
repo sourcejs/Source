@@ -15,10 +15,8 @@ require([
     // If we have data from Clarify output
     if (window.sourceClarifyData){
         var _options = JSON.parse(options);
-        var htmlParser = _options.plugins && _options.plugins.htmlParser && _options.plugins.htmlParser.enabled;
 
         var $panelTemplate = $(_.template(clarifyPanelTpl, {
-            htmlParser: htmlParser,
             showApiTargetOption: window.sourceClarifyData.showApiTargetOption,
             specUrl: window.sourceClarifyData.specUrl,
             tplList: window.sourceClarifyData.tplList,

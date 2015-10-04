@@ -30,7 +30,6 @@ commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
     .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + ').')
     .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
-    .option('--html', 'Turn on HTML parser on app start (requires installed and enabled parser).')
     .option('--test', 'Run app with tests.')
     .option('--no-watch', 'Run with disabled watcher.')
     .option('--post-grunt [string]', 'Define Grunt command to run after app start', 'ci-post-run')
@@ -53,15 +52,6 @@ var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
 
-if (commander.html) {
-    trackStats.event({
-        group: 'features',
-        event: 'enabled html parser'
-    });
-
-    global.opts.plugins.htmlParser.enabled = true;
-    global.opts.plugins.htmlParser.onStart = true;
-}
 if (commander.port) global.opts.core.server.port = parseInt(commander.port);
 if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
 if (!commander.watch) {

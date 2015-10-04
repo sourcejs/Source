@@ -13,16 +13,12 @@ var pathToApp = path.dirname(require.main.filename);
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var parseData = require(path.join(pathToApp, 'core/lib/parseData'));
 var specsParser = require(path.join(pathToApp, 'core/lib/specPageParser'));
-var htmlParser = require(path.join(pathToApp, 'core/html-tree/html-parser'));
-
 
 var htmlDataPath = path.join(pathToApp, global.opts.core.api.htmlData);
 var parseHTMLData = new parseData({
     scope: 'html',
     path: htmlDataPath
 });
-
-var htmlParserEnabled = global.opts.plugins && global.opts.plugins.htmlParser && global.opts.plugins.htmlParser.enabled;
 
 //TODO JSdoc
 
@@ -155,21 +151,6 @@ var parseSpec = function(sections, pathToSpec) {
     return deferred.promise;
 };
 
-var updateApiData = function(specID) {
-    var deferred = Q.defer();
-    var specs = [specID];
-
-    htmlParser.processSpecs(specs, function(err){
-        if (err) {
-            deferred.reject(err);
-        } else {
-            deferred.resolve();
-        }
-    });
-
-    return deferred.promise;
-};
-
 var getDataFromApi = function(sections, specID, apiUpdate) {
     var deferred = Q.defer();
     var output = {};
@@ -198,20 +179,7 @@ var getDataFromApi = function(sections, specID, apiUpdate) {
         }
     };
 
-    if (apiUpdate) {
-        updateApiData(specID).then(function(){
-            getSpecData();
-        }).fail(function(err) {
-            var msg = 'Failed updating HTML Spec API. ';
-
-            deferred.reject({
-                err: err,
-                msg: msg
-            });
-        });
-    } else {
-        getSpecData();
-    }
+    getSpecData();
 
     return deferred.promise;
 };
@@ -274,8 +242,6 @@ module.exports.process = function(req, res, next) {
             return;
         }
 
-        if (!specHasHTMLAPIData) apiUpdate = true;
-
         var getSpecData = function(){
             return fromApi ? getDataFromApi(sections, specID, apiUpdate) : parseSpec(sections, parsedPath.pathToSpec);
         };
@@ -297,7 +263,7 @@ module.exports.process = function(req, res, next) {
                 };
 
                 var clarifyData = '<script>var sourceClarifyData = '+ JSON.stringify({
-                    showApiTargetOption: specHasHTMLAPIData || htmlParserEnabled,
+                    showApiTargetOption: specHasHTMLAPIData,
                     specUrl: specInfo.url,
                     sectionsIDList: getSectionsIDList(_specData.allContents),
                     tplList: tplList

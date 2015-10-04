@@ -171,10 +171,6 @@ module.exports = {
 
     // External plugins options (are also exposed to client-side
     plugins: {
-        // PhantomJS HTML API parser will be moved to plugin at v.0.6
-        htmlParser: {
-            enabled: false
-        }
     },
 
     /*
