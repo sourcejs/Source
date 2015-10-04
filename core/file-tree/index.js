@@ -65,8 +65,11 @@ var getRelativeSpecPath = module.exports.getRelativeSpecPath = function(absolute
         relativeSpecPath = absolutePath.replace(config.specsRoot, '');
     } else {
         // Cleaning path for included folders
-
         relativeSpecPath = absolutePath.replace(normalizedPathToApp, '');
+    }
+
+    if (relativeSpecPath === '') {
+        relativeSpecPath = '/';
     }
 
     return relativeSpecPath;
@@ -170,7 +173,7 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     var relativeSpecPath = specLocation.relativeSpecPath;
 
     // Remove first slash for ID
-    page.id = relativeSpecPath.substring(1);
+    page.id = relativeSpecPath === '/' ? '/' : relativeSpecPath.substring(1);
     page.url = relativeSpecPath;
 
     // If we have Spec, get additional meta
@@ -211,7 +214,7 @@ var fileTree = function (workingDir) {
         dirContent[i] = path.join(processingDir, dirContent[i].replace(/\\/g, '/'));
     }
 
-    //on first call we add includedDirs
+    // On first call we add includedDirs
     if (processingDir === config.specsRoot) {
         config.includedDirs.map(function (includedDir) {
             dirContent.push(path.join(normalizedPathToApp, includedDir));
@@ -220,7 +223,7 @@ var fileTree = function (workingDir) {
 
     dirContent.forEach(function(pathToFile) {
         // Path is excluded
-        if (excludes.test(processingDir)) return;
+        if (excludes.test(processingDir) || !fs.existsSync(pathToFile)) return;
 
         var infoFileName = coreOpts.common.infoFile;
         var targetFile = path.basename(pathToFile);
@@ -283,7 +286,7 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
         }
 
         try {
-            prevData = fs.readJsonFileSync(dataStoragePath);
+            prevData = fs.readJsonSync(dataStoragePath);
         } catch (e) {
             global.log.trace('Reading initial data error: ', e);
             global.log.debug('Extending from empty object, as we do not have initial data');
