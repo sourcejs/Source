@@ -286,7 +286,7 @@ var updateFileTree = module.exports.updateFileTree = function (data, unflattenDa
         }
 
         try {
-            prevData = fs.readJsonFileSync(dataStoragePath);
+            prevData = fs.readJsonSync(dataStoragePath);
         } catch (e) {
             global.log.trace('Reading initial data error: ', e);
             global.log.debug('Extending from empty object, as we do not have initial data');

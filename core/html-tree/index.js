@@ -111,7 +111,7 @@ var writeDataFile = module.exports.writeDataFile = function(data, extend, dataPa
             var prevData = {};
 
             try {
-                prevData = fs.readJsonFileSync(dataStoragePath);
+                prevData = fs.readJsonSync(dataStoragePath);
             } catch (e) {
                 apiLog.trace('Reading initial data error: ', e);
                 apiLog.debug('Extending from empty object, as we do not have initial data');
@@ -170,7 +170,7 @@ module.exports.deleteFromDataFile = function(dataPath, removeID, callback) {
         var pathSplit = removeID.split('/');
 
         try {
-            data = fs.readJsonFileSync(dataPath);
+            data = fs.readJsonSync(dataPath);
         } catch (e) {}
 
         if (data) {
