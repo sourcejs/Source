@@ -117,6 +117,12 @@ module.exports.process = function(app, globalOptions){
                 group: 'pre-html',
                 indexPath: path.join(appRoot, 'core/middlewares/md.js')
             },
+            preRenderEjs: {
+                enabled: true,
+                order: -2,
+                group: 'pre-html',
+                indexPath: path.join(appRoot, 'core/middlewares/preRenderEjs.js')
+            },
             mdTag: {
                 enabled: true,
                 order: 0,

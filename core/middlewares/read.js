@@ -3,7 +3,6 @@
 var fs = require('fs-extra');
 var path = require('path');
 
-var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 
@@ -74,22 +73,6 @@ exports.process = function(req, res, next) {
             } else {
                 var specFileExtension = path.extname(physicalPath).replace(".", "");
                 capitalizedExtension = specFileExtension.charAt(0).toUpperCase() + specFileExtension.slice(1);
-            }
-
-            data = data.replace(/^\s+|\s+$/g, '');
-
-            // Pre-render Spec contents with EJS
-            if (!specInfo.noEjs) {
-                try {
-                    data = ejs.render(data, {
-                        engineVersion: global.engineVersion,
-                        info: specInfo
-                    }, {
-                        filename: physicalPath
-                    });
-                } catch(err){
-                    global.log.warn('Could not pre-render spec with EJS: ' + req.path, err);
-                }
             }
 
             req.specData["is" + capitalizedExtension] = true;
