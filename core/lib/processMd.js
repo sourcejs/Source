@@ -3,7 +3,7 @@
 var path = require('path');
 var marked = require('marked');
 var cheerio = require('cheerio');
-var deepExtend = require('deep-extend');
+var _ = require('lodash');
 var translit = require(path.join(global.pathToApp,'core/lib/translit'));
 var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 
@@ -47,7 +47,7 @@ renderer.heading = function (text, level) {
 };
 
 // Extend re-defined renderer
-config.marked.renderer = deepExtend(renderer, config.marked.renderer);
+config.marked.renderer = _.merge(renderer, config.marked.renderer);
 
 marked.setOptions(config.marked);
 

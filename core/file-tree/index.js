@@ -1,8 +1,7 @@
 'use strict';
 
 var fs = require('fs-extra');
-var extend = require('extend');
-var deepExtend = require('deep-extend');
+var _ = require('lodash');
 var path = require('path');
 var extendTillSpec = require(path.join(global.pathToApp,'core/lib/extendTillSpec'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
@@ -191,7 +190,7 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     page.thumbnail = getThumbnailPath(specDir, specInfo.thumbnailPath) || false;
 
     // Apply info file contents on top
-    deepExtend(page, specInfo);
+    _.merge(page, specInfo);
 
     return page;
 };
@@ -239,7 +238,7 @@ var fileTree = function (workingDir) {
             // Going deeper
             var childObj = fileTree(pathToFile);
             if (Object.getOwnPropertyNames(childObj).length !== 0) {
-                outputJSON[targetFile] = extend(outputJSON[targetFile], childObj);
+                outputJSON[targetFile] = childObj;
             }
 
         } else if (targetFile.toLowerCase() === infoFileName.toLowerCase()) {

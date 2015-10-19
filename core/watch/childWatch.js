@@ -4,7 +4,7 @@
 
 var path = require('path');
 var watch = require('gulp-watch');
-var deepExtend = require('deep-extend');
+var _ = require('lodash');
 var commander = require('commander');
 
 // Parse arguments
@@ -47,7 +47,7 @@ utils.extendOptions(config, global.opts.core.watch);
 var prepareData = function(data, targetFile){
     var dir = path.dirname(targetFile);
 
-    return deepExtend(fileTree.getSpecMeta(dir), data);
+    return _.merge(fileTree.getSpecMeta(dir), data);
 };
 
 if (config.enabled){
