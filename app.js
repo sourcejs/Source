@@ -43,6 +43,9 @@ var userPath = (require('./core/lib/getUserPath'))();
 app.set('views', path.join(__dirname, 'core/views'));
 app.set('user', userPath);
 
+//tmp
+console.log('userPath', userPath);
+
 // We support `development` (default), `production` and `presentation` (for demos)
 var MODE = global.MODE = process.env.NODE_ENV || 'development';
 

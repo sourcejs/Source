@@ -13,3 +13,4 @@ notifications:
     on_failure: always
 before_script: "git clone https://github.com/sourcejs/init.git user"
 script: npm run ci-test
+after_success: "mkdir user/node_modules && cp -R . user/node_modules/sourcejs && cd user/node_modules/sourcejs && npm run ci-test"
