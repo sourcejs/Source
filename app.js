@@ -38,9 +38,10 @@ commander
 global.commander = commander;
 
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
+var userPath = (require('./core/lib/getUserPath'))();
 
 app.set('views', path.join(__dirname, 'core/views'));
-app.set('user', path.join(__dirname, global.opts.core.common.pathToUser));
+app.set('user', userPath);
 
 // We support `development` (default), `production` and `presentation` (for demos)
 var MODE = global.MODE = process.env.NODE_ENV || 'development';

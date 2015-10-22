@@ -17,7 +17,8 @@ module.exports = {
             // Name of context level settings file
             contextOptionsFile: 'sourcejs-options.js',
 
-            // Path to your SourceJS configuration folder
+            // Custom path to user contents path, relative to SourceJS root
+            // Used only in case if SourceJS installed as a parent folder for content (old approach)
             pathToUser: 'user',
 
             // Name of spec meta info file

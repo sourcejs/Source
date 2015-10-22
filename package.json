@@ -50,7 +50,7 @@
     "universal-analytics": "^0.3.9"
   },
   "scripts": {
-    "postinstall": "node ./core/postInstall && grunt update && node ./core/trackInstall",
+    "postinstall": "grunt update && node ./core/trackInstall",
     "build": "node ./core/postInstall && grunt update",
     "lint": "grunt jshint",
     "start": "node app",
