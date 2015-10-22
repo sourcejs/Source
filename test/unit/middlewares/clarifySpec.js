@@ -33,7 +33,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
 
         it('should return all sections', function (done) {
             request(url)
-                .get()
+                .get('')
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
