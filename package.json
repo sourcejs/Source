@@ -79,5 +79,5 @@
   },
   "optionalDependencies": {
     "grunt-casperjs": "^2.1.0"
-  },
+  }
 }
