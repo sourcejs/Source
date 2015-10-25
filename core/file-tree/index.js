@@ -173,7 +173,7 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     var relativeSpecPath = specLocation.relativeSpecPath;
 
     // Remove first slash for ID
-    page.id = relativeSpecPath === '/' ? '/' : relativeSpecPath.substring(1);
+    page.id = relativeSpecPath === '/' ? '/' : relativeSpecPath.replace(/^\//, '');
     page.url = relativeSpecPath;
 
     // If we have Spec, get additional meta

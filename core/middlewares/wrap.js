@@ -20,7 +20,7 @@ exports.process = function (req, res, next) {
 
     // Check if we're working with processed file
     if (req.specData && req.specData.renderedHtml) {
-        var specDir = specUtils.getFullPathToSpec(req.url);
+        var specDir = specUtils.getFullPathToSpec(req.path);
         var contextOptions = req.specData.contextOptions;
 
         // get spec content

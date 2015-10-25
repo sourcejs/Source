@@ -12,7 +12,7 @@ module.exports = function(){
         pathToApp = sourcePathFromParent;
     }
 
-    var relativeUserPath = isNodeModule(pathToApp) ? '../../' : global.opts.core.common.pathToUser;
+    var relativeUserPath = isNodeModule(pathToApp) ? '../..' : global.opts.core.common.pathToUser;
 
     return path.join(pathToApp, relativeUserPath);
 };
