@@ -40,6 +40,9 @@ global.commander = commander;
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
 var userPath = global.userPath = (require('./core/lib/getUserPath'))();
 
+// Legacy support
+app.set('user', userPath);
+
 console.log('Running user contents from', '`' + userPath + '`.');
 
 // We support `development` (default), `production` and `presentation` (for demos)

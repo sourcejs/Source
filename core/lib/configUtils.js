@@ -180,7 +180,7 @@ module.exports.getContextOptions = function(refUrl, defaultOpts) {
     var infoOptionsKey = global.opts.core.common.infoFileOptions;
 
     // Extent context options object with info.json contents
-    contextOptions.specInfo = fs.readJsonSync(infoFilePath, {throws: false});
+    contextOptions.specInfo = fs.existsSync(infoFilePath) ? fs.readJsonSync(infoFilePath, {throws: false}) : undefined;
 
     // Override local options
     if (contextOptionsEnabled && contextOptions.specInfo && contextOptions.specInfo[infoOptionsKey]) {

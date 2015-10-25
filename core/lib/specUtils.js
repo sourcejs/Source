@@ -117,7 +117,7 @@ module.exports.getFullPathToSpec = function(urlPath){
     // Including non-standard paths, outside default static route
     global.opts.core.common.includedDirs.forEach(function(item){
         if (cleanPath.split('/')[0] === item) {
-            specPath = specPath.replace('/' + global.opts.core.common.pathToUser + '/' + cleanPath, '/' + cleanPath);
+            specPath = specPath.replace(global.userPath, global.pathToApp + '/');
         }
     });
 
