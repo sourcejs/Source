@@ -18,7 +18,7 @@ var configUtils = require(path.join(global.pathToApp,'core/lib/configUtils'));
 exports.process = function(req, res, next) {
     var reqExt = path.extname(req.path);
 
-    // Skip static resources, and dirs witout trailing slash
+    // Skip static resources, and dirs without trailing slash
     if (reqExt !== "" || (reqExt === "" && req.path.slice(-1) !== '/')) {
         next();
         return;
@@ -29,9 +29,15 @@ exports.process = function(req, res, next) {
 
     // Check if folder is requested but not the reserved namespaces
     if (!apiRe.test(req.path) && !sourceRe.test(req.path)) {
+        var specPath = specUtils.getFullPathToSpec(req.path);
+
+        if (!fs.existsSync(specPath)) {
+            next();
+            return;
+        }
+
         global.specLoadTime = process.hrtime();
 
-        var specPath = specUtils.getFullPathToSpec(req.path);
         var contextOptions = configUtils.getContextOptions(req.path);
 
         var specFiles = contextOptions.specInfo && contextOptions.specInfo.specFile ? [contextOptions.specInfo.specFile] : contextOptions.rendering.specFiles;
@@ -43,16 +49,6 @@ exports.process = function(req, res, next) {
             next();
             return;
         }
-
-        // Passing req params
-        var urlParams = req.url.split('?')[1];
-        var paramsString = urlParams ? '?' + urlParams : '';
-
-        // Modifying url and saving params string
-        // TODO: remove in next non-patch release https://github.com/sourcejs/Source/issues/147
-        req.originalUrl = req.url;
-        req.originalPath = req.path;
-        req.url = path.join(req.path, specFile) + paramsString;
 
         fs.readFile(physicalPath, 'utf8', function (err, data) {
             if (err) {
