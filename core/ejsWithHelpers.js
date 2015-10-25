@@ -97,6 +97,8 @@ var includeFiles = function(data, options){
 };
 
 ejs.render = function(template, data, options){
+    var sandboxPath = /^..\//.test(path.relative(global.pathToApp, global.userPath)) ? global.userPath : global.pathToApp;
+
     data = data || {};
     options = options || {};
 
@@ -113,7 +115,7 @@ ejs.render = function(template, data, options){
 
     if (global.opts.core.sandboxIncludes) {
         _.assign(options, {
-            sandbox: global.pathToApp
+            sandbox: sandboxPath
         });
     }
 
