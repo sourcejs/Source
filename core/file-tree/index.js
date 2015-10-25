@@ -11,6 +11,8 @@ var coreOpts = global.opts.core;
 var prettyHrtime = require('pretty-hrtime');
 
 var busy = false;
+var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
+var userPath = global.userPath.replace(/\\/g, '/');
 
 var config = {
     includedDirs: coreOpts.common.includedDirs,
@@ -22,7 +24,7 @@ var config = {
     cronProd: true,
     cronRepeatTime: 60000,
     outputFile: path.join(global.pathToApp, 'core/api/data/pages-tree.json'),
-    specsRoot: path.join(global.pathToApp, coreOpts.common.pathToUser).replace(/\\/g, '/'),
+    specsRoot: userPath,
     busyTimeout: 300,
     thumbnail: 'thumbnail.png'
 };
@@ -30,7 +32,6 @@ var config = {
 // Overwriting base options
 utils.extendOptions(config, coreOpts.fileTree);
 
-var normalizedPathToApp = global.pathToApp.replace(/\\/g, '/');
 
 var prepareExcludesRegex = function(){
     var dirsForRegExp = '';
@@ -172,7 +173,7 @@ var getSpecMeta = module.exports.getSpecMeta = function(specDirOrPath){
     var relativeSpecPath = specLocation.relativeSpecPath;
 
     // Remove first slash for ID
-    page.id = relativeSpecPath === '/' ? '/' : relativeSpecPath.substring(1);
+    page.id = relativeSpecPath === '/' ? '/' : relativeSpecPath.replace(/^\//, '');
     page.url = relativeSpecPath;
 
     // If we have Spec, get additional meta

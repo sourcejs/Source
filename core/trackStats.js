@@ -124,7 +124,7 @@ module.exports.specs = function(req) {
 
     if (q.internal) return;
 
-    if (req.originalPath === '/') {
+    if (req.path === '/') {
         pageName = '/';
     } else if (req.specData && req.specData.info && req.specData.info.role === 'navigation') {
         pageName = 'navigation';

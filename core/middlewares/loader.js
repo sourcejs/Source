@@ -158,7 +158,7 @@ module.exports.process = function(app, globalOptions){
     utils.extendOptions(
         config,
         {
-            list: gatherMiddlewares(path.join(app.get('user'), 'node_modules'), new RegExp(/^sourcejs-/), 'core/middleware/index.js')
+            list: gatherMiddlewares(path.join(global.userPath, 'node_modules'), new RegExp(/^sourcejs-/), 'core/middleware/index.js')
         },
         globalOptions.core.middlewares
     );

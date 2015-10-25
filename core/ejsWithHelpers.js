@@ -2,6 +2,7 @@
 
 var ejs = require('ejs');
 var fs = require('fs');
+var nodeUtil = require('util');
 var glob = require('glob');
 var path = require('path');
 var _ = require('lodash');
@@ -20,7 +21,7 @@ var EJS_OPTS = ['cache', 'filename', 'sandbox', 'delimiter', 'scope', 'context',
  *
  * @memberof module:ejs-internal
  * @param {Object}  data data object
- * @param {Options} opts options object
+ * @param {Object} opts options object
  * @static
  */
 
@@ -32,8 +33,29 @@ var cpOptsInData = function (data, opts) {
     });
 };
 
+var isRestrictedReadPath = function(pathToRead, options) {
+  var isRescricted = true;
+  var i;
+
+  if (nodeUtil.isArray(options.sandbox)) {
+    for (i = 0; i < options.sandbox.length; i++) {
+      var sandboxPpath = options.sandbox[i];
+      var notRestricted = path.relative(sandboxPpath, pathToRead).substring(0, 2) !== '..';
+
+      if (notRestricted) {
+        isRescricted = false;
+        break;
+      }
+    }
+
+    return isRescricted;
+  } else {
+    return path.relative(options.sandbox, pathToRead).substring(0, 2) === '..';
+  }
+};
+
 var readFile = function (filePath, options) {
-    if (options.sandbox && path.relative(options.sandbox, filePath).substring(0, 2) === '..') {
+    if (options.sandbox && isRestrictedReadPath(filePath, options)) {
         throw new Error('reading files beyond sandbox is restricted, limit set to ' + options.sandbox);
     }
 
@@ -97,6 +119,11 @@ var includeFiles = function(data, options){
 };
 
 ejs.render = function(template, data, options){
+    var sandboxPaths = [
+        global.pathToApp,
+        global.userPath
+    ];
+
     data = data || {};
     options = options || {};
 
@@ -113,7 +140,7 @@ ejs.render = function(template, data, options){
 
     if (global.opts.core.sandboxIncludes) {
         _.assign(options, {
-            sandbox: global.pathToApp
+            sandbox: sandboxPaths
         });
     }
 
