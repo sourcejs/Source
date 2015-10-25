@@ -38,10 +38,9 @@ commander
 global.commander = commander;
 
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
-var userPath = (require('./core/lib/getUserPath'))();
+var userPath = global.userPath = (require('./core/lib/getUserPath'))();
 
-app.set('views', path.join(__dirname, 'core/views'));
-app.set('user', userPath);
+console.log('Running user contents from', '`' + userPath + '`.');
 
 // We support `development` (default), `production` and `presentation` (for demos)
 var MODE = global.MODE = process.env.NODE_ENV || 'development';
@@ -111,7 +110,7 @@ app.use(function (req, res, next) {
 });
 
 // Favicon
-var faviconPath = path.join(app.get('user'), 'favicon.ico');
+var faviconPath = path.join(userPath, 'favicon.ico');
 if (fs.existsSync(faviconPath)){
     app.use(favicon(faviconPath));
 }
@@ -170,7 +169,7 @@ require("./core/loadPlugins.js");
 
 try {
     // User additional functionality
-    require(app.get('user') + "/core/app.js");
+    require(userPath + "/core/app.js");
 } catch(e){}
 
 
@@ -192,7 +191,7 @@ if (global.opts.core.watch.enabled && global.MODE === 'development') {
 var headerFooter = require('./core/headerFooter');
 
 // Static content
-app.use(express.static(app.get('user')));
+app.use(express.static(userPath));
 
 // Page 404
 app.use(function(req, res){
@@ -219,7 +218,7 @@ var logErrors = function(err, req, res, next) {
         var url = req.url || '';
 
         log.debug(req.method, req.headers);
-        log.error(('Requested url: ' + url).red, ('Error: ' + err.stack).red);
+        log.error(('Error on requesting url: ' + url).red +'.', ('Error: ' + err.stack).red);
 
         if (req.xhr) {
             res.status(500).json({msg: 'Server error'});

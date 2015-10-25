@@ -5,7 +5,7 @@ var path = require('path');
 
 exports.getHeaderAndFooter = function () {
     var defaultTemplatePath = path.join(global.pathToApp, 'assets/templates');
-    var userTemplatePath = path.join(global.app.get('user'), 'assets/templates');
+    var userTemplatePath = path.join(global.userPath, 'assets/templates');
     var headerFile = 'header.inc.html';
     var footerFile = 'footer.inc.html';
 

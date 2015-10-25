@@ -48,7 +48,7 @@ var getContextOptionsList = module.exports.getContextOptionsList = function(star
     var checkPath = fs.existsSync(startPath);
     if (!checkPath) return [];
 
-    var searchStopPath = global.app.get('user');
+    var searchStopPath = global.userPath;
     var fileToFind = path.sep + global.opts.core.common.contextOptionsFile;
 
     // Skip if start path is behind stop path

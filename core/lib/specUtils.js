@@ -112,7 +112,7 @@ module.exports.getSpecFromDir = function(dirPath, specFiles) {
 module.exports.getFullPathToSpec = function(urlPath){
     var pathToSpec = parseSpecUrlPath(urlPath).pathToSpec;
     var cleanPath = urlPath.replace(/\/+$/, '').replace(/\//, '');
-    var specPath = path.join(global.app.get('user'), pathToSpec).replace(/\\/g, '/');
+    var specPath = path.join(global.userPath, pathToSpec).replace(/\\/g, '/');
 
     // Including non-standard paths, outside default static route
     global.opts.core.common.includedDirs.forEach(function(item){

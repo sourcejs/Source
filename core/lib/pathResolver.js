@@ -17,8 +17,8 @@ var resolve = module.exports.resolve = function(pathToResolve, context){
 
     var map = {
         sourcejs: global.pathToApp,
-        user: global.app.get('user'),
-        context: context || global.app.get('user')
+        user: global.userPath,
+        context: context || global.userPath
     };
     var result = pathToResolve;
 
