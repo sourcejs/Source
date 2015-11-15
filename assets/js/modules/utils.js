@@ -59,8 +59,8 @@ define([
         var specName;
         var pageUrl = window.location.pathname;
 
-        var pageUrlSplit = pageUrl.split("/"); //Разбивает на массив
-        specName = pageUrlSplit[pageUrlSplit.length - 2]; //Берет последнюю часть урла
+        var pageUrlSplit = pageUrl.split("/");
+        specName = pageUrlSplit[pageUrlSplit.length - 2];
 
         return specName;
     };
