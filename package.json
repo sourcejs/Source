@@ -41,6 +41,7 @@
     "log4js": "~0.6.20",
     "macaddress": "^0.2.8",
     "marked": "^0.3.2",
+    "minimatch": "^3.0.0",
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
