@@ -38,7 +38,7 @@ glob.unshift('**/info.json');
 
 if (Array.isArray(config.includedDirs)) {
     config.includedDirs.forEach(function(item){
-        if (isNodeModule) {
+        if (isNodeModule()) {
             glob.push('node_modules/sourcejs/' + item + '/**/info.json');
         } else {
             glob.push('../' + item + '/**/info.json');
