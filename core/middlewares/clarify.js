@@ -29,7 +29,7 @@ var getTpl = function(tpl) {
 
     // TODO: use view resolver
     var pathToTemplate = path.join(pathToApp, 'core/views/clarify', templateName + '.ejs');
-    var userPathToTemplate = path.join(global.app.get('user'), 'core/views/clarify', templateName + '.ejs');
+    var userPathToTemplate = path.join(global.userPath, 'core/views/clarify', templateName + '.ejs');
 
     // First we check user tempalate, then core
     fs.readFile(userPathToTemplate, 'utf-8', function(err, data){
@@ -56,7 +56,7 @@ var getTplList = function(){
     var deferred = Q.defer();
 
     var pathToTemplates = path.join(pathToApp, 'core/views/clarify');
-    var userPathToTemplates = path.join(global.app.get('user'), 'core/views/clarify');
+    var userPathToTemplates = path.join(global.userPath, 'core/views/clarify');
 
     var templatesList = [];
 

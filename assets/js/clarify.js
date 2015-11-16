@@ -10,10 +10,11 @@ require([
     "sourceModules/utils",
     "sourceLib/lodash",
     "text!sourceTemplates/clarifyPanel.inc.html"
-    ], function ($, options, u, _, clarifyPanelTpl){
+], function ($, options, u, _, clarifyPanelTpl){
+    var triesLimit = 2;
+    var triesCount = 0;
 
-    // If we have data from Clarify output
-    if (window.sourceClarifyData){
+    var handler = function() {
         var $panelTemplate = $(_.template(clarifyPanelTpl, {
             showApiTargetOption: window.sourceClarifyData.showApiTargetOption,
             specUrl: window.sourceClarifyData.specUrl,
@@ -81,7 +82,21 @@ require([
 
             location.href = clarifyBaseUrl + constructedParams;
         });
-    } else {
-        console.log('Clarify panel failed to receive expected data from clarify, check your tpl.');
-    }
+    };
+
+    var renderClarify = function(){
+        // If we have data from Clarify output
+        if (window.sourceClarifyData){
+            handler();
+        } else {
+            if (triesCount < triesLimit) {
+                triesCount++;
+                setTimeout(renderClarify, 1000);
+            } else {
+                console.log('Clarify panel failed to receive expected data from clarify, check your tpl.');
+            }
+        }
+    };
+
+    renderClarify();
 });

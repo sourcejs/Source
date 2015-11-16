@@ -41,6 +41,7 @@
     "log4js": "~0.6.20",
     "macaddress": "^0.2.8",
     "marked": "^0.3.2",
+    "minimatch": "^3.0.0",
     "pretty-hrtime": "^1.0.0",
     "q": "^1.1.1",
     "serve-favicon": "^2.2.0",
@@ -50,8 +51,8 @@
     "universal-analytics": "^0.3.9"
   },
   "scripts": {
-    "postinstall": "node ./core/postInstall && grunt update && node ./core/trackInstall",
-    "build": "node ./core/postInstall && grunt update",
+    "postinstall": "grunt update && node ./core/trackInstall",
+    "build": "grunt update",
     "lint": "grunt jshint",
     "start": "node app",
     "watch": "grunt watch-all",
