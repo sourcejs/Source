@@ -38,7 +38,10 @@ commander
 global.commander = commander;
 
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
-var userPath = global.userPath = (require('./core/lib/getUserPath'))();
+
+var getUserPath = require('./core/lib/getUserPath');
+var userPath = global.userPath = getUserPath();
+global.isNodeModule = getUserPath.isNodeModule;
 
 // Legacy support
 app.set('user', userPath);

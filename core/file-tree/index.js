@@ -8,7 +8,6 @@ var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 var globArray = require(path.join(global.pathToApp,'core/lib/globArray'));
-var isNodeModule = require(path.join(global.pathToApp,'core/lib/isNodeModule'));
 var coreOpts = global.opts.core;
 var prettyHrtime = require('pretty-hrtime');
 
@@ -38,7 +37,7 @@ glob.unshift('**/info.json');
 
 if (Array.isArray(config.includedDirs)) {
     config.includedDirs.forEach(function(item){
-        if (isNodeModule()) {
+        if (global.isNodeModule) {
             glob.push('node_modules/sourcejs/' + item + '/**/info.json');
         } else {
             glob.push('../' + item + '/**/info.json');
