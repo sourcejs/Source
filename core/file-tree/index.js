@@ -32,6 +32,7 @@ var config = {
 // Overwriting base options
 utils.extendOptions(config, coreOpts.fileTree);
 
+var relativePathFromUserToApp = path.relative(userPath, normalizedPathToApp);
 var glob = config.excludes;
 glob.unshift('**/info.json');
 
@@ -40,7 +41,7 @@ if (Array.isArray(config.includedDirs)) {
         if (global.isNodeModule) {
             glob.push('node_modules/sourcejs/' + item + '/**/info.json');
         } else {
-            glob.push('../' + item + '/**/info.json');
+            glob.push(relativePathFromUserToApp + '/' + item + '/**/info.json');
         }
     });
 }
@@ -86,9 +87,10 @@ var getThumbnailPath = module.exports.getThumbnailPath = function(specDir, custo
     var thumbnail;
     var thumbnailPathFromSpecDir = customThumbnailPath || config.thumbnail;
 
-    var absoluteThumbNailPath = path.join(specDir, thumbnailPathFromSpecDir).replace(/\\/g, '/');
+    var absoluteThumbNailPath = path.join(specDir, thumbnailPathFromSpecDir);
+
     if (fs.existsSync(absoluteThumbNailPath)) {
-        thumbnail = path.join(getRelativeSpecPath(specDir), thumbnailPathFromSpecDir);
+        thumbnail = path.join(getRelativeSpecPath(specDir), thumbnailPathFromSpecDir).replace(/\\/g, '/');
     }
 
     return thumbnail;
@@ -168,7 +170,7 @@ var fileTree = function(workingDir) {
     // Allow to run app without existing specsRoot
     if (!fs.existsSync(workingDir) && workingDir === config.specsRoot) {
         global.log.warn('Running SourceJS without user dir. This set-up should be used only for running tests.');
-        workingDir = global.pathToApp;
+        workingDir = normalizedPathToApp;
     }
 
     var files = globArray(glob, {
@@ -177,8 +179,14 @@ var fileTree = function(workingDir) {
 
     files.forEach(function(file){
         var realFilePath = path.join(workingDir, file);
-        var specPath = path.dirname(realFilePath);
-        var specId = path.dirname(file).replace('node_modules/sourcejs/', '').replace('../', '');
+        var specPath = path.dirname(realFilePath).replace(/\\/g, '/');
+        var specId;
+
+        if (global.isNodeModule) {
+            specId = path.dirname(file).replace('node_modules/sourcejs/', '');
+        } else {
+            specId = path.dirname(file).replace(relativePathFromUserToApp + '/','');
+        }
 
         specId = specId === '.' ? '' : specId + '/';
 

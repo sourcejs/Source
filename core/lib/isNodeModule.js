@@ -11,7 +11,7 @@ if (typeof global.isNodeModule === 'undefined') {
         var assumedSourceNpmPath = path.join('node_modules', fs.readJsonSync(path.join(pathToApp, 'package.json')).name);
 
         return relativePathToApp === assumedSourceNpmPath;
-    }
+    };
 } else {
     module.exports = function() {
         return global.isNodeModule;

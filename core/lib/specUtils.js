@@ -112,15 +112,15 @@ module.exports.getSpecFromDir = function(dirPath, specFiles) {
 module.exports.getFullPathToSpec = function(urlPath){
     var pathToSpec = parseSpecUrlPath(urlPath).pathToSpec;
     var cleanPath = urlPath.replace(/\/+$/, '').replace(/\//, '');
-    var specPath = path.join(global.userPath, pathToSpec).replace(/\\/g, '/');
+    var specPath = path.join(global.userPath, pathToSpec);
 
     // Including non-standard paths, outside default static route
     global.opts.core.common.includedDirs.forEach(function(item){
         if (cleanPath.split('/')[0] === item) {
-            specPath = specPath.replace(global.userPath, global.pathToApp + '/');
+            specPath = specPath.replace(global.userPath, global.pathToApp);
         }
     });
 
     // remove trailing slash
-    return specPath.replace(/\/+$/, '');
+    return path.normalize(specPath).replace(/\/+$/, '');
 };

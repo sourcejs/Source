@@ -17,7 +17,7 @@ var favicon = require('serve-favicon');
 /* Globals */
 // Define absolute path to app, normalizing windows disk name
 global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
-    return match.toLowerCase();
+    return match.toUpperCase();
 });
 
 var app = global.app = express();
