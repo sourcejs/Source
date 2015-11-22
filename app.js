@@ -28,7 +28,7 @@ global.opts = loadOptions();
 // Arguments parse */
 commander
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + ').')
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + '). Note: `process.env.PORT` will override this option if present.')
     .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
     .option('--test', 'Run app with tests.')
     .option('--no-watch', 'Run with disabled watcher.')
@@ -66,6 +66,11 @@ if (!commander.watch) {
         event: 'disabled watch'
     });
     global.opts.core.watch.enabled = false;
+}
+
+if (process.env.PORT) {
+    global.opts.core.server.port = parseInt(process.env.PORT);
+    console.log('Using defined app PORT from environment variable: ' + process.env.PORT);
 }
 /* /Globals */
 
