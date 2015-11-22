@@ -27,6 +27,7 @@ global.opts = loadOptions();
 
 // Arguments parse */
 commander
+    .allowUnknownOption()
     .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
     .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + '). Note: `process.env.PORT` will override this option if present.')
     .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
