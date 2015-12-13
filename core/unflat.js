@@ -3,36 +3,28 @@
 function unflatten(target, opts) {
     opts = opts || {};
 
-    var delimiter = opts.delimiter || '.',
-        result = {};
+    var delimiter = opts.delimiter || '.';
+    var result = {};
 
     if (Object.prototype.toString.call(target) !== '[object Object]') {
         return target;
     }
 
-    // safely ensure that the key is
-    // an integer.
-    function getkey(key) {
-        var parsedKey = Number(key);
-
-        return (isNaN(parsedKey) || key.indexOf('.') !== -1)? key : parsedKey;
-    }
-
     Object.keys(target).forEach(function(key) {
-        var split = key.split(delimiter),
-            key1 = getkey(split.shift()),
-            key2 = getkey(split[0]),
-            recipient = result;
+        var split = key.split(delimiter);
+        var key1 = split.shift();
+        var key2 = split[0];
+        var recipient = result;
 
         while (key2 !== undefined) {
             if (recipient[key1] === undefined) {
-                recipient[key1] = ( (typeof key2 === 'number' && !opts.object)? [] : {});
+                recipient[key1] = {};
             }
 
             recipient = recipient[key1];
             if (split.length > 0) {
-                key1 = getkey(split.shift());
-                key2 = getkey(split[0]);
+                key1 = split.shift();
+                key2 = split[0];
             }
         }
 
