@@ -1,5 +1,5 @@
 {
     "title": "Info.json - Spec Description",
-    "keywords": "spec meta, template, specFile",
+    "tag": ["tag", "title", "thumbnailPath", "specFile", "template", "role", "info", "spec meta"],
     "template": "doc"
 }
