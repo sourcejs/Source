@@ -8,7 +8,7 @@ List of used options in `info.json`:
 {
     "title": "Info.json - Spec Description",
     "author": "Robert Haritonov",
-    "tag": ["tags, for, search"],
+    "tag": ["tags", "for", "search"],
     "info": "Spec description.",
     "role": "navigation",
     "template": ["custom" | "$(context)/template.ejs"],
