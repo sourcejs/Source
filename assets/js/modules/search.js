@@ -80,7 +80,7 @@ Search.prototype.prepareAutoCompleteData = function() {
             var autocompleteValue = targetPage.title;
 
             if (tag && tag.length) {
-                tags += ', ' + tag.join(' ');
+                tags += ', ' + tag.join(', ');
             }
 
             autocompleteValue += ' (' + pageName + tags + ')';
