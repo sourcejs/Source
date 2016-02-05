@@ -72,18 +72,18 @@ Search.prototype.prepareAutoCompleteData = function() {
             // Skip hidden specs
             if (targetPage.tag && targetPage.tag.indexOf('hidden') > -1) continue;
 
-            var keywords = targetPage.keywords;
-            var keywordsPageName = pagesData[page] && pagesData[page]['name']
+            var tag = targetPage.tag;
+            var pageName = pagesData[page] && pagesData[page]['name']
                 ? pagesData[page]['name']
                 : ""; //get cat name
-            var prepareKeywords = '';
+            var tags = '';
             var autocompleteValue = targetPage.title;
 
-            if (keywords && keywords !== '') {
-                prepareKeywords += ', ' + keywords;
+            if (tag && tag.length) {
+                tags += ', ' + tag.join(', ');
             }
 
-            autocompleteValue += ' (' + keywordsPageName + prepareKeywords + ')';
+            autocompleteValue += ' (' + pageName + tags + ')';
             this.data[this.data.length] = new AutocomleteDataItem(autocompleteValue, targetPage.url);
         }
     }

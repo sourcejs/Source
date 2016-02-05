@@ -1,5 +1,5 @@
 {
-    "keywords": "plugins, middlewares",
+    "tag": ["plugins", "middlewares"],
     "title": "Writing SourceJS Plugins and Middlewares",
     "template": "doc"
 }
