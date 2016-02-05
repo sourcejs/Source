@@ -1,5 +1,5 @@
 {
-    "keywords": "ejs, include",
+    "tag": ["ejs", "include"],
     "title": "Spec Rendering Helpers",
     "template": "doc"
 }

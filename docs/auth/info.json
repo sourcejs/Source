@@ -1,5 +1,5 @@
 {
-    "keywords": "auth, github",
+    "tag": ["auth", "github"],
     "title": "Using Github Auth",
     "template": "doc"
 }
