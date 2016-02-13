@@ -170,7 +170,9 @@ define([
             };
 
             var afterActivation = function() {
-                var sources = $('.' + SourceCode);
+                var sources = $('.' + SourceCode).filter(function() {
+                    return !$(this).next().hasClass('source_ignore');
+                });
                 sources.addClass(SourceCodeShow);
 
                 //Scroll to section
@@ -192,7 +194,9 @@ define([
                 if (!prepared) {
                     fillCodeContainers();
                     prepareCodeBlocks();
-                    $('pre').removeAttr('style');
+                    $('pre').filter(function() {
+                        return !$(this).closest('.source_source-code').next().hasClass('source_ignore');
+                    }).removeAttr('style');
                     prepared = true;
                 }
                 afterActivation();
