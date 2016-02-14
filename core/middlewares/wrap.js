@@ -15,7 +15,8 @@ var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
  * @param {object} req - Request object
  * @param {object} res - Response object
  * @param {function} next - The callback function
- * */
+ *
+ */
 exports.process = function (req, res, next) {
 
     // Check if we're working with processed file
@@ -90,6 +91,7 @@ exports.process = function (req, res, next) {
                 engineVersion: global.engineVersion,
                 content: content,
                 head: head,
+                breadcrumb: req.specData.breadcrumb || '',
                 info: info
             };
 
@@ -117,7 +119,8 @@ exports.process = function (req, res, next) {
                     filename: templatePath
                 });
             } catch(err){
-                req.specData.renderedHtml = 'Error rendering Spec with EJS: ' + template;
+                console.log('Error: EJS could render specData.renderedHtml');
+                req.specData.renderedHtml = 'Error rendering Spec with EJS: <noscript>' + template + '</noscript>';
             }
 
 
