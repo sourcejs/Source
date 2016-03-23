@@ -5,18 +5,17 @@
     position: relative;
     margin: -50px -25px 0;
 
-	height: 50px;
-	min-width: 990px;
-	padding-top: 11px;
-	padding-bottom: 10px;
-	z-index: 9999; /* overlap all */
-	top: 0; left: 0; right: 0;
+    height: 50px;
+    min-width: 990px;
+    padding: 11px 25px 10px 25px;
+    z-index: 9999; /* overlap all */
+    top: 0; left: 0; right: 0;
 
-	background: @black;
+    background: @black;
 
-	box-sizing: border-box;
+    box-sizing: border-box;
 
-	transition: opacity .2s;
+    transition: opacity .2s;
 
     white-space: nowrap;
 
@@ -24,73 +23,73 @@
     font-size: @fz-size-m;
 
     @media @media_min-step-m {
-	    position: fixed;
+        position: fixed;
         margin: 0;
-	    }
-
+    }
+    
     .source__scrolled-down & {
         opacity: 1;
 
         @media @media_min-step-m {opacity: .1;}
-        }
+    }
 
     .source__scrolled-down &:hover {
         opacity: 1;
-        }
-	}
+    }
+}
 
 
 .source__scrolled-down .source_header__focus,
 .source_header__focus {
-	opacity: 1;
-	}
+    opacity: 1;
+}
 
 .source_header .source_logo {
-	display: inline-block;
-	vertical-align: baseline;
+    display: inline-block;
+    vertical-align: baseline;
 
-	margin-right: 25px;
+    margin-right: 25px;
 
-	line-height: 30px !important;
+    line-height: 30px !important;
 
-	color: #67a9d4;
-	font-size: 24px !important;
+    color: #67a9d4;
+    font-size: 24px !important;
     font-family: 'Museo', Arial;
 
-	text-decoration: none;
+    text-decoration: none;
 
     &:hover {
-		color: #67a9d4;
+        color: #67a9d4;
 
-		text-decoration: underline;
-		}
-	}
+        text-decoration: underline;
+    }
+}
 
 /* Navigation
 -------------------------------------------------- */
 
 .source_header_nav {
-	display: inline-block;
-	vertical-align: 1px;
-	}
+    display: inline-block;
+    vertical-align: 1px;
+}
 
 .source_header_nav_lst {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	}
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
 .source_header_nav_i {
-	display: inline-block;
-	margin-left: 20px;
+    display: inline-block;
+    margin-left: 20px;
 
-	/* Reset */
-	line-height: 1.5;
+    /* Reset */
+    line-height: 1.5;
 
     &:first-child {
-		margin-left: 0;
-		}
-	}
+        margin-left: 0;
+    }
+}
 /* /Navigation */
 
 /* /Header
