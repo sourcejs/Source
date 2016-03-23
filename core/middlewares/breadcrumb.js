@@ -65,7 +65,7 @@ exports.process = function(req, res, next) {
                 });
             } catch (err) {
                 renderedBreadcrumps = '';
-                global.log.warn('Could not pre-render spec with EJS: ' + templatePath + ' on: ' + req.path, err);
+                global.log.warn('breadcrumb.js: could not render breadcrumbs with EJS: ' + templatePath + ' on: ' + req.path, err);
             } finally {
                 req.specData.breadcrumb = renderedBreadcrumps;
                 next();

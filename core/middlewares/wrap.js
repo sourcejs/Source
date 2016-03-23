@@ -119,7 +119,7 @@ exports.process = function (req, res, next) {
                     filename: templatePath
                 });
             } catch(err){
-                console.log('Error: EJS could render specData.renderedHtml');
+                global.log.error('wrap.js: could not render Spec with EJS: ' + templatePath + ' on: ' + req.path, err);
                 req.specData.renderedHtml = 'Error rendering Spec with EJS: <noscript>' + template + '</noscript>';
             }
 
