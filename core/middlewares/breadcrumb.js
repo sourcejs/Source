@@ -45,7 +45,7 @@ exports.process = function(req, res, next) {
         }, []).map(function (item) {
             item.fullPath = specUtils.getFullPathToSpec(item.path);
             item.info = getData(item.fullPath) || {};
-            item.title = item.info.name || item.info.title || item.name;
+            item.title = item.info.title || item.name;
             return item;
         });
 
