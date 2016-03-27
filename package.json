@@ -24,7 +24,7 @@
     "express": "^4.13.3",
     "express-session": "^1.10.2",
     "flat": "^1.2.1",
-    "fs-extra": "^0.24.0",
+    "fs-extra": "^0.26.7",
     "fs-finder": "operatino/node-fs-finder#fix-windows-find-up",
     "glob": "^5.0.14",
     "grunt": "~0.4.5",
