@@ -23,7 +23,7 @@
     "everyauth": "^0.4.9",
     "express": "^4.13.3",
     "express-session": "^1.10.2",
-    "flat": "^1.2.1",
+    "flat": "^2.0.0",
     "fs-extra": "^0.24.0",
     "fs-finder": "operatino/node-fs-finder#fix-windows-find-up",
     "glob": "^5.0.14",
