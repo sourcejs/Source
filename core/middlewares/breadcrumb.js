@@ -2,6 +2,7 @@
 
 var fs = require('fs-extra');
 var path = require('path');
+var _ = require('lodash');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
@@ -15,6 +16,9 @@ var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 * @param {function} next - The callback function
 * */
 exports.process = function(req, res, next) {
+    req.placeholders = req.placeholders || {};
+    req.placeholders.precontent = req.placeholders.precontent || [];
+
     // Check if spec is request and ejs pre-rendering enabled
     if (req.specData && req.specData.renderedHtml) {
         var contextOptions = req.specData.contextOptions;
@@ -67,7 +71,7 @@ exports.process = function(req, res, next) {
                 renderedBreadcrumps = '';
                 global.log.warn('breadcrumb.js: could not render breadcrumbs with EJS: ' + templatePath + ' on: ' + req.path, err);
             } finally {
-                req.specData.breadcrumb = renderedBreadcrumps;
+                req.placeholders.precontent = _.concat(req.placeholders.precontent, renderedBreadcrumps);
                 next();
             }
         });
