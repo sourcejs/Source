@@ -215,8 +215,8 @@ app.use(function(req, res){
 
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
 		res.status(404).render(path.join(__dirname, '/core/views/404.ejs'), {
-            header: headerFooterHTML.header,
-            footer: headerFooterHTML.footer
+            precontent: headerFooterHTML.header,
+            postcontent: headerFooterHTML.footer
 		});
 	}
 });
