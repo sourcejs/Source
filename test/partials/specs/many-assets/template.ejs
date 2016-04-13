@@ -30,13 +30,13 @@
 <body class="source_page __spec">
     <link href="/docs/data/bootstrap-body.css" rel="stylesheet">
     <div class="source_container">
-        <%- header %>
+        <%- precontent %>
         <div class="source_main source_col-main" role="main">
             <h1><%= info.title %></h1>
             <div class="source_header-meta">v.<%- engineVersion %></div>
-            <%- content %>
+            <%- maincontent %>
         </div>
-        <%- footer %>
+        <%- postcontent %>
         <style>.body{color:red}</style>
     </div>
     <script src="script-in-body.js"></script>
