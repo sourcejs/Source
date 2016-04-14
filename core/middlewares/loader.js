@@ -129,6 +129,12 @@ module.exports.process = function (app, globalOptions) {
                 group: 'pre-html',
                 indexPath: path.join(appRoot, 'core/middlewares/breadcrumb.js')
             },
+            subspecnavigation: {
+                enabled: true,
+                order: -2,
+                group: 'pre-html',
+                indexPath: path.join(appRoot, 'core/middlewares/subspec-navigation.js')
+            },
             mdTag: {
                 enabled: true,
                 order: 0,
