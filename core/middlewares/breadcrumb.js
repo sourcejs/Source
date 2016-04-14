@@ -23,9 +23,6 @@ exports.process = function(req, res, next) {
     if (req.specData && req.specData.renderedHtml) {
         var contextOptions = req.specData.contextOptions;
 
-        // TODO get this from a new option or find an existing option suitable
-        var projectName = null;
-
         var getData = function (specDir) {
             var infoFilePath = path.join(specDir, global.opts.core.common.infoFile);
             return fs.existsSync(infoFilePath) ? fs.readJsonSync(infoFilePath, {throws: false}) : undefined;
@@ -35,7 +32,7 @@ exports.process = function(req, res, next) {
         var data = req.path.split('/').reduce(function (result, item) {
             if (item === '' && result.length === 0) {
                 return result.concat([{
-                    name: projectName || 'Home',
+                    name: 'Home',
                     path: '/'
                 }]);
             } else if (item !== '') {
@@ -53,9 +50,7 @@ exports.process = function(req, res, next) {
             return item;
         });
 
-        // choose the proper template, depending on page type or defined path
         var viewParam = 'breadcrumb';
-
         var templatePath = viewResolver(viewParam, contextOptions.rendering.views, undefined) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
