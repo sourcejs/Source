@@ -132,7 +132,7 @@ module.exports.process = function (app, globalOptions) {
             subspecnavigation: {
                 enabled: true,
                 order: -2,
-                group: 'pre-html',
+                group: 'html',
                 indexPath: path.join(appRoot, 'core/middlewares/subspec-navigation.js')
             },
             mdTag: {
