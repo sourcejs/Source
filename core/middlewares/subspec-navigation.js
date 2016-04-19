@@ -1,13 +1,6 @@
 'use strict';
 
-var fs = require('fs-extra');
-var path = require('path');
 var _ = require('lodash');
-var cheerio = require('cheerio');
-
-var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
-var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
-var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 
 /**
 * Processing pre-ejs rendering on spec request
@@ -22,9 +15,7 @@ exports.process = function(req, res, next) {
         req.placeholders = req.placeholders || {};
         req.placeholders.sidecontent = req.placeholders.sidecontent || [];
 
-        console.log(req.specData.sections);
-
-        req.placeholders.sidecontent = _.concat(req.placeholders.sidecontent, 'subspec-navigation.js: Hello world!');
+        req.placeholders.sidecontent = _.concat(req.placeholders.sidecontent, req.specData.sections.map(function (item) {return item.header;}).join('<br/>'));
         next();
     } else {
         next();
