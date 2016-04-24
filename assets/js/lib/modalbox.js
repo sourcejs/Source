@@ -1,16 +1,15 @@
 "use strict";
-define([
-    'jquery',
-    'sourceModules/module',
-    'sourceLib/lodash'
-    ], function($, module, _) {
+
+var $ = require('jquery');
+var primeModule = require('./../modules/module.js');
+var _ = require('lodash');
 
 var context; // instance of box
 
 var ModalBox = function(config, data) {
     var isNewInstance = !context;
     context = context || this;
-    context.data = data ? data : initialBlocksData;    
+    context.data = data ? data : initialBlocksData;
 
     if (!isNewInstance) {
         context.render();
@@ -34,7 +33,7 @@ var ModalBox = function(config, data) {
     context.init();
 };
 
-ModalBox.prototype = module.createInstance();
+ModalBox.prototype = primeModule.createInstance();
 ModalBox.prototype.constructor = ModalBox;
 
 ModalBox.prototype.init = function() {
@@ -101,5 +100,4 @@ ModalBox.prototype.hide = function() {
     return this;
 };
 
-return ModalBox;
-});
+module.exports = ModalBox;

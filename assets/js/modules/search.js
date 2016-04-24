@@ -4,19 +4,18 @@
 *
 * */
 
-define([
-    'jquery',
-    'sourceModules/module',
-    'sourceLib/autocomplete',
-    'sourceLib/modalbox',
-    'sourceModules/parseFileTree',
-    'sourceModules/globalNav',
-    'sourceModules/headerFooter'
-], function ($, module, autocomplete, ModalBox, parseFileTree, globalNav) {
-
 'use strict';
 
+var $ = require('jquery');
+var primeModule = require('./module.js');
+var autocomplete = require('../lib/autocomplete.js');
+var ModalBox = require('../lib/modalbox.js');
+var parseFileTree = require('./parseFileTree.js');
+var globalNav = require('./globalNav.js');
+
 var Search = function() {
+    var _this = this;
+
     this.data = [];
     this.options.modulesOptions.search = $.extend (true, {
         classes: {
@@ -31,12 +30,14 @@ var Search = function() {
         activateOnLoad: true
     }, this.options.modulesOptions.search);
 
-    this.init();
+    $(function() {
+        _this.init();
+    });
     return this;
 };
 
 Search.prototype.constructor = Search;
-Search.prototype = module.createInstance();
+Search.prototype = primeModule.createInstance();
 
 Search.prototype.init = function() {
     var _this = this;
@@ -176,5 +177,4 @@ Search.prototype.initSearchField = function() {
     this.targetField.one('keyup', getActivationHandler(eventContext));
 };
 
-return new Search();
-});
+module.exports = new Search();

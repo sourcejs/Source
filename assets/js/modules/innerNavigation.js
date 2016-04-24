@@ -1,14 +1,15 @@
 'use strict';
 
+var navTemplate = require('sourceTemplates/nav.inc.html');
+var menuItemTemplate = require('sourceTemplates/navActionItem.inc.html');
+var menuItemTumblerTemplate = require('sourceTemplates/navActionTumbler.inc.html');
+
 define([
     "jquery",
     "sourceModules/module",
     "sourceModules/utils",
     "sourceModules/sections",
-    "sourceModules/headerFooter",
-    "text!sourceTemplates/nav.inc.html",
-    "text!sourceTemplates/navActionItem.inc.html",
-    "text!sourceTemplates/navActionTumbler.inc.html"], function ($, module, utils, sections, headerFooter, navTemplate, menuItemTemplate, menuItemTumblerTemplate) {
+    "sourceModules/headerFooter"], function ($, module, utils, sections, headerFooter) {
 
     function InnerNavigation() {
         var _this = this;
@@ -32,20 +33,20 @@ define([
         this.menuItemTumblerTemplate = $(menuItemTumblerTemplate);
         this.container = $(navTemplate);
 
-        var $injectAfter = $(this.moduleOptions.INJECT_AFTER).first();
-
-        // Checking if inject after element exists, and isn't used in source example sections
-        if (
-            $injectAfter.length !== 0 &&
-            $injectAfter.parents('.'+this.options.exampleSectionClass).length === 0 &&
-            $injectAfter.parents('.'+this.options.exampleCleanClass).length === 0
-        ) {
-            $injectAfter.after(this.container);
-        } else {
-            $('.'+this.options.mainClass).prepend(this.container);
-        }
-
         $(function () {
+            var $injectAfter = $(_this.moduleOptions.INJECT_AFTER).first();
+
+            // Checking if inject after element exists, and isn't used in source example sections
+            if (
+                $injectAfter.length !== 0 &&
+                $injectAfter.parents('.'+_this.options.exampleSectionClass).length === 0 &&
+                $injectAfter.parents('.'+_this.options.exampleCleanClass).length === 0
+            ) {
+                $injectAfter.after(_this.container);
+            } else {
+                $('.'+_this.options.mainClass).prepend(_this.container);
+            }
+
             _this.injectNavigation();
             _this.calcMenuHeight();
             _this.bindEvents();

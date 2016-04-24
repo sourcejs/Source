@@ -4,17 +4,13 @@
 *
 * */
 
-define([
-    'jquery',
-    'sourceModules/module'
-    ], function ($, module) {
+'use strict';
 
-    'use strict';
+var $ = require('jquery');
+var primeModule = require('./module.js');
 
-    function Utils() {}
-
-    /* наследуем от Module */
-    Utils.prototype = module.createInstance();
+function Utils() {}
+    Utils.prototype = primeModule.createInstance();
     Utils.prototype.constructor = Utils;
 
     Utils.prototype.parseNavHash = function () {
@@ -96,17 +92,17 @@ define([
     };
 
     Utils.prototype.getCookie = function(name) {
-		var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
-		return matches ? decodeURIComponent(matches[1]) : undefined;
+        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
     };
 
     Utils.prototype.isDevelopmentMode = function() {
-		return this.getCookie('source-mode') === 'development';
+        return this.getCookie('source-mode') === 'development';
     };
 
-	Utils.prototype.isArray = function(arr) {
-		return Object.prototype.toString.call(arr) === '[object Array]';
-	};
+    Utils.prototype.isArray = function(arr) {
+        return Object.prototype.toString.call(arr) === '[object Array]';
+    };
 
     Utils.prototype.unifySpecPath = function(url) {
         if (url.slice(-10) === "index.html") url = url.slice(0, -10);
@@ -126,7 +122,6 @@ define([
             $(this).toggleClass('__open');
             $elToShow.toggle();
         });
-    };
+};
 
-    return new Utils();
-});
+module.exports = new Utils();

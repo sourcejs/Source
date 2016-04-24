@@ -4,17 +4,18 @@
  *
  * */
 
+var options = require('../../options.js').assets;
+
 define([
     'jquery',
-    'text!/api/options',
     'sourceModules/inlineOptions'
-    ], function($, options, inlineOptions) {
+    ], function($, inlineOptions) {
 
     // Default + User options merged built. Built from Grunt.
-    var sourceOptions = JSON.parse(options);
+    var sourceOptions = options;
 
     // Override with from page inline options
-    $.extend(true, sourceOptions, inlineOptions);
+    $.extend(true, options, inlineOptions);
 
     return sourceOptions;
 });
