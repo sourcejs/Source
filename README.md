@@ -23,7 +23,7 @@ ___
 
 ___
 
-SourceJS component management engine was originally developed in [OK.ru](http://corp.mail.ru/en/communications/odnoklassniki) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
+SourceJS component management engine was originally developed in [OK.ru](https://corp.mail.ru/en/company/social) front-end development team and is recommended for big and middle sized projects. Especially for fast growing web portals, outsource teams with similar project and companies with multiple services.
 
 Have questions? Just reach our community through Gitter Chat:
 
