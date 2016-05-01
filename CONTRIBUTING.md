@@ -5,7 +5,7 @@
 1. Submit an issue describing your proposed change to the repo in question.
 1. The repo owner will respond to your issue promptly.
 1. Fork the desired repo, develop and test your code changes.
-1. Submit a pull request.
+1. Submit a pull request to next dev branch (for example 0.5.1-dev).
 
 ## Protocols for Collaborative Development
 
@@ -21,16 +21,8 @@ Please read [this doc](MAINTAINING.md) for information on how we're running deve
 
 ## Team members
 
-All inquiries should be forwarded to [Robert Haritonov](https://github.com/operatino).
+All inquiries should be forwarded to [Robert Haritonov](mailto:r@rhr.me).
 
 Core contributors and maintainers:
 * [Robert Haritonov](https://github.com/operatino)
 * [Ilya Mikhailov](https://github.com/cheshirsky)
-* [Ivan Metelev](https://github.com/fromanywhere)
-* [Roman Alekseev](https://github.com/jesprider)
-* [Alexey Ostrovsky](https://github.com/ostroffsky)
-* [Dimitry Lapynov](https://github.com/Leikam)
-* [Daniel Mishcherin](https://github.com/mishcherin)
-* [Gennady Tsarinny](https://github.com/genson)
-* [Dennis Przendzinski](https://github.com/nightkin)
-* [Evgeniy Khoroshilov](https://github.com/XOP)

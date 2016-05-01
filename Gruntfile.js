@@ -1,11 +1,33 @@
 'use strict';
 var path = require('path');
-var loadOptions = require('./core/loadOptions');
+var fs = require('fs');
+
 var pathToApp = path.resolve('./');
+global.pathToApp = pathToApp;
+
+var loadOptions = require('./core/loadOptions');
+
+// NPM 3 compatibility fix
+var getLoaderPackageName = function() {
+    var packageName;
+    var parentFolderName = path.basename(path.resolve('..'));
+    var isSubPackage = parentFolderName === 'node_modules';
+    var isLocalDepsAvailable = fs.existsSync('node_modules/grunt-autoprefixer') && fs.existsSync('node_modules/grunt-contrib-copy');
+
+    if (isSubPackage && !isLocalDepsAvailable) {
+        packageName = 'load-grunt-parent-tasks';
+    } else {
+        packageName = 'load-grunt-tasks';
+    }
+
+    return packageName;
+};
 
 module.exports = function(grunt) {
+    var appPort = grunt.option('app-port') || 8080;
+
     // load all grunt tasks matching the `grunt-*` pattern
-    require('load-grunt-tasks')(grunt);
+    require(getLoaderPackageName())(grunt);
 
     // measuring processing time
     require('time-grunt')(grunt);
@@ -89,9 +111,10 @@ module.exports = function(grunt) {
             },
             gruntfile: ["Gruntfile.js"],
             modules: ["assets/js/modules/**/*.js"],
-            libs: ["assets/js/libs/**/*.js"],
-            // routing files are added into exceptions to avoid adding extra rules for express framework
-            core: ["core/**/*.js", "!core/routes/*.js"]
+            core: [
+                "app.js",
+                "core/**/*.js"
+            ]
         },
 
         copy: {
@@ -228,8 +251,18 @@ module.exports = function(grunt) {
 
         mochaTest: {
             test: {
-                src: ['test/**/*.js']
+                src: ['test/unit/**/*.js']
+            },
+            noApp: {
+                src: ['test/unit/lib/**/*.js']
             }
+        },
+
+        casperjs: {
+            options: {
+                casperjsOptions: ['--app-port='+appPort]
+            },
+            files: ['test/functional/**/*.js']
         }
     });
 
@@ -238,8 +271,6 @@ module.exports = function(grunt) {
     * Custom tasks
     *
     * */
-
-    grunt.loadTasks("grunt/tasks");
 
     grunt.registerTask('clean-build', 'Cleaning build dir if running new type of task', function(){
         if (
@@ -330,6 +361,21 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-css', ['update','watch:css']);
     grunt.registerTask('watch-all', ['update','watch']);
 
+    grunt.registerTask('ci-pre-run', [
+        'jshint',
+        'build',
+        'update'
+    ]);
+
+    grunt.registerTask('ci-post-run', [
+        'test',
+        'test-func'
+    ]);
+
+    grunt.registerTask('ci-post-run-win', [
+        'test'
+    ]);
+
     /*
     *
     * Utils
@@ -338,14 +384,24 @@ module.exports = function(grunt) {
 
     // Test task. Execute with running app
     grunt.registerTask('test', 'Run ALL tests or specified by second param', function () {
+        // if custom mask set - `grunt test --spec=test/unit/**/*.js`
         var spec = grunt.option('spec');
-
         if (spec) {
-            // if custom mask set - `grunt test --spec=test/specs/middleware/**/*.js`
             grunt.config.set('mochaTest.test.src', [spec]);
-            grunt.task.run('mochaTest');
+            grunt.task.run('mochaTest:test');
         } else {
             grunt.task.run('mochaTest');
         }
+    });
+
+    // Test task. Execute with running app
+    grunt.registerTask('test-func', 'Run ALL functional tests or specified by second param', function () {
+        // if custom mask set - `grunt test --spec=test/functional/**/*.js`
+        var spec = grunt.option('spec');
+        if (spec) {
+            grunt.config.set('casperjs.files', [spec]);
+        }
+
+        grunt.task.run('casperjs');
     });
 };

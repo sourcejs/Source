@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if IE 7]>         <html class="ie7"> <![endif]-->
-<!--[if IE 8]>         <html class="ie8"> <![endif]-->
-<!--[if IE 9]>         <html class="ie9"> <![endif]-->
-<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,14 +15,16 @@
 
     <!-- Source default resources -->
         <link href="/source/assets/css/source.css" rel="stylesheet" data-source="core">
-        <script data-main="/source/assets/js/enter-the-source.js" src="/source/assets/js/require.bundle.js" data-source="core"></script>
+        <script src="/source/assets/js/require.bundle.js" data-source="core"></script>
+        <script src="/source/assets/js/enter-the-source.js" data-source="core"></script>
     <!-- /Source default resources -->
 
     <%- head %>
 </head>
-<body>
+<body class="source_page __spec">
     <div class="source_container">
         <%- header %>
+        <%- breadcrumb %>
         <div class="source_main source_col-main" role="main"><%- content %></div>
         <%- footer %>
     </div>

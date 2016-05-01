@@ -12,7 +12,15 @@ module.exports = function(data) {
     var output = {};
     var _data = data;
 
+    if (!_data) {
+        console.warn('flattenTillSpec: no data provided, can\'t flatten.');
+
+        return output;
+    }
+
     var step = function(object, prev) {
+        if (!object) return;
+
         Object.keys(object).forEach(function (key) {
             var value = object[key];
 

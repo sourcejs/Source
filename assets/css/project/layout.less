@@ -29,12 +29,18 @@
 	margin-bottom: 40px;
 
 	flex: 1;
-	-ms-flex: none; /* ie fucks up */
+	-ms-flex: none;
 
 	width: 100%;
 	box-sizing: border-box;
 
 	counter-reset: h2;
+
+    @media @media_min-step-m {
+		.source_page.__spec & {
+			padding-right: @layout_spec--inner-margin-right;
+			}
+		}
 
 	&.__loading:after {
 		content: '';
@@ -50,11 +56,8 @@
 		}
 	}
 
-    //TDOO: move those kind of classes to seperate auto-generated module
-.source_main_h1, /* for custom cases */
-.source_main > h1,
-.source_subhead > h1 {
-    margin: 0;
+.source_main_h1 {
+	margin: 0;
     padding: 10px 0 0 0;
 
     font-size: 36px;
@@ -66,6 +69,20 @@
     color: @black;
     }
 
+.source_header-meta {
+	font-size: @fz-size-xs !important;
+	line-height: 1.2 !important;
+    color: @color-aux;
+	margin-bottom: 20px;
+	}
+
+.source-main-only(h1,{
+    .source_main_h1;
+    });
+
+/* for custom cases */
+
+
 .source_subhead {
     position: relative;
     margin: -35px -100% 20px;
@@ -75,6 +92,7 @@
 
     font-family: @font-family-main;
     font-size: @fz-size-m;
+	color: @gray;
     line-height: 1.5;
 
     // Clearfix

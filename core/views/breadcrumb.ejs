@@ -1,0 +1,9 @@
+<% if (breadcrumb.length > 1) { %>
+<nav class="source_breadcrumb">
+    <ul class="source_breadcrumb_lst source_col-main">
+        <% for(var i=0; i < breadcrumb.length; i++) {%>
+            <li class="source_breadcrumb_i"><a class="source_a_o" href="<%= breadcrumb[i].path %>"><%= breadcrumb[i].title %></a></li>
+        <% } %>
+    </ul>
+</nav>
+<% } %>

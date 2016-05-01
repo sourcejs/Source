@@ -1,0 +1,27 @@
+# AppVeyor file
+# http://www.appveyor.com/docs/appveyor-yml
+
+environment:
+  matrix:
+    - nodejs_version: 0.12
+    - nodejs_version: 4
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm cache clean
+  - npm install
+
+build: off
+
+before_test: "git clone https://github.com/sourcejs/init.git user"
+
+test_script:
+  - node --version && npm --version
+  - ps: "npm run ci-test-win # PowerShell" # Pass comment to PS for easier debugging
+  - cmd: "npm run ci-test-win" # Run without watch because of CI bug
+
+matrix:
+  fast_finish: true
+
+cache:
+  - node_modules -> package.json # Local npm modules

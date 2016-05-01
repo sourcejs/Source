@@ -8,40 +8,43 @@ SourceJS.define([
 
     'use strict';
 
-    var navHash = utils.parseNavHash();
-    var $sections = $('.source_section');
-    var $navigation = $('.source_nav');
-    var $mainContainer = $('.source_main');
-    var $body = $('body');
+    $(function(){
+        var navHash = utils.parseNavHash();
+        var $sections = $('.source_section');
+        var $navigation = $('.source_nav');
+        var $mainContainer = $('.source_main');
+        var $body = $('body');
 
-    // Show hidden sections and navigation
-    function showSections() {
-        $sections.addClass('__loaded');
-        $navigation.addClass('__loaded');
-        $mainContainer.removeClass('__loading');
-        $body.removeClass('__loading');
-    }
-
-    $mainContainer.addClass('__loading');
-    $body.addClass('__loading');
-
-    loadEvents.init(function() {
-        showSections();
-
-        // Chrome scroll bug
-        if ($('html').hasClass('webkit')) {
-
-            var t = setInterval(function() {
-                if (window.pageYOffset !== 0) {
-                    clearInterval(t);
-                }
-
-                window.scrollTo(0, 1);
-                utils.scrollToSection(navHash);
-            }, 100);
-        } else {
-            utils.scrollToSection(navHash);
+        // Show hidden sections and navigation
+        function showSections() {
+            $sections.addClass('__loaded');
+            $navigation.addClass('__loaded');
+            $mainContainer.removeClass('__loading');
+            $body.removeClass('__loading');
         }
-    });
 
+        $mainContainer.addClass('__loading');
+        $body.addClass('__loading');
+
+        loadEvents.init(function() {
+            showSections();
+
+            // FF scroll bug, related native to scroll to hash conflicts
+            if ($('html').hasClass('mozilla')) {
+                var triesCount = 0;
+
+                var t = setInterval(function() {
+                    var scrollTopCord = utils.scrollToSection(navHash);
+
+                    if (window.pageYOffset === scrollTopCord || triesCount < 4) {
+                        clearInterval(t);
+                    } else {
+                        triesCount++;
+                    }
+                }, 300);
+            } else {
+                utils.scrollToSection(navHash);
+            }
+        });
+    });
 });

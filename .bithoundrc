@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    "assets/js/lib/**",
+    "assets/test/jasmine/**"
+  ],
+  "test": [
+    "test/**",
+    "assets/test/**"
+  ]
+}

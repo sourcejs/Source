@@ -2,26 +2,19 @@
 
 var path = require('path');
 var fs = require('fs-extra');
-var pathToApp = path.dirname(require.main.filename);
-
-var parseData = require(path.join(global.pathToApp, 'core/api/parseData'));
-var specsDataPath = path.join(pathToApp, global.opts.core.api.specsData);
-var parseSpecData = new parseData({
-    scope: 'specs',
-    path: specsDataPath
-});
+var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
 
 
 /**
  * Parse clean path to spec from URL
  *
- * @param {String} urlPath - raw url ("/base/spec/index.src"
+ * @param {String} urlPath - raw url ("/base/spec/index.src.html")
  *
  * @returns {Object} output
  * @returns {String} output.ext - file extension, if exists
  * @returns {String} output.pathToSpec - path to Spec
  */
-module.exports.parseSpecUrlPath = function(urlPath){
+var parseSpecUrlPath = module.exports.parseSpecUrlPath = function(urlPath){
     // TODO: add any type of url parsing, including parameters
 
     var output = {};
@@ -39,44 +32,6 @@ module.exports.parseSpecUrlPath = function(urlPath){
 };
 
 /**
- * Read Spec file from file system
- *
- * @param {String} pathToSpec - path to spec ("/base/btn/")
- * @param {String} [ext] - spec file extension, if omitted, we will try .src and .html
- *
- * @returns {String} Return a content of a file
- */
-module.exports.getSpecFile = function(pathToSpec, ext){
-    var output = '';
-    var allSpecsPath = global.app.get('user');
-    var basePath = path.join(allSpecsPath, pathToSpec);
-    var srcPath = path.join(basePath, 'index.src');
-    var htmlPath = path.join(basePath, 'index.html');
-
-    if (ext) {
-        var knownExtPath = path.join(basePath, 'index.' + ext);
-
-        try {
-            output = fs.readFileSync(knownExtPath, 'utf-8');
-        } catch (e) {
-            output = false;
-        }
-    } else {
-        try {
-            output = fs.readFileSync(srcPath, 'utf-8');
-        } catch (e) {
-            try {
-                output = fs.readFileSync(htmlPath, 'utf-8');
-            } catch (e) {
-                output = false;
-            }
-        }
-    }
-
-    return output;
-};
-
-/**
  * Parse spec ID from URL
  *
  * @param {String} urlToSpec - spec path or url ("/base/btn/")
@@ -84,20 +39,28 @@ module.exports.getSpecFile = function(pathToSpec, ext){
  * @returns {String} Return a parsed Spec ID
  */
 var getSpecIDFromUrl = module.exports.getSpecIDFromUrl = function(urlToSpec){
-    // TODO: improve parsing to many cases
-
-    return urlToSpec.slice(1, urlToSpec.length - 1);
+    if (urlToSpec === '/') {
+        return urlToSpec;
+    } else {
+        return urlToSpec.replace(/^\//, '').replace(/\/+$/, '');
+    }
 };
 
 /**
  * Get information about defined specSpec
  *
- * @param {String} pathToSpec - spec id ("base/btn") or url ("/base/btn/")
+ * @param {String} urlSpecPath - spec path from url
  *
  * @returns {Object} Return single info object of the spec
  */
-module.exports.getSpecInfo = function(pathToSpec) {
-    var specID = pathToSpec.charAt(0) === '/' ? getSpecIDFromUrl(pathToSpec) : pathToSpec;
+module.exports.getSpecInfo = function(urlSpecPath) {
+    var specsDataPath = path.join(global.pathToApp, global.opts.core.api.specsData);
+    var parseSpecData = new parseData({
+        scope: 'specs',
+        path: specsDataPath
+    });
+
+    var specID = getSpecIDFromUrl(urlSpecPath);
 
     return parseSpecData.getByID(specID);
 };
@@ -106,22 +69,58 @@ module.exports.getSpecInfo = function(pathToSpec) {
  * Get Spec name from defined directory
  *
  * @param {String} dirPath - Spec directory
+ * @param {Array} [specFiles] - list of spec files to check
  *
- * @returns {String} Return Spec file path or undefined
+ * @returns {String} Return first found Spec file path or undefined
  */
-module.exports.getSpecFromDir = function(dirPath) {
-    var dirContent = fs.readdirSync(dirPath);
-    var supportedSpecNames = global.opts.core.common.specFiles;
+module.exports.getSpecFromDir = function(dirPath, specFiles) {
+    var dirContent = fs.existsSync(dirPath) ? fs.readdirSync(dirPath) : undefined;
+
+    if (!dirContent) return;
+
+    var supportedSpecNames = specFiles || global.opts.rendering.specFiles;
     var specPath;
 
     for (var i=0; i < supportedSpecNames.length; i++) {
         var item = supportedSpecNames[i];
 
-        if (dirContent.indexOf(item) > -1) {
-            specPath = path.join(dirPath, item);
-            break;
+        // Support folders inside names, e.g. 'docs/index.html'
+        if (item.indexOf('/') !== -1) {
+            var filename = path.join(dirPath, item);
+            if (fs.existsSync(filename)) {
+                specPath = filename;
+                break;
+            }
+        } else {
+            if (dirContent.indexOf(item) > -1) {
+                specPath = path.join(dirPath, item);
+                break;
+            }
         }
     }
 
     return specPath;
+};
+
+/**
+ * Get absolute path to Spec dir
+ *
+ * @param {String} urlPath - relative URL (web) to spec
+ *
+ * @returns {String} Return absolute path to Spec dir
+ */
+module.exports.getFullPathToSpec = function(urlPath){
+    var pathToSpec = parseSpecUrlPath(urlPath).pathToSpec;
+    var cleanPath = urlPath.replace(/\/+$/, '').replace(/\//, '');
+    var specPath = path.join(global.userPath, pathToSpec);
+
+    // Including non-standard paths, outside default static route
+    global.opts.core.common.includedDirs.forEach(function(item){
+        if (cleanPath.split('/')[0] === item) {
+            specPath = specPath.replace(global.userPath, global.pathToApp);
+        }
+    });
+
+    // remove trailing slash
+    return path.normalize(specPath).replace(/\/+$/, '');
 };

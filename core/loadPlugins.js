@@ -8,7 +8,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var pathToModules = path.join(global.app.get('user'), 'node_modules');
+var pathToModules = path.join(global.userPath, 'node_modules');
 
 // Loading all sourcejs-*/core/index.js files from npm plugins section
 if (fs.existsSync(pathToModules)) {

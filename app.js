@@ -4,53 +4,92 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
+'use strict';
+
 var express = require('express');
-var colors = require('colors');
-var fs = require('fs');
-var loadOptions = require('./core/loadOptions');
+var colors = require('colors'); // jshint ignore:line
+var fs = require('fs-extra');
+var path = require('path');
 var commander = require('commander');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 
 /* Globals */
-global.app = express();
+// Define absolute path to app, normalizing windows disk name
+global.pathToApp = __dirname.replace(/^\w:\\/, function (match) {
+    return match.toUpperCase();
+});
+
+var app = global.app = express();
+
+var loadOptions = require('./core/loadOptions');
 global.opts = loadOptions();
 
 // Arguments parse */
 commander
-    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ')',  global.opts.core.common.defaultLogLevel)
-    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.common.port + ')', global.opts.core.common.port)
-    .option('--html', 'Turn on HTML parser on app start')
+    .allowUnknownOption()
+    .option('-l, --log [string]', 'Log level (default: ' + global.opts.core.common.defaultLogLevel + ').',  global.opts.core.common.defaultLogLevel)
+    .option('-p, --port [number]', 'Server port (default: ' + global.opts.core.server.port + '). Note: `process.env.PORT` will override this option if present.')
+    .option('--hostname [string]', 'Server hostname  (default: ' + global.opts.core.server.hostname + ').')
+    .option('--test', 'Run app with tests.')
+    .option('--no-watch', 'Run with disabled watcher.')
+    .option('--post-grunt [string]', 'Define Grunt command to run after app start', 'ci-post-run')
     .parse(process.argv);
 
 global.commander = commander;
 
-global.app.set('views', __dirname + '/core/views');
-global.app.set('user', __dirname + '/' + global.opts.core.common.pathToUser);
+var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
+
+var getUserPath = require('./core/lib/getUserPath');
+var userPath = global.userPath = getUserPath();
+global.isNodeModule = getUserPath.isNodeModule;
+
+// Legacy support
+app.set('user', userPath);
+
+console.log('Running user contents from', '`' + userPath + '`.');
 
 // We support `development` (default), `production` and `presentation` (for demos)
-global.MODE = process.env.NODE_ENV || 'development';
+var MODE = global.MODE = process.env.NODE_ENV || 'development';
 
-global.pathToApp = __dirname;
+global.engineVersion = fs.readJsonSync(path.join(global.pathToApp, '/package.json'), {throws: false}).version;
 
 // Default logger
 var logger = require('./core/logger');
 var log = logger.log;
 global.log = log;
 
-if (commander.html) global.opts.core.parseHTML.onStart = true;
-if (commander.port) global.opts.core.common.port = parseInt(commander.port);
+if (commander.port) global.opts.core.server.port = parseInt(commander.port);
+if (commander.hostname) global.opts.core.server.hostname = commander.hostname;
+if (!commander.watch) {
+    trackStats.event({
+        group: 'features',
+        event: 'disabled watch'
+    });
+    global.opts.core.watch.enabled = false;
+}
+
+if (process.env.PORT) {
+    global.opts.core.server.port = parseInt(process.env.PORT);
+    console.log('Using defined app PORT from environment variable: ' + process.env.PORT);
+}
 /* /Globals */
 
 
 /* App config */
 
+// Version
+app.use(function (req, res, next) {
+    res.header('X-powered-by', 'SourceJS ' + global.engineVersion);
+    next();
+});
+
 // Optimization
-global.app.use(require('compression')());
+app.use(require('compression')());
 
 // Cookies
-global.app.use(require('cookie-parser')());
-global.app.use(require('express-session')({
+app.use(require('cookie-parser')());
+app.use(require('express-session')({
     secret: (function() {
         var d = new Date().getTime();
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -64,14 +103,26 @@ global.app.use(require('express-session')({
 }));
 
 app.use(function (req, res, next) {
+    if (req.cookies) { req.cookies['source-mode'] = global.MODE; }
     res.cookie('source-mode', global.MODE, { maxAge: 3600000, httpOnly: false });
 
-    // keep executing the router middleware
+    next();
+});
+
+var shortid = require('shortid');
+app.use(function (req, res, next) {
+    if (req.cookies && !req.cookies['source-track']) {
+        var id = shortid.generate();
+
+        req.cookies['source-track'] = id;
+        res.cookie('source-track', id, { maxAge: 3600000, httpOnly: true });
+    }
+
     next();
 });
 
 // Favicon
-var faviconPath = global.app.get('user') + '/favicon.ico';
+var faviconPath = path.join(userPath, 'favicon.ico');
 if (fs.existsSync(faviconPath)){
     app.use(favicon(faviconPath));
 }
@@ -81,14 +132,15 @@ app.use(bodyParser.json());
 
 
 
-/* Middlewares */
+/* Includes */
+
+// Middlewares
+require('./core/middlewares/loader').process(app, global.opts);
 
 // Auth initializing
 var auth = require('./core/auth')(app);
 app.use(auth.everyauth.middleware());
 
-// Clarify
-global.app.use(require('./core/middleware/clarify'));
 
 // File tree module
 var fileTree = require('./core/file-tree');
@@ -98,61 +150,49 @@ fileTree.scan();
 
 // Run file tree scan on main page visit
 if (global.opts.core.fileTree.mainPageTrigger && global.MODE !== 'presentation') {
-    global.app.use(function(req, res, next){
+    app.use(function(req, res, next){
 
         // Updating navigation on each main page visit
-        if (req.url === "/") fileTree.scan();
+        if (req.url === '/') fileTree.scan();
 
         next();
     });
 }
 
+// Update file tree via api
+app.use('/api/updateFileTree', function(req, res){
+    fileTree.scan();
 
-// Middleware that loads spec content
-var read = require("./core/middleware/read");
-global.app.use(read.process);
+    res.jsonp({
+        message: 'Navigation succesfully updated.'
+    });
+});
 
-// Markdown
-global.app.use(require("./core/middleware/md").process);
-global.app.use(require("./core/middleware/mdTag").process);
-
-// Load user defined middleware, that processes spec content
-require("./core/middleware/userMiddleware");
-
-// Middleware that wraps spec with Source template
-global.app.use(require("./core/middleware/wrap").process);
-
-// Middleware that sends final spec response
-global.app.use(require("./core/middleware/send").process);
-
-/* /Middlewares */
-
-
-
-/* Includes */
 
 // Routes
 require('./core/routes');
 
 // API
 require('./core/api');
-
-global.app.use('/api/options', function(req, res){
-    res.jsonp(loadOptions().assets);
-});
+require('./core/api/optionsApi');
 
 // User extenstions
 require("./core/loadPlugins.js");
 
 try {
     // User additional functionality
-    require(global.app.get('user') + "/core/app.js");
+    require(userPath + "/core/app.js");
 } catch(e){}
 
 
 // Watchers
-if (global.opts.core.watch.enabled && global.MODE !== 'presentation') {
-    require('./core/watchNewSpecs');
+if (global.opts.core.watch.enabled && global.MODE === 'development') {
+
+    if (global.opts.core.watch.foreverWatchEnabled) {
+        require('./core/watch');
+    } else {
+        require('./core/watch/childWatch');
+    }
 }
 
 /* /Includes */
@@ -163,19 +203,22 @@ if (global.opts.core.watch.enabled && global.MODE !== 'presentation') {
 var headerFooter = require('./core/headerFooter');
 
 // Static content
-global.app.use(express.static(global.app.get('user')));
+app.use(express.static(userPath));
 
 // Page 404
-global.app.use(function(req, res){
-
+app.use(function(req, res){
 	if (req.accepts('html')) {
+        if (req.url === '/') {
+            res.redirect('/docs');
+            return;
+        }
+
         var headerFooterHTML = headerFooter.getHeaderAndFooter();
-		res.status(404).render(__dirname + '/core/views/404.ejs', {
+		res.status(404).render(path.join(__dirname, '/core/views/404.ejs'), {
             header: headerFooterHTML.header,
             footer: headerFooterHTML.footer
 		});
 	}
-
 });
 /* /Serving content */
 
@@ -187,7 +230,7 @@ var logErrors = function(err, req, res, next) {
         var url = req.url || '';
 
         log.debug(req.method, req.headers);
-        log.error(url.red, ('Error: ' + err.stack).red);
+        log.error(('Error on requesting url: ' + url).red +'.', ('Error: ' + err.stack).red);
 
         if (req.xhr) {
             res.status(500).json({msg: 'Server error'});
@@ -199,17 +242,44 @@ var logErrors = function(err, req, res, next) {
     }
 };
 
-global.app.use(logErrors);
+app.use(logErrors);
 /* /Error handling */
 
 
 
-// Server start
+/* Server start */
 if (!module.parent) {
-    var port = global.opts.core.common.port;
+    var serverOpts = global.opts.core.server;
+    var port = serverOpts.port;
 
-    global.app.listen(port);
-    var portString = port.toString();
+    app.listen(port, serverOpts.hostname, serverOpts.backlog, serverOpts.callback);
+    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + (port.toString()).red + ' in '.blue + MODE.blue + ' mode...'.blue);
 
-    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + portString.red + ' in '.blue + MODE.blue + ' mode...'.blue);
+    if (commander.test) {
+        var spawn = require('cross-spawn');
+
+        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port='+port], {stdio: 'inherit'})
+            .on('close', function (code) {
+                if (code === 0) {
+                    log.info('Test successful');
+                    process.exit(0);
+                } else {
+                    log.error('Test failed');
+                    process.exit(1);
+                }
+            });
+    } else {
+        if (global.opts.core.tracking.enabled) {
+            trackStats.event({
+                group: 'start',
+                event: 'default'
+            });
+        } else {
+            trackStats.event({
+                group: 'start',
+                event: 'disabled tracking'
+            }, true);
+        }
+    }
 }
+/* Server start */

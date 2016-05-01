@@ -2,10 +2,13 @@
 
 var path = require('path');
 var log4js = require('log4js');
-var deepExtend = require('deep-extend');
+var utils = require('./lib/utils');
 var fs = require('fs-extra');
 
 var logRootDir = global.pathToApp || __dirname;
+var customLogLevel = global.commander && global.commander.log ? global.commander.log : undefined;
+var defaultLogLevel = global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel;
+var logLevel = customLogLevel || defaultLogLevel;
 
 var config =  {
     prepareLogPath: 'log',
@@ -13,9 +16,13 @@ var config =  {
         "appenders": [
             {
                 "type": "logLevelFilter",
-                "level": global.commander.log || (global.MODE === 'production' ? global.opts.core.common.defaultProdLogLevel : global.opts.core.common.defaultLogLevel),
+                "level": logLevel,
                 "appender": {
-                    "type": "console"
+                    "type": "console",
+                    "layout": {
+                        "type": "pattern",
+                        "pattern": "%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] -%] %m"
+                    }
                 }
             },
             {
@@ -49,7 +56,8 @@ var config =  {
         ]
     }
 };
-if (global.opts.core.logger) deepExtend(config, global.opts.core.logger);
+
+if (global.opts.core.logger) utils.extendOptions(config, global.opts.core.logger);
 
 var reloadConf = function(currentConf){
     log4js.configure(currentConf);
@@ -82,6 +90,8 @@ prepareLogDir(config.prepareLogPath);
 // Configuring log4js
 reloadConf(config.log4js);
 
+var logger = log4js.getLogger('app');
+
 // Example
 // logger.trace('trace');
 // logger.debug('debug');
@@ -91,12 +101,16 @@ reloadConf(config.log4js);
 // logger.error('error');
 // logger.fatal('fatal');
 
+if (global.logQueue) global.logQueue.forEach(function(item){
+    logger[item.level](item.msg);
+});
+
 module.exports = {
     addAppenders: addAppenders,
     prepareLogDir: prepareLogDir,
 
     // Default logger
-    log: log4js.getLogger('app'),
+    log: logger,
 
     // Configured log4js
     log4js: log4js

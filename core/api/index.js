@@ -2,10 +2,10 @@
 
 var express = require('express');
 var path = require('path');
-var parseData = require('./parseData');
+var parseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
+var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
 var pathToApp = path.dirname(require.main.filename);
-var deepExtend = require('deep-extend');
-var parseHTML = require(path.join(global.pathToApp, 'core/api/parseHTML'));
+var htmlTree = require(path.join(global.pathToApp, 'core/html-tree'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 
 var config = {
@@ -16,12 +16,10 @@ var config = {
     }
 };
 // Overwriting base options
-deepExtend(config, global.opts.core.api);
+utils.extendOptions(config, global.opts.core.api);
 
 var specsDataPath = path.join(pathToApp, config.specsData);
 var htmlDataPath = path.join(pathToApp, config.htmlData);
-var specsDataTestPath = path.join(pathToApp, config.specsTestData);
-var htmlDataTestPath = path.join(pathToApp, config.htmlTestData);
 
 /**
  * getSpecs REST api processor
@@ -36,9 +34,12 @@ var getSpecs = function (req, res, parseObj) {
     var data = {};
     var body = req.body;
     var reqID = body.id || req.query.id;
+    var cats = body.cats || req.query.cats;
     var reqFilter = body.filter || req.query.filter;
     var reqFilterOut = body.filterOut || req.query.filterOut;
     var parsedData = parseObj;
+
+    var msgDataNotFound = 'API: Specs data not found, please restart the app.';
 
     if (reqID) {
         var dataByID = parsedData.getByID(reqID);
@@ -46,6 +47,8 @@ var getSpecs = function (req, res, parseObj) {
         if (dataByID && typeof dataByID === 'object') {
             res.status(config.statusCodes.OK).json(dataByID);
         } else {
+            if (typeof dataByID === 'undefined') console.warn(msgDataNotFound);
+
             res.status(config.statusCodes.notFound).json({
                 message: "id not found"
             });
@@ -60,16 +63,20 @@ var getSpecs = function (req, res, parseObj) {
         if (dataFiltered && typeof dataFiltered === 'object') {
             res.status(config.statusCodes.OK).json(dataFiltered);
         } else {
+            console.warn(msgDataNotFound);
+
             res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
         }
     } else {
-        data = parsedData.getAll();
+        data = parsedData.getAll(cats);
 
         if (data) {
             res.status(config.statusCodes.OK).json(data);
         } else {
+            console.warn(msgDataNotFound);
+
             res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
@@ -94,6 +101,8 @@ var getHTML = function (req, res, parseObj) {
     var sections = reqSections ? reqSections.split(',') : undefined;
     var parsedData = parseObj;
 
+    var msgDataNotFound = 'API: HTML data not found, please sync API or run PhantomJS parser.';
+
     if (reqID) {
         var responseData = '';
 
@@ -103,9 +112,11 @@ var getHTML = function (req, res, parseObj) {
             responseData = parsedData.getByID(reqID);
         }
 
-        if (typeof responseData === 'object') {
+        if (responseData && typeof responseData === 'object') {
             res.status(config.statusCodes.OK).json(responseData);
         } else {
+            if (typeof responseData === 'undefined') console.warn(msgDataNotFound);
+
             res.status(config.statusCodes.notFound).json({
                 message: "id and requested sections not found"
             });
@@ -116,6 +127,8 @@ var getHTML = function (req, res, parseObj) {
         if (data) {
             res.status(config.statusCodes.OK).json(data);
         } else {
+            console.warn(msgDataNotFound);
+
             res.status(config.statusCodes.notFound).json({
                 message: "data not found"
             });
@@ -144,7 +157,7 @@ var postHTML = function (req, res, dataPath) {
         data = unflatten(data, { delimiter: '/', overwrite: 'root' });
     }
 
-    parseHTML.writeDataFile(data, true, dataPath, function(err, finalData){
+    htmlTree.writeDataFile(data, true, dataPath, function(err, finalData){
         if (err || !finalData) {
             res.status(config.statusCodes.error).json({
                 message: err
@@ -170,7 +183,7 @@ var deleteHTML = function (req, res, dataPath) {
     var body = req.body;
     var reqID = body.id || req.query.id;
 
-    parseHTML.deleteFromDataFile(dataPath, reqID, function(err, finalData){
+    htmlTree.deleteFromDataFile(dataPath, reqID, function(err, finalData){
         if (err || !finalData) {
             res.status(config.statusCodes.error).json({
                 message: err
@@ -262,7 +275,11 @@ global.app.use('/api', apiRouter);
 
 
 /* Test API router */
+// TODO: find alternative way for testing API, without custom route
+
 var apiTestRouter = express.Router();
+var specsDataTestPath = path.join(pathToApp, config.specsTestData);
+var htmlDataTestPath = path.join(pathToApp, config.htmlTestData);
 
 var parseSpecsTest = new parseData({
     scope: 'specs',

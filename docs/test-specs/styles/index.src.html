@@ -1,0 +1,123 @@
+﻿<div class="source_warn">
+    <%- include('includes/all-tags.html') %>
+</div>
+
+<div class="source_doc">
+    <%- include('includes/all-tags.html') %>
+</div>
+
+<div class="source_note">
+    <%- include('includes/all-tags.html') %>
+</div>
+
+<p><a class="source_a_d" href="#777">Links can be highlighted as link to design specification by adding <code>.source_a_d</code> as a class on the link</a></p>
+<p><a class="source_a_s" href="#777">Links can be highlighted as link to other specification by adding <code>.source_a_s</code> as a class on the link</a></p>
+
+<a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
+
+<p>Highlighting can be achieved by either wrapping text in <code>&lt;code&gt;</code> tags, or by using the <span class="source_hl">.source_hl class</span>.</p>
+
+<section class="source_section">
+    <h2>Spec Section Heading</h2>
+
+    <a class="source_a_hl" href="#777">Links can be highlighted by adding <code>.source_a_hl</code> as a class on the link</a>
+
+    <p>Notes specific to particular interface elements can be documented here. Heading numbering is generated dynamically, and is supported up to 3 levels deep.</p>
+
+    <section class="source_example">
+        <div class="some-code">
+            <div style="display: none;">Hello world;</div>
+
+            <p>Rendered code examples - main documentation blocks.</p>
+
+            <p>Engine decorative styles do not affect this block. Link your <a href="#2!">project files</a> and start prototyping.</p>
+
+            <p>This page has Twitter Bootstrap styles linked as Master App Styles.</p>
+
+            <a class="btn btn-primary" href="#777">Hey!</a>
+        </div>
+    </section>
+
+    <code class="src-html">
+        You can fill custom source code blocks before "source_example".
+
+        If &lt;code class="src-html"&gt; is not set, it will be created
+        and filled automatically from "source_example" contents.
+    </code>
+
+    <div class="source_example">
+        <div class="some-code">
+            <p>Click "Show source" in the inner navigation menu on the right to reveal the source for all examples.</p>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">Left</button>
+                <button type="button" class="btn btn-default">Middle</button>
+                <button type="button" class="btn btn-default">Right</button>
+            </div>
+        </div>
+    </div>
+
+    <p>To render and highlight the source code, wrap it in <code>&lt;code class="src-html"&gt;</code>, <code>&lt;code class="src-css"&gt;</code><br> or <code>&lt;code class="src-js"&gt;</code> tags, depending on the language you want to highlight, like this:</p>
+
+    <code class="src-html source_visible">
+        &lt;code class="src-html"&gt;
+            <div class="foo">Bar</div>
+        &lt;/code&gt;
+    </code>
+
+    <h3>h3</h3>
+
+    some
+
+    <h4>h4</h4>
+
+    some
+
+</section>
+
+<section class="source_section">
+    <h2>Linking Your Project's CSS</h2>
+
+    <code class="src-html source_visible">
+    <!-- Your project styles -->
+        <!--Link all project styles at once-->
+            &lt;link href="/docs/data/bootstrap.css" rel="stylesheet"&gt;
+
+        <!--or add separate, spec specific CSS files-->
+            &lt;link href="css/spec.css" rel="stylesheet"&gt;
+    <!-- /Your project styles -->
+    </code>
+
+</section>
+
+<section class="source_section">
+    <h2>Spec Page Markup</h2>
+
+    <%- include('includes/all-tags.html') %>
+
+    <div class="source_info">
+        <%- include('includes/all-tags.html') %>
+    </div>
+
+    <div class="source_warn">
+        <%- include('includes/all-tags.html') %>
+    </div>
+
+    <div class="source_doc">
+        <%- include('includes/all-tags.html') %>
+    </div>
+
+    <div class="source_note">
+        <%- include('includes/all-tags.html') %>
+    </div>
+
+</section>
+
+<section class="source_section">
+    <h2>Source code</h2>
+
+    <p>
+        This spec uses <code>index.src.html</code> template, view it's <a href="index.src.html">source</a>.
+    </p>
+
+</section>

@@ -2,93 +2,75 @@ SourceJS.define(["source/load-options"], function(options) {
 
     'use strict';
 
-    if(options.modulesEnabled.headerFooter) {
-        var headerExists = $(".source_header").length;
-        var footerExists = $(".source_footer").length;
+    $(function(){
+        var headerEl = document.querySelector('.source_header');
+        var footerEl = document.querySelector('.source_footer');
 
-        //Header and Footer injection
-        var source_container = $('.source_container');
+        if(options.modulesEnabled.headerFooter) {
+            //Header and Footer injection
+            var $sourceContainer = $('.source_container');
 
-        if (!headerExists) {
-            source_container.prepend($('<div class="source_header"></div>'));
-        }
-
-        if (!footerExists) {
-            source_container.append($('<div class="source_footer"></div>'));
-        }
-
-        if (source_container.length && !(headerExists && footerExists)) {
-            //some empty page
-            if (!source_container.contents().length) {
-                source_container.append($('<div class="source_main source_col-main" role="main">Welcome to Source!</div>'));
+            if (!headerEl) {
+                $sourceContainer.prepend($('<div class="source_header"></div>'));
             }
 
-            var insertHeader = function(data) {
-                $('.source_header').replaceWith(data.responseText);
-            };
+            if (!footerEl) {
+                $sourceContainer.append($('<div class="source_footer"></div>'));
+            }
 
-            var headerFile = 'header.inc.html';
-            var footerFile = 'footer.inc.html';
-
-            $.ajax({
-                url:"/assets/templates/"+headerFile,
-                async:true,
-                complete:function (data, status) {
-                    if (status === 'success') {
-                        insertHeader(data);
-                    } else {
-                        $.ajax({
-                            url:"/source/assets/templates/"+headerFile,
-                            async:true,
-                            complete:function (data) {
-                                insertHeader(data);
-                            }
-                        });
-                    }
+            if ($sourceContainer.length && !(headerEl && footerEl)) {
+                //some empty page
+                if (!$sourceContainer.contents().length) {
+                    $sourceContainer.append($('<div class="source_main source_col-main" role="main">Welcome to Source!</div>'));
                 }
-            });
 
-            var insertFooter = function(data) {
-                $('.source_footer').replaceWith(data.responseText);
-            };
+                var insertHeader = function(data) {
+                    $('.source_header').replaceWith(data.responseText);
+                };
 
-            $.ajax({
-                url:"/assets/templates/"+footerFile,
-                async:true,
-                complete:function (data, status) {
-                    if (status === 'success') {
-                        insertFooter(data);
-                    } else {
-                        $.ajax({
-                            url:"/source/assets/templates/"+footerFile,
-                            async:true,
-                            complete:function (data) {
-                                insertFooter(data);
-                            }
-                        });
+                var headerFile = 'header.inc.html';
+                var footerFile = 'footer.inc.html';
+
+                $.ajax({
+                    url:"/assets/templates/"+headerFile,
+                    async:true,
+                    complete:function (data, status) {
+                        if (status === 'success') {
+                            insertHeader(data);
+                        } else {
+                            $.ajax({
+                                url:"/source/assets/templates/"+headerFile,
+                                async:true,
+                                complete:function (data) {
+                                    insertHeader(data);
+                                }
+                            });
+                        }
                     }
-                }
-            });
-        }
-    }
+                });
 
-    //click on header - go up
-    $('.source_header').on({
-        'mouseover' : function(e){
-            if(e.target === this){
-                $('.source_header').css('cursor', 'pointer');
-            }else {
-                $('.source_header').css('cursor', 'inherit');
+                var insertFooter = function(data) {
+                    $('.source_footer').replaceWith(data.responseText);
+                };
+
+                $.ajax({
+                    url:"/assets/templates/"+footerFile,
+                    async:true,
+                    complete:function (data, status) {
+                        if (status === 'success') {
+                            insertFooter(data);
+                        } else {
+                            $.ajax({
+                                url:"/source/assets/templates/"+footerFile,
+                                async:true,
+                                complete:function (data) {
+                                    insertFooter(data);
+                                }
+                            });
+                        }
+                    }
+                });
             }
-        },
-        'click' : function(e){
-            if(e.target === this){
-                window.scrollTo(0, 0);
-            }
-        },
-        'mouseout' : function(e){
-            $('.source_header').css('cursor', 'inherit');
         }
     });
-
 });

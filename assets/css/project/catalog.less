@@ -15,12 +15,24 @@
     font-size: @fz-size-m;
     line-height: 1.5;
 
+    color: @gray !important;
+
     &_h2,
     h2 {
+        line-height: 1.5 !important;
         font-size: 22px !important;
         color: @black !important;
         margin: 20px 0 5px 0 !important;
         font-weight: normal !important;
+
+        a {
+            color: @black;
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+                }
+            }
         }
 
     &.__show-preview {
@@ -55,6 +67,7 @@
         }
     }
 
+.source_catalog > p,
 .source_catalog_tx {
 	margin: 0 0 20px !important;
 
@@ -70,6 +83,7 @@
 		}
 	}
 
+.source_subhead > p,
 .source_subhead .source_catalog_tx {
     margin: 0 0 10px !important;
     min-height: 0;
@@ -130,7 +144,15 @@
         }
 	}
 
+.source_catalog_update-button,
 .source_catalog_image-tumbler {
+    // Reset
+    background: none;
+    border: none;
+    padding: 0;
+    display: inline;
+    cursor: pointer;
+
     font-size: @fz-size-s;
     text-decoration: none;
     border-bottom: 1px dotted;

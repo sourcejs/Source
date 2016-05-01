@@ -6,49 +6,27 @@
 
 SourceJS.define([
     "jquery",
+    'text!/api/options',
     "sourceModules/utils",
+    "sourceLib/lodash",
     "text!sourceTemplates/clarifyPanel.inc.html"
-    ], function ($, u, clarifyPanelTpl){
+], function ($, options, u, _, clarifyPanelTpl){
+    var triesLimit = 2;
+    var triesCount = 0;
 
-    // If we have data from Clarify output
-    if (window.sourceClarifyData){
-        var $panelTemplate = $(clarifyPanelTpl);
-
-        $panelTemplate.find('.js-source_clarify_return-link').attr('href', window.sourceClarifyData.specUrl);
-
-        var prepareTplList = function(){
-            var output = '';
-            var tplList = window.sourceClarifyData.tplList;
-
-            for (var i = 0; i < tplList.length; i++){
-                var currentTpl = tplList[i];
-
-                output += '<option data-tpl-name="'+currentTpl+'">'+currentTpl+'</option>'
-            }
-
-            return output;
-        };
-
-        var prepareSectionsList = function(){
-            var output = '';
-            var sectionsList = window.sourceClarifyData.sectionsIDList || [];
-
-            sectionsList.forEach(function(current){
-                output += '<option data-section="' + current.id + '">' + current.visualID + '. ' + current.header + '</option>';
-            });
-
-            return output;
-        };
+    var handler = function() {
+        var $panelTemplate = $(_.template(clarifyPanelTpl, {
+            showApiTargetOption: window.sourceClarifyData.showApiTargetOption,
+            specUrl: window.sourceClarifyData.specUrl,
+            tplList: window.sourceClarifyData.tplList,
+            sectionsIDList: window.sourceClarifyData.sectionsIDList || []
+        }));
 
         var enableCheckboxes = function(param){
             if (u.getUrlParameter(param)) {
                 $panelTemplate.find('.js-source_clarify_panel_option-checkbox[name="'+param+'"]').attr('checked', true);
             }
         };
-
-        // Filing select containers
-        $panelTemplate.find('.js-source_clarify_panel_select-tpl').append(prepareTplList());
-        $panelTemplate.find('.js-source_clarify_panel_sections').append(prepareSectionsList());
 
         // Restoring options from URL
         var checkboxes = ['nojs','fromApi','apiUpdate'];
@@ -57,8 +35,8 @@ SourceJS.define([
             enableCheckboxes(item);
         });
 
-        var tepmplate = u.getUrlParameter('tpl') ? u.getUrlParameter('tpl') : 'default';
-        $panelTemplate.find('.js-source_clarify_panel_select-tpl').val(tepmplate);
+        var template = u.getUrlParameter('tpl') ? u.getUrlParameter('tpl') : 'default';
+        $panelTemplate.find('.js-source_clarify_panel_select-tpl').val(template);
 
         var sections = u.getUrlParameter('sections') ? u.getUrlParameter('sections').split(',') : undefined;
         if (sections) {
@@ -104,7 +82,21 @@ SourceJS.define([
 
             location.href = clarifyBaseUrl + constructedParams;
         });
-    } else {
-        console.log('Clarify panel failed to receive expected data from clarify, check your tpl.');
-    }
+    };
+
+    var renderClarify = function(){
+        // If we have data from Clarify output
+        if (window.sourceClarifyData){
+            handler();
+        } else {
+            if (triesCount < triesLimit) {
+                triesCount++;
+                setTimeout(renderClarify, 1000);
+            } else {
+                console.log('Clarify panel failed to receive expected data from clarify, check your tpl.');
+            }
+        }
+    };
+
+    renderClarify();
 });

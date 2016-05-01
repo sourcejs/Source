@@ -1,0 +1,24 @@
+*.idea
+*.iml
+
+.travis.yml
+.jshintrc
+appveyor.yml
+source.sh
+
+# Generated data for API
+/core/api/data/
+/log/
+
+# Generated JSdoc
+/jsdoc/
+
+# Build folder for assets
+/build/
+
+# Web server root, and your specs home
+# You can store other repository in this path
+/user/
+
+# Folder with tests
+/test/

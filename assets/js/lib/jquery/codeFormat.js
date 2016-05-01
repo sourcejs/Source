@@ -6,12 +6,16 @@
  *
  * */
 
-jQuery(document).ready(function($) {
-    $.fn.formatify = function(options) {
 
-        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"] // list of self-closing tags
+define([
+    "jquery"
+], function($) {
 
-        return this.each(function() {
+    return function($el, options) {
+
+        var selfClosing = ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"]; // list of self-closing tags
+
+        return $el.each(function() {
 
             var settings = $.extend({
                     escape:true // escape HTML symbols (<,>,&)
@@ -22,7 +26,9 @@ jQuery(document).ready(function($) {
                 ;
 
             var indentCode = function (line) {
-                return new Array(tabs + 1).join(' ') + line;
+                var _tabs = tabs < 0 ? 0 : tabs;
+
+                return new Array(_tabs + 1).join(' ') + line;
             };
 
             if (code.length > 0) {
@@ -58,6 +64,5 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
 });
-
-

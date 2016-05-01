@@ -43,7 +43,7 @@ pre[class*="src-"] code.__visible {
 /* Code blocks */
 pre[class*="src-"] {
     counter-reset: linenumber;
-    padding: 1em 1em 1em 3.8em;
+    padding: 10px 20px;
     margin: .5em 0;
     overflow: auto;
     resize:horizontal;

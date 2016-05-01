@@ -6,7 +6,7 @@
  *
  * */
 
-// TODO: wrap as requirejs module, and combine with phantom-runner.js
+// TODO: wrap as requirejs module, and combine with phantomRunner.js
 
 function SourceGetSections() {
     // Defining strict inside func, because PhantomJS stops evaluating this script if it's on top
@@ -211,7 +211,7 @@ function SourceGetSections() {
 /**
  * Filter list of HTML nodes
  *
- * @param {Array} elementsArr - nodelist to filter
+ * @param {Array} elementsArr - elements array to filter
  * @param {Function} [customElFilter] - Additional filter for element
  * @param {Boolean} [skipAttrFilters] - Set to true, if expect not filtered list of resources
  *

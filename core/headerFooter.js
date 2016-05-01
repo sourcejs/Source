@@ -2,28 +2,23 @@
 
 var fs = require('fs');
 var path = require('path');
-var pathToApp = path.dirname(require.main.filename);
-var ejs = require('ejs');
 
 exports.getHeaderAndFooter = function () {
-    var defaultTemplatePath = pathToApp + "/assets/templates/";
-    var userTemplatePath = global.app.get('user') + "/assets/templates/";
-    var headerFile = "header.inc.html";
-    var footerFile = "footer.inc.html";
+    var defaultTemplatePath = path.join(global.pathToApp, 'assets/templates');
+    var userTemplatePath = path.join(global.userPath, 'assets/templates');
+    var headerFile = 'header.inc.html';
+    var footerFile = 'footer.inc.html';
 
-    var data = {};
+    var output = {};
 
-    if(fs.existsSync(userTemplatePath + headerFile)) {
-        data.header = ejs.render(fs.readFileSync(userTemplatePath + headerFile, "utf-8"));
-    } else {
-        data.header = ejs.render(fs.readFileSync(defaultTemplatePath + headerFile, "utf-8"));
-    }
+    var userHeaderTplPath = path.join(userTemplatePath, headerFile);
+    output.headerPath = fs.existsSync(userHeaderTplPath) ? userHeaderTplPath : path.join(defaultTemplatePath, headerFile);
 
-    if(fs.existsSync(userTemplatePath + footerFile)) {
-        data.footer = ejs.render(fs.readFileSync(userTemplatePath + footerFile, "utf-8"));
-    } else {
-        data.footer = ejs.render(fs.readFileSync(defaultTemplatePath + footerFile, "utf-8"));
-    }
+    var userFooterTplPath = path.join(userTemplatePath, footerFile);
+    output.footerPath = fs.existsSync(userFooterTplPath) ? userFooterTplPath : path.join(defaultTemplatePath, footerFile);
 
-    return data;
+    output.header = fs.readFileSync(output.headerPath, 'utf-8');
+    output.footer = fs.readFileSync(output.footerPath, 'utf-8');
+
+    return output;
 };

@@ -218,6 +218,7 @@
             var transliterated = inputText;
             // TODO: make sure that we realy need it
             inputText = inputText.replace(/[\{\}\[\]\(\)\\\.\*\?\+]{1}/g, "");
+            inputText = this.config.caseSensetive ? inputText : inputText.toLowerCase();
             var cyrillic = /[\u0400-\u04FF]/gi;
             if (isTranslitEnabled) {
                 if (transliterated.search(cyrillic) >= 0) {

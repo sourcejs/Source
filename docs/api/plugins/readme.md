@@ -1,5 +1,3 @@
-# Writing SourceJS Plugins and Middlewares
-
 SourceJS core contains only default APIs for most common use cases, all specific features we move to plugins, that could contain back-end and client-side improvements.
 
 ## Starting Templates
@@ -74,7 +72,7 @@ define([
 
 As we mentioned above, when SourceJS plugin is installed through NPM, main client-side module of your plugin (`index.js`) is connected by default.
 
-To achieve this, we generate custom RequireJS configuration through default Grunt task and dynamically extend `options.js`, filling installed modules to `assets.npmPluginsEnabled` with `true`.
+To achieve this, we generate custom RequireJS configuration through default build task and dynamically extend `options.js`, filling installed modules to `assets.npmPluginsEnabled` with `true`.
 
 To disable client-side module of any installed npm Plugins, you can edit the module definition in `user/options.js`:
 
@@ -97,6 +95,7 @@ As SourceJS back-end uses [ExpressJS](http://expressjs.com), it's recommended to
 
 ### Examples
 
+* [sourcejs-react](https://www.npmjs.com/package/sourcejs-react) - rendering React components in specs
 * [sourcejs-bubble](https://github.com/sourcejs/sourcejs-bubble) - comments for examples (have client-side and back-end features)
 * [sourcejs-spec-dependencies](https://github.com/sourcejs/sourcejs-spec-dependencies) - exposing Spec Dependencies (have client-side and back-end features)
 * [sourcejs-spec-status](https://github.com/sourcejs/sourcejs-spec-status)
@@ -114,17 +113,58 @@ Most common use cases of middleware in SourceJS in modification of Spec file con
 
 Middlewares are automatically loaded after installation, and are evaluated on each request before `sourcejs/core/middleware/wrap.js` and `sourcejs/core/middleware/send.js`.
 
-`wrap.js` is wrapping `index.src` contents in a pre-defined a view template from `sourcejs/core/views` or user custom path `sourcejs/user/core/views` using [EJS](http://www.embeddedjs.com/).
+`wrap.js` is wrapping spec page (`index.src.html`, `index.md` and etc) contents in a pre-defined a view template from `sourcejs/core/views` or user custom path `sourcejs/user/core/views` using [EJS](http://www.embeddedjs.com/).
 
-`send.js` is used in case when we modify Spec contents, as we do with `*.src` and all other middlewares. Modified Spec content is passed through `req.specData.renderedHtml` object, which each middleware can modify during the request handling process and which then is sent to the client's browser.
+`send.js` is used in case when we modify Spec contents, as we do with `*.src.html` and all other middlewares. Modified Spec content is passed through `req.specData.renderedHtml` object, which each middleware can modify during the request handling process and which then is sent to the client's browser.
 
 ### Modifying Spec contents
 
-We alredy mentioned before that Middlewares use `req.specData.renderedHtml` object to get processed Spec contents and modify them.
+We already mentioned before that Middlewares use `req.specData.renderedHtml` object to get processed Spec contents and modify them.
 
 As any other basic ExpressJS middleware, at the processing start, we get `req` object on input and pass it to the next handler on each request. This architecture allows us to modify `req` contents on each step.
 
-In 0.4.0 middlewares from plugins are connected one by one, sorted by alphabet. In nearest releases we will add a feature for controlling the queue.
+It's possible to define middleware group/order and control group execution sequence. By default all middlewares (and older plugins) will be placed in default group. Here's the default group execution order:
+
+```js
+loadGroupsOrder: [
+  'request',
+  'pre-html',
+  'default',
+  'html',
+  'response'
+]
+```
+
+####Example configurations
+
+In SourceJS core (configurable from `user/options.js`):
+```js
+{
+  core: {
+    middlewares: {
+        list: {
+          md: {
+            enabled: true,
+            order: -1,
+            group: 'pre-html',
+            indexPath: path.join(appRoot, 'core/middlewares/md.js')
+         }
+         'sourcejs-plugin-name': {
+           order: -2
+         }
+      }
+    }
+  }
+}
+```
+Plugin level configuration in `sourcejs-plugin-name/options.js`, will be merged on-top of defaults:
+```js
+module.exports = {
+  order: 1,
+  group: 'pre-html'
+};
+```
+To override core middlewares, changing their order or replacing with alternative plugins, user will need to modify his `options.js` file. For the security reason, plugin level options can't override core middlewares or set an execution order option lower than 0 (zero).
 
 ### Examples
 
