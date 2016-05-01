@@ -26,7 +26,9 @@ var finalParagraphInterceptor = interceptor(function (req, res) {
             ) {
                 body = '// Modified on static serve from `redirects.js` \n (function(require, define){\n' + body + '\n}(sourcejs.amd.require, sourcejs.amd.define))';
 
-                global.log.warn('Deprecation Notice: please update "' + req.originalUrl + '" to use sourcejs.amd.require/sourcejs.amd.define namespace for Requirejs modules.');
+                if (!(/\/source\/assets\/js\/lib/.test(req.originalUrl))) {
+                    global.log.warn('Deprecation Notice: please update "' + req.originalUrl + '" to use sourcejs.amd.require/sourcejs.amd.define namespace for Requirejs modules.');
+                }
             }
 
             send(body);

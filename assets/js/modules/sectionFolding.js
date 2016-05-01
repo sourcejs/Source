@@ -6,7 +6,7 @@
 *
 * */
 
-define([
+sourcejs.amd.define([
     "jquery",
     "source/load-options",
     "sourceModules/utils",
@@ -105,7 +105,7 @@ define([
             // TODO: remove mustache check from core
             if (options.pluginsOptions && options.pluginsOptions.mustache) {
                 // Need to use absolute path to get same scope with requires from inline scripts
-                require(['/plugins/mustache/js/mustache.js'], function(templater){
+                sourcejs.amd.require(['/plugins/mustache/js/mustache.js'], function(templater){
                     if (typeof templater.PostponedTemplates !== 'undefined') {
 
                         if ($target.attr('data-rendered') === 'true') {

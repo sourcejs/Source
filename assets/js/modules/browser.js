@@ -1,6 +1,6 @@
 'use strict';
 
-define([
+sourcejs.amd.define([
     'jquery',
     'sourceLib/jquery.mb.browser'
 ], function($) {

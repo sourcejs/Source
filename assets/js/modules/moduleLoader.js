@@ -1,4 +1,4 @@
-define([
+sourcejs.amd.define([
     'jquery',
 	'sourceModules/module'
 	], function ($, module) {
@@ -47,7 +47,7 @@ define([
                     var targetObj = optionsBase[typeEnabled][item];
 
                     if (targetObj){
-                        require([path + item]);
+                        sourcejs.amd.require([path + item]);
                     }
                 }
             }

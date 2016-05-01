@@ -8,7 +8,7 @@
 
 'use strict';
 
-define([
+sourcejs.amd.define([
     'jquery',
     'sourceModules/module',
     'sourceModules/sections',

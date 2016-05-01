@@ -1,5 +1,5 @@
 "use strict";
-define([
+sourcejs.amd.define([
     'jquery',
     'sourceModules/module',
     'sourceLib/lodash'
@@ -10,7 +10,7 @@ var context; // instance of box
 var ModalBox = function(config, data) {
     var isNewInstance = !context;
     context = context || this;
-    context.data = data ? data : initialBlocksData;    
+    context.data = data ? data : initialBlocksData;
 
     if (!isNewInstance) {
         context.render();

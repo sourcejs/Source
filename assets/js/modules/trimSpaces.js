@@ -6,7 +6,7 @@
 *
 * */
 
-define([
+sourcejs.amd.define([
     "source/load-options",
     "sourceModules/codeSource"
     ], function(options) {

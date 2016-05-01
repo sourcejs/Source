@@ -9,7 +9,7 @@
 
 'use strict';
 
-define([
+sourcejs.amd.define([
     'jquery',
     'sourceModules/module',
     'text!/api/specs/raw',

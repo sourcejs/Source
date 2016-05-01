@@ -1,5 +1,5 @@
 //In separate module, to trace script ready state
-define([
+sourcejs.amd.define([
     "jquery",
     "sourceModules/utils",
     "sourceModules/loadEvents",
