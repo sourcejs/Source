@@ -1,4 +1,7 @@
-define(['source/load-options'], function(options) {
+define([
+    'jquery',
+    'source/load-options'
+], function($, options) {
 
     'use strict';
 

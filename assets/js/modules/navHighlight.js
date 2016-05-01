@@ -6,11 +6,12 @@
 *
 * */
 
-"use strict";
 
 define([
+	'jquery',
     'sourceModules/module'
-    ], function (module) {
+    ], function ($, module) {
+	'use strict';
 
 	function NavHighlight() {
 		var defaults = {
