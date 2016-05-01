@@ -334,7 +334,6 @@ module.exports = function(grunt) {
     // Regular development update task
     grunt.registerTask('update', [
         'clean-build:dev',
-        'resolve-js-bundles',
         'requirejs',
         'less',
         'autoprefixer',
@@ -350,7 +349,6 @@ module.exports = function(grunt) {
         'autoprefixer',
         'newer:cssmin:build',
         'newer:cssmin:user',
-        'resolve-js-bundles',
         'newer:copy:js',
         'newer:uglify:main',
 
