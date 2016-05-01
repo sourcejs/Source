@@ -32,9 +32,10 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.8.1",
-    "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-htmlmin": "^0.5.0",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-requirejs": "^1.0.0",
     "grunt-contrib-uglify": "^0.9.2",
     "grunt-newer": "^1.1.1",
     "gulp-watch": "operatino/gulp-watch#4.3.5-latest-fsevents",
@@ -51,7 +52,6 @@
     "shortid": "^2.2.2",
     "time-grunt": "^1.2.1",
     "tinyforever": "0.0.3",
-    "grunt-contrib-requirejs": "0.4.1",
     "universal-analytics": "^0.3.9"
   },
   "scripts": {

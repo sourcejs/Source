@@ -14,7 +14,7 @@
             'source': '/source/assets/js',
             'sourceLib': '/source/assets/js/lib',
             'sourceTemplates': '/source/assets/templates',
-            'text': 'loader'
+            'text': '/source/assets/js/lib/requirejs/text'
         },
         "map": {
             // for jquery-noconflict module we use real jquery

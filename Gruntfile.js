@@ -64,7 +64,7 @@ module.exports = function(grunt) {
                 baseUrl: "./",
                 dir: "build/assets/js",
                 optimize: "none",
-                mainConfigFile: './assets/js/loader.js',
+                mainConfigFile: './assets/js/require.bundle.js',
                 paths: {
                     'lib/jquery/jquery-noconflict': "lib/jquery/jquery-noconflict"
                 },
@@ -78,11 +78,10 @@ module.exports = function(grunt) {
             common: {
                 options: {
                     modules: [{
-                        "name": "loader",
+                        "name": "require.bundle",
                         "create": false,
                         "include": [
-                            "lib/requirejs/require",
-                            "lib/requirejs/text"
+                            "lib/requirejs/require"
                         ]
                     }, {
                         name: "lib/jquery.bundle",

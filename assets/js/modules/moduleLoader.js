@@ -46,6 +46,9 @@ SourceJS.define([
                     var targetObj = optionsBase[typeEnabled][item];
 
                     if (targetObj){
+                        console.log('require');
+                        
+
                         require([path + item]);
                     }
                 }
