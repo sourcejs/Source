@@ -1,6 +1,6 @@
 // Joined to require.bundle.js
 
-requirejs.config({
+sourcejs.amd.requirejs.config({
     paths: {
         // /source/assets requests are routed to /assets
         source: '/source/assets/js',

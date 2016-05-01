@@ -3,7 +3,7 @@
 "{%= grunt.file.read('assets/js/require-config.js') %}"
 
 // Extending base js config with npm packages list
-requirejs.config({
+sourcejs.amd.requirejs.config({
     // Create shorthands routes to clint-side npm plugins
     packages: function () {
         var modulesList = "{%= npmPluginsEnabled %}";
