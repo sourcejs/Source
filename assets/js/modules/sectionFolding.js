@@ -94,40 +94,12 @@ sourcejs.amd.define([
             $target.addClass(OPEN_SECTION_CLASS);
 
             var sectionID = $target.attr('id');
-            var isRendered = false;
 
             closedSections["section" + sectionID] = false;
 
             if (config) { //Remember options in localStorage
                 updateConfig();
             }
-
-            // TODO: remove mustache check from core
-            if (options.pluginsOptions && options.pluginsOptions.mustache) {
-                // Need to use absolute path to get same scope with requires from inline scripts
-                sourcejs.amd.require(['/plugins/mustache/js/mustache.js'], function(templater){
-                    if (typeof templater.PostponedTemplates !== 'undefined') {
-
-                        if ($target.attr('data-rendered') === 'true') {
-                            isRendered = true;
-                        }
-
-                        if (!isRendered) {
-
-                            for (var arr in templater.PostponedTemplates[sectionID]) {
-                                if (templater.PostponedTemplates[sectionID].hasOwnProperty(arr)) {
-                                    var values = templater.PostponedTemplates[sectionID][arr];
-                                    templater.insertTemplate(values[0], values[1], values[2]);
-                                }
-                            }
-
-                            $target.attr('data-rendered', 'true');
-                        }
-
-                    }
-                });
-            }
-
         };
 
         var closeSpoiler = function (t, config) {
