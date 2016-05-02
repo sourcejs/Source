@@ -7,9 +7,10 @@
 * */
 
 sourcejs.amd.define([
-    "source/load-options",
-    "sourceModules/codeSource"
-    ], function(options) {
+    'jquery',
+    'source/load-options',
+    'sourceModules/codeSource'
+    ], function($, options) {
 
     'use strict';
 
@@ -39,5 +40,4 @@ sourcejs.amd.define([
     };
 
     L_EXAMPLE_CLASS.trimSpaces();
-
 });
