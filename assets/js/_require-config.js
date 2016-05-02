@@ -10,6 +10,7 @@ sourcejs.amd.requirejs.config({
 
         // libs
         jquery: '/source/assets/js/lib/jquery-2.1.4.min',
+        lodash: '/source/assets/js/lib/lodash',
 
         // Require.js plugins
         text: '/source/assets/js/lib/text',
@@ -21,13 +22,15 @@ sourcejs.amd.requirejs.config({
     },
 
     map: {
-      // '*' means all modules will get 'jquery-private'
-      // for their 'jquery' dependency.
-      '*': { 'jquery': 'sourceLib/jquery-private' },
+      // '*' means all modules will use private versions
+      '*': {
+          'jquery': 'sourceLib/jquery-private',
+          'lodash': 'sourceLib/lodash-private',
+          'sourceLib/lodash': 'sourceLib/lodash-private'
+      },
 
-      // 'jquery-private' wants the real jQuery module
-      // though. If this line was not here, there would
-      // be an unresolvable cyclic dependency.
-      'sourceLib/jquery-private': { 'jquery': 'jquery' }
+      // but private version should first render the original ones
+      'sourceLib/jquery-private': { 'jquery': 'jquery' },
+      'sourceLib/lodash-private': { 'lodash': 'lodash' }
     }
 });
