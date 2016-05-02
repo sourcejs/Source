@@ -14,22 +14,22 @@ sourcejs.amd.define([
         // Extending RequireJS config with npm packages list
         sourcejs.amd.requirejs.config({
             // Create shorthands routes to clint-side npm plugins
-            packages: function () {
+            packages: (function () {
                 var modulesList = _this.options.npmPluginsEnabled;
-
-                console.log('modulesList', modulesList);
 
                 var npmPackages = [];
                 for (var module in modulesList) {
-                    npmPackages.push({
-                        name: module,
-                        location: '/node_modules/' + module + '/assets',
-                        main: 'index'
-                    })
+                    if (modulesList.hasOwnProperty(module)) {
+                        npmPackages.push({
+                            name: module,
+                            location: '/node_modules/' + module + '/assets',
+                            main: 'index'
+                        });
+                    }
                 }
 
                 return npmPackages;
-            }()
+            }())
         });
 
         this.loadModules('npmPlugins');
