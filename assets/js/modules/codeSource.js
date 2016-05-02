@@ -4,7 +4,7 @@
  *
  * */
 
-define([
+sourcejs.amd.define([
     "jquery",
     "source/load-options",
     "sourceModules/utils",
@@ -13,7 +13,7 @@ define([
     "sourceLib/codeFormat",
     "sourceModules/innerNavigation",
     "sourceLib/prism/prism"
-], function($, options, utils, Css, browser, codeFormat, innerNavigation) {
+], function($, options, utils, Css, browser, codeFormat, innerNavigation, Prism) {
     'use strict';
 
     if (!(browser.msie && parseInt(browser.version, 10) < 9)) { // and if not ie < 9

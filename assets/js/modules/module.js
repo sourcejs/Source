@@ -1,4 +1,4 @@
-define(["source/load-options"], function (options) {
+sourcejs.amd.define(["source/load-options"], function (options) {
 
     'use strict';
 

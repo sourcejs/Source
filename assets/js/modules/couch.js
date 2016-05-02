@@ -7,7 +7,7 @@
 *
 * */
 
-define([
+sourcejs.amd.define([
     'jquery',
     'sourceModules/module',
     'sourceModules/utils',

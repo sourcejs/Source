@@ -4,7 +4,7 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
-require([
+sourcejs.amd.require([
     "jquery",
     "source/load-options", // TODO: remove when all modules inherit Module()
     "sourceModules/browser",

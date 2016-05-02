@@ -1,12 +1,37 @@
-define([
+sourcejs.amd.define([
+    'jquery',
 	'sourceModules/module'
-	], function (module) {
+	], function ($, module) {
 
     'use strict';
 
     function ModuleLoader() {
+        var _this = this;
+
         this.loadModules('modules');
         this.loadModules('plugins');
+
+        // Extending RequireJS config with npm packages list
+        sourcejs.amd.requirejs.config({
+            // Create shorthands routes to clint-side npm plugins
+            packages: (function () {
+                var modulesList = _this.options.npmPluginsEnabled;
+
+                var npmPackages = [];
+                for (var module in modulesList) {
+                    if (modulesList.hasOwnProperty(module)) {
+                        npmPackages.push({
+                            name: module,
+                            location: '/node_modules/' + module + '/assets',
+                            main: 'index'
+                        });
+                    }
+                }
+
+                return npmPackages;
+            }())
+        });
+
         this.loadModules('npmPlugins');
     }
 
@@ -46,7 +71,11 @@ define([
                     var targetObj = optionsBase[typeEnabled][item];
 
                     if (targetObj){
-                        require([path + item]);
+                        sourcejs.amd.require([path + item]);
+
+                        if (type === 'plugins') {
+                            console.warn('Deprecation notice: module loader will stop supporting local plugins with next breaking release, please move `' + path + item + '` plugin to NPM dependencies, following SourceJS plugin structure https://sourcejs.com/docs/api/plugins.');
+                        }
                     }
                 }
             }

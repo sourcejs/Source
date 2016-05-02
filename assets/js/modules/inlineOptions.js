@@ -1,4 +1,4 @@
-define(function() {
+sourcejs.amd.define(function() {
 
     'use strict';
 

@@ -4,7 +4,7 @@
 *
 */
 
-define(["sourceModules/module", "sourceModules/utils"], function(module, utils) {
+sourcejs.amd.define(["sourceModules/module", "sourceModules/utils"], function(module, utils) {
 
     'use strict';
 

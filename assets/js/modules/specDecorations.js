@@ -1,4 +1,4 @@
-define([
+sourcejs.amd.define([
     "jquery",
     "source/load-options",
     "sourceModules/browser"
