@@ -179,10 +179,16 @@ require('./core/api/optionsApi');
 // User extenstions
 require("./core/loadPlugins.js");
 
-try {
-    // User additional functionality
-    require(userPath + "/core/app.js");
-} catch(e){}
+// User extended app.js
+var pathToUserAppExtension = path.join(userPath, 'core/app.js');
+
+if (fs.existsSync(pathToUserAppExtension)) {
+    try {
+        require(pathToUserAppExtension);
+    } catch(e){
+        log.warn('Error loading user app.js from ' + pathToUserAppExtension, e);
+    }
+}
 
 
 // Watchers
