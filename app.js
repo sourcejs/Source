@@ -169,6 +169,9 @@ app.use('/api/updateFileTree', function(req, res){
 });
 
 
+// Intercept static serve to localize requirejs
+app.use(require(path.join(global.pathToApp, 'core/privateAmdTransformer.js')));
+
 // Routes
 require('./core/routes');
 

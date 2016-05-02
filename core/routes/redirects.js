@@ -9,35 +9,6 @@
 var path = require('path');
 var express = require('express');
 var pathToApp = path.dirname(require.main.filename);
-var interceptor = require('express-interceptor');
-
-var finalParagraphInterceptor = interceptor(function (req, res) {
-    return {
-        isInterceptable: function () {
-            // console.log('res.originalUrl', req.originalUrl, /\/source\/assets\/js/.test(req.originalUrl) && !(/\/require.bundle.js$/.test(req.originalUrl)));
-
-            return /\/source\/assets\/js/.test(req.originalUrl) && !(/\/require.bundle.js$/.test(req.originalUrl));
-        },
-        // Appends a paragraph at the end of the response body
-        intercept: function (body, send) {
-            if (
-                (/require\(/.test(body) && !(/sourcejs\.amd\.require\(/.test(body))) ||
-                (/define\(/.test(body) && !(/sourcejs\.amd\.define\(/.test(body)))
-            ) {
-                body = '// Modified on static serve from `redirects.js` \n (function(require, define){\n' + body + '\n}(sourcejs.amd.require, sourcejs.amd.define))';
-
-                if (!(/\/source\/assets\/js\/lib/.test(req.originalUrl))) {
-                    global.log.warn('Deprecation Notice: please update "' + req.originalUrl + '" to use sourcejs.amd.require/sourcejs.amd.define namespace for Requirejs modules.');
-                }
-            }
-
-            send(body);
-        }
-    };
-});
-
-global.app.use(finalParagraphInterceptor);
-
 
 /*
 *

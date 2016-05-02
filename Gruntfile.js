@@ -230,8 +230,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('resolve-js-bundles', 'Resolving JS imports in _**.bundle.js', function(){
-        var gruntOpts = grunt.config.get('options');
-
         // Setting custom delimiters for grunt.template
         grunt.template.addDelimiters('customBundleDelimiter', '"{%', '%}"');
 
