@@ -18,6 +18,10 @@
  *  *****************************************************************************
  */
 
+/**
+ * Modified in SourceJS to use custom `define` namespace and local jquery
+ */
+
 sourcejs.amd.define([
     'jquery'
 ], function(jQuery) {

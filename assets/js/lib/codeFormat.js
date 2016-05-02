@@ -6,8 +6,7 @@
  *
  * */
 
-
-define([
+sourcejs.amd.define([
     "jquery"
 ], function($) {
 

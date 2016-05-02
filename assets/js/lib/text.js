@@ -8,7 +8,7 @@
   define, window, process, Packages,
   java, location, Components, FileUtils */
 
-sourcejs.amd.define(['module'], function (module) {
+define(['module'], function (module) {
     'use strict';
 
     var text, fs, Cc, Ci, xpcIsWindows,
@@ -207,7 +207,7 @@ sourcejs.amd.define(['module'], function (module) {
             if (buildMap.hasOwnProperty(moduleName)) {
                 var content = text.jsEscape(buildMap[moduleName]);
                 write.asModule(pluginName + "!" + moduleName,
-                               "sourcejs.amd.define(function () { return '" +
+                               "define(function () { return '" +
                                    content +
                                "';});\n");
             }
