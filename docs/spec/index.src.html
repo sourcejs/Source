@@ -45,13 +45,11 @@
     <h3>Show source code</h3>
 
     <!-- Inline JS -->
-    <!--
     <script>
-        require(['jquery'], function($){
-            var makeSome;
-        });
+        (function () {
+            console.log('Say hi from inline js.')
+        })();
     </script>
-    -->
     <!-- /Inline JS -->
 
     <code class="src-html">
@@ -91,9 +89,9 @@
     <code class="src-html source_visible">
         &lt;code class="src-js"&gt;
             <script>
-                require(['jquery'], function($){
-                    var makeSome;
-                });
+                (function () {
+                    console.log('Say hi from inline js.')
+                })();
             </script>
         &lt;/code&gt;
     </code>

@@ -19,5 +19,5 @@
 	"browser": true,
 	"scripturl": true,
 	"jquery": true,
-	"predef": [ "define", "Prism", "SourceGetSections"]
+	"predef": [ "sourcejs", "Prism", "SourceGetSections"]
 }
