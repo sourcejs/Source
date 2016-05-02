@@ -6,7 +6,8 @@ module.exports = interceptor(function (req) {
     return {
         isInterceptable: function () {
             return (/\/source\/assets\/js/.test(req.originalUrl) && !(/\/require.bundle.js$/.test(req.originalUrl))) ||
-                /\/node_modules\/sourcejs-/.test(req.originalUrl);
+                /\/node_modules\/sourcejs-/.test(req.originalUrl) ||
+                /\/plugins\//.test(req.originalUrl);
         },
         intercept: function (body, send) {
             if (
