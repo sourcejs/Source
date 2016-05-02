@@ -6,8 +6,32 @@ sourcejs.amd.define([
     'use strict';
 
     function ModuleLoader() {
+        var _this = this;
+
         this.loadModules('modules');
         this.loadModules('plugins');
+
+        // Extending RequireJS config with npm packages list
+        sourcejs.amd.requirejs.config({
+            // Create shorthands routes to clint-side npm plugins
+            packages: function () {
+                var modulesList = _this.options.npmPluginsEnabled;
+
+                console.log('modulesList', modulesList);
+
+                var npmPackages = [];
+                for (var module in modulesList) {
+                    npmPackages.push({
+                        name: module,
+                        location: '/node_modules/' + module + '/assets',
+                        main: 'index'
+                    })
+                }
+
+                return npmPackages;
+            }()
+        });
+
         this.loadModules('npmPlugins');
     }
 

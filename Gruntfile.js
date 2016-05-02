@@ -250,11 +250,7 @@ module.exports = function(grunt) {
             grunt.file.write(
                 outputFullPath,
                 grunt.template.process(grunt.file.read(pathToFile), {
-                    delimiters: 'customBundleDelimiter',
-                    data: {
-                        // npmPluginsEnabled object is filled from loadOptions.js
-                        npmPluginsEnabled: JSON.stringify(gruntOpts.assets.npmPluginsEnabled, null, 4)
-                    }
+                    delimiters: 'customBundleDelimiter'
                 })
             );
             grunt.log.ok('Writing to '+outputFullPath);
