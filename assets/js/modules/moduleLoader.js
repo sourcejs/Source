@@ -72,6 +72,10 @@ sourcejs.amd.define([
 
                     if (targetObj){
                         sourcejs.amd.require([path + item]);
+
+                        if (type === 'plugins') {
+                            console.warn('Deprecation notice: module loader will stop supporting local plugins with next breaking release, please move `' + path + item + '` plugin to NPM dependencies, following SourceJS plugin structure https://sourcejs.com/docs/api/plugins.');
+                        }
                     }
                 }
             }
