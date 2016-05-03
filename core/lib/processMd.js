@@ -20,6 +20,13 @@ var config = {
             return '<div class="source_example">' + code + '</div>';
         }
     },
+    languagePlugins: {
+        pseudo: function (code) {
+            return ['hover', 'active'].reduce(function (result, item) {
+                return result + '<div class="' + item + '">' + code + '</div>';
+            }, '')
+        }
+    },
 
     // Define marked module options
     marked: {}
@@ -30,6 +37,16 @@ utils.extendOptions(config, globalConfig);
 // Processing with native markdown renderer
 renderer.code = function (code, language) {
     var result = '';
+    var temp = language.split(':');
+    language = temp[0];
+    var plugins = (temp[1] || '').split(',');
+
+    code = plugins.reduce(function (result, item) {
+        if (config.languagePlugins.hasOwnProperty(item)) {
+            return config.languagePlugins[item](result, markedCodeRenderCounter);
+        }
+        return result;
+    }, code);
 
     if (config.languageRenderers.hasOwnProperty(language)) {
         result = config.languageRenderers[language](code, markedCodeRenderCounter);
