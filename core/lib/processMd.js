@@ -16,6 +16,21 @@ var config = {
     languageRenderers: {
         example: function (code) {
             return '<div class="source_example">' + code + '</div>';
+        },
+        info: function (code) {
+            return '<div class="source_info">' + code + '</div>';
+        },
+        warn: function (code) {
+            return '<div class="source_warn">' + code + '</div>';
+        },
+        doc: function (code) {
+            return '<div class="source_doc">' + code + '</div>';
+        },
+        design: function (code) {
+            return '<div class="source_a_d">' + code + '</div>';
+        },
+        spec: function (code) {
+            return '<div class="source_a_s">' + code + '</div>';
         }
     },
 
