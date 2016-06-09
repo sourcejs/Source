@@ -65,6 +65,7 @@
     "test": "grunt ci-pre-run && node app.js --test",
     "test:unit": "grunt test",
     "test:func": "grunt test-func",
+	"test:timing": "./bin/sourcejs-test-timing",
     "ci-test": "grunt ci-pre-run && node app.js --test --log trace",
     "ci-test-win": "grunt ci-pre-run && node app.js --post-grunt ci-post-run-win --test --log trace --no-watch"
   },
