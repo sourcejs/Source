@@ -12,6 +12,7 @@
     "url": "https://github.com/sourcejs/Source.git"
   },
   "dependencies": {
+    "babel-register": "^6.9.0",
     "body-parser": "^1.14.1",
     "cheerio": "^0.19.0",
     "colors": "^1.1.2",
