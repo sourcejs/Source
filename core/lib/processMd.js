@@ -24,7 +24,7 @@ var config = {
         pseudo: function (code) {
             return ['hover', 'active'].reduce(function (result, item) {
                 return result + '<div class="' + item + '">' + code + '</div>';
-            }, '')
+            }, '');
         }
     },
 
@@ -37,7 +37,7 @@ utils.extendOptions(config, globalConfig);
 // Processing with native markdown renderer
 renderer.code = function (code, language) {
     var result = '';
-    var temp = language.split(':');
+    var temp = (language || '').split(':');
     language = temp[0];
     var plugins = (temp[1] || '').split(',');
 
