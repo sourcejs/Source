@@ -18,5 +18,9 @@ module.exports.extendOptions = function () {
     args.push(cb);
 
     // Don't merge arrays
-    return _.merge.apply(this, args);
+    return _.mergeWith.apply(this, args, function (a, b) {
+        if (_.isArray(b)) {
+            return b;
+        }
+    });
 };
