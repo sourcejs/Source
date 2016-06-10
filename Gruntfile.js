@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     var appPort = grunt.option('app-port') || 8080;
 
     // load all grunt tasks matching the `grunt-*` pattern
-    require(getLoaderPackageName())(grunt);
+    require(getLoaderPackageName())(grunt, {pattern: ['grunt-*', '@*/grunt-*']});
 
     // measuring processing time
     require('time-grunt')(grunt);
