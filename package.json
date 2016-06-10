@@ -47,7 +47,7 @@
     "marked": "^0.3.2",
     "minimatch": "^3.0.0",
     "pretty-hrtime": "^1.0.0",
-    "q": "^1.1.1",
+    "q": "^1.4.1",
     "serve-favicon": "^2.2.0",
     "shortid": "^2.2.2",
     "time-grunt": "^1.2.1",
