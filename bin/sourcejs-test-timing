@@ -3,16 +3,66 @@
 'use strict';
 
 process.title = 'sourcejs-test-timing';
-
-console.time("test");
-
 var exec = require('child_process').exec;
-var cmd = 'npm start test';
 
-exec(cmd, function(error, stdout, stderr) {
-  // command output is in stdout
-  console.log("Tests have finished succesfully!");
-  console.timeEnd("test");
-});
+var steps = [
+	{
+		name: 'delete node_modules',
+		action: function (callback) {
+			console.log('started ', this.name);
+			exec('rm -r node_modules', function(error, stdout, stderr) {
+				callback();
+			});
+		}
+	},
+	{
+		name: 'npm clear cache',
+		action: function (callback) {
+			console.log('started ', this.name);
+			exec('npm cache clean', function(error, stdout, stderr) {
+				callback();
+			});
+		}
+	},
+	{
+		name: 'npm install',
+		action: function (callback) {
+			console.log('started ', this.name);
+			console.time("install");
+			exec('npm install', function(error, stdout, stderr) {
+				console.timeEnd("install");
+				console.log("Install has finished succesfully!");
+				callback();
+			});
+			console.log("this can take a while...");
+		}
+	},
+	// {
+	// 	name: 'run tests',
+	// 	action: function (callback) {
+	// 		console.log('started ', this.name);
+	// 		console.time("test");
+	// 		exec('npm start test', function(error, stdout, stderr) {
+	// 			console.timeEnd("test");
+	// 			console.log("Tests have finished succesfully!");
+	// 			callback();
+	// 		});
+	// 		console.log("this can take a while...");
+	// 	}
+	// },
+];
 
-console.log("Tests are running...");
+var finish = function () {
+	process.exit();
+};
+
+var sequence = steps.reverse().reduce(function (result, item, index, list) {
+	var nextAction = list[index - 1] ? result[index - 1] : finish;
+	return result.concat(item.action.bind(item, nextAction));
+}, []).reverse();
+
+try {
+	sequence[0]();
+} catch (error) {
+	console.error(error);
+}

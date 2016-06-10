@@ -4,6 +4,8 @@
 * @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
 * */
 
-require("babel-register");
+if (process.version.node < 6) {
+	require('babel-register');
+}
 
-require("./server");
+require('./server');
