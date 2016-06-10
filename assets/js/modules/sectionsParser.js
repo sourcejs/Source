@@ -12,6 +12,8 @@ function SourceGetSections() {
     // Defining strict inside func, because PhantomJS stops evaluating this script if it's on top
     'use strict';
 
+	/*jshint latedef: false */
+
     var config = {
         // include params from opt@argument first
         code: 'source_example',
