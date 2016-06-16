@@ -9,7 +9,7 @@ Useful information regarding this spec can be left for your team members here.
 
 ## Spec Section Heading
 
-<a class="source_a_hl" href="/docs/spec">Spec Page Documentation</a>
+[Spec Page Documentation](/docs/spec)
 
 Useful notes.
 
