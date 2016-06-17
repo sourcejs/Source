@@ -96,17 +96,17 @@ sourcejs.amd.define([
     };
 
     Utils.prototype.getCookie = function(name) {
-		var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
-		return matches ? decodeURIComponent(matches[1]) : undefined;
+        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
     };
 
     Utils.prototype.isDevelopmentMode = function() {
-		return this.getCookie('source-mode') === 'development';
+        return this.getCookie('source-mode') === 'development';
     };
 
-	Utils.prototype.isArray = function(arr) {
-		return Object.prototype.toString.call(arr) === '[object Array]';
-	};
+    Utils.prototype.isArray = function(arr) {
+        return Object.prototype.toString.call(arr) === '[object Array]';
+    };
 
     Utils.prototype.unifySpecPath = function(url) {
         if (url.slice(-10) === "index.html") url = url.slice(0, -10);

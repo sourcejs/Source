@@ -17,6 +17,6 @@ module.exports = function(customGlobalopts, customPathToApp){
     var relativeUserPath = _isNodeModule ? '../..' : globalOpts.core.common.pathToUser;
 
     return path.join(pathToApp, relativeUserPath).replace(/^\w:\\/, function (match) {
-	    return match.toUpperCase();
-	});
+        return match.toUpperCase();
+    });
 };

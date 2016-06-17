@@ -4,7 +4,7 @@ var url = 'http://127.0.0.1:' + appPort + '/docs/test-specs/styles/';
 casper.options.viewportSize = {width: 1024, height: 768};
 
 casper.test.begin('Open clarify', 4, function suite(test) {
-	casper.start(url).then(function() {
+    casper.start(url).then(function() {
         var openClarifyLink = '.source_clarify-in-spec_link';
 
         this.waitForSelector(openClarifyLink,

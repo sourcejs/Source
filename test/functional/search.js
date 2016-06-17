@@ -4,13 +4,13 @@ var url = 'http://127.0.0.1:' + appPort;
 casper.options.viewportSize = {width: 1024, height: 768};
 
 casper.test.begin('Checking search', 3, function suite(test) {
-	casper.start(url).then(function() {
+    casper.start(url).then(function() {
         var _this = this;
         var input = '.source_search .source_search_it';
         var autoComplete = '.autocomplete-wrapper .autocomplete-suggestion:first-child a';
         var searchField = '.source_search_it[data-initialized]';
 
-		test.assertExists(input, 'Search input exists');
+        test.assertExists(input, 'Search input exists');
 
         this.waitForSelector(searchField,
             function pass() {
@@ -46,5 +46,5 @@ casper.test.begin('Checking search', 3, function suite(test) {
             }
         );
 
-	}).run(function() { test.done() }).clear();
+    }).run(function() { test.done() }).clear();
 });

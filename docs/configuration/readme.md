@@ -19,12 +19,12 @@ Following the options priority hierarchy, context options allows to define highe
 ```html
 /
     specs
-	    catalog1
-	        component1
-	        component2
-	        sourcejs-options.js
+        catalog1
+            component1
+            component2
+            sourcejs-options.js
 
-	    catalog2
+        catalog2
 ```
 
 On each spec page call, engine gathers all the context configuration files up the tree and merges it on top of each other. The same process will happen with spec context level options in `info.json`, with only difference that it won't be shared with child items.

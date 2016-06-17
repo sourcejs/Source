@@ -158,26 +158,26 @@ sourcejs.amd.define([
                     '</a>'
             ].join('');
 
-			if ( section.subHeaderElements !== undefined ) {
-				appendString += '<ul class="' + this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
+            if ( section.subHeaderElements !== undefined ) {
+                appendString += '<ul class="' + this.moduleOptions.NAV_UL_SECONDLEVEL_CLASS + '">';
 
-				for (var j = 0; j < section.subHeaderElements.length; j++) {
+                for (var j = 0; j < section.subHeaderElements.length; j++) {
                     var seqNum = j+1;
                     var subSection = section.subHeaderElements[j];
                     var subSectionID = sectionID + '.' + seqNum;
                     var subHref = subSection.attr('id') || subSectionID;
 
-					appendString += [
+                    appendString += [
                         '<li class="' + this.moduleOptions.NAV_LI_SECONDLEVEL_CLASS + '">',
                             '<a class="source_main_nav_a" href="#' + subHref + '">',
                                 section.num + '.' + seqNum + '&nbsp;' + subSection.text(),
                             '</a>',
                         '</li>'
                     ].join('');
-				}
+                }
 
                 appendString += '</ul>';
-			}
+            }
 
             appendString += '</li>';
         }
