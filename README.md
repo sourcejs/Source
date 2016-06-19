@@ -100,6 +100,6 @@ SourceJS client-side part is supported in all latest major browsers and IE8+ in 
 
 ___
 
-Copyright © 2013-2015 [SourceJS](http://sourcejs.com)
+Copyright © 2013-2016 [SourceJS](http://sourcejs.com)
 
 Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/source/wiki/MIT-License).
