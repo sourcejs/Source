@@ -105,7 +105,7 @@ sourcejs.amd.define(["sourceModules/module", "sourceModules/utils"], function(mo
                     }
                 };
                 /*jshint forin: false */
-                for (var plugin in pluginsSection) {
+                for (var plugin in pluginsSection) { // jshint ignore:line
                     if (!pluginsSection.hasOwnProperty(plugin)) {
                         continue;
                     }
