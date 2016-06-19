@@ -44,21 +44,21 @@ This feature is especially useful for nested catalogs and stand-alone collection
 Auto-generated title and description in navigation block are taked directly from `info.json` meta file.
 
 ```html
-​<div class="source_catalog" data-nav="./example">​</div>
+​<div class="source_catalog" data-nav="./">​</div>
 ```
 
-<div class="source_catalog" data-nav="./example"></div>
+<div class="source_catalog" data-nav="./"></div>
 
 If there is no description, or you want to leave custom text, just use this extra markup:
 
 ```html
-​<div class="source_catalog" data-nav="./example">
+​<div class="source_catalog" data-nav="./">
     ​<h2>Custom Title​</h2>
     ​<p>Custom description for catalogue.​<p>
 ​</div>
 ```
 
-<div class="source_catalog" data-nav="./example">
+<div class="source_catalog" data-nav="./">
     <h2>Custom Title</h2>
     <p>Custom description for catalogue.</p>
 </div>
@@ -90,7 +90,7 @@ module.exports = {
     moduleOptions: {
       globalNav: {
         templates: {
-          catalogHeader: _.template('<h2 class="custom-class">​<%= catalogMeta.title %​></h2>'),
+          catalogHeader: _.template('<h2 class="custom-class">​<​%​=​ catalogMeta.title ​%​​></h2>'),
         }
       }
     }
