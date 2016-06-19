@@ -111,7 +111,7 @@ Remember, SourceJS Specs are a simple static pages, that are then enchanted with
 
 ## Examples
 
-Main [project website](http://sourcejs.com) is based on SourceJS platform, as well as all documentation that you're surfing right now. Engine docs are both viewable on [GitHub](https://github.com/sourcejs/Source/tree/master/docs) and in SourceJS environment.
+Main project site: [sourcejs.com](http://sourcejs.com) is based on SourceJS platform, as well as all documentation that you're surfing right now. Engine docs are both viewable on [GitHub](https://github.com/sourcejs/Source/tree/master/docs) and in SourceJS environment.
 
 ### Specs Showcase
 
@@ -140,32 +140,36 @@ To get more insights about recommended workflow within Style Guide platform chec
 
 ## Configuration
 
-SourceJS engine is highly configurable. Engine and Middleware are configured in 1 place:: `options.js`.
+SourceJS engine is highly configurable. Engine and plugins are configured in 1 place:: `options.js`.
 
 With version 0.5.3 we also introduced context level options `sourcejs-options.js`, which allows to configure any catalog specifically for your needs. Read more about it, and other configuration capabilities in [Engine Configuration](/docs/configuration) doc.
 
-## Middleware
+## Plugins
 
 As a Style Guide Platform we focus on flexibility and ease of integration. All SourceJS core modules are easy to configure and replace with your customized version.
 
 Plugins are working in the same way as core modules, but are kept outside the main platform, allowing to separate specific features.
 
-Here is a list of available plugins:
+### Available plugins:
 
-### New spec languages:
+#### Spec Language Integrations:
+These plugins allow for writing specs pages in your prefered language or method
 * [sourcejs-slm](https://github.com/venticco/sourcejs-slm)
 * [sourcejs-react](https://github.com/szarouski/sourcejs-react)
 * [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade)
 * [sourcejs-dss](http://github.com/sourcejs/sourcejs-contrib-dss)
 
-### New example languages
+#### Spec Code example languages
+These plugins add new ways to incoperate code examples on spec pages
 * [sourcejs-react-styleguidist](https://github.com/sourcejs/sourcejs-react-styleguidist)
 * [sourcejs-md-react](https://github.com/mik01aj/sourcejs-md-react)
 
-### New Utility
+#### Utility
+These plugin help with development with SourceJS
 * [sourcejs-browser-sync](https://github.com/sourcejs/sourcejs-contrib-browser-sync)
 
-### New Spec Parts
+#### Spec Extentions
+These plugins add additional functionality that can be used on spec pages
 * [sourcejs-comments](https://github.com/sourcejs/sourcejs-comments)
 * [sourcejs-react-dependencies](https://github.com/ndelangen/sourcejs-react-dependencies)
 * [sourcejs-spec-dependencies](https://github.com/sourcejs/sourcejs-spec-dependencies)
@@ -173,19 +177,25 @@ Here is a list of available plugins:
 * [sourcejs-crowd-voice](https://github.com/sourcejs/sourcejs-crowd-voice)
 * [sourcejs-specs-linting](https://github.com/sourcejs/sourcejs-specs-linting)
 
+Even more plugin may be found by searching npm: [Search npm for 'sourcejs-'](https://www.npmjs.com/search?q=sourcejs-)
+
+### Installing plugins
 These modules are able to extend both front-end and back-end part of the engine. To install any middleware, run `npm install <name>`
 
 After install is finished (re)start your SourceJS instance using: `npm start`.
 
-Some Middleware need addition setup!
+<div class="source_warn">
+    Some plugins may need addition setup!<br/>
+    Read their documentation
+</div>
 
 Follow [this guide](/docs/api/plugins) to learn how to develop own plugins for SourceJS Platform.
 
-If you have created your own middleware, please let us know! If you'd like to add your middleware to the list above, you can submit a Pull-Request.
+If you have created your own middleware, please let us know! If you'd like to add your middleware to the list above, or you can submit a Pull-Request.
 
 ## Contact us
 
-Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub orr [request a consultation](mailto:r@rhr.me) from SourceJS founders.
+Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub or [request a consultation](mailto:r@rhr.me) from SourceJS founders.
 
 If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
 
