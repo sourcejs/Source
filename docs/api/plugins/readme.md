@@ -20,15 +20,14 @@ We are continuously improving mentioned demos, adding new best practices and API
 
 The recommended way of structuring SourceJS plugins is to define them as [NPM packages](https://docs.npmjs.com/misc/developers). All public plugins must be named by corresponding prefix `sourcejs-*`, so they could be easily searchable through global repository.
 
-All plugins must be installed in `sourcejs/user` directory:
+All plugins must be installed in `/` directory:
 
 ```html
-/source
-  user
+/
     package.json
     node_modules
-      sourcejs-plugin1
-      sourcejs-plugin2
+        sourcejs-plugin1
+        sourcejs-plugin2
 ```
 
 ### Internal plugins
@@ -36,8 +35,8 @@ All plugins must be installed in `sourcejs/user` directory:
 SourceJS is an open source project, and we expect our community to be open as we do, sharing their features and engine extends to public. But in case you prefer to have private plugins, there are few ways solving this case:
 
 * Create private NPM plugins, installing them from your closed repositories
-* Commit `sourcejs/user/node_modules` contents to your common repository
-* Using `sourcejs/user/plugins` folder for your custom client-side dependencies and `sourcejs/user/app.js` to extend SourceJS back-end
+* Commit `/node_modules` contents to your common repository
+* Using `/plugins` folder for your custom client-side dependencies and `/app.js` to extend SourceJS back-end
 
 Last mentioned option is deprecated, and not recommended to use, yet you can still find some mentions of this approach in `options.js` and `moduleLoader.js`.
 
@@ -74,7 +73,7 @@ As we mentioned above, when SourceJS plugin is installed through NPM, main clien
 
 To achieve this, we generate custom RequireJS configuration through default build task and dynamically extend `options.js`, filling installed modules to `assets.npmPluginsEnabled` with `true`.
 
-To disable client-side module of any installed npm Plugins, you can edit the module definition in `user/options.js`:
+To disable client-side module of any installed npm Plugins, you can edit the module definition in `/options.js`:
 
 ```js
 {
@@ -89,7 +88,7 @@ To disable client-side module of any installed npm Plugins, you can edit the mod
 
 ### Back-end
 
-Plugins back-end is exposed in `core/index.js` and is automatically loaded during SourceJS app initialization, before importing `user/app.js` extender. It's a simple Node.js module, from which you can use any existing dependencies in SourceJS or define your own.
+Plugins back-end is exposed in `/node_modules/sourcejs/core/index.js` and is automatically loaded during SourceJS app initialization, before importing `/app.js` extender. It's a simple Node.js module, from which you can use any existing dependencies in SourceJS or define your own.
 
 As SourceJS back-end uses [ExpressJS](http://expressjs.com), it's recommended to use this framework for creating APIs and custom routers.
 
@@ -103,7 +102,7 @@ As SourceJS back-end uses [ExpressJS](http://expressjs.com), it's recommended to
 
 ## Middlewares
 
-SourceJS Middleware is basically the same as Plugin item, but it has only back-end part and its entry point must be defined in `core/middleware/index.js` path.
+SourceJS Middleware is basically the same as Plugin item, but it has only back-end part and its entry point must be defined in `/node_modules/sourcejs/core/middleware/index.js` path.
 
 As SourceJS uses [ExpressJS](http://expressjs.com), middleware development constraints are bound to this framework.
 
@@ -111,9 +110,9 @@ Most common use cases of middleware in SourceJS in modification of Spec file con
 
 ### Connecting The Middleware
 
-Middlewares are automatically loaded after installation, and are evaluated on each request before `sourcejs/core/middleware/wrap.js` and `sourcejs/core/middleware/send.js`.
+Middlewares are automatically loaded after installation, and are evaluated on each request before `/node_modules/sourcejs/core/middleware/wrap.js` and `sourcejs/core/middleware/send.js`.
 
-`wrap.js` is wrapping spec page (`index.src.html`, `index.md` and etc) contents in a pre-defined a view template from `sourcejs/core/views` or user custom path `sourcejs/user/core/views` using [EJS](http://www.embeddedjs.com/).
+`wrap.js` is wrapping spec page (`index.src.html`, `index.md` and etc) contents in a pre-defined a view template from `/node_modules/sourcejs/core/views` or user custom path `/node_modules/sourcejs/user/core/views` using [EJS](http://www.embeddedjs.com/).
 
 `send.js` is used in case when we modify Spec contents, as we do with `*.src.html` and all other middlewares. Modified Spec content is passed through `req.specData.renderedHtml` object, which each middleware can modify during the request handling process and which then is sent to the client's browser.
 
