@@ -2,34 +2,48 @@
 
 var path = require('path');
 var marked = require('marked');
+var markdownit = require('markdown-it');
 var cheerio = require('cheerio');
 var _ = require('lodash');
 var translit = require(path.join(global.pathToApp,'core/lib/translit'));
 var utils = require(path.join(global.pathToApp,'core/lib/utils'));
 
-var renderer = new marked.Renderer();
-
+var markedRenderer = new marked.Renderer();
 var markedCodeRenderCounter = 0;
 
 // Module configuration
 var globalConfig = global.opts.core && global.opts.core.processMd ? global.opts.core.processMd : {};
 var config = {
-    espaceCodeHTML: true,
-    languageRenderers: {
-        example: function (code) {
-            return '<div class="source_example">' + code + '</div>';
-        }
-    },
+	espaceCodeHTML: true,
+	languageRenderers: {
+		example: function (code) {
+			return '<div class="source_example">' + code + '</div>';
+		}
+	},
+	languagePlugins: {
+		pseudo: function (code) {
+			return ['hover', 'active'].reduce(function (result, item) {
+				return result + '<div class="' + item + '">' + code + '</div>';
+			}, '');
+		}
+	},
 
-    // Define marked module options
-    marked: {}
+	// Define marked module options
+	marked: {}
 };
-// Overwriting base options
-utils.extendOptions(config, globalConfig);
 
-// Processing with native markdown renderer
-renderer.code = function (code, language) {
+var mdCodeRenderer = function (code, language) {
     var result = '';
+    var temp = (language || '').split(':');
+    language = temp[0];
+    var plugins = (temp[1] || '').split(',');
+
+    code = plugins.reduce(function (result, item) {
+        if (config.languagePlugins.hasOwnProperty(item)) {
+            return config.languagePlugins[item](result, markedCodeRenderCounter);
+        }
+        return result;
+    }, code);
 
     if (config.languageRenderers.hasOwnProperty(language)) {
         result = config.languageRenderers[language](code, markedCodeRenderCounter);
@@ -46,23 +60,39 @@ renderer.code = function (code, language) {
     markedCodeRenderCounter++;
     return result;
 };
-
-renderer.heading = function (text, level) {
+var mdHeadingRenderer = function (text, level) {
     var escapedText = translit(text);
 
     return '<h' + level + ' id="' + escapedText + '">' + text + '</h' + level + '>';
 };
 
+
+// Overwriting base options
+utils.extendOptions(config, globalConfig);
+
+// Processing with native markdown renderer
+markedRenderer.code = mdCodeRenderer;
+markedRenderer.heading = mdHeadingRenderer;
+
 // Extend re-defined renderer
-config.marked.renderer = _.merge(renderer, config.marked.renderer);
+config.marked.renderer = _.merge(markedRenderer, config.marked.renderer);
 
 marked.setOptions(config.marked);
+
+
+var markdownitRenderer = markdownit({
+  html: true,
+  xhtmlOut: true,
+  highlight: mdCodeRenderer
+});
+
+console.log(markdownitRenderer);
 
 module.exports = function (markdown, options) {
     markedCodeRenderCounter = 0;
 
     var _options = options || {};
-    var $ = cheerio.load('<div id="content">' + marked(markdown) + '</div>');
+    var $ = cheerio.load('<div id="content">' + markdownitRenderer.render(markdown) + '</div>');
     var $content = $('#content').first();
 
     if (_options.wrapDescription) {
