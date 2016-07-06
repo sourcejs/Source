@@ -19,9 +19,14 @@
 </head>
 <body class="source_page __spec">
     <div class="source_container">
-        <%- header %>
-        <div class="source_main source_col-main" role="main"><%- content %></div>
-        <%- footer %>
+        <%- precontent %>
+        <main class="source_main source_col-main" role="main">
+            <%- maincontent %>
+        </main>
+        <aside class="source_side source_col-side" role="aside">
+            <%- sidecontent %>
+        </aside>
+        <%- postcontent %>
     </div>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 var fs = require('fs-extra');
 var path = require('path');
+var _ = require('lodash');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var viewResolver = require(path.join(global.pathToApp + '/core/lib/viewResolver.js'));
@@ -15,12 +16,12 @@ var specUtils = require(path.join(global.pathToApp,'core/lib/specUtils'));
 * @param {function} next - The callback function
 * */
 exports.process = function(req, res, next) {
+    req.placeholders = req.placeholders || {};
+    req.placeholders.precontent = req.placeholders.precontent || [];
+
     // Check if spec is request and ejs pre-rendering enabled
     if (req.specData && req.specData.renderedHtml) {
         var contextOptions = req.specData.contextOptions;
-
-        // TODO get this from a new option or find an existing option suitable
-        var projectName = null;
 
         var getData = function (specDir) {
             var infoFilePath = path.join(specDir, global.opts.core.common.infoFile);
@@ -31,7 +32,7 @@ exports.process = function(req, res, next) {
         var data = req.path.split('/').reduce(function (result, item) {
             if (item === '' && result.length === 0) {
                 return result.concat([{
-                    name: projectName || 'Home',
+                    name: 'Home',
                     path: '/'
                 }]);
             } else if (item !== '') {
@@ -49,9 +50,7 @@ exports.process = function(req, res, next) {
             return item;
         });
 
-        // choose the proper template, depending on page type or defined path
         var viewParam = 'breadcrumb';
-
         var templatePath = viewResolver(viewParam, contextOptions.rendering.views, undefined) || viewParam;
 
         fs.readFile(templatePath, "utf-8", function(err, template){
@@ -67,7 +66,7 @@ exports.process = function(req, res, next) {
                 renderedBreadcrumps = '';
                 global.log.warn('breadcrumb.js: could not render breadcrumbs with EJS: ' + templatePath + ' on: ' + req.path, err);
             } finally {
-                req.specData.breadcrumb = renderedBreadcrumps;
+                req.placeholders.precontent = _.concat(req.placeholders.precontent, renderedBreadcrumps);
                 next();
             }
         });
