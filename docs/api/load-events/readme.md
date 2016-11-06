@@ -20,9 +20,9 @@ Recommended plugin definition:
 window.source = window.source || {};
 window.source.loadEvents = window.source.loadEvents || {};
 window.source.loadEvents.moduleName = window.source.loadEvents.moduleName || {
-	timeout: '300',
-	finishEvent: 'moduleNameFinished',
-	updateEvent: 'moduleNameFinishedUpdated'
+    timeout: '300',
+    finishEvent: 'moduleNameFinished',
+    updateEvent: 'moduleNameFinishedUpdated'
 };
 ```
 
@@ -58,10 +58,10 @@ Recommended way of emitting `finishEvent` or `updateEvent` is:
 
 ```js
 if (window.CustomEvent) {
-	new CustomEvent('moduleNameFinished');
+    new CustomEvent('moduleNameFinished');
 } else {
-	var event = document.createEvent('CustomEvent');
-	event.initCustomEvent('moduleNameFinished', true, true);
+    var event = document.createEvent('CustomEvent');
+    event.initCustomEvent('moduleNameFinished', true, true);
 }
 ```
 

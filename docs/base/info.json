@@ -1,4 +1,5 @@
 {
     "title": "Main Engine Documentation",
-    "template": "doc"
+    "template": "doc",
+    "tag": ["getting-started"]
 }

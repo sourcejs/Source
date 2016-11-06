@@ -20,26 +20,26 @@ sourcejs.amd.define([
     $(function(){
 
         //TODO: move to utils
-            // Bulletproof localStorage check
-            var storage;
-            var fail;
-            var uid;
-            try {
-                uid = new Date();
-                (storage = window.localStorage).setItem(uid, uid);
-                fail = storage.getItem(uid) !== uid.toString();
-                storage.removeItem(uid);
-                fail && (storage = false);
-            } catch (e) {
-            }
-            //TODO: /move to utils
-            var SECTION_CLASS = options.SECTION_CLASS;
-            var L_SECTION_CLASS = $('.'+SECTION_CLASS);
-            var OPEN_SECTION_CLASS = 'source_section__open';
-            var sectionsOnPage = L_SECTION_CLASS;
-            var specName = utils.getSpecName(); //Определяем название спеки
-            var clientConfig = {};
-            var RES_HIDE_SECTIONS = 'Hide all sections';
+        // Bulletproof localStorage check
+        var storage;
+        var fail;
+        var uid;
+        try {
+            uid = new Date();
+            (storage = window.localStorage).setItem(uid, uid);
+            fail = storage.getItem(uid) !== uid.toString();
+            storage.removeItem(uid);
+            fail && (storage = false);
+        } catch (e) {
+        }
+        //TODO: /move to utils
+        var SECTION_CLASS = options.SECTION_CLASS;
+        var L_SECTION_CLASS = $('.'+SECTION_CLASS);
+        var OPEN_SECTION_CLASS = 'source_section__open';
+        var sectionsOnPage = L_SECTION_CLASS;
+        var specName = utils.getSpecName(); //Определяем название спеки
+        var clientConfig = {};
+        var RES_HIDE_SECTIONS = 'Hide all sections';
 
         if (storage) {
             //Check if localstorage has required data

@@ -26,3 +26,4 @@ All inquiries should be forwarded to [Robert Haritonov](mailto:r@rhr.me).
 Core contributors and maintainers:
 * [Robert Haritonov](https://github.com/operatino)
 * [Ilya Mikhailov](https://github.com/cheshirsky)
+* [Norbert de Langen](https://github.com/ndelangen)

@@ -1,6 +1,6 @@
-Note that these commands are related only to SourceJS engine build and development cycle.
+Note that these commands are related only to **SourceJS engine build and development** cycle.
 
-For building specs and other project related content use own build tasks from `sourcejs/user` folder.
+For building specs and other project related content use own build tasks.
 
 ## Scripts
 
@@ -8,7 +8,7 @@ All automation tasks are triggered through NPM scripts listed in `package.json`.
 
 Here's a list of most common commands:
 
-```js
+```bash
 $ npm run build
 $ npm start
 

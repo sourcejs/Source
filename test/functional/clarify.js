@@ -1,10 +1,10 @@
 var appPort = casper.cli.get('app-port') || 8080;
-var url = 'http://127.0.0.1:' + appPort + '/docs/spec/';
+var url = 'http://127.0.0.1:' + appPort + '/docs/test-specs/styles/';
 
 casper.options.viewportSize = {width: 1024, height: 768};
 
 casper.test.begin('Open clarify', 4, function suite(test) {
-	casper.start(url).then(function() {
+    casper.start(url).then(function() {
         var openClarifyLink = '.source_clarify-in-spec_link';
 
         this.waitForSelector(openClarifyLink,
@@ -12,7 +12,7 @@ casper.test.begin('Open clarify', 4, function suite(test) {
                 this.click(openClarifyLink);
             },
             function fail() {
-                test.fail('Failed openning clarify link.');
+                test.fail('Failed opening clarify link.');
             }
         );
 

@@ -4,7 +4,7 @@ var url = 'http://127.0.0.1:' + appPort + '/docs/';
 casper.options.viewportSize = {width: 1024, height: 768};
 
 casper.test.begin('Check navigaton page', 3, function suite(test) {
-	casper.start(url).then(function() {
+    casper.start(url).then(function() {
         var _this = this;
         var nav = '.source_catalog_list .source_catalog_list_i';
 
@@ -15,9 +15,15 @@ casper.test.begin('Check navigaton page', 3, function suite(test) {
                 }, 'Should have more than 5 nav items', [nav]);
 
                 test.assertEval(function (nav) {
-                    return !!document.querySelector(nav + ' .source_catalog_a[href="/docs/base"]') &&
-                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/clarify"]') &&
-                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/starting"]');
+                    return (
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/base"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-file"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-json"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-html"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-markdown"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-ejs"]') &&
+                        true
+                    );
                 }, 'Right nav items in set', [nav]);
             },
             function fail() {

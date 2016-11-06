@@ -1,7 +1,7 @@
 sourcejs.amd.define([
     'jquery',
-	'sourceModules/module'
-	], function ($, module) {
+    'sourceModules/module'
+    ], function ($, module) {
 
     'use strict';
 

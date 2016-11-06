@@ -5,7 +5,7 @@ casper.options.viewportSize = {width: 1024, height: 768};
 
 var urlsToCheck = [
     url,
-    url + '/docs/spec/',
+    url + '/docs/test-specs/styles/',
     url + '/docs/'
 ];
 

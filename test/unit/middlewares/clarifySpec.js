@@ -11,9 +11,9 @@ var loadOptions = require(path.join(pathToMasterApp, 'core/loadOptions'));
 global.opts = loadOptions(path.resolve(pathToMasterApp));
 
 
-describe('Clarify test /docs/spec?clarify=true', function () {
-    describe('GET /docs/spec?clarify=true...', function () {
-        var url = 'http://127.0.0.1:8080/docs/spec/?clarify=true';
+describe('Clarify test /docs/test-specs/styles/?clarify=true', function () {
+    describe('GET /docs/test-specs/styles/?clarify=true...', function () {
+        var url = 'http://127.0.0.1:8080/docs/test-specs/styles/?clarify=true';
         it('should return nothing (&sections=77)', function (done) {
             request(url)
                 .get('&sections=77')
@@ -82,7 +82,7 @@ describe('Clarify test /docs/spec?clarify=true', function () {
                     }
 
                     var $ = cheerio.load(res.text, {decodeEntities: false});
-                    $('[href*="bootstrap.css"]').length.should.equal(1);
+                    $('[href*="bootstrap.css"]').length.should.greaterThan(0);
                     $('body > style').length.should.be.greaterThan(0);
                     $('body > script').length.should.be.greaterThan(0);
 
@@ -131,8 +131,8 @@ describe('Clarify test /docs/spec?clarify=true', function () {
         });
     });
 
-    describe('GET from API /docs/spec?clarify=true&fromApi=true...', function () {
-        var urlFromApi = 'http://localhost:8080/docs/spec/?clarify=true&fromApi=true';
+    describe('GET from API /docs/test-specs/styles?clarify=true&fromApi=true...', function () {
+        var urlFromApi = 'http://localhost:8080/docs/test-specs/styles/?clarify=true&fromApi=true';
 
         it('should return nothing (&sections=77&apiUpdate=true)', function (done) {
             this.timeout(10000);

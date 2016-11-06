@@ -1,4 +1,5 @@
 {
     "title": "Clarify - Spec Section Testing Environment",
-    "template": "doc"
+    "template": "doc",
+    "tag": ["details"]
 }

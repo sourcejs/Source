@@ -38,67 +38,67 @@
 /* TODO: rename classes */
 .source_a_hl, /* Higlight link */
 .source_a_o { /* Regular link */
-  	&:link,
-	&:visited {
-	  	text-decoration:none;
-	  	color: lighten(@blue, 10%);
-		}
+      &:link,
+    &:visited {
+          text-decoration:none;
+          color: lighten(@blue, 10%);
+        }
 
     &:hover {
-		color: @blue;
-		text-decoration: underline;
-		}
-	}
+        color: @blue;
+        text-decoration: underline;
+        }
+    }
 
 .source_a_bl { /* Emphasized link */
-  	&:link,
-	&:visited {
-	  	color: @black;
-		}
-	}
+      &:link,
+    &:visited {
+          color: @black;
+        }
+    }
 
 .source_a_l { /* Inverted link */
-  	&:link,
-	&:visited {
-	  	color: lighten(@black, 40%);
-	  	text-decoration: none;
+      &:link,
+    &:visited {
+          color: lighten(@black, 40%);
+          text-decoration: none;
         line-height: 1.5;
-		}
+        }
 
     &:hover {
-	 	color: #fff;
-		}
-	}
+         color: #fff;
+        }
+    }
 
 .source_a_g { /* Object link */
-  	&:link,
-	&:visited {
-	  	color: @blue;
-	  	text-decoration: none;
-		}
+      &:link,
+    &:visited {
+          color: @blue;
+          text-decoration: none;
+        }
 
     &:hover {
-		color: @blue;
-		text-decoration: underline;
-		}
-	}
+        color: @blue;
+        text-decoration: underline;
+        }
+    }
 
 .source_a_hl { /* Higlight link */
-	font-size: 16px !important;
-	line-height: 2;
+    font-size: 16px !important;
+    line-height: 2;
 
     &:after {
-		content:"\A";
-		white-space:pre;
-		}
-	}
+        content:"\A";
+        white-space:pre;
+        }
+    }
 
 .source_a_d { /* Design link */
-  	&:link,
-	&:visited {
-    	color: @green !important;
-    	font-size: 16px;
-		}
+      &:link,
+    &:visited {
+        color: @green !important;
+        font-size: 16px;
+        }
 
     &:hover {
         color: @green;
@@ -108,18 +108,18 @@
     &:before {
         content: '';
         display: inline;
-	   	padding-right: 25px;
+           padding-right: 25px;
         background: url(/source/assets/i/spec_design_link.svg) 50% no-repeat;
         }
 
     }
 
 .source_a_s { /* Spec link */
-  	&:link,
-	&:visited {
-	  	color: @green !important;
-	  	font-size: 16px;
-		}
+      &:link,
+    &:visited {
+          color: @green !important;
+          font-size: 16px;
+        }
 
     &:hover {
         color: @green;
@@ -129,9 +129,9 @@
     &:before {
         content: '';
         display: inline;
-	  	padding-right: 25px;
+          padding-right: 25px;
         background: url(/source/assets/i/spec_link.svg) 50% no-repeat;
-      	}
+          }
 
     }
 

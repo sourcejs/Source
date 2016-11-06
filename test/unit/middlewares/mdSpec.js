@@ -5,12 +5,12 @@ var cheerio = require('cheerio');
 describe('Test .md support', function () {
     var url = 'http://127.0.0.1:8080';
 
-    describe('GET /docs/markdown/', function () {
+    describe('GET /docs/spec-markdown/', function () {
         it('should render h1', function (done) {
             var body = {
             };
             request(url)
-                .get('/docs/markdown/')
+                .get('/docs/spec-markdown/')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -29,12 +29,12 @@ describe('Test .md support', function () {
         });
     });
 
-    describe('GET /docs/markdown/', function () {
+    describe('GET /docs/spec-markdown/', function () {
         it('should render sections', function (done) {
             var body = {
             };
             request(url)
-                .get('/docs/markdown/')
+                .get('/docs/spec-markdown/')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {
@@ -61,12 +61,12 @@ describe('Test .md support', function () {
         });
     });
 
-    describe('GET /docs/markdown/', function () {
+    describe('GET /docs/spec-markdown/', function () {
         it('should render code', function (done) {
             var body = {
             };
             request(url)
-                .get('/docs/markdown/')
+                .get('/docs/spec-markdown/')
                 .expect(200)
                 .send(body)
                 .end(function (err, res) {

@@ -5,7 +5,7 @@ Navigation blocks in SourceJS are automatically generated on client-side, replac
 Copy and modify this HTML snippet to set-up your custom navigation.
 
 ```html
-&lt;div class="source_catalog" data-nav="/docs">&lt;/div>
+​<div class="source_catalog" data-nav="/docs">​</div>
 ```
 
 `data-nav` attribute defines the catalogue to be displayed. Inserting mentioned code in any SourceJS page a navigation like this will be generated:
@@ -18,7 +18,7 @@ Copy and modify this HTML snippet to set-up your custom navigation.
 We recommend using absolute paths as most stable and predictable.
 
 ```html
-&lt;div class="source_catalog" data-nav="/docs/api">&lt;/div>
+​<div class="source_catalog" data-nav="/docs/api">​</div>
 ```
 
 Renders this navigation block:
@@ -31,10 +31,10 @@ Renders this navigation block:
 Relative paths are also supported. During hook initialization, engine will replace `./` with current navigation URL.
 
 ```html
-&lt;div class="source_catalog" data-nav="./api">&lt;/div>
+​<div class="source_catalog" data-nav="./api">​</div>
 ```
 
-Putting this HTML snippet in `localhost:8080/docs` page, it will be resolved to `/docs/api/` catalog, same as with absolute path.
+Putting this HTML snippet in `/docs` page, it will be resolved to `/docs/api/` catalog, same as with absolute path.
 
 This feature is especially useful for nested catalogs and stand-alone collections like [example-specs-showcase](https://github.com/sourcejs/example-specs-showcase/blob/master/index.src.html).
 
@@ -44,21 +44,21 @@ This feature is especially useful for nested catalogs and stand-alone collection
 Auto-generated title and description in navigation block are taked directly from `info.json` meta file.
 
 ```html
-&lt;div class="source_catalog" data-nav="./example">&lt;/div>
+​<div class="source_catalog" data-nav="./">​</div>
 ```
 
-<div class="source_catalog" data-nav="./example"></div>
+<div class="source_catalog" data-nav="./"></div>
 
 If there is no description, or you want to leave custom text, just use this extra markup:
 
 ```html
-&lt;div class="source_catalog" data-nav="./example">
-    &lt;h2>Custom Title&lt;/h2>
-    &lt;p>Custom description for catalogue.&lt;p>
-&lt;/div>
+​<div class="source_catalog" data-nav="./">
+    ​<h2>Custom Title​</h2>
+    ​<p>Custom description for catalogue.​<p>
+​</div>
 ```
 
-<div class="source_catalog" data-nav="./example">
+<div class="source_catalog" data-nav="./">
     <h2>Custom Title</h2>
     <p>Custom description for catalogue.</p>
 </div>
@@ -69,7 +69,7 @@ As it's possible to define different tags for specs in `info.json` [files](/docs
 
 
 ```html
-&lt;div class="source_catalog" data-nav="/docs" data-tag="templates">&lt;/div>
+​<div class="source_catalog" data-nav="/docs" data-tag="templates">​</div>
 ```
 
 <div class="source_catalog" data-nav="/docs" data-tag="templates">
@@ -90,7 +90,7 @@ module.exports = {
     moduleOptions: {
       globalNav: {
         templates: {
-          catalogHeader: _.template('<h2 class="custom-class">&lt;%= catalogMeta.title %&gt;</h2>'),
+          catalogHeader: _.template('<h2 class="custom-class">​<​%​=​ catalogMeta.title ​%​​></h2>'),
         }
       }
     }

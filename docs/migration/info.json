@@ -1,4 +1,5 @@
 {
     "title": "Migration Notes",
-    "template": "doc"
+    "template": "doc",
+    "tag": ["other"]
 }

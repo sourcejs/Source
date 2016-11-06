@@ -1,4 +1,5 @@
 {
-    "title": "Build Tasks",
-    "template": "doc"
+    "title": "Developing SourceJS: Build Tasks",
+    "template": "doc",
+    "tag": ["advanced"]
 }

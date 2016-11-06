@@ -8,18 +8,18 @@
 .source_note,
 .source_warn,
 .source_info {
-	display: block;
-	position: relative;
+    display: block;
+    position: relative;
     box-sizing: content-box !important;
     margin-top: 20px !important;
     margin-bottom: 20px !important;
     line-height: 1.5;
 
-	border-radius: @border-radius !important;
+    border-radius: @border-radius !important;
 
     @media @media_min-step-m {
         // Legacy
-	    margin-right: @layout_spec--inner-margin-right !important;
+        margin-right: @layout_spec--inner-margin-right !important;
 
         // New spec page modifier
         .source_page.__spec & { margin-right: 0 !important;}
@@ -34,16 +34,16 @@
         }
 
     &:empty {
-		display: none;
-		}
+        display: none;
+        }
 
     p {
-		margin: 0 0 10px !important;
+        margin: 0 0 10px !important;
 
         &:last-child {
-			margin-bottom: 0 !important;
-			}
-		}
+            margin-bottom: 0 !important;
+            }
+        }
 
     th, td {
         border-color: #868686 !important;
@@ -55,23 +55,23 @@
     }
 
 .source_info {
-	background: #FFF6DD !important;
+    background: #FFF6DD !important;
 
-	padding: 15px 25px !important;
-	min-height: 50px !important;
+    padding: 15px 25px !important;
+    min-height: 50px !important;
     margin-top: 15px !important;
     margin-bottom: 15px !important;
-	}
+    }
 
 .source_warn {
-	padding: 10px 10px 10px 35px !important;
+    padding: 10px 10px 10px 35px !important;
 
-	background: #ffe2e5 url(/source/assets/i/warn.png) no-repeat 13px 13px !important;
+    background: #ffe2e5 url(/source/assets/i/warn.png) no-repeat 13px 13px !important;
 
     .source_section & {
         margin-right: 0 !important;
         }
-	}
+    }
 
 .source_note {
     padding: 10px 10px 10px 35px !important;

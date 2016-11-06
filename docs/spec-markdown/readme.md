@@ -22,14 +22,16 @@ In case if Spec folder contains `index.src.html` and `index.md`, first one will 
 | Td | value |
 
 ```html
-&#96;``example
+​`​`​`example
 code example
-&#96;``
+​`​`​`
 ```
 
 ```example
 Mark code with `example` keyword to define `.source_example` with your rendered component view.
-<br><br>
+
+<hr />
+
 <a class="btn btn-primary" href="#777">Example button</a>
 ```
 
@@ -37,7 +39,7 @@ Mark code with `example` keyword to define `.source_example` with your rendered 
 
 SourceJS code blocks are aligned with standard Markdown style. List of demo code examples:
 
-```
+```code
 Some random code
 .css {
     color:red;
@@ -60,29 +62,4 @@ var test = function(){};
 
 ```example
 rendered example
-```
-
-## h2
-
-```example
-code example in h2
-```
-
-### h3
-
-Text
-
-```example
-code example in h3
-```
-
-* list
-* list
-
-#### h4
-
-Text
-
-```example
-code example in h4
 ```

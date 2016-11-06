@@ -227,7 +227,7 @@ apiRouter.use(function(req, res, next) {
 });
 
 apiRouter.get('/', function(req, res) {
-	res.json({ message: 'Hello API' });
+    res.json({ message: 'Hello API' });
 });
 
 apiRouter.route('/specs/raw')
@@ -299,7 +299,7 @@ apiTestRouter.use(function(req, res, next) {
 });
 
 apiTestRouter.get('/', function(req, res) {
-	res.json({ message: 'API Testig env' });
+    res.json({ message: 'API Testig env' });
 });
 
 apiTestRouter.route('/specs')

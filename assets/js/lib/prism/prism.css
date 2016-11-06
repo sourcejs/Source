@@ -53,8 +53,8 @@ pre[class*="src-"] {
 pre[class*="src-"] {
     background: #f1f2f3;
     border:1px solid #dfe2e4;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* Inline code */

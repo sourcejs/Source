@@ -3,53 +3,53 @@
 
 .source_source-code,
 code.brush {
-	display: none !important; /* Hide all code source by default */
-	}
+    display: none !important; /* Hide all code source by default */
+    }
 
 .source_source-code {
-	font-size: @fz-size-m;
-	}
+    font-size: @fz-size-m;
+    }
 
 .source_source-code .source_source-code_toggle .source_show {display: none;} /* Default maximazed */
 .source_source-code__min .source_source-code_toggle .source_hide {display: none;} /* minimized */
 .source_source-code__min .source_source-code_toggle .source_show {display: inline;}
 
 .source_source-code__min .source_source-code_cnt {
-	display: none;
-	}
+    display: none;
+    }
 
 .source_source-code_toggle {
-	display: inline-block;
-	height: 14px;
-	margin-bottom: 10px;
-	border-bottom: #25588D dashed 1px !important;
-	font-size: 10px !important;
-	text-decoration: none;
+    display: inline-block;
+    height: 14px;
+    margin-bottom: 10px;
+    border-bottom: #25588D dashed 1px !important;
+    font-size: 10px !important;
+    text-decoration: none;
 
-	& span {
-		color: inherit !important;
-		}
-	}
-	.source_source-code_toggle:hover {
-		border-bottom: none !important;
+    & span {
+        color: inherit !important;
+        }
+    }
+    .source_source-code_toggle:hover {
+        border-bottom: none !important;
         text-decoration: none !important;
-		padding-bottom: 1px;
-		}
+        padding-bottom: 1px;
+        }
 
-	.source_source-code_toggle__css .source_show:after,
-	.source_source-code_toggle__css .source_hide:after {
-		content: " CSS";
-		}
+    .source_source-code_toggle__css .source_show:after,
+    .source_source-code_toggle__css .source_hide:after {
+        content: " CSS";
+        }
 
-	.source_source-code_toggle__html .source_show:after,
-	.source_source-code_toggle__html .source_hide:after {
-		content: " HTML";
-		}
+    .source_source-code_toggle__html .source_show:after,
+    .source_source-code_toggle__html .source_hide:after {
+        content: " HTML";
+        }
 
-	.source_source-code_toggle__js .source_show:after,
-	.source_source-code_toggle__js .source_hide:after {
-		content: " JavaScript";
-		}
+    .source_source-code_toggle__js .source_show:after,
+    .source_source-code_toggle__js .source_hide:after {
+        content: " JavaScript";
+        }
 
 .source_source-code_toggle-all .source_hide {display: none;} /* Default hidden */
 .source_source-code_toggle-all__hide .source_show {display: none;}
