@@ -8,7 +8,7 @@
 
 var path = require('path');
 var express = require('express');
-var pathToApp = path.dirname(require.main.filename);
+var pathToApp = global.pathToApp;
 
 /*
 *

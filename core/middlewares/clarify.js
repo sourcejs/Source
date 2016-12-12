@@ -9,7 +9,7 @@ var http = require('http');
 
 var ejs = require(path.join(global.pathToApp, 'core/ejsWithHelpers.js'));
 var trackStats = require(path.join(global.pathToApp, 'core/trackStats'));
-var pathToApp = path.dirname(require.main.filename);
+var pathToApp = global.pathToApp;
 var specUtils = require(path.join(pathToApp, 'core/lib/specUtils'));
 var ParseData = require(path.join(pathToApp, 'core/lib/parseData'));
 var specsParser = require(path.join(pathToApp, 'core/lib/specPageParser'));

@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var ParseData = require(path.join(global.pathToApp, 'core/lib/parseData'));
 var utils = require(path.join(global.pathToApp, 'core/lib/utils'));
-var pathToApp = path.dirname(require.main.filename);
+var pathToApp = global.pathToApp;
 var htmlTree = require(path.join(global.pathToApp, 'core/html-tree'));
 var unflatten = require(path.join(global.pathToApp,'core/unflat'));
 
