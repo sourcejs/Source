@@ -23,7 +23,21 @@ To set-up a new engine instance chose the first option `Init SourceJS in this fo
 
 [![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
 
-To install SourceJS as a NPM package, first clone clean `user` configuration folder and then execute `npm install`.
+#### Dependencies
+
+SourceJS require this global packages:
+
+* marked
+* grunt-cli
+* jshint
+
+For install it run:
+
+```html
+npm install -g marked grunt-cli jshint
+```
+
+Next step install SourceJS as a NPM package, first clone clean `user` configuration folder and then execute `npm install`.
 
 ```html
 git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
