@@ -287,7 +287,7 @@ var startServer = function () {
             }, true);
         }
     }
-}
+};
 
 /* Server start */
 if (!module.parent) {
