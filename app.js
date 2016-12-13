@@ -254,44 +254,47 @@ var logErrors = function(err, req, res, next) {
 app.use(logErrors);
 /* /Error handling */
 
+var startServer = function () {
+    var serverOpts = global.opts.core.server;
+    var port = serverOpts.port;
 
-module.exports = function () {
-  var serverOpts = global.opts.core.server;
-  var port = serverOpts.port;
-  
-  app.listen(port, serverOpts.hostname, serverOpts.backlog, serverOpts.callback);
-  log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + (port.toString()).red + ' in '.blue + MODE.blue + ' mode...'.blue);
-  
-  if (commander.test) {
-    var spawn = require('cross-spawn');
-    
-    spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port=' + port], { stdio: 'inherit' })
+    app.listen(port, serverOpts.hostname, serverOpts.backlog, serverOpts.callback);
+    log.info('[SOURCEJS] launched on http://127.0.0.1:'.blue + (port.toString()).red + ' in '.blue + MODE.blue + ' mode...'.blue);
+
+    if (commander.test) {
+        var spawn = require('cross-spawn');
+
+        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port=' + port], { stdio: 'inherit' })
             .on('close', function (code) {
-      if (code === 0) {
-        log.info('Test successful');
-        process.exit(0);
-      } else {
-        log.error('Test failed');
-        process.exit(1);
-      }
-    });
-  } else {
-    if (global.opts.core.tracking.enabled) {
-      trackStats.event({
-        group: 'start',
-        event: 'default'
-      });
+                if (code === 0) {
+                    log.info('Test successful');
+                    process.exit(0);
+                } else {
+                    log.error('Test failed');
+                    process.exit(1);
+                }
+            });
     } else {
-      trackStats.event({
-        group: 'start',
-        event: 'disabled tracking'
-      }, true);
+        if (global.opts.core.tracking.enabled) {
+            trackStats.event({
+                group: 'start',
+                event: 'default'
+            });
+        } else {
+            trackStats.event({
+                group: 'start',
+                event: 'disabled tracking'
+            }, true);
+        }
     }
-  }
-};
+}
 
 /* Server start */
 if (!module.parent) {
-  module.exports();
+    startServer();
 }
 /* Server start */
+
+module.exports = {
+    startServer: startServer
+};
