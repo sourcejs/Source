@@ -76,7 +76,7 @@ var legacyOptionsChecker = function(options, fileName){
 module.exports = function(basePath, _silent){
     silent = _silent;
 
-    var pathToApp = basePath || path.dirname(require.main.filename);
+    var pathToApp = basePath || global.pathToApp;
 
     var mergedOptions = utils.requireUncached(path.join(pathToApp, 'options'));
 

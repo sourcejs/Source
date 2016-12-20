@@ -254,10 +254,7 @@ var logErrors = function(err, req, res, next) {
 app.use(logErrors);
 /* /Error handling */
 
-
-
-/* Server start */
-if (!module.parent) {
+var startServer = function () {
     var serverOpts = global.opts.core.server;
     var port = serverOpts.port;
 
@@ -267,7 +264,7 @@ if (!module.parent) {
     if (commander.test) {
         var spawn = require('cross-spawn');
 
-        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port='+port], {stdio: 'inherit'})
+        spawn('./node_modules/grunt-cli/bin/grunt', [commander.postGrunt, '--port=' + port], { stdio: 'inherit' })
             .on('close', function (code) {
                 if (code === 0) {
                     log.info('Test successful');
@@ -290,5 +287,14 @@ if (!module.parent) {
             }, true);
         }
     }
+};
+
+/* Server start */
+if (!module.parent) {
+    startServer();
 }
 /* Server start */
+
+module.exports = {
+    startServer: startServer
+};
