@@ -70,7 +70,7 @@ if (!commander.watch) {
 }
 
 if (process.env.PORT) {
-    global.opts.core.server.port = parseInt(process.env.PORT);
+    global.opts.core.server.port = process.env.PORT;
     console.log('Using defined app PORT from environment variable: ' + process.env.PORT);
 }
 /* /Globals */
