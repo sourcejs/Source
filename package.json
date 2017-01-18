@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "body-parser": "^1.14.1",
-    "cheerio": "^0.20.0",
+    "cheerio": "^0.22.0",
     "colors": "^1.1.2",
     "commander": "^2.8.1",
     "compression": "^1.6.1",
@@ -38,7 +38,7 @@
     "express": "^4.13.3",
     "express-interceptor": "^1.2.0",
     "express-session": "^1.10.2",
-    "fs-extra": "^0.30.0",
+    "fs-extra": "^2.0.0",
     "fs-finder": "operatino/node-fs-finder#fix-windows-find-up",
     "glob": "^7.0.3",
     "grunt": "~1.0.1",
@@ -48,14 +48,14 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^1.2.0",
     "grunt-contrib-cssmin": "^1.0.1",
-    "grunt-contrib-htmlmin": "^1.1.0",
-    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-htmlmin": "^2.1.0",
+    "grunt-contrib-uglify": "^2.0.0",
     "grunt-newer": "^1.1.2",
     "gulp-watch": "operatino/gulp-watch#4.3.5-latest-fsevents",
     "load-grunt-parent-tasks": "^0.1.1",
     "load-grunt-tasks": "^3.3.0",
     "lodash": "^4.6.1",
-    "log4js": "~0.6.20",
+    "log4js": "~1.1.0",
     "macaddress": "^0.2.8",
     "marked": "^0.3.5",
     "minimatch": "^3.0.0",
@@ -64,20 +64,20 @@
     "serve-favicon": "^2.3.0",
     "shortid": "^2.2.4",
     "time-grunt": "^1.2.1",
-    "tinyforever": "0.0.3",
-    "universal-analytics": "^0.3.11"
+    "tinyforever": "0.0.4",
+    "universal-analytics": "^0.4.8"
   },
   "devDependencies": {
     "assert": "^1.3.0",
     "chai": "^3.2.0",
-    "cross-spawn": "^4.0.0",
+    "cross-spawn": "^5.0.1",
     "grunt-casperjs": "^2.2.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^2.1.0",
-    "grunt-mocha-test": "^0.12.7",
-    "mocha": "^2.0.1",
-    "should": "^9.0.2",
-    "supertest": "^1.1.0"
+    "grunt-mocha-test": "^0.13.2",
+    "mocha": "^3.2.0",
+    "should": "^11.1.2",
+    "supertest": "^2.0.1"
   }
 }
