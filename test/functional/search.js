@@ -14,7 +14,7 @@ casper.test.begin('Checking search', 3, function suite(test) {
 
         this.waitForSelector(searchField,
             function pass() {
-                casper.sendKeys(searchField, 'main', {keepFocus: true});
+                casper.sendKeys(searchField, 'getting started', {keepFocus: true});
 
                 _this.waitForSelector(autoComplete,
                     function pass() {
@@ -34,12 +34,12 @@ casper.test.begin('Checking search', 3, function suite(test) {
 
         this.waitFor(
             function check() {
-                return (this.getCurrentUrl() === url+'/docs/base/');
+                return (this.getCurrentUrl() === url+'/docs/getting-started/');
             },
             function then() { // step to execute when check() is ok
                 test.assertExists('.source_main > h1', 'Spec header exists');
 
-                test.assertEquals(this.getCurrentUrl(), url+'/docs/base/', 'New page URL is right')
+                test.assertEquals(this.getCurrentUrl(), url+'/docs/getting-started/', 'New page URL is right')
             },
             function timeout() { // step to execute if check has failed
                 this.echo('Failed to navigate to search result');

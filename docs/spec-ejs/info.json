@@ -1,5 +1,5 @@
 {
     "tag": ["ejs", "include", "spec markup", "details"],
-    "title": "Creating Specs: Spec File as EJS",
+    "title": "Creating specs: Using EJS templating helpers",
     "template": "doc"
 }

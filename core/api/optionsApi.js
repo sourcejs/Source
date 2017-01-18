@@ -15,7 +15,7 @@ global.app.use('/api/options', function(req, res){
     // Legacy options root structure
     var assetsOptions = contextOptions.assets;
 
-    // TODO: https://github.com/sourcejs/Source/issues/142
+    // TODO: https://github.com/sourcejs/sourcejs/issues/142
     assetsOptions.plugins = contextOptions.plugins;
     assetsOptions.rendering = contextOptions.rendering;
     assetsOptions.specInfo = contextOptions.specInfo;

@@ -9,7 +9,7 @@ Useful information regarding this spec can be left for your team members here.
 
 ## Spec Section Heading
 
-[Spec Page Documentation](/docs/spec)
+[Spec Page Documentation](/docs/spec-file/)
 
 Useful notes.
 

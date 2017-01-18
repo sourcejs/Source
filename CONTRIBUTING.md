@@ -16,7 +16,7 @@ Please read [this doc](MAINTAINING.md) for information on how we're running deve
 * [@SourceJS](https://twitter.com/SourceJS)
 * [Web site](http://sourcejs.com)
 * [General documentation](http://sourcejs.com/docs/)
-* [Quick Start guide](http://sourcejs.com/docs/base/)
+* [Quick Start guide](http://sourcejs.com/docs/getting-started/)
 * [More information on contributing](MAINTAINING.md)
 
 ## Team members

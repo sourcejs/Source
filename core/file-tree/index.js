@@ -47,7 +47,7 @@ if (Array.isArray(config.includedDirs)) {
 }
 
 /**
- * Prepare relative path for web usage (like `/docs/spec`, `/specs/btn`) out of absolute path
+ * Prepare relative path for web usage (like `/docs/spec-html`, `/specs/btn`) out of absolute path
  *
  * @param {String} path - absolute path to Spec directory or Spec file
  *

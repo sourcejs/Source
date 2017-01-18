@@ -6,9 +6,9 @@ Spec pages in SourceJS engine are the main content units. They provide a proper 
 
 Out of the box you've got 3 options on how you can write your spec pages. Choose whichever makes your development process as easy as possible
 
-* [HTML](/docs/spec-html)
-* [Markdown](/docs/spec-markdown)
-* [EJS](/docs/spec-ejs)
+* [HTML](/docs/spec-html/)
+* [Markdown](/docs/spec-markdown/)
+* [EJS](/docs/spec-ejs/)
 
 These 3 options are not mutually exclusive, on a single spec page, you can use all 3!
 

@@ -6,7 +6,7 @@
 
 **The most advanced tool for documenting, testing and managing Front-end Components achieving productive team work.**
 
-🚀 [**Quick Start**](http://sourcejs.com/docs/base)
+🚀 [**Quick Start**](http://sourcejs.com/docs/getting-started/)
 
 SourceJS powered workflow allows developers to **code new components directly in the documentation.** Combining web components development with documentation and team communication processes, makes SourceJS a powerful tool for Front-end developers and designers.
 
@@ -19,7 +19,7 @@ Our main goal is to provide flexible, modular environment for managing reusable 
 ___
 
 
-[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/base/#examples) &nbsp;&nbsp;&nbsp;[**How-to's**](https://github.com/sourcejs/blog-howto)
+[**Source engine project page**](http://sourcejs.com) &nbsp;&nbsp;&nbsp; [**Documentation**](http://sourcejs.com/docs) &nbsp;&nbsp;&nbsp; [**Examples**](http://sourcejs.com/docs/getting-started/#examples) &nbsp;&nbsp;&nbsp;[**How-to's**](https://github.com/sourcejs/blog-howto)
 
 ___
 
@@ -52,22 +52,22 @@ If you notice some bugs, or need to help finding a better solution in your proce
 [Materials for presentations](https://github.com/sourcejs/pres).
 
 ## Updates
-* 20.09.15 [0.5.6](https://github.com/sourcejs/Source/releases/tag/0.5.6) and  [0.5.6-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.6-no-jsdom) with EJS helpers, NPM 3 support and navigation improvements
-* 16.08.15 [0.5.5](https://github.com/sourcejs/Source/releases/tag/0.5.5) and  [0.5.5-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.5-no-jsdom) patch release with `<markdown>` tag fix and set of functional tests
-* 15.08.15 [0.5.4](https://github.com/sourcejs/Source/releases/tag/0.5.4) and  [0.5.4-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.4-no-jsdom) with middleware loader, relative paths in navigation support and other improvements
-* 28.05.15 [0.5.3](https://github.com/sourcejs/Source/releases/tag/0.5.3) context options support, source-as-npm package, CI integration, watcher stability improvements and other great features
-* 28.05.15 [0.5.3-no-jsdom](https://github.com/sourcejs/Source/releases/tag/0.5.3-no-jsdom) special release without JSDom for Windows users
-* 15.04.15 [0.5.2](https://github.com/sourcejs/Source/releases/tag/0.5.2) patch release with improved markdown support and `index.src.html`
-* 28.03.15 [0.5.1](https://github.com/sourcejs/Source/releases/tag/0.5.1) patch release with EJS pre-rendering and various bugfixes
+* 20.09.15 [0.5.6](https://github.com/sourcejs/sourcejs/releases/tag/0.5.6) and  [0.5.6-no-jsdom](https://github.com/sourcejs/sourcejs/releases/tag/0.5.6-no-jsdom) with EJS helpers, NPM 3 support and navigation improvements
+* 16.08.15 [0.5.5](https://github.com/sourcejs/sourcejs/releases/tag/0.5.5) and  [0.5.5-no-jsdom](https://github.com/sourcejs/sourcejs/releases/tag/0.5.5-no-jsdom) patch release with `<markdown>` tag fix and set of functional tests
+* 15.08.15 [0.5.4](https://github.com/sourcejs/sourcejs/releases/tag/0.5.4) and  [0.5.4-no-jsdom](https://github.com/sourcejs/sourcejs/releases/tag/0.5.4-no-jsdom) with middleware loader, relative paths in navigation support and other improvements
+* 28.05.15 [0.5.3](https://github.com/sourcejs/sourcejs/releases/tag/0.5.3) context options support, source-as-npm package, CI integration, watcher stability improvements and other great features
+* 28.05.15 [0.5.3-no-jsdom](https://github.com/sourcejs/sourcejs/releases/tag/0.5.3-no-jsdom) special release without JSDom for Windows users
+* 15.04.15 [0.5.2](https://github.com/sourcejs/sourcejs/releases/tag/0.5.2) patch release with improved markdown support and `index.src.html`
+* 28.03.15 [0.5.1](https://github.com/sourcejs/sourcejs/releases/tag/0.5.1) patch release with EJS pre-rendering and various bugfixes
 * 28.03.15. SourceJS [Bootstrap example bundle](https://github.com/sourcejs/example-bootstrap-bundle) and [How-to articles blog](https://github.com/sourcejs/blog-howto)
 * 15.03.15. New example [Specs showcase](http://sourcejs.com/specs/) ([source code](https://github.com/sourcejs/example-specs-showcase))
 * 15.03.15. CSS Documentation support with [SourceJS DSS plugin](https://github.com/sourcejs/sourcejs-contrib-dss)
-* 12.03.15. **[0.5.0](https://github.com/sourcejs/Source/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
-* 24.02.15. [0.4.1](https://github.com/sourcejs/Source/releases/tag/0.4.1) patch release
+* 12.03.15. **[0.5.0](https://github.com/sourcejs/sourcejs/releases/tag/0.5.0) release** with full Markdown support, GitHub auth, `info.json` watchers and other improvements
+* 24.02.15. [0.4.1](https://github.com/sourcejs/sourcejs/releases/tag/0.4.1) patch release
 * 05.02.15. Mentioned at in-depth [Style Guides Tools overview talk](http://youtu.be/Fr23VpM6wl4ds)
 * 18.01.15. Published an [intro video about SourceJS](http://youtu.be/y4KHmX8vCc0)
-* 07.01.15. **[0.4.0](https://github.com/sourcejs/Source/releases/tag/0.4.0) stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
-* 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/Source/tree/master/docs/migration)
+* 07.01.15. **[0.4.0](https://github.com/sourcejs/sourcejs/releases/tag/0.4.0) stable release.** From now, we move to fast, semantic release cycle. No globally breaking changes till 1.0.0
+* 08.10.14. 0.4.0-rc release, migration [instructions](https://github.com/sourcejs/sourcejs/tree/master/docs/migration)
 * 01.08.14. [Video review](http://youtu.be/ukFeZnJjrLs?list=PL20zJcC2wnX7RY1CDrKLhSvYxEe6jtMbB) of SourceJS engine and workflow example (RU with EN subtitles)
 * 31.07.14. 0.4.0-beta release
 * 01.05.14. Engine presentation from [Front-end Ops Conf](http://www.feopsconf.com/), San Francisco - [Taking Development Tools To The Next Level](http://rhr.me/pres/ime/) with [video](https://www.youtube.com/watch?v=cMIad0zl00I)
@@ -102,4 +102,4 @@ ___
 
 Copyright © 2013-2015 [SourceJS](http://sourcejs.com)
 
-Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/source/wiki/MIT-License).
+Licensed under [MIT License](http://en.wikipedia.org/wiki/MIT_License), read more at [license page](http://github.com/sourcejs/sourcejs/wiki/MIT-License).

@@ -1,5 +1,5 @@
 {
     "tag": ["events", "spec", "loaded"],
-    "title": "Spec Load Event",
+    "title": "Spec load event",
     "template": "doc"
 }

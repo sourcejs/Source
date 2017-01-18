@@ -69,7 +69,7 @@ sourcejs.amd.define([
         var pathToSpec = (function(){
             var path;
 
-            //specUrl is used from parseFileTree, and contains only path, without file like "/docs/spec"
+            //specUrl is used from parseFileTree, and contains only path, without file like "/docs/spec-html"
             if (typeof specUrlFromFileTree === 'undefined') {
                 path = window.location.pathname;
 

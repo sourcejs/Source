@@ -65,7 +65,7 @@ If there is no description, or you want to leave custom text, just use this extr
 
 ## Filtering by tag
 
-As it's possible to define different tags for specs in `info.json` [files](/docs/info-json/)), they can be used for filtering custom navigation collection.
+As it's possible to define different tags for specs in `info.json` [files](/docs/spec-json/)), they can be used for filtering custom navigation collection.
 
 
 ```html

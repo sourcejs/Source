@@ -20,12 +20,12 @@ describe('Internal API tests', function () {
         it('should return list of specs', function (done) {
             var data = parseSpecs.getAll();
 
-            data.should.have.property('docs/base');
+            data.should.have.property('docs/getting-started');
             done();
         });
 
         it('should return spec by ID', function (done) {
-            var data = parseSpecs.getByID('docs/base');
+            var data = parseSpecs.getByID('docs/getting-started');
 
             data.should.have.property('url');
             done();
@@ -51,7 +51,7 @@ describe('API test /api/specs', function () {
                     }
 
                     res.should.be.json;
-                    res.body.should.have.property('docs/base');
+                    res.body.should.have.property('docs/getting-started');
                     done();
                 });
         });

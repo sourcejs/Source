@@ -4,18 +4,23 @@ SourceJS documentation is rendered by the engine itself and is shipped together 
 
 ## Install
 
-Before you start, please make sure that [Git](http://git-scm.com/downloads) and [Node.js](http://nodejs.org/download/) are already installed on your system. Then install these NMP packages:
-
 [![npm version](https://badge.fury.io/js/sourcejs.svg)](http://badge.fury.io/js/sourcejs)
+
+Before you start, please make sure that [Git](http://git-scm.com/downloads) and [Node.js](https://nodejs.org/en/download/) are already installed on your system. Then install these NMP packages:
 
 To install SourceJS, first clone clean `user` configuration folder and then execute `npm install`.
 
-TODO
-
 ```bash
-git clone https://github.com/sourcejs/init.git -b npm my-sourcejs && cd my-sourcejs
+git clone https://github.com/sourcejs/init.git my-sourcejs && cd my-sourcejs
 npm install sourcejs --save
 npm start
+```
+
+The starting project at `sourcejs/init` repo should be treated only as a bootsrap example, and simple project setup reference. The most minimal setup of SourceJS may look like this:
+
+```bash
+npm install sourcejs@0.6.0-nightly.7
+node ./node_modules/sourcejs/app.js
 ```
 
 ## Commands
@@ -36,18 +41,6 @@ Other configuration arguments are described in the help section:
 npm start -- -h
 ```
 
-### Build
-
-TODO : this should no longer be nessesary
-
-During the initial set-up, generator will build everything for you. To re-build the engine, run this command:
-
-```bash
-npm run build
-```
-
-It will trigger `npm i` and default build task for updating dependencies and building SourceJS assets. See the full list of [all build tasks available](/docs/build-tasks).
-
 ### Update
 
 To check for updates for all NPM modules run this command:
@@ -58,7 +51,7 @@ npm outdated
 
 This will list all outdated packages. If a new version of SourceJS is availeble, it will be listed.
 
-It's possible to update the version number in your `package.json` file manually, but it's easier to install [npm check updates](https://www.npmjs.org/package/npm-check-updates):
+It's possible to update the version number in your `package.json` file manually, but it's easier to install [npm check updates](https://github.com/tjunnone/npm-check-updates):
 
 ```bash
 npm install -g npm-check-updates
@@ -67,19 +60,19 @@ npm-check-updates -u sourcejs
 
 ## Creating First Spec
 
-Specs are the main content files in SourceJS engine, in them you define all your component description and UI code for rendered examples. Originally we use `*.src.html` and `*.md` file templates with custom flavoured syntax. It is also possible to configure other technologies for writing Specs using plugins like [Jade](https://github.com/sourcejs/sourcejs-jade).
+Specs are the main content files in SourceJS engine, in them you define all your component description and UI code for rendered examples. Originally we use `*.src.html` and `*.md` file templates with custom flavoured syntax. It is also possible to configure other technologies for writing Specs using plugins like [sourcejs-jade](https://github.com/sourcejs/sourcejs-jade).
 
 We treat Spec files as an interface, you can construct Spec page in many ways following only few simple rules. Each Spec folder must contain `info.json` with it's meta information and SourceJS compliant markup file. As an essential markup, engine requires only few hooks like `.source_section`, `.source_example` to define content sections and the rest is plain semantic HTML.
 
 ### Spec Starting Template
 
-The starting template for new Spec pages can be found in `sourcejs/docs/starting` folder. Copy the contents to a new folder in `source/user/specs` and you'll be ready to write a new spec.
+The starting templates for officially supported Spec page extensions can be found in `sourcejs/docs/spec-html-example` and `sourcejs/docs/spec-markdown-example` folders. Copy the contents to a new folder in `source/user/specs` and you'll be ready to write a new spec.
 
-[Check the SourceJS Spec page documentation.](/docs/spec)
+[Check Spec page documentation for more details.](/docs/spec-file/)
 
 ### Server-side Templating Engines
 
-As we mentioned before, it's also possible to use *other* server-side templating engines like Jade. You need to create a SourceJS middleware that will perform the rendering. Our [sourcjejs-jade Middleware](https://github.com/sourcejs/sourcejs-jade) may serve as an example of such middleware.
+As we mentioned before, it's also possible to use *other* server-side templating engines like Jade. You need to create a SourceJS middleware that will perform the rendering. Our [sourcejs-jade Middleware](https://github.com/sourcejs/sourcejs-jade) may serve as an example of such middleware.
 
 By default all files are pre-processed with [EJS](http://ejs.co/), so you're free to use custom EJS features, which is basicly most JavaScript:
 
@@ -101,7 +94,7 @@ And you can even use includes: a very useful EJS feature:
 &lt;%- include('filename.ejs', {info: info}) %&gt;
 ```
 
-[Read more about Spec page generation helpers.](/docs/spec-helpers)
+[Read more about Spec page generation helpers.](/docs/spec-ejs/)
 
 ### Client-side Templating Engines
 
@@ -111,7 +104,7 @@ Remember, SourceJS Specs are a simple static pages, that are then enchanted with
 
 ## Examples
 
-Main project site: [sourcejs.com](http://sourcejs.com) is based on SourceJS platform, as well as all documentation that you're surfing right now. Engine docs are both viewable on [GitHub](https://github.com/sourcejs/Source/tree/master/docs) and in SourceJS environment.
+Main project site: [sourcejs.com](http://sourcejs.com) is based on SourceJS platform, as well as all documentation that you're surfing right now. Engine docs are both viewable on [GitHub](https://github.com/sourcejs/sourcejs/tree/master/docs) and in SourceJS environment.
 
 ### Specs Showcase
 
@@ -119,7 +112,7 @@ Highlighting the variety of different ways for organizing Spec pages we gathered
 
 Showcase includes both native Specs examples, and ones that are rendered with plugins like [sourcejs-contrib-dss](http://github.com/sourcejs/sourcejs-contrib-dss) and [sourcejs-jade](http://github.com/sourcejs/sourcejs-jade).
 
-[Also check the SourceJS Spec page documentation.](/docs/spec)
+[Also check the SourceJS Spec page documentation.](/docs/spec-html/)
 
 ### Bootstrap Bundle
 
@@ -142,7 +135,7 @@ To get more insights about recommended workflow within Style Guide platform chec
 
 SourceJS engine is highly configurable. Engine and plugins are configured in 1 place:: `options.js`.
 
-With version 0.5.3 we also introduced context level options `sourcejs-options.js`, which allows to configure any catalog specifically for your needs. Read more about it, and other configuration capabilities in [Engine Configuration](/docs/configuration) doc.
+With version 0.5.3 we also introduced context level options `sourcejs-options.js`, which allows to configure any catalog specifically for your needs. Read more about it, and other configuration capabilities in [Engine configuration](/docs/configuration) doc.
 
 ## Plugins
 
@@ -193,9 +186,23 @@ Follow [this guide](/docs/api/plugins) to learn how to develop own plugins for S
 
 If you have created your own middleware, please let us know! If you'd like to add your middleware to the list above, or you can submit a Pull-Request.
 
+## Developing SourceJS
+
+With future versions, all the build dependencies would be removed from distributed version, so in case you need to edit the engine, please [clone the project](https://github.com/sourcejs/sourcejs) from sources.
+
+### Commands
+
+During the `sourcejs` npm dependency setup, post-install will build everything for you. To re-build the engine assets in case of any changes done in `sourcejs` itself, run this command from project root:
+
+```bash
+npm run build-source
+```
+
+For other internal build commands, please reffer to [Build Tasks](/docs/build-tasks) document.
+
 ## Contact us
 
-Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub or [request a consultation](mailto:r@rhr.me) from SourceJS founders.
+Leave your questions and feedback as [issues](https://github.com/sourcejs/sourcejs/issues) on GitHub or [request a consultation](mailto:r@rhr.me) from SourceJS founders.
 
 If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
 

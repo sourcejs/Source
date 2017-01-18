@@ -16,7 +16,7 @@ casper.test.begin('Check navigaton page', 3, function suite(test) {
 
                 test.assertEval(function (nav) {
                     return (
-                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/base"]') &&
+                        !!document.querySelector(nav + ' .source_catalog_a[href="/docs/getting-started"]') &&
                         !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-file"]') &&
                         !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-json"]') &&
                         !!document.querySelector(nav + ' .source_catalog_a[href="/docs/spec-html"]') &&

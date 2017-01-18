@@ -1,5 +1,5 @@
 {
     "tag": ["plugins", "middlewares"],
-    "title": "Writing SourceJS Plugins and Middlewares",
+    "title": "Writing SourceJS plugins and middlewares",
     "template": "doc"
 }

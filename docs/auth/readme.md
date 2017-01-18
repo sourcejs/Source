@@ -2,7 +2,7 @@
 
 Before you start, please make sure that you have referenced GitHub App registered. Please visit [this link](https://developer.github.com/guides/basics-of-authentication/#registering-your-app) to get more information.
 
-If you allready have registered app replace existed github api key and secret into your local options file, as mentioned [here](/docs/base/#5!).
+If you already have registered app replace existed github api key and secret into your local options file, as mentioned [here](/docs/getting-started/#5!).
 
 Values, given below, are created as a demo. They are usable for [local instance](http://127.0.0.1:8080) at `127.0.0.1:8080`
 
@@ -33,7 +33,7 @@ Auth uses `js-hook` and `source_login` classes for targeting. This hook is defin
 
 ## Auth configuration
 
-Auth configuration is available from your instance [options](/docs/base/#configuration), as it was mentioned above. Here's few of available options:
+Auth configuration is available from your instance [options](/docs/getting-started/#configuration), as it was mentioned above. Here's few of available options:
 
 ```js
 // localStorage key for client-side user object

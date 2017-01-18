@@ -6,7 +6,7 @@ SourceJS uses powerful [EJS](http://ejs.co/) templating engine for core UI gener
 <​% if (info.title === 'Title') {% ​> Action! <​% } %​>
 ```
 
-Use plain JavaScript for managing conditions and generating demo content through data loops. All `info.json` file contents are by default available in each Spec scope. Apart from common [meta information](/docs/info-json) available in `info.json` files, it's possible to set any of your own custom data.
+Use plain JavaScript for managing conditions and generating demo content through data loops. All `info.json` file contents are by default available in each Spec scope. Apart from common [meta information](/docs/spec-json/) available in `info.json` files, it's possible to set any of your own custom data.
 
 ```html
 <​h2​><​%- info.title %​><​/h2​>
@@ -40,7 +40,7 @@ Providing a relative path to current Specs, it's easy to include any file.
 
 Note that by default, SourceJS restricts including files outside project directory for security reasons. To disable this restrictions, change `core.sandboxIncludes` configuration.
 
-<a href="https://github.com/sourcejs/Source/tree/master/docs/spec-helpers/examples" class="source_a_hl">View examples source code.</a>
+<a href="https://github.com/sourcejs/sourcejs/tree/master/docs/spec-helpers/examples" class="source_a_hl">View examples source code.</a>
 
 
 ## EJS Custom Helpers
@@ -72,7 +72,7 @@ Feel free to create Pull Requests with a wider set of helpers.
 <%- includeFiles('examples/mask-*.html') %>
 ```
 
-<a href="https://github.com/sourcejs/Source/tree/master/docs/spec-helpers/examples" class="source_a_hl">View examples source code.</a>
+<a href="https://github.com/sourcejs/sourcejs/tree/master/docs/spec-helpers/examples" class="source_a_hl">View examples source code.</a>
 
 ## Extended features
 

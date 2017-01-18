@@ -5,14 +5,14 @@ SourceJS middleware, that allows to open separate documentation examples in cust
 Clarify is an [expressJS](http://expressjs.com/) middleware built into SourceJS engine. Easy configurable through URL parameters in Spec pages:
 
 ```html
-http://localhost:8080/docs/spec/?clarify=true&sections=1.1
+http://localhost:8080/docs/spec-html/?clarify=true&sections=1.1
 ```
 
 When enabled, Clarify uses [Cheerio](https://github.com/cheeriojs/cheerio) for getting specified sections and wrap them in pre-defined or user templates. If you're using SourceJS HTML API, Clarify can be configured to take data directly from API storage as well.
 
 Clarify page is enhanced with helper panel, where you can chose any option available:
 
-[<img src="i/clarify.png" alt="image" style="margin-left: -57px;">](/docs/spec/?clarify=true&sections=1.1)
+[<img src="i/clarify.png" alt="image" style="margin-left: -57px;">](/docs/spec-html/?clarify=true&sections=1.1)
 
 ## List of parameters
 
@@ -25,7 +25,7 @@ Clarify page is enhanced with helper panel, where you can chose any option avail
 | nojs | Boolean | false | Turn on and off JS injection from the Spec. |
 | tpl | template-name | default | Define EJS template name to render sections. Templates are defined in `core/views/clarify/` and `user/core/views/clarify/`, user templates overrides core. |
 
-To play around with available URL params, open [Clarify page](/docs/spec/?clarify=true&sections=1.1) and fill the helpers form below.
+To play around with available URL params, open [Clarify page](/docs/spec-html/?clarify=true&sections=1.1) and fill the helpers form below.
 
 ## Use cases
 

@@ -46,13 +46,13 @@ List of options in `info.json` (example):
 
 `sourcejs` - this field accepts a local configuration object for configuring spec level context options.
 
-Read more about engine configuration capabilities in [Engine Configuration](/docs/configuration) doc.
+Read more about engine configuration capabilities in [Engine configuration](/docs/configuration/) doc.
 
 ## Custom options / properties
 
-Feel free to add **any** custom meta information to `info.json` file for your needs as well. This info will be then available from [Spec API](/docs/api), in middleware-plugins (`req.specData.info`).
+Feel free to add **any** custom meta information to `info.json` file for your needs as well. This info will be then available from [Spec API](/docs/api/), in middleware-plugins (`req.specData.info`).
 
-It will also be availeble to [EJS](/docs/spec-ejs) during spec rendering:
+It will also be available to [EJS](/docs/spec-ejs/) during spec rendering:
 
 ```js
 {

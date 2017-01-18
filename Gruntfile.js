@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         banner:'/*!\n' +
                 '* SourceJS - Living Style Guides Engine and Integrated Maintenance Environment for Front-end Components.\n' +
                 '* @copyright 2013-2015 Sourcejs.com\n' +
-                '* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License\n' +
+                '* @license MIT license: http://github.com/sourcejs/sourcejs/wiki/MIT-License\n' +
                 '* */\n',
 
         // clean files after build

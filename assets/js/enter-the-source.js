@@ -1,7 +1,7 @@
 /*!
 * SourceJS - Front-end documentation engine
 * @copyright 2013-2015 Sourcejs.com
-* @license MIT license: http://github.com/sourcejs/source/wiki/MIT-License
+* @license MIT license: http://github.com/sourcejs/sourcejs/wiki/MIT-License
 * */
 
 sourcejs.amd.require([
