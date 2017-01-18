@@ -2,7 +2,8 @@ Here you will find migration instructions from different Source versions
 
 ## From 0.5.x to 0.6.x
 
-* It's not recommended to install and use SourceJS as a npm dependency, installation via cloning is deprecated and will be removed in the next version.
+* It's now recommended to install and use SourceJS only as a npm dependency, installation via cloning and nested project structure (`sourcejs/user`) is deprecated and will be no more supported in further versions
+* Since SourceJS 0.6.0 we officially support only Node v6+, further project releases will drop support for older versions
 
 ## From 0.4.0-beta to 0.4.0-rc
 
