@@ -6,7 +6,7 @@
 
 **The project been stale for a while and currently is in the [ON HOLD] state until we find new maintainer or original author get's back to the design systems field. SourceJS been brought to the public ahead of it's time, and turned out to be too ambitious to handle by a small team of people.**
 
-**Today, the ideas SourceJS surfaced are evolving in other open source projects, like [styleguidist](https://react-styleguidist.js.org) and [storybook](https://storybook.js.org). Email r@rhr.me if you're interested in taking over the ownership.**
+**Today, the ideas SourceJS surfaced are evolving in other open source projects, like [styleguidist](https://react-styleguidist.js.org) and [storybook](https://storybook.js.org).**
 
 ---
 
