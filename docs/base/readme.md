@@ -187,11 +187,3 @@ Here is a list of available plugins:
 These modules are able to extend both front-end and back-end part of the engine. To install any of official plugin, just use `npm install` in your `sourcejs/user` folder (note that some of them needs additional dependencies like [MongoDB](http://www.mongodb.org/) or [CouchDB](http://couchdb.apache.org/)).
 
 Follow [this guide](/docs/api/plugins) to learn how to develop own plugins for SourceJS Platform.
-
-## Contact us
-
-Leave your questions and feedback as [issues](https://github.com/sourcejs/Source/issues) on GitHub orr [request a consultation](mailto:r@rhr.me) from SourceJS founders.
-
-If you have any quick questions, or want to share your experience working with SourceJS, drop us a message in Gitter chat:
-
-[![Gitter chat](https://img.shields.io/badge/gitter-join%20chat-1dce73.svg)](https://gitter.im/sourcejs/Source)
