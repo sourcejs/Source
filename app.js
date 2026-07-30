@@ -162,7 +162,7 @@ app.use('/api/updateFileTree', function(req, res){
     fileTree.scan();
 
     res.jsonp({
-        message: 'Navigation succesfully updated.'
+        message: 'Navigation successfully updated.'
     });
 });
 
